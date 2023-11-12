@@ -1,16 +1,18 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import Categories from "@/Components/Categories.vue";
+import Container from "@/Components/Container.vue";
 
 defineProps({
-    canLogin: Boolean,
-    canRegister: Boolean,
-    laravelVersion: String,
-    phpVersion: String,
+    categories: Array | null,
 });
 </script>
 
 <template>
     <AppLayout>
-        Body
+        <Container>
+            <Categories :categories="categories.data"/>
+            Homepage
+        </Container>
     </AppLayout>
 </template>

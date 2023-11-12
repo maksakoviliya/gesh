@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {OhVueIcon, addIcons} from "oh-vue-icons";
-import {HiSolidMenu} from "oh-vue-icons/icons";
+import {HiSolidMenu, HiX} from "oh-vue-icons/icons";
 import {ref} from "vue";
 import Avatar from "@/Components/Avatar.vue";
 import MenuLink from "@/Components/MenuLink.vue";
 import {router} from "@inertiajs/vue3";
 
-addIcons(HiSolidMenu)
+addIcons(HiSolidMenu, HiX)
 
 const isOpen = ref(false)
 const setIsOpen = (value: Boolean) => {
@@ -42,7 +42,8 @@ const logout = () => {
           transition
           "
             >
-                <OhVueIcon name="hi-solid-menu"/>
+                <OhVueIcon name="hi-solid-menu" v-if="!isOpen"/>
+                <OhVueIcon name="hi-x" v-else/>
                 <div class="hidden md:block">
                     <Avatar :src="null"/>
                 </div>
