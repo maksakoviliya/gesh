@@ -8,6 +8,7 @@ defineProps({
 </script>
 
 <template>
+  <div class="w-screen h-screen overflow-hidden bg-cover" style="background-image:url('/img/modal-bg.jpeg');">
     <div
         class="
           justify-center
@@ -20,15 +21,14 @@ defineProps({
           z-50
           outline-none
           focus:outline-none
-          bg-neutral-800/70
+          bg-neutral-300/50
         "
     >
         <div class="
           relative
           w-full
-          md:w-4/6
-          lg:w-3/6
-          xl:w-2/5
+          md:w-3/6
+          lg:w-2/5
           my-6
           mx-auto
           h-full
@@ -48,12 +48,13 @@ defineProps({
               md:h-auto
               border-0
               rounded-lg
-              shadow-lg
+              shadow-2xl
               relative
               flex
               flex-col
               w-full
               bg-white
+              overflow-auto
               outline-none
               focus:outline-none
             "
@@ -108,5 +109,6 @@ defineProps({
             </div>
         </div>
     </div>
+  </div>
 </template>
 ]

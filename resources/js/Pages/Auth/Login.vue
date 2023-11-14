@@ -1,15 +1,13 @@
 <script setup>
-import {Head, Link, useForm} from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import Checkbox from '@/Components/Checkbox.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import {Head, useForm} from '@inertiajs/vue3';
 import ModalLayout from "@/Layouts/ModalLayout.vue";
 import Heading from "@/Components/Heading.vue";
 import Input from "@/Components/Input.vue";
+import {ref} from "vue";
+import ButtonComponent from "@/Components/ButtonComponent.vue";
+import PhoneInput from "@/Components/PhoneInput.vue";
+import useToasts from "@/hooks/useToasts"
+import SocialAuth from "@/Pages/Auth/SocialAuth.vue";
 
 defineProps({
     canResetPassword: Boolean,
@@ -18,14 +16,32 @@ defineProps({
 
 const form = useForm({
     email: '',
+    phone: '',
     password: '',
 });
 
+const {successToast} = useToasts()
+
 const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
-    });
+    form.transform((data) => {
+        if (type.value === 'email') {
+            delete data.phone
+        } else {
+            delete data.email
+        }
+        console.log('data', data)
+        return data
+    })
+        .post(route('login'), {
+            onError: (error) => form.setError('auth', error.message),
+            onFinish: () => {
+              successToast('Успешная регистрация.')
+              form.reset('password')
+            },
+        });
 };
+
+const type = ref('phone')
 </script>
 
 <template>
@@ -37,16 +53,29 @@ const submit = () => {
             Вход
         </template>
         <template #body>
-            <div className="flex flex-col gap-4">
+            <div class="flex flex-col gap-4">
                 <Heading
                     title="С возвращением"
                     subtitle="Войти в свой аккаунт"
                 />
+                <div class="flex items-center gap-4">
+                    <ButtonComponent :small="true" @click="type = 'email'" :outline="type !== 'email'" label="Почта"/>
+                    <ButtonComponent :small="true" @click="type = 'phone'" :outline="type !== 'phone'" label="Телефон"/>
+                </div>
                 <Input
                     id="email"
                     v-model="form.email"
+                    v-if="type === 'email'"
                     label="Email"
                     :error="form.errors.email"
+                    required
+                />
+                <PhoneInput
+                    id="phone"
+                    v-if="type === 'phone'"
+                    v-model="form.phone"
+                    label="Телефон"
+                    :error="form.errors.phone ?? form.errors.email"
                     required
                 />
                 <Input
@@ -59,5 +88,11 @@ const submit = () => {
                 />
             </div>
         </template>
+      <template #footer>
+        <hr class="my-4">
+        <div class="flex flex-col gap-2">
+          <SocialAuth />
+        </div>
+      </template>
     </ModalLayout>
 </template>

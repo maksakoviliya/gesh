@@ -1,17 +1,30 @@
 <script setup>
-defineProps({
+import {watch} from "vue";
+import {useIMask} from "vue-imask";
+
+const props = defineProps({
     id: String,
     label: String,
     type: String | null,
     error: String | null,
     disabled: Boolean | null,
     required: Boolean | null,
-    modelValue: String
+    modelValue: String,
+    mask: String | null,
+})
+
+const {el, masked} = useIMask({
+    mask: '+{7} (000) 000-00-00',
+});
+
+const emit = defineEmits(['update:modelValue'])
+watch(masked, (value) => {
+    emit('update:modelValue', value)
 })
 </script>
 
 <template>
-    <form class="w-full relative" autocomplete="off">
+    <div class="w-full relative">
         <!--        {formatPrice && (-->
         <!--        <BiDollar-->
         <!--            size={24}-->
@@ -25,11 +38,11 @@ defineProps({
         <!--        )}-->
         <input
             :id="id"
+            ref="el"
             :disabled="disabled"
             placeholder=" "
-            :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)"
             :type="type"
+            :name="id"
             autocomplete="new-password"
             class="
             peer
@@ -76,7 +89,7 @@ defineProps({
         >
             {{ label }}
         </label>
-        <div v-if="!!error" class="text-rose-500 text-sm font-light">{{ error}}</div>
-    </form>
+        <div v-if="!!error" class="text-rose-500 text-sm font-light">{{ error }}</div>
+    </div>
 </template>
 

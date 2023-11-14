@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Social;
+
+use App\Enums\SocialAuthProvider;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+
+class SocialCallbackController extends Controller
+{
+    /**
+     * @param Request $request
+     * @param SocialAuthProvider $provider
+     * @return Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
+     */
+    public function __invoke(Request $request, SocialAuthProvider $provider): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    {
+        $socialUser = Socialite::driver($provider->value)->user();
+        /** @var User $user */
+        $user = User::query()
+            ->firstOrCreate([
+                'social_id' => $socialUser->id,
+                'social_provider' => $provider,
+                'email' => $socialUser->email,
+            ], [
+                'name' => $socialUser->name,
+                'avatar' => $socialUser->avatar,
+            ]);
+
+        if (!$user) {
+            return redirect(route('home'));
+        }
+        Auth::login($user);
+        return redirect(route('home'));
+    }
+}

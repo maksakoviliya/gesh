@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,7 +24,9 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')->required()->columnSpan('full'),
+                TextInput::make('email')->unique()->nullable(),
+                TextInput::make('phone')->unique()->nullable(),
             ]);
     }
 
@@ -33,6 +36,7 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('created_at')->date('d.m.Y'),
             ])
             ->filters([
