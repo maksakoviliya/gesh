@@ -263,6 +263,10 @@ const switchToTeam = (team) => {
         <main class="pt-24">
             <slot/>
         </main>
+
+        <footer>
+            <div class="h-12"></div>
+        </footer>
         <!--        </div>-->
     </div>
 </template>

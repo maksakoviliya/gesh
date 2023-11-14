@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 final class Category extends Model
 {
@@ -17,4 +18,9 @@ final class Category extends Model
         'description',
         'icon',
     ];
+
+    public function apartments(): BelongsToMany
+    {
+        return $this->belongsToMany(Apartment::class);
+    }
 }

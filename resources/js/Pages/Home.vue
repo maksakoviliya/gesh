@@ -2,9 +2,11 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Categories from "@/Components/Categories.vue";
 import Container from "@/Components/Container.vue";
+import Apartments from "@/Components/Apartments.vue";
 
 defineProps({
     categories: Array | null,
+    apartments: Array | null
 });
 </script>
 
@@ -12,7 +14,7 @@ defineProps({
     <AppLayout>
         <Container>
             <Categories :categories="categories.data"/>
-            Homepage
+            <Apartments :apartments="apartments" />
         </Container>
     </AppLayout>
 </template>

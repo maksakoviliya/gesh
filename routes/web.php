@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ApartmentShowController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/apartments/{apartment}', ApartmentShowController::class)->name('apartment');
 
 //Route::middleware([
 //    'auth:sanctum',

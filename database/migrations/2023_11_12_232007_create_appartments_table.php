@@ -11,8 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appartments', function (Blueprint $table) {
+        Schema::create('apartments', function (Blueprint $table) {
             $table->id();
+
+            $table->smallInteger('rooms');
+            $table->smallInteger('guests');
+            $table->text('address');
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->unsignedInteger('price');
+
             $table->timestamps();
         });
     }
