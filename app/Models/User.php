@@ -11,6 +11,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -18,7 +19,13 @@ class User extends Authenticatable
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
+    use HasRoles;
     use TwoFactorAuthenticatable;
+
+    public function canAccessPanel(): bool
+    {
+        return $this->hasRole('admin');
+    }
 
     /**
      * The attributes that are mass assignable.
