@@ -22,11 +22,11 @@ final class Apartment extends Model implements HasMedia
         'rooms',
         'price',
         'address',
-        'guests'
+        'guests',
     ];
 
     protected $with = [
-        'media'
+        'media',
     ];
 
     public function categories(): BelongsToMany
@@ -41,6 +41,7 @@ final class Apartment extends Model implements HasMedia
                 return $q->where('slug', $request->query('category'));
             });
         }
+
         return $query;
     }
 }

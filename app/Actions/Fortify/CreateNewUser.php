@@ -16,15 +16,13 @@ class CreateNewUser implements CreatesNewUsers
     use PasswordValidationRules;
 
     /**
-     * @param array $input
-     * @return Model
      * @throws ValidationException
      */
     public function create(array $input): Model
     {
         if (Arr::has($input, 'phone')) {
             $patterns = [
-                '(',')',' ','-','+'
+                '(', ')', ' ', '-', '+',
             ];
             $replacement = '';
             $input['phone'] = str_replace(

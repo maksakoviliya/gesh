@@ -12,11 +12,6 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialRedirectController extends Controller
 {
-    /**
-     * @param Request $request
-     * @param SocialAuthProvider $provider
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|RedirectResponse
-     */
     public function __invoke(Request $request, SocialAuthProvider $provider): \Symfony\Component\HttpFoundation\RedirectResponse|RedirectResponse
     {
         return Socialite::driver($provider->value)->redirect();

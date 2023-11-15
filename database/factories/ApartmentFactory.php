@@ -22,7 +22,7 @@ class ApartmentFactory extends Factory
             'address' => $this->faker->address,
             'rooms' => $this->faker->randomDigitNotZero(),
             'guests' => $this->faker->randomDigitNotZero(),
-            'price' => mt_rand(1000, 15000)
+            'price' => mt_rand(1000, 15000),
         ];
     }
 }

@@ -14,12 +14,12 @@ const socialRedirect = (provider) => {
 </script>
 
 <template>
-  <ButtonComponent :outline="true" label="Вконтакте" @click="socialRedirect('vkontakte')">
+  <ButtonComponent :outline="true" label="С помощью вконтакте" @click="socialRedirect('vkontakte')">
     <template #icon>
       <OhVueIcon name="la-vk" scale="2" class="absolute left-4 top-1"/>
     </template>
   </ButtonComponent>
-  <ButtonComponent :outline="true" label="Google" @click="socialRedirect('google')">
+  <ButtonComponent :outline="true" label="С помощью google" @click="socialRedirect('google')">
     <template #icon>
       <OhVueIcon name="fc-google" scale="1.5" class="absolute left-5 top-2.5"/>
     </template>

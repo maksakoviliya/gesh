@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
-use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 
 class LoginRequest extends FortifyLoginRequest
@@ -15,7 +12,7 @@ class LoginRequest extends FortifyLoginRequest
     {
         if ($this->has('phone')) {
             $patterns = [
-                '(',')',' ','-','+'
+                '(', ')', ' ', '-', '+',
             ];
             $replacement = '';
             $phone = str_replace(
@@ -24,7 +21,7 @@ class LoginRequest extends FortifyLoginRequest
                 $this->input('phone')
             );
             $this->merge([
-                'phone' => $phone
+                'phone' => $phone,
             ]);
         }
     }

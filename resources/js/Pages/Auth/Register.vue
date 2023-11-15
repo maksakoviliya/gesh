@@ -51,8 +51,8 @@ const type = ref('phone')
             subtitle="Создать аккаунт"
         />
         <div class="flex items-center gap-4">
-          <ButtonComponent :small="true" @click="type = 'email'" :outline="type !== 'email'" label="Почта"/>
-          <ButtonComponent :small="true" @click="type = 'phone'" :outline="type !== 'phone'" label="Телефон"/>
+            <ButtonComponent :small="true" @click="type = 'phone'" :outline="type !== 'phone'" label="Телефон"/>
+            <ButtonComponent :small="true" @click="type = 'email'" :outline="type !== 'email'" label="Почта"/>
         </div>
         <Input
             id="email"

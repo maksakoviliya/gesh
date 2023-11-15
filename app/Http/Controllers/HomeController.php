@@ -21,9 +21,10 @@ final class HomeController extends Controller
             ->filter($request)
             ->orderBy('updated_at')
             ->paginate(20);
+
         return Inertia::render('Home', [
             'categories' => CategoryResource::collection($categories),
-            'apartments' => ApartmentResource::collection($apartments)
+            'apartments' => ApartmentResource::collection($apartments),
         ]);
     }
 }

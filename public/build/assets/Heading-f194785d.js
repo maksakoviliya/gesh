@@ -1,1 +1,0 @@
-import{o as a,f as n,a as e,t as s,n as o}from"./app-5141ab1e.js";const i={class:"text-2xl font-bold"},l={class:"font-light text-neutral-500 mt-2"},m={__name:"Heading",props:{center:Boolean,title:String,subtitle:String},setup(t){return(c,r)=>(a(),n("div",{class:o(t.center?"text-center":"text-start")},[e("div",i,s(t.title),1),e("div",l,s(t.subtitle),1)],2))}};export{m as _};

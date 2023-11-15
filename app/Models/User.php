@@ -20,8 +20,8 @@ class User extends Authenticatable implements FilamentUser
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
-    use Notifiable;
     use HasRoles;
+    use Notifiable;
     use TwoFactorAuthenticatable;
 
     public function canAccessPanel(Panel $panel): bool
@@ -41,14 +41,14 @@ class User extends Authenticatable implements FilamentUser
         'avatar',
         'password',
         'social_id',
-        'social_provider'
+        'social_provider',
     ];
 
     protected $casts = [
-        'phone' => E164PhoneNumberCast::class . ':RU',
+        'phone' => E164PhoneNumberCast::class.':RU',
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
-        'social_provider' => SocialAuthProvider::class
+        'social_provider' => SocialAuthProvider::class,
     ];
 
     /**

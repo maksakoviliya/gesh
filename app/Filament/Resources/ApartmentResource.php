@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ApartmentResource\Pages;
-use App\Filament\Resources\ApartmentResource\RelationManagers;
 use App\Models\Apartment;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -13,8 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ApartmentResource extends Resource
 {
@@ -57,7 +54,7 @@ class ApartmentResource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('price')
                             ->numeric()
-                            ->required()
+                            ->required(),
                     ])
                     ->columns(3),
 
@@ -66,7 +63,7 @@ class ApartmentResource extends Resource
                         SpatieMediaLibraryFileUpload::make('media')
                             ->multiple()
                             ->maxFiles(10)
-                            ->required()
+                            ->required(),
                     ])
                     ->collapsible(),
             ]);
@@ -83,14 +80,14 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('price'),
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('rooms'),
-                Tables\Columns\TextColumn::make('guests')
+                Tables\Columns\TextColumn::make('guests'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
