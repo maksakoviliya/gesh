@@ -23,7 +23,7 @@ defineProps({
         <!--          "-->
         <!--        />-->
         <!--        )}-->
-        <input
+        <textarea
             :id="id"
             :disabled="disabled"
             placeholder=" "
@@ -45,6 +45,7 @@ defineProps({
             transition
             disabled:opacity-70
             focus:ring-0
+            resize-none
            pl-4
             disabled:cursor-not-allowed"
             :class="`

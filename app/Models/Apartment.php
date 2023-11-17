@@ -23,6 +23,7 @@ final class Apartment extends Model implements HasMedia
         'price',
         'address',
         'guests',
+        'user_id'
     ];
 
     protected $with = [

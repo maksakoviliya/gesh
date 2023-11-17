@@ -29,7 +29,6 @@
 			} else {
 				delete data.email
 			}
-			console.log('data', data)
 			return data
 		}).post(route('login'), {
 			onError: (error) => form.setError('email', error.message),

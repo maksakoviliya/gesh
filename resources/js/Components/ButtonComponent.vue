@@ -8,6 +8,14 @@ const props = defineProps({
     outline: Boolean | null,
     small: Boolean | null,
     fontLight: Boolean | null,
+    bgClass: {
+        type: String,
+        default: 'bg-sky-600'
+    },
+    borderClass: {
+        type: String,
+        default: 'border-sky-600'
+    }
 })
 
 const className = computed(() => {
@@ -17,8 +25,8 @@ const className = computed(() => {
     rounded-lg
     transition
     w-full
-    ${props.outline ? 'bg-white' : 'bg-sky-600'}
-    ${props.outline ? 'border-black' : 'border-sky-600'}
+    ${props.outline ? 'bg-white' : props.bgClass}
+    ${props.outline ? 'border-black' : props.borderClass}
     ${props.outline ? 'text-black' : 'text-white'}
     ${props.outline ? 'hover:opacity-60' : 'hover:opacity-80'}
     ${props.small ? 'text-sm' : 'text-md'}

@@ -5,8 +5,13 @@ import {router} from "@inertiajs/vue3";
 
 defineProps({
     title: String,
-    subtitle: String
+    subtitle: String,
+    actionLabel: String
 })
+
+const emit =defineEmits([
+    'onClick'
+])
 </script>
 
 <template>
@@ -25,11 +30,11 @@ defineProps({
             :title="title"
             :subtitle="subtitle"
         />
-        <div class="w-48 mt-4">
+        <div class="w-48 mt-4" v-if="actionLabel">
             <ButtonComponent
                 :outline="true"
-                label="Очистить фильтры"
-                @click="router.visit(route('home'))"
+                :label="actionLabel"
+                @click="emit('onClick')"
             />
         </div>
     </div>

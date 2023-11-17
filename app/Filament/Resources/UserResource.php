@@ -24,6 +24,7 @@ class UserResource extends Resource
                 TextInput::make('name')->required()->columnSpan('full'),
                 TextInput::make('email')->unique(ignoreRecord: true)->nullable(),
                 TextInput::make('phone')->unique()->nullable(),
+                TextInput::make('password'),
                 Forms\Components\Select::make('roles')->multiple()
                     ->relationship('roles', 'name')->preload(),
             ]);

@@ -9,7 +9,7 @@ defineProps({
 
 <template>
     <EmptyState title="Ничего не найдено" subtitle="Не удалось найти жилья по вашему запросу"
-                v-if="!apartments.length"/>
+                v-if="!apartments.data.length"/>
     <div v-else class="pt-4
             grid
             grid-cols-1

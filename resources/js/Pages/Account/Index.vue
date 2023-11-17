@@ -27,7 +27,7 @@
 		},
 		{
 			id: 'apartments',
-			key: 'profile',
+			key: 'apartments',
 			title: 'Мои объекты',
 			subtitle: 'Ваша недвижимость для проживания',
 			icon: 'md-mapshomework-outlined',
