@@ -32,9 +32,9 @@
 			console.log('data', data)
 			return data
 		}).post(route('login'), {
-			onError: (error) => form.setError('auth', error.message),
+			onError: (error) => form.setError('email', error.message),
 			onFinish: () => {
-				successToast('Успешная регистрация.')
+				successToast('Успешный вход в аккаунт.')
 				form.reset('password')
 			},
 		})

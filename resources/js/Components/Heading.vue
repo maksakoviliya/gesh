@@ -11,7 +11,7 @@ defineProps({
         <div class="text-2xl font-bold">
             {{ title }}
         </div>
-        <div class="font-light text-neutral-500 mt-2">
+        <div class="font-light text-neutral-500 mt-2" v-if="subtitle">
             {{ subtitle }}
         </div>
     </div>

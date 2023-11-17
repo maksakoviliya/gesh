@@ -14,7 +14,7 @@ defineProps({
     <AppLayout>
         <Container>
             <Categories :categories="categories.data"/>
-            <Apartments :apartments="apartments" />
+            <Apartments :apartments="apartments"/>
         </Container>
     </AppLayout>
 </template>
