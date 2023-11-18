@@ -1,40 +1,76 @@
 <script setup>
-import Input from "@/Components/Input.vue";
-import {useForm} from "@inertiajs/vue3";
-import TextareaInput from "@/Components/Inputs/TextareaInput.vue";
-import FileInput from "@/Components/Inputs/FileInput.vue";
-import ButtonComponent from "@/Components/ButtonComponent.vue";
-import { router } from '@inertiajs/vue3'
+	import AppLayout from '@/Layouts/AppLayout.vue'
+	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
+	import Container from '@/Components/Container.vue'
+	import Heading from '@/Components/Heading.vue'
+	import { ref } from 'vue'
+	import ButtonComponent from '@/Components/ButtonComponent.vue'
+	import { router } from '@inertiajs/vue3'
 
-const form = useForm({
-    title: '',
-    description: '',
-    media: []
-})
+	const routes = ref([
+		{
+			id: 'account',
+			route: route('account.index'),
+			label: 'Аккаунт',
+		},
+		{
+			id: 'apartments',
+			route: route('account.apartments.list'),
+			label: 'Объекты',
+		},
+		{
+			id: 'apartments.create',
+			route: route('account.apartments.create'),
+			label: 'Добавить',
+		},
+	])
 
-const submit = () => {
-    router.post(route('account.apartments.store'), form)
-}
+	defineProps({
+		step: Number,
+	})
+
+	const emit = defineEmits(['onNextStep', 'onPrevStep'])
 </script>
 
 <template>
-<div class="mt-10 flex flex-col gap-4">
-    <Input
-        id="title"
-        v-model="form.title"
-        label="Название"
-        :error="form.errors.title"
-    />
-    <TextareaInput id="description"
-               v-model="form.description"
-               label="Описание"
-               :error="form.errors.description"/>
-    <FileInput  id="media"
-                v-model="form.media"
-                :error="form.errors.media"/>
-
-    <div class="flex">
-        <ButtonComponent class="max-w-[14rem]" label="Сохранить" @click="submit"/>
-    </div>
-</div>
+	<AppLayout>
+		<Container :sm="true">
+			<Breadcrumbs :routes="routes" />
+			<div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+				<Heading
+					class="mt-6"
+					title="Добавить объект"
+					subtitle="Как можно подробнее опишите объект, который вы хотите разместить"
+				/>
+				<ButtonComponent
+					label="Сохранить и выйти"
+					:disabled="true"
+					:outline="true"
+					class="max-w-xs"
+					:small="true"
+				/>
+			</div>
+			<div class="mt-10 flex flex-col gap-4">
+				<slot></slot>
+			</div>
+			<div class="fixed inset-x-0 bottom-0 py-4 border-t">
+				<Container :sm="true">
+					<div class="flex justify-between gap-6">
+						<ButtonComponent
+							:disabled="step < 2"
+							class="max-w-sm"
+							:outline="true"
+							label="Назад"
+							@click="emit('onPrevStep')"
+						/>
+						<ButtonComponent
+							@click="emit('onNextStep')"
+							class="max-w-sm"
+							label="Далее"
+						/>
+					</div>
+				</Container>
+			</div>
+		</Container>
+	</AppLayout>
 </template>

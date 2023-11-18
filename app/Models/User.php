@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Enums\SocialAuthProvider;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,8 +23,11 @@ class User extends Authenticatable implements FilamentUser
     use HasFactory;
     use HasProfilePhoto;
     use HasRoles;
+    use HasUlids;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
+    protected $keyType = 'string';
 
     public function canAccessPanel(Panel $panel): bool
     {

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Account\AccountIndexController;
 use App\Http\Controllers\Account\AccountProfileController;
-use App\Http\Controllers\Account\AccountStoreApartmentsController;
-use App\Http\Controllers\Account\Apartments\AccountApartmentsController;
-use App\Http\Controllers\Account\Apartments\AccountCreateApartmentsController;
+use App\Http\Controllers\Account\Apartments\CreateController;
+use App\Http\Controllers\Account\Apartments\ListController;
+use App\Http\Controllers\Account\Apartments\StepController;
+use App\Http\Controllers\Account\Apartments\StoreController;
 use App\Http\Controllers\ApartmentShowController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Social\SocialCallbackController;
@@ -26,11 +27,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', AccountIndexController::class)->name('index');
         Route::get('profile', AccountProfileController::class)->name('profile');
 
-        Route::prefix('apartments')->group(function () {
-            Route::get('/', AccountApartmentsController::class)->name('apartments');
-            Route::get('create', AccountCreateApartmentsController::class)->name('apartments.create');
-            Route::post('store', AccountStoreApartmentsController::class)->name('apartments.store');
-        });
+        Route::prefix('apartments')
+            ->as('apartments.')
+            ->namespace('App\\Http\\Controllers\\Account\\Apartments\\')
+            ->group(function () {
+                Route::get('/', ListController::class)->name('list');
+                Route::get('create', CreateController::class)->name('create');
+                Route::get('{apartment}/step/{step}', StepController::class)->name('step');
+                Route::post('{apartment}/store', StoreController::class)->name('store');
+            });
     });
 });
 //Route::middleware([

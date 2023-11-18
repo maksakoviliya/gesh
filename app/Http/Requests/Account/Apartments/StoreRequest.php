@@ -4,39 +4,32 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Account\Apartments;
 
+use App\Enums\Apartments\Type;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 final class StoreRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', $this->apartment);
     }
 
     protected function prepareForValidation()
     {
-        $this->merge([
-            'user_id' => Auth::id(),
-            'rooms' => 2,
-            'guests' => 3,
-            'address' => 'Адрес',
-            'price' => 1200,
-        ]);
+        //        dd($this->all());
     }
 
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:2000',
-            'user_id' => 'required|exists:users,id',
-            'media' => 'required|array|max:2',
-            'media.*' => 'image',
-            'rooms' => 'required',
-            'guests' => 'required',
-            'address' => 'required',
-            'price' => 'required',
+            'step' => 'required',
+
+            // Step 1:
+            'category' => 'sometimes|required|exists:categories,id',
+
+            // Step 2:
+            'type' => ['sometimes', 'required', Rule::enum(Type::class)],
         ];
     }
 }

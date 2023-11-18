@@ -42,7 +42,7 @@ class ApartmentResource extends Resource
                                 'attachFiles',
                             ])
                             ->columnSpan('full'),
-                        Forms\Components\TextInput::make('rooms')
+                        Forms\Components\TextInput::make('bedrooms')
                             ->numeric()
                             ->maxValue(10)
                             ->default(1)
@@ -79,7 +79,7 @@ class ApartmentResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('price'),
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('rooms'),
+                Tables\Columns\TextColumn::make('bedrooms'),
                 Tables\Columns\TextColumn::make('guests'),
             ])
             ->filters([

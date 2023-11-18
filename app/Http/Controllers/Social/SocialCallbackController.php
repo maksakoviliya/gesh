@@ -29,7 +29,7 @@ class SocialCallbackController extends Controller
             ], [
                 'name' => $socialUser->name,
                 'avatar' => $socialUser->avatar,
-                'email_verified_at' => Carbon::now()
+                'email_verified_at' => Carbon::now(),
             ]);
 
         if (! $user) {
