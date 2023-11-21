@@ -3,19 +3,28 @@
 	import Heading from '@/Components/Heading.vue'
 	import { router, useForm } from '@inertiajs/vue3'
 	import { ref } from 'vue'
+	import Input from '@/Components/Input.vue'
 
 	const props = defineProps({
 		apartment: Array | Object,
 	})
 
 	const form = useForm({
-		// type: props.apartment.type,
+		state: props.apartment.state,
+		city: props.apartment.city,
+		street: props.apartment.street,
+		building: props.apartment.building,
+		housing: props.apartment.housing,
+		room: props.apartment.room,
+		floor: props.apartment.floor,
+		entrance: props.apartment.entrance,
+		index: props.apartment.index,
 	})
 
 	const submit = () => {
 		form.transform((data) => ({
 			...data,
-			step: 2,
+			step: 3,
 		})).post(
 			route('account.apartments.store', {
 				apartment: props.apartment.id,
@@ -37,27 +46,74 @@
 			)
 		"
 	>
-		<div class="mt-32 max-w-2xl mx-auto w-full">
+		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full">
 			<Heading
 				title="Подтвердите адрес"
 				subtitle="Гости увидят адрес, только оформив бронирование."
 			/>
-			<!--			<div class="grid grid-cols-1 gap-8 mt-10">-->
-			<!--				<div-->
-			<!--					@click="form.type = type.id"-->
-			<!--					v-for="type in types"-->
-			<!--					:key="type.id"-->
-			<!--					class="border-2 shadow-lg p-6 rounded-lg cursor-pointer hover:shadow-xl transition"-->
-			<!--					:class="-->
-			<!--						form.type === type.id-->
-			<!--							? 'border-neutral-800 hover:border-neutral-800 bg-neutral-100'-->
-			<!--							: 'border-neutral-50 hover:border-neutral-500'-->
-			<!--					"-->
-			<!--				>-->
-			<!--					<div class="font-semibold text-lg">{{ type.title }}</div>-->
-			<!--					<div class="font-light text-neutral-500 mt-1">{{ type.subtitle }}</div>-->
-			<!--				</div>-->
-			<!--			</div>-->
+			<div class="grid grid-cols-1 gap-2 mt-10">
+				<Input
+					id="state"
+					v-model="form.state"
+					label="Регион"
+					:error="form.errors.state"
+				/>
+				<Input
+					id="city"
+					v-model="form.city"
+					label="Город"
+					:error="form.errors.city"
+					:required="true"
+				/>
+				<Input
+					id="street"
+					v-model="form.street"
+					label="Улица"
+					:error="form.errors.street"
+					:required="true"
+				/>
+				<div class="flex items-start gap-2">
+					<Input
+						id="building"
+						v-model="form.building"
+						label="Дом"
+						:error="form.errors.building"
+						:required="true"
+					/>
+					<Input
+						id="housing"
+						v-model="form.housing"
+						label="Копус | Строение"
+						:error="form.errors.housing"
+					/>
+				</div>
+				<Input
+					id="room"
+					v-model="form.room"
+					label="Квартира"
+					:error="form.errors.room"
+				/>
+				<div class="flex items-start gap-2">
+					<Input
+						id="entrance"
+						v-model="form.entrance"
+						label="Подъезд"
+						:error="form.errors.entrance"
+					/>
+					<Input
+						id="floor"
+						v-model="form.floor"
+						label="Этаж"
+						:error="form.errors.floor"
+					/>
+				</div>
+				<Input
+					id="index"
+					v-model="form.index"
+					label="Индекс"
+					:error="form.errors.index"
+				/>
+			</div>
 		</div>
 	</Form>
 </template>

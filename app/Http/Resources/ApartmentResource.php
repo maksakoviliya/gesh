@@ -13,10 +13,11 @@ class ApartmentResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
+            'step' => $this->resource->step,
             'title' => $this->resource->title,
             'description' => $this->resource->description,
             'address' => $this->resource->address,
-            'rooms' => $this->resource->rooms,
+            'bedrooms' => $this->resource->bedrooms,
             'guests' => $this->resource->guests,
             'created_at' => $this->resource->created_at,
             'images' => ImageResource::collection($this->resource->media),

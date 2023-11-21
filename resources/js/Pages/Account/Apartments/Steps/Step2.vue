@@ -2,7 +2,7 @@
 	import Form from '@/Pages/Account/Apartments/Form.vue'
 	import Heading from '@/Components/Heading.vue'
 	import { router, useForm } from '@inertiajs/vue3'
-	import { ref } from 'vue'
+	import Alert from '@/Components/Alerts/Alert.vue'
 
 	const props = defineProps({
 		types: Array | Object,
@@ -23,6 +23,11 @@
 			})
 		)
 	}
+
+	const setActiveTypeId = (id) => {
+		form.type = id
+		form.clearErrors('type')
+	}
 </script>
 
 <template>
@@ -38,11 +43,11 @@
 			)
 		"
 	>
-		<div class="mt-32 max-w-2xl mx-auto w-full">
+		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full">
 			<Heading title="К какой категории относится ваше жилье?" />
 			<div class="grid grid-cols-1 gap-8 mt-10">
 				<div
-					@click="form.type = type.id"
+					@click="setActiveTypeId(type.id)"
 					v-for="type in types"
 					:key="type.id"
 					class="border-2 shadow-lg p-6 rounded-lg cursor-pointer hover:shadow-xl transition"
@@ -56,6 +61,15 @@
 					<div class="font-light text-neutral-500 mt-1">{{ type.subtitle }}</div>
 				</div>
 			</div>
+			<transition name="fade">
+				<Alert
+					v-if="form.hasErrors"
+					class="mt-8"
+					:error="true"
+					title="В форме есть ошибки"
+					:subtitle="form.errors.type"
+				/>
+			</transition>
 		</div>
 	</Form>
 </template>

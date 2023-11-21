@@ -82,12 +82,41 @@ final class Apartment extends Model implements HasMedia
 
     public function updateFromArray(array $data): Model|Builder
     {
-        if ($categoryId = Arr::get($data, 'category')) {
-            $this->category_id = $categoryId;
+        $fields = [
+            // Step 1:
+            'category',
+
+            // Step 2:
+            'type',
+
+            // Step 3:
+            'country_code',
+            'state',
+            'city',
+            'street',
+            'building',
+            'housing',
+            'room',
+            'floor',
+            'entrance',
+            'index',
+
+            // Step 4:
+            'lon',
+            'lat',
+
+            // Step 5:
+            'guests',
+            'bedrooms',
+            'beds',
+            'bathrooms',
+        ];
+        foreach ($fields as $field) {
+            if ($value = Arr::get($data, $field)) {
+                $this[$field] = $value;
+            }
         }
-        if ($type = Arr::get($data, 'type')) {
-            $this->type = $type;
-        }
+
         $this->step = Arr::get($data, 'step') + 1;
         $this->save();
 

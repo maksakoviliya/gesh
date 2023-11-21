@@ -29,6 +29,15 @@ final class StepController extends Controller
             3 => Inertia::render('Account/Apartments/Steps/Step3', [
                 'apartment' => $apartment,
             ]),
+            4 => Inertia::render('Account/Apartments/Steps/Step4', [
+                'apartment' => $apartment,
+            ]),
+            5 => Inertia::render('Account/Apartments/Steps/Step5', [
+                'apartment' => $apartment,
+            ]),
+            6 => Inertia::render('Account/Apartments/Steps/Step6', [
+                'apartment' => $apartment,
+            ]),
             default => redirect()->route('account.apartments.list'),
         };
     }

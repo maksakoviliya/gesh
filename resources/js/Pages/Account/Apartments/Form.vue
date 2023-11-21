@@ -53,19 +53,21 @@
 			<div class="mt-10 flex flex-col gap-4">
 				<slot></slot>
 			</div>
-			<div class="fixed inset-x-0 bottom-0 py-4 border-t">
+			<div class="fixed inset-x-0 bottom-0 py-4 bg-white border-t z-20">
 				<Container :sm="true">
 					<div class="flex justify-between gap-6">
 						<ButtonComponent
 							:disabled="step < 2"
-							class="max-w-sm"
+							:auto-width="true"
+							class="px-8"
 							:outline="true"
 							label="Назад"
 							@click="emit('onPrevStep')"
 						/>
 						<ButtonComponent
 							@click="emit('onNextStep')"
-							class="max-w-sm"
+							:auto-width="true"
+							class="px-8"
 							label="Далее"
 						/>
 					</div>

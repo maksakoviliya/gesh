@@ -6,8 +6,8 @@
 	import Heading from '@/Components/Heading.vue'
 	import EmptyState from '@/Components/EmptyState.vue'
 	import { router } from '@inertiajs/vue3'
-	import AppartmentsCard from '@/Components/AppartmentsCard.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
+	import Card from '@/Pages/Account/Apartments/Card.vue'
 
 	defineProps({
 		apartments: Array | Object,
@@ -60,12 +60,11 @@
 				v-else
 				class="pt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8"
 			>
-				{{ apartments }}
-				<!--				<AppartmentsCard-->
-				<!--					v-for="apartment in apartments.data"-->
-				<!--					:key="apartment.id"-->
-				<!--					:apartment="apartment"-->
-				<!--				/>-->
+				<Card
+					v-for="apartment in apartments.data"
+					:key="apartment.id"
+					:apartment="apartment"
+				/>
 			</div>
 		</Container>
 	</AppLayout>

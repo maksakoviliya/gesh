@@ -7,6 +7,7 @@
 		disabled: Boolean | null,
 		outline: Boolean | null,
 		small: Boolean | null,
+		autoWidth: Boolean | null,
 		fontLight: Boolean | null,
 		bgClass: {
 			type: String,
@@ -24,7 +25,7 @@
     disabled:cursor-not-allowed
     rounded-lg
     transition
-    w-full
+    ${props.autoWidth ? 'w-auto' : 'w-full'}
     ${props.outline ? 'bg-white' : props.bgClass}
     ${props.outline ? 'border-black' : props.borderClass}
     ${props.outline ? 'text-black' : 'text-white'}
