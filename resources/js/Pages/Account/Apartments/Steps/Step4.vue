@@ -11,8 +11,8 @@
 	})
 
 	const form = useForm({
-		lon: props.apartment.lon,
-		lat: props.apartment.lat,
+		lon: props.apartment.data.lon,
+		lat: props.apartment.data.lat,
 	})
 
 	const submit = () => {
@@ -21,7 +21,7 @@
 			step: 4,
 		})).post(
 			route('account.apartments.store', {
-				apartment: props.apartment.id,
+				apartment: props.apartment.data.id,
 			})
 		)
 	}
@@ -41,13 +41,13 @@
 		@onPrevStep="
 			router.visit(
 				route('account.apartments.step', {
-					apartment: apartment.id,
+					apartment: apartment.data.id,
 					step: 3,
 				})
 			)
 		"
 	>
-		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full">
+		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
 			<Heading
 				title="Уточните адрес"
 				subtitle="Проверьте что указанный вами адрес верно отобразился на карте."

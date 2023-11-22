@@ -42,13 +42,13 @@
 					title="Добавить объект"
 					subtitle="Как можно подробнее опишите объект, который вы хотите разместить"
 				/>
-				<ButtonComponent
-					label="Сохранить и выйти"
-					:disabled="true"
-					:outline="true"
-					class="max-w-xs"
-					:small="true"
-				/>
+				<!--				<ButtonComponent-->
+				<!--					label="Сохранить и выйти"-->
+				<!--					:disabled="true"-->
+				<!--					:outline="true"-->
+				<!--					class="max-w-xs"-->
+				<!--					:small="true"-->
+				<!--				/>-->
 			</div>
 			<div class="mt-10 flex flex-col gap-4">
 				<slot></slot>

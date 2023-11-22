@@ -12,10 +12,10 @@
 	})
 
 	const form = useForm({
-		guests: props.apartment.guests ?? 2,
-		bedrooms: props.apartment.bedrooms ?? 1,
-		beds: props.apartment.beds ?? 1,
-		bathrooms: props.apartment.bathrooms ?? 1,
+		guests: props.apartment.data.guests ?? 2,
+		bedrooms: props.apartment.data.bedrooms ?? 1,
+		beds: props.apartment.data.beds ?? 1,
+		bathrooms: props.apartment.data.bathrooms ?? 1,
 	})
 
 	const submit = () => {
@@ -24,7 +24,7 @@
 			step: 5,
 		})).post(
 			route('account.apartments.store', {
-				apartment: props.apartment.id,
+				apartment: props.apartment.data.id,
 			})
 		)
 	}
@@ -37,13 +37,13 @@
 		@onPrevStep="
 			router.visit(
 				route('account.apartments.step', {
-					apartment: apartment.id,
+					apartment: apartment.data.id,
 					step: 4,
 				})
 			)
 		"
 	>
-		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full">
+		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
 			<Heading
 				title="Основная информация о жилье"
 				subtitle="Детали (например, типы кроватей) вы сможете добавить позже."

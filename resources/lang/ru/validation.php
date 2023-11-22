@@ -10,5 +10,6 @@ return [
     ],
     'max' => [
         'string' => 'Максимум :max символов',
+        'array' => 'Максимум :max :attribute',
     ],
 ];

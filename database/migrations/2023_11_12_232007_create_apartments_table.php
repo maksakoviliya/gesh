@@ -61,7 +61,8 @@ return new class extends Migration
             $table->text('description')->nullable();
 
             // Step 11
-            $table->unsignedInteger('price')->nullable();
+            $table->unsignedInteger('weekdays_price')->nullable();
+            $table->unsignedInteger('weekends_price')->nullable();
 
             // Step 12
             // Sales

@@ -10,15 +10,15 @@
 	})
 
 	const form = useForm({
-		state: props.apartment.state,
-		city: props.apartment.city,
-		street: props.apartment.street,
-		building: props.apartment.building,
-		housing: props.apartment.housing,
-		room: props.apartment.room,
-		floor: props.apartment.floor,
-		entrance: props.apartment.entrance,
-		index: props.apartment.index,
+		state: props.apartment.data.state,
+		city: props.apartment.data.city,
+		street: props.apartment.data.street,
+		building: props.apartment.data.building,
+		housing: props.apartment.data.housing,
+		room: props.apartment.data.room,
+		floor: props.apartment.data.floor,
+		entrance: props.apartment.data.entrance,
+		index: props.apartment.data.index,
 	})
 
 	const submit = () => {
@@ -27,7 +27,7 @@
 			step: 3,
 		})).post(
 			route('account.apartments.store', {
-				apartment: props.apartment.id,
+				apartment: props.apartment.data.id,
 			})
 		)
 	}
@@ -40,13 +40,13 @@
 		@onPrevStep="
 			router.visit(
 				route('account.apartments.step', {
-					apartment: apartment.id,
+					apartment: apartment.data.id,
 					step: 2,
 				})
 			)
 		"
 	>
-		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full">
+		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
 			<Heading
 				title="Подтвердите адрес"
 				subtitle="Гости увидят адрес, только оформив бронирование."

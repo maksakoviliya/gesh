@@ -14,7 +14,7 @@ final class StoreController extends Controller
     public function __invoke(StoreRequest $request, Apartment $apartment): RedirectResponse
     {
         $apartment = $apartment->updateFromArray($request->validated());
-//dd( $apartment->step);
+
         return redirect(route('account.apartments.step', [
             'apartment' => $apartment->id,
             'step' => $apartment->step,

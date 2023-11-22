@@ -10,7 +10,7 @@
 	})
 
 	const form = useForm({
-		type: props.apartment.type,
+		type: props.apartment.data.type,
 	})
 
 	const submit = () => {
@@ -19,7 +19,7 @@
 			step: 2,
 		})).post(
 			route('account.apartments.store', {
-				apartment: props.apartment.id,
+				apartment: props.apartment.data.id,
 			})
 		)
 	}
@@ -37,13 +37,13 @@
 		@onPrevStep="
 			router.visit(
 				route('account.apartments.step', {
-					apartment: apartment.id,
+					apartment: apartment.data.id,
 					step: 1,
 				})
 			)
 		"
 	>
-		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full">
+		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
 			<Heading title="К какой категории относится ваше жилье?" />
 			<div class="grid grid-cols-1 gap-8 mt-10">
 				<div

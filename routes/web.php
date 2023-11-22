@@ -6,6 +6,7 @@ use App\Http\Controllers\Account\AccountIndexController;
 use App\Http\Controllers\Account\AccountProfileController;
 use App\Http\Controllers\Account\Apartments\CreateController;
 use App\Http\Controllers\Account\Apartments\ListController;
+use App\Http\Controllers\Account\Apartments\PendingController;
 use App\Http\Controllers\Account\Apartments\StepController;
 use App\Http\Controllers\Account\Apartments\StoreController;
 use App\Http\Controllers\ApartmentShowController;
@@ -35,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::get('create', CreateController::class)->name('create');
                 Route::get('{apartment}/step/{step}', StepController::class)->name('step');
                 Route::post('{apartment}/store', StoreController::class)->name('store');
+                Route::get('{apartment}/pending', PendingController::class)->name('pending');
             });
     });
 });

@@ -110,6 +110,6 @@ return [
     |
     */
 
-    'password_timeout' => 10800,
+    'password_timeout' => 432000, // 5 дней
 
 ];

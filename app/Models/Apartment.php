@@ -12,9 +12,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 final class Apartment extends Model implements HasMedia
 {
@@ -110,6 +112,19 @@ final class Apartment extends Model implements HasMedia
             'bedrooms',
             'beds',
             'bathrooms',
+
+            // Step 6:
+            // Step 7:
+
+            // Step 8:
+            'title',
+
+            // Step 9:
+            'description',
+
+            // Step 10:
+            'weekdays_price',
+            'weekends_price',
         ];
         foreach ($fields as $field) {
             if ($value = Arr::get($data, $field)) {
@@ -117,9 +132,41 @@ final class Apartment extends Model implements HasMedia
             }
         }
 
+        if ($features = Arr::get($data, 'features')) {
+            $this->features()->sync($features);
+        }
+
+        if ($images = Arr::get($data, 'media')) {
+            foreach ($images as $image) {
+                if (! $image instanceof UploadedFile) {
+                    continue;
+                }
+                $this->addMedia($image)
+                    ->toMediaCollection();
+            }
+        }
+
+        if ($remove = Arr::get($data, 'remove')) {
+            foreach ($remove as $id) {
+                Media::query()
+                    ->find($id)
+                    ->delete();
+            }
+        }
+
         $this->step = Arr::get($data, 'step') + 1;
+
+        if ($this->step === 12) {
+            $this->status = Status::Pending;
+        }
+
         $this->save();
 
         return $this;
+    }
+
+    public function features(): BelongsToMany
+    {
+        return $this->belongsToMany(Feature::class);
     }
 }

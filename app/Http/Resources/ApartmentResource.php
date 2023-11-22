@@ -20,9 +20,10 @@ class ApartmentResource extends JsonResource
             'bedrooms' => $this->resource->bedrooms,
             'guests' => $this->resource->guests,
             'created_at' => $this->resource->created_at,
-            'images' => ImageResource::collection($this->resource->media),
+            'media' => ImageResource::collection($this->resource->media),
             'price' => $this->resource->price,
             'categories' => CategoryResource::collection($this->resource->categories),
+            'features' => FeatureResource::collection($this->resource->features),
         ];
     }
 }
