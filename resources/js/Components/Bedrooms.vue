@@ -1,20 +1,19 @@
 <script setup>
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
-	import { HiUsers } from 'oh-vue-icons/icons'
-
-	addIcons(HiUsers)
+	import { MdMeetingroomOutlined } from 'oh-vue-icons/icons'
+	addIcons(MdMeetingroomOutlined)
 
 	defineProps({
-		guests: Number | String,
+		bedrooms: Number | String,
 	})
 </script>
 
 <template>
 	<div class="flex items-center gap-1 font-semibold text-sm">
 		<OhVueIcon
-			name="hi-users"
+			name="md-meetingroom-outlined"
 			class="text-neutral-500"
 		/>
-		{{ guests ?? '-' }}
+		{{ bedrooms ?? '-' }}
 	</div>
 </template>

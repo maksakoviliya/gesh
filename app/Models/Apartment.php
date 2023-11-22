@@ -86,7 +86,6 @@ final class Apartment extends Model implements HasMedia
     {
         $fields = [
             // Step 1:
-            'category',
 
             // Step 2:
             'type',
@@ -130,6 +129,10 @@ final class Apartment extends Model implements HasMedia
             if ($value = Arr::get($data, $field)) {
                 $this[$field] = $value;
             }
+        }
+
+        if ($category = Arr::get($data, 'category_id')) {
+            $this->categories()->sync([$category]);
         }
 
         if ($features = Arr::get($data, 'features')) {
