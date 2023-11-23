@@ -55,16 +55,13 @@ return new class extends Migration
             $table->string('title')->nullable();
 
             // Step 9
-            // Tags
-
-            // Step 10
             $table->text('description')->nullable();
 
-            // Step 11
+            // Step 10
             $table->unsignedInteger('weekdays_price')->nullable();
             $table->unsignedInteger('weekends_price')->nullable();
 
-            // Step 12
+            // Step 11
             // Sales
 
             $table->timestamps();

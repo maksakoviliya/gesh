@@ -172,4 +172,11 @@ final class Apartment extends Model implements HasMedia
     {
         return $this->belongsToMany(Feature::class);
     }
+
+    public function approve(): bool
+    {
+        return $this->update([
+            'status' => Status::Published
+        ]);
+    }
 }

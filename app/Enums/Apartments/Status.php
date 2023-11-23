@@ -8,4 +8,5 @@ enum Status: string
 {
     case Draft = 'draft';
     case Pending = 'pending';
+    case Published = 'published';
 }

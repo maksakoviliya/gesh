@@ -1,6 +1,9 @@
 <?php
 
+use App\Enums\Apartments\Status;
+
 return [
-    'draft' => 'Черновик',
-    'pending' => 'На модерации',
+    Status::Draft->value => 'Черновик',
+    Status::Pending->value => 'На модерации',
+    Status::Published->value => 'Опубликован',
 ];

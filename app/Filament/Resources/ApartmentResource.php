@@ -6,6 +6,8 @@ use App\Enums\Apartments\Status;
 use App\Enums\Apartments\Type;
 use App\Filament\Resources\ApartmentResource\Pages;
 use App\Models\Apartment;
+use Cheesegrits\FilamentGoogleMaps\Fields\Map;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -58,7 +60,41 @@ class ApartmentResource extends Resource
                                         Forms\Components\TextInput::make('floor'),
                                         Forms\Components\TextInput::make('entrance'),
                                         Forms\Components\TextInput::make('index'),
+                                    ])->collapsible()->columns()->collapsed(),
+                                Forms\Components\Section::make('Шаг 4')
+                                    ->schema([
+                                        Map::make('location')->label('Гугл карта не рабоатет. Нужен ключ.')->columnSpan('full'),
+                                        Forms\Components\TextInput::make('lat'),
+                                        Forms\Components\TextInput::make('lon'),
+                                    ])->collapsible()->collapsed()->columns(),
+                                Forms\Components\Section::make('Шаг 5')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('guests'),
+                                        Forms\Components\TextInput::make('bedrooms'),
+                                        Forms\Components\TextInput::make('beds'),
+                                        Forms\Components\TextInput::make('bathrooms'),
+                                    ])->collapsible()->columns(4),
+                                Forms\Components\Section::make('Шаг 6')
+                                    ->schema([
+                                        Select::make('features')
+                                            ->relationship('features', 'title')
+                                            ->multiple()
+                                            ->preload()
+                                            ->columnSpan('full'),
                                     ])->collapsible(),
+                                Forms\Components\Section::make('Шаг 8')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('title'),
+                                    ])->collapsible(),
+                                Forms\Components\Section::make('Шаг 9')
+                                    ->schema([
+                                        Forms\Components\Textarea::make('description'),
+                                    ])->collapsible(),
+                                Forms\Components\Section::make('Шаг 10')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('weekdays_price')->label('Цена в будни'),
+                                        Forms\Components\TextInput::make('weekends_price')->label('Цена в выходные'),
+                                    ])->collapsible()->columns(),
 
 
                             ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
@@ -66,6 +102,9 @@ class ApartmentResource extends Resource
                     ->schema([
                         Forms\Components\Section::make()
                             ->schema([
+                                Forms\Components\Placeholder::make('status')
+                                    ->label('Статус')
+                                    ->content(fn (Apartment $record) => __('statuses.' . $record->status->value)),
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
                                     ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
@@ -77,12 +116,11 @@ class ApartmentResource extends Resource
                             ->columnSpan(['lg' => 1])
                             ->hidden(fn (?Apartment $record) => $record === null),
 
-                        Forms\Components\Section::make('Images')
+                        Forms\Components\Section::make('Шаг 7')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('media')
                                     ->multiple()
                                     ->maxFiles(10)
-                                    ->required(),
                             ])
                             ->collapsible(),
                     ])
@@ -100,10 +138,12 @@ class ApartmentResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
+                    ->formatStateUsing(fn (Status $state): string => __("statuses.{$state->value}"))
                     ->color(function (Status $state) {
                         return match ($state) {
                             Status::Draft => 'gray',
-                            Status::Pending => 'primary'
+                            Status::Pending => 'primary',
+                            Status::Published => 'success'
                         };
                     }),
                 Tables\Columns\TextColumn::make('weekdays_price'),
