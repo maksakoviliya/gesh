@@ -16,7 +16,7 @@ class ApartmentResource extends JsonResource
             'step' => $this->resource->step,
             'title' => $this->resource->title,
             'status' => $this->resource->status,
-            'status_text' => __('statuses.' . $this->resource->status->value),
+            'status_text' => __('statuses.'.$this->resource->status->value),
             'description' => $this->resource->description,
             'address' => $this->resource->address,
             'bedrooms' => $this->resource->bedrooms,

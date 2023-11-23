@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Apartments\Status;
+use App\Enums\Apartments\Type;
 use App\Filament\Resources\ApartmentResource\Pages;
 use App\Models\Apartment;
 use Filament\Forms;
@@ -23,50 +25,69 @@ class ApartmentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
-                    ->schema([
-                        Select::make('categories')
-                            ->multiple()
-                            ->relationship('categories', 'title')
-                            ->preload()
-                            ->required()
-                            ->columnSpan('full'),
-                        Forms\Components\TextInput::make('title')
-                            ->columnSpan('full'),
-                        Forms\Components\Textarea::make('address')
-                            ->columnSpan('full')
-                            ->required(),
-                        Forms\Components\MarkdownEditor::make('description')
-                            ->disableToolbarButtons([
-                                'table',
-                                'attachFiles',
-                            ])
-                            ->columnSpan('full'),
-                        Forms\Components\TextInput::make('bedrooms')
-                            ->numeric()
-                            ->maxValue(10)
-                            ->default(1)
-                            ->required(),
-                        Forms\Components\TextInput::make('guests')
-                            ->numeric()
-                            ->maxValue(30)
-                            ->default(2)
-                            ->required(),
-                        Forms\Components\TextInput::make('price')
-                            ->numeric()
-                            ->required(),
-                    ])
-                    ->columns(3),
+                        Forms\Components\Group::make()
+                            ->schema([
+                                Forms\Components\Section::make('Шаг 1')
+                                    ->schema([
+                                        Select::make('categories')
+                                            ->relationship('categories', 'title')
+                                            ->preload()
+                                            ->columnSpan('full'),
+                                    ])
+                                    ->columns(3),
+                                Forms\Components\Section::make('Шаг 2')
+                                    ->schema([
+                                        Select::make('type')
+                                            ->options([
+                                                Type::WHOLE->value => 'Жилье целиком',
+                                                Type::ROOM->value => 'Комната',
+                                                Type::HOSTEL->value => 'Общая комната',
+                                            ])
+                                            ->columnSpan('full'),
+                                    ])
+                                    ->columns(3),
+                                Forms\Components\Section::make('Шаг 3')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('country_code')->disabled(),
+                                        Forms\Components\TextInput::make('state'),
+                                        Forms\Components\TextInput::make('city'),
+                                        Forms\Components\TextInput::make('street'),
+                                        Forms\Components\TextInput::make('building'),
+                                        Forms\Components\TextInput::make('housing'),
+                                        Forms\Components\TextInput::make('room'),
+                                        Forms\Components\TextInput::make('floor'),
+                                        Forms\Components\TextInput::make('entrance'),
+                                        Forms\Components\TextInput::make('index'),
+                                    ])->collapsible(),
 
-                Forms\Components\Section::make('Images')
+
+                            ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
+                       Forms\Components\Group::make()
                     ->schema([
-                        SpatieMediaLibraryFileUpload::make('media')
-                            ->multiple()
-                            ->maxFiles(10)
-                            ->required(),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\Placeholder::make('created_at')
+                                    ->label('Добавлен')
+                                    ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
+
+                                Forms\Components\Placeholder::make('updated_at')
+                                    ->label('Изменен')
+                                    ->content(fn (Apartment $record): ?string => $record->updated_at?->diffForHumans()),
+                            ])
+                            ->columnSpan(['lg' => 1])
+                            ->hidden(fn (?Apartment $record) => $record === null),
+
+                        Forms\Components\Section::make('Images')
+                            ->schema([
+                                SpatieMediaLibraryFileUpload::make('media')
+                                    ->multiple()
+                                    ->maxFiles(10)
+                                    ->required(),
+                            ])
+                            ->collapsible(),
                     ])
-                    ->collapsible(),
-            ]);
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -77,7 +98,15 @@ class ApartmentResource extends Resource
                     ->limit(1),
                 Tables\Columns\TextColumn::make('categories.title')
                     ->badge(),
-                Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(function (Status $state) {
+                        return match ($state) {
+                            Status::Draft => 'gray',
+                            Status::Pending => 'primary'
+                        };
+                    }),
+                Tables\Columns\TextColumn::make('weekdays_price'),
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('bedrooms'),
                 Tables\Columns\TextColumn::make('guests'),

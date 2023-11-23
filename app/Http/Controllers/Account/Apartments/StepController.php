@@ -67,7 +67,7 @@ final class StepController extends Controller
             };
         }
 
-        return redirect()->route('account.apartments.pending',[
+        return redirect()->route('account.apartments.pending', [
             'apartment' => $apartment,
         ]);
     }
