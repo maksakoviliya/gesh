@@ -63,7 +63,7 @@ class ApartmentResource extends Resource
                                     ])->collapsible()->columns()->collapsed(),
                                 Forms\Components\Section::make('Шаг 4')
                                     ->schema([
-                                        Map::make('location')->label('Гугл карта не рабоатет. Нужен ключ.')->columnSpan('full'),
+//                                        Map::make('location')->label('Гугл карта не рабоатет. Нужен ключ.')->columnSpan('full'),
                                         Forms\Components\TextInput::make('lat'),
                                         Forms\Components\TextInput::make('lon'),
                                     ])->collapsible()->collapsed()->columns(),
