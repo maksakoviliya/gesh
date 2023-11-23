@@ -15,7 +15,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class ApartmentResource extends Resource
 {
@@ -105,6 +107,12 @@ class ApartmentResource extends Resource
                                 Forms\Components\Placeholder::make('status')
                                     ->label('Статус')
                                     ->content(fn (Apartment $record) => __('statuses.' . $record->status->value)),
+                                Forms\Components\Placeholder::make('user')
+                                    ->label('Владелец')
+                                    ->content(function(Apartment $record){
+                                        $url = UserResource::getUrl('edit', ['record' => $record->user_id]);
+                                        return new HtmlString("<a href={$url}>{$record->user->name}</a>");
+                                    }),
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
                                     ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
@@ -136,6 +144,11 @@ class ApartmentResource extends Resource
                     ->limit(1),
                 Tables\Columns\TextColumn::make('categories.title')
                     ->badge(),
+                TextColumn::make('user.name')
+                    ->description(fn (Apartment $record): string => $record->user->email)
+                ->url(function($record) {
+                    return UserResource::getUrl('edit', ['record' => $record->user]);
+                }),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(fn (Status $state): string => __("statuses.{$state->value}"))
