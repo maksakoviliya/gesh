@@ -185,4 +185,9 @@ final class Apartment extends Model implements HasMedia
             'status' => Status::Published
         ]);
     }
+
+    public function scopePublished(Builder $query): void
+    {
+        $query->where('status', Status::Published);
+    }
 }

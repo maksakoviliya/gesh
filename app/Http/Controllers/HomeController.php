@@ -18,6 +18,7 @@ final class HomeController extends Controller
     {
         $categories = Category::all();
         $apartments = Apartment::query()
+            ->published()
             ->filter($request)
             ->orderBy('updated_at')
             ->paginate(20);

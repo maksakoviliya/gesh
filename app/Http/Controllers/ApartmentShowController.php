@@ -12,9 +12,6 @@ use Inertia\Response;
 
 final class ApartmentShowController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
     public function __invoke(Request $request, Apartment $apartment): Response
     {
         return Inertia::render('Apartment', [
