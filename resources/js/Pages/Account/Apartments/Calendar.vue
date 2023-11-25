@@ -119,6 +119,8 @@ export default {
                 apartment: props.apartment.data.id,
             }, {preserveScroll: true}), {
                 onSuccess: () => {
+                    let calendarApi = calendar.value.getApi()
+                    calendarApi.render()
                     successToast('Цены обновлены!')
                 },
             })
