@@ -208,7 +208,7 @@
 						:options="calendarOptions"
 					/>
 				</div>
-				<div class="px-6 pt-1 w-full lg:w-5/12 form sticky top-24">
+				<div class="lg:px-6 pt-1 mt-8 lg:mt-0 w-full lg:w-5/12 form lg:sticky lg:top-24">
 					<template v-if="!(rangeForm.start && rangeForm.end)">
 						<Heading title="Базовая цена" />
 						<div class="mt-8 flex flex-col gap-3">
