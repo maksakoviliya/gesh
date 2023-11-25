@@ -13,7 +13,7 @@ import Heading from "@/Components/Heading.vue";
 import ButtonComponent from "@/Components/ButtonComponent.vue";
 import useToasts from "@/hooks/useToasts";
 import {computed, ref} from "vue";
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 
 export default {
@@ -142,7 +142,6 @@ export default {
         }
 
         const handleSelect = (range) => {
-            dayjs.locale('ru')
             rangeForm.start = range.start
             let end = dayjs(range.end)
             rangeForm.end = end.subtract(1, 'days')
