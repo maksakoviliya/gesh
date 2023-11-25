@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -37,17 +38,18 @@ final class Apartment extends Model implements HasMedia
         'type' => Type::class,
     ];
 
-    public function categories(): BelongsToMany
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function scopeFilter(Builder $query, Request $request): Builder
     {
-        if ($request->has('category')) {
-            $query->whereHas('categories', function ($q) use ($request) {
-                return $q->where('slug', $request->query('category'));
-            });
+        if ($category_slug = $request->get('category')) {
+            $category = Category::query()
+                ->where('slug', $category_slug)
+                ->first();
+            $query->where('category_id', $category->id);
         }
 
         return $query;
@@ -87,6 +89,7 @@ final class Apartment extends Model implements HasMedia
     {
         $fields = [
             // Step 1:
+            'category_id',
 
             // Step 2:
             'type',
@@ -127,13 +130,10 @@ final class Apartment extends Model implements HasMedia
             'weekends_price',
         ];
         foreach ($fields as $field) {
-            if ($value = Arr::get($data, $field)) {
+            if (Arr::has($data, $field)) {
+                $value = Arr::get($data, $field);
                 $this[$field] = $value;
             }
-        }
-
-        if ($category = Arr::get($data, 'category_id')) {
-            $this->categories()->sync([$category]);
         }
 
         if ($features = Arr::get($data, 'features')) {
@@ -189,5 +189,10 @@ final class Apartment extends Model implements HasMedia
     public function scopePublished(Builder $query): void
     {
         $query->where('status', Status::Published);
+    }
+
+    public function datePrices(): HasMany
+    {
+        return $this->hasMany(DatePrice::class);
     }
 }

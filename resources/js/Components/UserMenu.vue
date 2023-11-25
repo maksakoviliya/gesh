@@ -36,6 +36,10 @@ const showLogoutDialog = ref(false)
 const setShowLogoutDialog = (value) => {
     showLogoutDialog.value = value
 }
+
+const redirectToDashboard = () => {
+    window.location.href = route('filament.admin.pages.dashboard')
+}
 </script>
 
 <template>
@@ -80,6 +84,11 @@ const setShowLogoutDialog = (value) => {
                         label="Аккаунт"
                     />
                     <hr/>
+                    <MenuLink
+                        v-if="$page.props.user.data.is_admin"
+                        @click="redirectToDashboard"
+                        label="Дашборд"
+                    />
                     <MenuLink
                         @click="setShowLogoutDialog(true)"
                         label="Выйти"

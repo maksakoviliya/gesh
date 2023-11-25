@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Account\AccountIndexController;
 use App\Http\Controllers\Account\AccountProfileController;
+use App\Http\Controllers\Account\Apartments\CalendarController;
+use App\Http\Controllers\Account\Apartments\UpdateCalendarController;
+use App\Http\Controllers\Account\Apartments\UpdatePriceController;
 use App\Http\Controllers\Account\Apartments\CreateController;
 use App\Http\Controllers\Account\Apartments\ListController;
 use App\Http\Controllers\Account\Apartments\PendingController;
@@ -37,6 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::get('{apartment}/step/{step}', StepController::class)->name('step');
                 Route::post('{apartment}/store', StoreController::class)->name('store');
                 Route::get('{apartment}/pending', PendingController::class)->name('pending');
+                Route::get('{apartment}/calendar', CalendarController::class)->name('calendar');
+                Route::post('{apartment}/calendar/update', UpdateCalendarController::class)->name('calendar.update');
+                Route::post('{apartment}/price/update', UpdatePriceController::class)->name('price.update');
             });
     });
 });

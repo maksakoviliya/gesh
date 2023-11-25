@@ -9,7 +9,7 @@
 	})
 
 	const form = useForm({
-		description: props.apartment.data.description,
+		description: props.apartment.data.description ?? null,
 	})
 
 	const submit = () => {

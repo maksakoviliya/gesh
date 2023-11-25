@@ -10,15 +10,15 @@
 	})
 
 	const form = useForm({
-		state: props.apartment.data.state,
-		city: props.apartment.data.city,
-		street: props.apartment.data.street,
-		building: props.apartment.data.building,
-		housing: props.apartment.data.housing,
-		room: props.apartment.data.room,
-		floor: props.apartment.data.floor,
-		entrance: props.apartment.data.entrance,
-		index: props.apartment.data.index,
+		state: props.apartment.data.state ?? null,
+		city: props.apartment.data.city ?? null,
+		street: props.apartment.data.street ?? null,
+		building: props.apartment.data.building ?? null,
+		housing: props.apartment.data.housing ?? null,
+		room: props.apartment.data.room ?? null,
+		floor: props.apartment.data.floor ?? null,
+		entrance: props.apartment.data.entrance ?? null,
+		index: props.apartment.data.index ?? null,
 	})
 
 	const submit = () => {

@@ -34,7 +34,7 @@
 					/>
 					<hr class="my-4" />
 					<div class="text-xl">
-						{{ props.apartment.data.categories.map((item) => item.title).join(', ') }}
+						{{ props.apartment.data.category?.title }}
 					</div>
 					<hr class="my-4" />
 					<div class="mt-6">

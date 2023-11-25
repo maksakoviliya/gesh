@@ -33,8 +33,8 @@ class ApartmentResource extends Resource
                             ->schema([
                                 Forms\Components\Section::make('Шаг 1')
                                     ->schema([
-                                        Select::make('categories')
-                                            ->relationship('categories', 'title')
+                                        Select::make('category')
+                                            ->relationship('category', 'title')
                                             ->preload()
                                             ->columnSpan('full'),
                                     ])

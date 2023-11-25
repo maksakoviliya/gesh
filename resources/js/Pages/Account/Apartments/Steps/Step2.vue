@@ -10,7 +10,7 @@
 	})
 
 	const form = useForm({
-		type: props.apartment.data.type,
+		type: props.apartment.data.type ?? null,
 	})
 
 	const submit = () => {
@@ -44,7 +44,7 @@
 		"
 	>
 		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
-			<Heading title="К какой категории относится ваше жилье?" />
+			<Heading title="К какому типу относится ваше жилье?" />
 			<div class="grid grid-cols-1 gap-8 mt-10">
 				<div
 					@click="setActiveTypeId(type.id)"

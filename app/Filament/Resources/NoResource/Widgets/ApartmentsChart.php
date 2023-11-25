@@ -21,7 +21,7 @@ class ApartmentsChart extends ChartWidget
         $data = Trend::model(Apartment::class)
             ->between(
                 start: now()->startOfMonth(),
-                end: now()->endOfMonth(),
+                end: now(),
             )
             ->perDay()
             ->count();

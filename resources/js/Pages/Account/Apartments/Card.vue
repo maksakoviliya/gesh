@@ -22,12 +22,26 @@
 		}
 	}
 
+    const goToCalendar = (id) => {
+        console.log('id', id)
+        console.log('props.apartment.status', props.apartment.status)
+        if (props.apartment.status === 'published') {
+            return router.visit(
+                route('account.apartments.calendar', {
+                    apartment: id,
+                })
+            )
+        }
+    }
+
 	const getStatusColor = (status) => {
 		switch (status) {
 			case 'draft':
 				return 'bg-zinc-100 text-neutral-800'
 			case 'pending':
 				return 'bg-sky-100 text-neutral-800'
+			case 'published':
+				return 'bg-green-300 text-neutral-900'
 		}
 	}
 </script>
@@ -35,10 +49,9 @@
 <template>
 	<div
 		class="col-span-1 cursor-pointer group"
-		@click="handleClick"
 	>
 		<div class="flex flex-col gap-2 w-full">
-			<div class="aspect-square w-full relative overflow-hidden rounded-xl">
+			<div class="aspect-square w-full relative overflow-hidden rounded-xl" @click="handleClick">
 				<img
 					class="object-cover h-full w-full group-hover:scale-110 transition"
 					:src="props.apartment.media.length ? props.apartment.media[0]?.src : '/img/no-photo.jpeg'"
@@ -56,12 +69,10 @@
 			<!--            </div>-->
 			<div
 				class="font-light text-neutral-500"
-				:class="props.apartment.categories.length ? '' : 'opacity-30'"
+				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
 				{{
-					props.apartment.categories.length
-						? props.apartment.categories.map((category) => category.title).join(', ')
-						: 'Нет типа'
+					props.apartment.category?.title ?? 'Нет типа'
 				}}
 			</div>
 			<div class="flex flex-row items-center gap-1">
@@ -77,9 +88,22 @@
 				<Bathrooms :bathrooms="props.apartment.bathrooms" />
 			</div>
 			<ButtonComponent
+                v-if="props.apartment.status === 'draft'"
 				:small="true"
-				:disabled="props.apartment.status !== 'draft'"
-				:label="props.apartment.status === 'draft' ? 'Редактировать' : 'На модерации'"
+                @click="handleClick"
+				:label="'Редактировать'"
+			/>
+			<ButtonComponent
+                v-if="props.apartment.status === 'pending'"
+                :disabled="true"
+				:small="true"
+				:label="'Редактировать'"
+			/>
+			<ButtonComponent
+                v-if="props.apartment.status === 'published'"
+                @click="goToCalendar(props.apartment.id)"
+				:small="true"
+				:label="'Календарь'"
 			/>
 		</div>
 	</div>

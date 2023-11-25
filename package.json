@@ -20,7 +20,13 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.9",
+        "@fullcalendar/daygrid": "^6.1.9",
+        "@fullcalendar/interaction": "^6.1.9",
+        "@fullcalendar/multimonth": "^6.1.9",
+        "@fullcalendar/vue3": "^6.1.9",
         "@vuepic/vue-datepicker": "^7.2.2",
+        "dayjs": "^1.11.10",
         "filepond": "^4.30.4",
         "filepond-plugin-file-validate-type": "^1.2.8",
         "filepond-plugin-image-preview": "^4.6.11",
