@@ -136,7 +136,10 @@
 			}
 
 			const calendar = ref(null)
-
+			const handleSelect = (range) => {
+				rangeForm.start = range.startStr
+				rangeForm.end = dayjs(range.endStr).subtract(1, 'day').hour(23).minute(59)
+			}
 			const submitRangeForm = () => {
 				rangeForm
 					.transform((data) => {
@@ -159,13 +162,6 @@
 							},
 						}
 					)
-			}
-
-			const handleSelect = (range) => {
-				let start = dayjs(range.start)
-				let end = dayjs(range.end)
-				rangeForm.start = start.add(1, 'hours')
-				rangeForm.end = end.subtract(1, 'hours')
 			}
 			const handleUnselect = () => {
 				rangeForm.start = null
