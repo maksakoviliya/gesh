@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -24,7 +25,11 @@ class UserResource extends Resource
                 TextInput::make('name')->required()->columnSpan('full'),
                 TextInput::make('email')->unique(ignoreRecord: true)->nullable(),
                 TextInput::make('phone')->unique()->nullable(),
-                TextInput::make('password'),
+                TextInput::make('password')
+                    ->password()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $context): bool => $context === 'create'),
                 Forms\Components\Select::make('roles')->multiple()
                     ->relationship('roles', 'name')->preload(),
             ]);
