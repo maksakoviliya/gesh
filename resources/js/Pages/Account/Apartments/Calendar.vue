@@ -143,7 +143,8 @@ export default {
 
         const handleSelect = (range) => {
             rangeForm.start = range.start
-            rangeForm.end = dayjs(range.end).subtract(1, 'days')
+            let end = dayjs(range.end)
+            rangeForm.end = end.subtract(1, 'days')
         }
         const handleUnselect = () => {
             rangeForm.start = null
