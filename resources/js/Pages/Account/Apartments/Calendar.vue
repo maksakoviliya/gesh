@@ -142,6 +142,7 @@ export default {
         }
 
         const handleSelect = (range) => {
+            dayjs.locale('ru')
             rangeForm.start = range.start
             let end = dayjs(range.end)
             rangeForm.end = end.subtract(1, 'days')
