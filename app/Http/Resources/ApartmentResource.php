@@ -31,6 +31,7 @@ class ApartmentResource extends JsonResource
             'type' => $this->resource->type,
             'features' => FeatureResource::collection($this->resource->features),
             'dates' => DatePriceResource::collection($this->whenLoaded('datePrices')),
+            'owner' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }
