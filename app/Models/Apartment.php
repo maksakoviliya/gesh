@@ -36,6 +36,7 @@ final class Apartment extends Model implements HasMedia
     protected $casts = [
         'status' => Status::class,
         'type' => Type::class,
+        'fast_reserve' => 'boolean'
     ];
 
     public function category(): BelongsTo
@@ -128,6 +129,9 @@ final class Apartment extends Model implements HasMedia
             // Step 10:
             'weekdays_price',
             'weekends_price',
+
+            // Step 11:
+            'fast_reserve',
         ];
         foreach ($fields as $field) {
             if (Arr::has($data, $field)) {
@@ -142,7 +146,7 @@ final class Apartment extends Model implements HasMedia
 
         if ($images = Arr::get($data, 'media')) {
             foreach ($images as $image) {
-                if (! $image instanceof UploadedFile) {
+                if (!$image instanceof UploadedFile) {
                     continue;
                 }
                 $this->addMedia($image)

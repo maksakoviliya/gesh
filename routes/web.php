@@ -12,6 +12,7 @@ use App\Http\Controllers\Account\Apartments\ListController;
 use App\Http\Controllers\Account\Apartments\PendingController;
 use App\Http\Controllers\Account\Apartments\StepController;
 use App\Http\Controllers\Account\Apartments\StoreController;
+use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\ApartmentShowController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Social\SocialCallbackController;
@@ -44,6 +45,11 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::post('{apartment}/calendar/update', UpdateCalendarController::class)->name('calendar.update');
                 Route::post('{apartment}/price/update', UpdatePriceController::class)->name('price.update');
             });
+    });
+
+    // Apartments
+    Route::prefix('apartments')->as('apartments.')->group(function () {
+        Route::get('{apartment}/chat', ChatController::class)->name('chat');
     });
 });
 //Route::middleware([

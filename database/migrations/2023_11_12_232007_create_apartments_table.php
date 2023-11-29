@@ -62,6 +62,9 @@ return new class extends Migration
             $table->unsignedInteger('weekends_price')->nullable();
 
             // Step 11
+            $table->boolean('fast_reserve')->default(true);
+
+            // Step 12
             // Sales
 
 //            $table->json('')

@@ -6,9 +6,7 @@ defineProps({
 
 <template>
     <img
-        class="rounded-full"
-        height="30"
-        width="30"
+        class="rounded-full w-[30px] h-[30px]"
         alt="Avatar"
         :src="src ?? '/img/no-user.svg'"
     />

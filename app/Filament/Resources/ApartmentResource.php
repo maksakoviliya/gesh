@@ -97,6 +97,10 @@ class ApartmentResource extends Resource
                                         Forms\Components\TextInput::make('weekdays_price')->label('Цена в будни'),
                                         Forms\Components\TextInput::make('weekends_price')->label('Цена в выходные'),
                                     ])->collapsible()->columns(),
+                                Forms\Components\Section::make('Шаг 11')
+                                    ->schema([
+                                        Forms\Components\Toggle::make('fast_reserve')->label('Моментальное бронирование'),
+                                    ])->collapsible()->columns(),
 
 
                             ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),

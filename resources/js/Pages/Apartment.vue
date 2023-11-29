@@ -8,7 +8,7 @@ import Calendar from '@/Components/Calendar.vue'
 import Counter from '@/Components/Counter.vue'
 import ButtonComponent from '@/Components/ButtonComponent.vue'
 import Avatar from "@/Components/Avatar.vue";
-import {useForm} from "@inertiajs/vue3";
+import {router, useForm} from "@inertiajs/vue3";
 import dayjs from 'dayjs'
 import {Popover, PopoverButton, PopoverPanel} from '@headlessui/vue'
 
@@ -85,6 +85,12 @@ const basePrice = computed(() => {
     }
     return sum
 })
+
+const goToChat = () => {
+    return router.visit(route('apartments.chat', {
+        apartment: props.apartment.data.id
+    }))
+}
 </script>
 
 <template>
@@ -107,17 +113,21 @@ const basePrice = computed(() => {
                         :subtitle="getSubtitle()"
                     />
                     <hr class="my-4"/>
-                    <div class="flex items-center gap-4">
-                        <Avatar :src="props.apartment.data.owner.avatar"/>
-                        <div class="flex flex-col">
-                            <div class="font-semibold leading-tight">Хозяин: {{ props.apartment.data.owner.name }}</div>
-                            <div class="text-neutral-500 leading-tight font-light text-sm">
-                                {{ props.apartment.data.owner.email }}
+                    <div class="flex justify-between gap-x-6">
+                        <div class="flex min-w-0 gap-x-4">
+                            <Avatar :src="props.apartment.data.owner.avatar" class="h-12 w-12 flex-none rounded-full bg-gray-50"/>
+                            <div class="min-w-0 flex-auto">
+                                <p class="text-sm font-semibold leading-6 text-gray-900">Хозяин: {{ props.apartment.data.owner.name }}</p>
+                                <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ props.apartment.data.owner.email }}</p>
                             </div>
+                        </div>
+                        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                            <p class="text-sm leading-6 text-gray-900">Владелец</p>
+                            <p class="mt-1 text-xs leading-5 text-gray-500">На сайте <time datetime="2023-01-23T13:23Z">2 года</time></p>
                         </div>
                     </div>
                     <template v-if="!!props.apartment.data.features.length">
-                        <hr class="my-6"/>
+                        <hr class="my-4"/>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             <div v-for="feature in props.apartment.data.features" :key="feature.id"
                                  class="flex items-center gap-3">
@@ -211,7 +221,10 @@ const basePrice = computed(() => {
                         </div>
                     </dl>
                     <hr class="mb-4"/>
-                    <ButtonComponent label="Забронировать"/>
+                    <div class="flex flex-col gap-3">
+                        <ButtonComponent v-if="props.apartment.data.fast_reserve" label="Моментальное бронирование"/>
+                        <ButtonComponent :outline="true" @click="goToChat" label="Продолжить"/>
+                    </div>
                     <div class="font-light text-sm text-center mt-3 text-neutral-500">Пока вы ни за что не платите</div>
                 </div>
             </div>
