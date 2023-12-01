@@ -22,25 +22,25 @@
 		}
 	}
 
-    const goToCalendar = (id) => {
-        if (props.apartment.status === 'published') {
-            return router.visit(
-                route('account.apartments.calendar', {
-                    apartment: id,
-                })
-            )
-        }
-    }
+	const goToCalendar = (id) => {
+		if (props.apartment.status === 'published') {
+			return router.visit(
+				route('account.apartments.calendar', {
+					apartment: id,
+				})
+			)
+		}
+	}
 
-    const goToChat = (id) => {
-        if (props.apartment.status === 'published') {
-            return router.visit(
-                route('account.apartments.chat', {
-                    apartment: id,
-                })
-            )
-        }
-    }
+	const goToChat = (id) => {
+		if (props.apartment.status === 'published') {
+			return router.visit(
+				route('account.apartments.chats', {
+					apartment: id,
+				})
+			)
+		}
+	}
 
 	const getStatusColor = (status) => {
 		switch (status) {
@@ -55,11 +55,12 @@
 </script>
 
 <template>
-	<div
-		class="col-span-1 cursor-pointer group"
-	>
+	<div class="col-span-1 cursor-pointer group">
 		<div class="flex flex-col gap-2 w-full">
-			<div class="aspect-square w-full relative overflow-hidden rounded-xl" @click="handleClick">
+			<div
+				class="aspect-square w-full relative overflow-hidden rounded-xl"
+				@click="handleClick"
+			>
 				<img
 					class="object-cover h-full w-full group-hover:scale-110 transition"
 					:src="props.apartment.media.length ? props.apartment.media[0]?.src : '/img/no-photo.jpeg'"
@@ -79,9 +80,7 @@
 				class="font-light text-neutral-500"
 				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
-				{{
-					props.apartment.category?.title ?? 'Нет типа'
-				}}
+				{{ props.apartment.category?.title ?? 'Нет типа' }}
 			</div>
 			<div class="flex flex-row items-center gap-1">
 				<!--				<div class="font-semibold">-->
@@ -96,28 +95,28 @@
 				<Bathrooms :bathrooms="props.apartment.bathrooms" />
 			</div>
 			<ButtonComponent
-                v-if="props.apartment.status === 'draft'"
+				v-if="props.apartment.status === 'draft'"
 				:small="true"
-                @click="handleClick"
+				@click="handleClick"
 				:label="'Редактировать'"
 			/>
 			<ButtonComponent
-                v-if="props.apartment.status === 'pending'"
-                :disabled="true"
+				v-if="props.apartment.status === 'pending'"
+				:disabled="true"
 				:small="true"
 				:label="'Редактировать'"
 			/>
 			<ButtonComponent
-                v-if="props.apartment.status === 'published'"
-                @click="goToCalendar(props.apartment.id)"
+				v-if="props.apartment.status === 'published'"
+				@click="goToCalendar(props.apartment.id)"
 				:small="true"
 				label="Календарь"
 			/>
 			<ButtonComponent
-                v-if="props.apartment.status === 'published'"
-                @click="goToChat(props.apartment.id)"
+				v-if="props.apartment.status === 'published'"
+				@click="goToChat(props.apartment.id)"
 				:small="true"
-                :outline="true"
+				:outline="true"
 				label="Чат"
 			/>
 		</div>

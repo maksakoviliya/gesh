@@ -17,6 +17,11 @@
 			type: String,
 			default: 'border-sky-600',
 		},
+		textClass: {
+			type: String,
+			default: 'text-white',
+		},
+		danger: Boolean,
 	})
 
 	const className = computed(() => {
@@ -28,7 +33,7 @@
     ${props.autoWidth ? 'w-auto' : 'w-full'}
     ${props.outline ? 'bg-white' : props.bgClass}
     ${props.outline ? 'border-black' : props.borderClass}
-    ${props.outline ? 'text-black' : 'text-white'}
+    ${props.outline ? 'text-black' : props.textClass}
     ${props.outline ? 'hover:opacity-60' : 'hover:opacity-80'}
     ${props.small ? 'text-sm' : 'text-md'}
     ${props.small ? 'py-1' : 'py-3'}

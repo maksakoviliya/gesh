@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ReservationRequest\Status;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,7 +23,8 @@ final class ReservationRequest extends Model
 
     protected $casts = [
         'start' => 'date:d.m.Y',
-        'end' => 'date:d.m.Y'
+        'end' => 'date:d.m.Y',
+        'status' => Status::class
     ];
 
     /**
@@ -37,7 +39,7 @@ final class ReservationRequest extends Model
         $price = $apartment->getPriceForRange($start, $end);
         return self::query()->firstOrCreate([
             'start' => $start,
-            'end' => $end,
+            'end' => Carbon::parse(Arr::get($data, 'end'))->startOfDay(),
             'apartment_id' => Arr::get($data, 'apartment_id'),
             'user_id' => Arr::get($data, 'user_id'),
             'guests' => Arr::get($data, 'guests'),
@@ -51,5 +53,12 @@ final class ReservationRequest extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reject(string $status_text = null): bool
+    {
+        $this->status_text = $status_text;
+        $this->status = Status::Rejected;
+        return $this->save();
     }
 }

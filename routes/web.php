@@ -18,6 +18,7 @@ use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\ApartmentShowController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestStoreController;
 use App\Http\Controllers\Social\SocialCallbackController;
 use App\Http\Controllers\Social\SocialRedirectController;
@@ -36,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', AccountIndexController::class)->name('index');
         Route::get('profile', AccountProfileController::class)->name('profile');
 
+        // Apartments
         Route::prefix('apartments')
             ->as('apartments.')
             ->namespace('App\\Http\\Controllers\\Account\\Apartments\\')
@@ -46,10 +48,17 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::post('{apartment}/store', StoreController::class)->name('store');
                 Route::get('{apartment}/pending', PendingController::class)->name('pending');
                 Route::get('{apartment}/calendar', CalendarController::class)->name('calendar');
-                Route::get('{apartment}/chat', AccountChatsController::class)->name('chats');
-                Route::get('{apartment}/chat/{chat}', AccountChatController::class)->name('chat');
+                Route::get('{apartment}/chats', AccountChatsController::class)->name('chats');
+                Route::get('{apartment}/chats/{chat}', AccountChatController::class)->name('chat');
                 Route::post('{apartment}/calendar/update', UpdateCalendarController::class)->name('calendar.update');
                 Route::post('{apartment}/price/update', UpdatePriceController::class)->name('price.update');
+            });
+
+        // Reservation Requests
+        Route::prefix('reservation-requests')
+            ->as('reservation-requests.')
+            ->group(function() {
+                Route::post('{reservationRequest}/reject', ReservationRequestRejectController::class)->name('reject');
             });
     });
 
