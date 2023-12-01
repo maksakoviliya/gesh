@@ -77,7 +77,7 @@
 						if (!date) {
 							const dayOfWeek = day.date.getDay()
 							price = this.apartment.data?.weekdays_price
-							if (dayOfWeek === 0 || dayOfWeek === 6) {
+							if (dayOfWeek === 5 || dayOfWeek === 6) {
 								price = this.apartment.data?.weekends_price
 							}
 						} else {

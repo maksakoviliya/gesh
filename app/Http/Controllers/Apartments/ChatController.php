@@ -6,8 +6,15 @@ namespace App\Http\Controllers\Apartments;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApartmentResource;
+use App\Http\Resources\Chat\ChatResource;
+use App\Http\Resources\Chat\MessageResource;
+use App\Http\Resources\ReservationRequestResource;
 use App\Models\Apartment;
+use App\Models\Chat\Chat;
+use App\Models\Chat\Message;
+use App\Models\ReservationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -15,8 +22,19 @@ final class ChatController extends Controller
 {
     public function __invoke(Request $request, Apartment $apartment): Response
     {
+        $chat = Chat::query()
+            ->firstOrCreate([
+                'apartment_id' => $apartment->id,
+                'user_id' => Auth::id()
+            ]);
+        $messages = Message::query()
+            ->with('reservation_request')
+            ->where('chat_id', $chat->id)
+            ->paginate(100);
         return Inertia::render('Apartments/Chat', [
-            'apartment' => new ApartmentResource($apartment)
+            'chat' => new ChatResource($chat),
+            'apartment' => new ApartmentResource($apartment),
+            'messages' => MessageResource::collection($messages)
         ]);
     }
 }

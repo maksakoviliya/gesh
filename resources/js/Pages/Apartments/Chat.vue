@@ -1,148 +1,38 @@
 <script setup>
 import Container from "@/Components/Container.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import {Link} from "@inertiajs/vue3"
+import {Link, useForm} from "@inertiajs/vue3"
 import ButtonComponent from "@/Components/ButtonComponent.vue";
-import Input from "@/Components/Input.vue";
 import TextareaInput from "@/Components/Inputs/TextareaInput.vue";
 import Heading from "@/Components/Heading.vue";
-import {ref} from "vue";
 import Message from "@/Components/Chat/Message.vue";
+import ReservationRequest from "@/Components/Chat/ReservationRequest.vue";
+import EmptyState from "@/Components/EmptyState.vue";
 
 const props = defineProps({
     apartment: {
         type: Object,
+    },
+    chat: {
+        type: Object,
+    },
+    messages: {
+        type: Object
     }
 })
 
-const messages = ref([
-    {
-        id: 1,
-        user: {
-            name: 'Other user',
-            id: 'asd',
-        },
-        message: 'Я текстовое сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-    {
-        id: 2,
-        user: {
-            name: 'Admin',
-            id: '01hgczmcv9mvw8hd6jh3rcea3v',
-        },
-        message: 'А я исходящее сообщение',
-        created_at: '29.11.2023'
-    },
-])
+const form = useForm({
+    message: ''
+})
+
+const submit = () => {
+    form.post(route('chat.messages.store', {
+        chat: props.chat.data.id
+    }), {
+        preserveScroll: true,
+        onSuccess: () => form.reset('message'),
+    })
+}
 </script>
 
 <template>
@@ -152,16 +42,18 @@ const messages = ref([
                 class="mt-8"
                 title="Чат с хозяином"
             />
-
-            <div class="mt-6 flex flex-col h-full items-start md:flex-row gap-4 md:justify-between relative h-[70vh]">
-                <div class=" w-full md:w-2/3 h-full relative">
-                    <div class="absolute inset-x-0 top-0 bottom-32 overflow-auto flex flex-col-reverse gap-1.5">
-                        <Message :message="message" v-for="message in messages" :key="message.id" />
+            <div class="mt-6 flex flex-col items-start md:flex-row gap-4 md:justify-between relative h-[70vh]">
+                <div class="w-full md:w-2/3 h-full relative">
+                    <div
+                        v-if="props.messages.data.length"
+                        class="absolute inset-x-0 top-0 bottom-32 overflow-auto flex flex-col items-start gap-1.5">
+                        <component :is="!!message.reservation_request ?  ReservationRequest : Message"
+                                   :item="!!message.reservation_request ? message.reservation_request : message" v-for="message in props.messages.data" :key="message.id"/>
                     </div>
-
-                    <div class="absolute inset-x-0 bottom-0 p-2 flex items-start gap-3">
-                        <TextareaInput id="message" label="Сообщение"/>
-                        <ButtonComponent :auto-width="true" class="px-4" :outline="true" label="">
+                    <EmptyState v-else title="Сообщений пока нет" subtitle="Напишите первым!" />
+                    <div class="absolute inset-x-0 bottom-0 flex items-start gap-3">
+                        <TextareaInput v-model="form.message" id="message" label="Сообщение"/>
+                        <ButtonComponent :auto-width="true" @click="submit" class="px-4" :outline="true" label="">
                             <template #icon>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

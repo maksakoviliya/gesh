@@ -11,6 +11,7 @@ import Avatar from "@/Components/Avatar.vue";
 import {router, useForm} from "@inertiajs/vue3";
 import dayjs from 'dayjs'
 import {Popover, PopoverButton, PopoverPanel} from '@headlessui/vue'
+import useToasts from "@/hooks/useToasts";
 
 const props = defineProps({
     apartment: Array | Object,
@@ -41,7 +42,6 @@ const form = useForm({
     range: 2,
     guests: 2,
     children: 0,
-    babies: 0,
 })
 
 const detalizationText = computed(() => {
@@ -55,14 +55,14 @@ const detalizationText = computed(() => {
     if (form.range > 5 && form.range <= 20 || form.range > 24) {
         nights = `${form.range} ночей`
     }
-    return `${props.apartment.data.weekdays_price.toLocaleString()}₽ x ${nights}`
+    return `${nights}`
 })
 
 const handleSetDates = (dates) => {
-    form.start = dates.start
-    form.end = dates.end
     const start = dayjs(dates.start)
     const end = dayjs(dates.end)
+    form.start = start.set('hours', 0).set('minutes', 0).toDate()
+    form.end = end.set('hours', 0).set('minutes', 0).toDate()
     form.range = end.diff(start, 'day')
 }
 
@@ -74,22 +74,35 @@ const basePrice = computed(() => {
     details.value = []
     let sum = 0
     for (let date = start; date.isBefore(end); date = date.add(1, 'day')) {
+        console.log('date', date)
+        console.log('dates', props.apartment.data.dates)
         const price = (date.day() === 5 || date.day() === 6)
             ? props.apartment.data.weekends_price
             : props.apartment.data.weekdays_price
+        const customPrice = props.apartment.data.dates.find(item => {
+            const customDate = dayjs(item.date)
+            return customDate.isSame(date)
+        })?.price
+        const totalPrice = customPrice ?? price
         details.value.push({
             date: date.format('DD.MM.YYYY'),
-            price
+            price:totalPrice
         })
-        sum += price
+        sum += totalPrice
     }
     return sum
 })
 
-const goToChat = () => {
-    return router.visit(route('apartments.chat', {
+const {errorToast} = useToasts()
+
+const createReservationRequest = () => {
+    return form.post(route('apartments.reservation-requests.store', {
         apartment: props.apartment.data.id
-    }))
+    }), {
+        onError: () => {
+            errorToast('Error')
+        }
+    })
 }
 </script>
 
@@ -115,15 +128,20 @@ const goToChat = () => {
                     <hr class="my-4"/>
                     <div class="flex justify-between gap-x-6">
                         <div class="flex min-w-0 gap-x-4">
-                            <Avatar :src="props.apartment.data.owner.avatar" class="h-12 w-12 flex-none rounded-full bg-gray-50"/>
+                            <Avatar :src="props.apartment.data.owner.avatar"
+                                    class="h-12 w-12 flex-none rounded-full bg-gray-50"/>
                             <div class="min-w-0 flex-auto">
-                                <p class="text-sm font-semibold leading-6 text-gray-900">Хозяин: {{ props.apartment.data.owner.name }}</p>
-                                <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ props.apartment.data.owner.email }}</p>
+                                <p class="text-sm font-semibold leading-6 text-gray-900">Хозяин:
+                                    {{ props.apartment.data.owner.name }}</p>
+                                <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+                                    {{ props.apartment.data.owner.email }}</p>
                             </div>
                         </div>
                         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                             <p class="text-sm leading-6 text-gray-900">Владелец</p>
-                            <p class="mt-1 text-xs leading-5 text-gray-500">На сайте <time datetime="2023-01-23T13:23Z">2 года</time></p>
+                            <p class="mt-1 text-xs leading-5 text-gray-500">На сайте
+                                <time datetime="2023-01-23T13:23Z">2 года</time>
+                            </p>
                         </div>
                     </div>
                     <template v-if="!!props.apartment.data.features.length">
@@ -145,10 +163,26 @@ const goToChat = () => {
                         {{ props.apartment.data.description ?? 'Тут описание квартиры' }}
                     </div>
                 </div>
-                <div class="md:sticky rounded-lg shadow-lg border border-neutral-100 md:w-7/12 lg:1/3 top-28 p-6">
-                    <div class="text-2xl md:text-3xl font-semibold">
-                        {{ props.apartment.data.weekdays_price?.toLocaleString() }}₽
-                        <span class="text-neutral-500 font-light text-sm">ночь</span>
+                <div
+                    class="md:sticky rounded-lg shadow-lg border border-neutral-100 w-full md:w-7/12 lg:1/3 top-28 p-6">
+                    <div class="flex gap-4">
+                        <div class="text-2xl md:text-3xl font-semibold flex items-center gap-2">
+                            {{ props.apartment.data.weekdays_price?.toLocaleString() }}₽
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-neutral-500 font-light text-sm leading-none whitespace-nowrap">ночь в</span>
+                                <span class="text-neutral-500 font-light text-sm leading-none">будни</span>
+                            </div>
+                        </div>
+                        <div class="text-2xl md:text-3xl font-semibold flex items-center gap-2"
+                             v-if="props.apartment.data.weekdays_price !==props.apartment.data.weekends_price">
+                            {{ props.apartment.data.weekends_price?.toLocaleString() }}₽
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-neutral-500 font-light text-sm leading-none whitespace-nowrap">ночь в</span>
+                                <span class="text-neutral-500 font-light text-sm leading-none">выходные</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="mt-4">
                         <Calendar range :start="form.start" :end="form.end" @setDates="handleSetDates"/>
@@ -162,13 +196,7 @@ const goToChat = () => {
                             v-model="form.children"
                             class="mt-4"
                             title="Дети"
-                            subtitle="2-12 лет"
-                        />
-                        <Counter
-                            v-model="form.babies"
-                            class="mt-4"
-                            title="Младенцы"
-                            subtitle="До 2-х лет"
+                            subtitle="0-12 лет"
                         />
                     </div>
                     <hr class="mt-4"/>
@@ -202,7 +230,8 @@ const goToChat = () => {
                                                                 item.date
                                                             }}
                                                         </dt>
-                                                        <dd class="mt-1 text-sm font-medium leading-6 text-neutral-600 ">{{
+                                                        <dd class="mt-1 text-sm font-medium leading-6 text-neutral-600 ">
+                                                            {{
                                                                 item.price?.toLocaleString()
                                                             }}₽
                                                         </dd>
@@ -223,7 +252,7 @@ const goToChat = () => {
                     <hr class="mb-4"/>
                     <div class="flex flex-col gap-3">
                         <ButtonComponent v-if="props.apartment.data.fast_reserve" label="Моментальное бронирование"/>
-                        <ButtonComponent :outline="true" @click="goToChat" label="Продолжить"/>
+                        <ButtonComponent :outline="true" @click="createReservationRequest" label="Продолжить"/>
                     </div>
                     <div class="font-light text-sm text-center mt-3 text-neutral-500">Пока вы ни за что не платите</div>
                 </div>
