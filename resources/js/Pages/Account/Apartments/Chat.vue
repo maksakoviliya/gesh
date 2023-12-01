@@ -52,7 +52,7 @@ const submit = () => {
                 title="Чат объекта"
             />
 
-            <div class="mt-6 flex flex-col items-start md:flex-row gap-4 md:justify-between relative h-[70vh]">
+            <div class="mt-6 flex flex-col items-start md:flex-row gap-4 md:justify-between relative md:min-h-0 min-h-[600px] h-[70vh]">
                 <div class="w-full md:w-2/3 h-full relative">
 
                     <div
@@ -79,26 +79,28 @@ const submit = () => {
 
                 </div>
                 <div
-                    class="hidden md:block divide-y divide-gray-100 md:w-1/3 md:sticky md:top-24 rounded-xl overflow-hidden shadow-xl h-auto py-2 border border-gray-50">
+                    class="block divide-y divide-gray-100 w-full md:w-1/3 md:sticky md:top-24 rounded-xl overflow-hidden shadow-xl h-auto py-2 border border-gray-50">
 
-                    <div v-for="chat in props.chats.data" :key="chat.id"
-                         @click="selectChat(chat)"
-                         class="gap-2 px-4 py-2 cursor-pointer flex flex-col w-full hover:bg-gray-100 transition"
-                         :class="props.chat?.data.id === chat.id ? 'bg-gray-100' : ''"
-                    >
-                        <div class="flex items-center gap-2">
-                            <Avatar :src="chat.user.avatar"/>
-                            <div class="flex flex-col">
-                                <div class="text-sm font-bold text-neutral-800 ">
-                                    {{ chat.user.name }}
-                                </div>
-                                <div class="text-sm font-light text-neutral-500"
-                                     v-if="!chat.last_message?.reservation_request">{{ chat.last_message?.message }}
+                    <div class="h-full overflow-auto min-h-[300px] md:min-h-0">
+                        <div v-for="chat in props.chats.data" :key="chat.id"
+                             @click="selectChat(chat)"
+                             class="gap-2 px-4 py-2 cursor-pointer flex flex-col w-full hover:bg-gray-100 transition"
+                             :class="props.chat?.data.id === chat.id ? 'bg-gray-100' : ''"
+                        >
+                            <div class="flex items-center gap-2">
+                                <Avatar :src="chat.user.avatar"/>
+                                <div class="flex flex-col">
+                                    <div class="text-sm font-bold text-neutral-800 ">
+                                        {{ chat.user.name }}
+                                    </div>
+                                    <div class="text-sm font-light text-neutral-500"
+                                         v-if="!chat.last_message?.reservation_request">{{ chat.last_message?.message }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div v-if="!!chat.last_message?.reservation_request">
-                            <ReservationRequest compact :item="chat.last_message?.reservation_request"/>
+                            <div v-if="!!chat.last_message?.reservation_request">
+                                <ReservationRequest compact :item="chat.last_message?.reservation_request"/>
+                            </div>
                         </div>
                     </div>
 
