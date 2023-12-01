@@ -22,7 +22,8 @@ final class UpdateCalendarController extends Controller
         foreach ($period as $date) {
             DatePrice::query()->updateOrCreate([
                 'apartment_id' => $apartment->id,
-                'date' => $date], [
+                'date' => $date
+            ], [
                 'price' => $request->validated('price')
             ]);
         }

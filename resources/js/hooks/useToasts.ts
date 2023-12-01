@@ -9,8 +9,14 @@ export default function () {
             position: 'top',
         });
     }
+    const errorToast = (message: string) => {
+        let instance = $toast.error(message, {
+            position: 'top',
+        });
+    }
 
     return {
-        successToast
+        successToast,
+        errorToast
     }
 }

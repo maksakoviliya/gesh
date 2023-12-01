@@ -23,11 +23,19 @@
 	}
 
     const goToCalendar = (id) => {
-        console.log('id', id)
-        console.log('props.apartment.status', props.apartment.status)
         if (props.apartment.status === 'published') {
             return router.visit(
                 route('account.apartments.calendar', {
+                    apartment: id,
+                })
+            )
+        }
+    }
+
+    const goToChat = (id) => {
+        if (props.apartment.status === 'published') {
+            return router.visit(
+                route('account.apartments.chat', {
                     apartment: id,
                 })
             )
@@ -103,7 +111,14 @@
                 v-if="props.apartment.status === 'published'"
                 @click="goToCalendar(props.apartment.id)"
 				:small="true"
-				:label="'Календарь'"
+				label="Календарь"
+			/>
+			<ButtonComponent
+                v-if="props.apartment.status === 'published'"
+                @click="goToChat(props.apartment.id)"
+				:small="true"
+                :outline="true"
+				label="Чат"
 			/>
 		</div>
 	</div>

@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Enums\Apartments\Status;
 use App\Enums\Apartments\Type;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -36,6 +39,7 @@ final class Apartment extends Model implements HasMedia
     protected $casts = [
         'status' => Status::class,
         'type' => Type::class,
+        'fast_reserve' => 'boolean'
     ];
 
     public function category(): BelongsTo
@@ -128,6 +132,9 @@ final class Apartment extends Model implements HasMedia
             // Step 10:
             'weekdays_price',
             'weekends_price',
+
+            // Step 11:
+            'fast_reserve',
         ];
         foreach ($fields as $field) {
             if (Arr::has($data, $field)) {
@@ -142,7 +149,7 @@ final class Apartment extends Model implements HasMedia
 
         if ($images = Arr::get($data, 'media')) {
             foreach ($images as $image) {
-                if (! $image instanceof UploadedFile) {
+                if (!$image instanceof UploadedFile) {
                     continue;
                 }
                 $this->addMedia($image)
@@ -194,5 +201,45 @@ final class Apartment extends Model implements HasMedia
     public function datePrices(): HasMany
     {
         return $this->hasMany(DatePrice::class);
+    }
+
+    /**
+     * @param Carbon $day
+     * @return int
+     */
+    public function getPriceForDay(Carbon $day): int
+    {
+        Log::info((string)$day->format('d.m.Y'));
+        $dayPrice = $this->datePrices()->whereDate('date', $day)->first();
+        if (!$dayPrice) {
+            $dayOfWeek = $day->dayOfWeek;
+            Log::info((string)$dayOfWeek);
+            if ($dayOfWeek === 5 || $dayOfWeek === 6) {
+                Log::info((string)$this->weekends_price);
+                return $this->weekends_price;
+            }
+            Log::info((string)$this->weekdays_price);
+            return $this->weekdays_price;
+        }
+        Log::info((string)$dayPrice->price);
+        return $dayPrice->price;
+    }
+
+    /**
+     * @param Carbon $start
+     * @param Carbon $end
+     * @return int
+     */
+    public function getPriceForRange(Carbon $start, Carbon $end): int
+    {
+        $price = 0;
+        $period = CarbonPeriod::create(
+            $start,
+            $end,
+        );
+        foreach ($period as $date) {
+            $price += $this->getPriceForDay($date);
+        }
+        return $price;
     }
 }
