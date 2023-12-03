@@ -19,7 +19,7 @@ class MessageResource extends JsonResource
             'user' => new UserResource($this->resource->user),
             'message' => $this->resource->message,
             'created_at' => Carbon::parse($this->resource->created_at)->format('d.m.Y H:i'),
-            'reservation_request' => new ReservationRequestResource($this->resource->reservation_request)
+            'reservation_request' => new ReservationRequestResource($this->resource->reservation_request?->load('reservation'))
         ];
     }
 }

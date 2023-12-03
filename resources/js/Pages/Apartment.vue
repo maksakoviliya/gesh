@@ -74,8 +74,6 @@ const basePrice = computed(() => {
     details.value = []
     let sum = 0
     for (let date = start; date.isBefore(end); date = date.add(1, 'day')) {
-        console.log('date', date)
-        console.log('dates', props.apartment.data.dates)
         const price = (date.day() === 5 || date.day() === 6)
             ? props.apartment.data.weekends_price
             : props.apartment.data.weekdays_price

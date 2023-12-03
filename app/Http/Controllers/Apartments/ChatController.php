@@ -28,7 +28,7 @@ final class ChatController extends Controller
                 'user_id' => Auth::id()
             ]);
         $messages = Message::query()
-            ->with('reservation_request')
+            ->with(['reservation_request', 'reservation_request.reservation'])
             ->where('chat_id', $chat->id)
             ->paginate(100);
         return Inertia::render('Apartments/Chat', [

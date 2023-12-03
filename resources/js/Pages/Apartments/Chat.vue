@@ -32,7 +32,10 @@
 			}),
 			{
 				preserveScroll: true,
-				onSuccess: () => form.reset('message'),
+				onSuccess: () => {
+                    form.reset('message')
+
+                },
 			}
 		)
 	}

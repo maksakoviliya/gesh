@@ -115,7 +115,7 @@ const handleSecondaryAction = () => {
                 rounded-t
                 justify-center
                 relative
-                border-b-[1px]
+                border-b
                 "
                         >
                             <button
@@ -133,14 +133,14 @@ const handleSecondaryAction = () => {
                                     name="hi-x"
                                 />
                             </button>
-                            <div class="text-lg font-semibold">
+                            <div class="text-lg font-semibold pl-16 md:pl-0">
                                 {{ title }}
                             </div>
                         </div>
                         <div class="relative p-6 flex-auto">
                             <slot name="body"/>
                         </div>
-                        <div class="flex flex-col gap-2 p-6">
+                        <div class="flex flex-col gap-2 p-6 border-t">
                             <div
                                 class="
                     flex

@@ -18,12 +18,13 @@ final class AccountChatController extends Controller
 {
     public function __invoke(Request $request, Apartment $apartment, Chat $chat): Response
     {
-        $chats = Chat::with('last_message')
+        $chats = Chat::with(['last_message', 'apartment', 'user', 'apartment'])
             ->where('apartment_id', $apartment->id)
             ->get()
             ->sortByDesc('last_message.created_at')
         ;
         $messages = Message::query()
+            ->with(['user'])
             ->where('chat_id', $chat->id)
             ->paginate(100);
         return Inertia::render('Account/Apartments/Chat', [

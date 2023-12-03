@@ -9,7 +9,7 @@
 		modelValue: String,
 	})
 
-	const emit = defineEmits(['onEnter'])
+	const emit = defineEmits(['onEnter', 'update:modelValue'])
 </script>
 
 <template>

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 
 final class ReservationRequest extends Model
@@ -60,5 +61,19 @@ final class ReservationRequest extends Model
         $this->status_text = $status_text;
         $this->status = Status::Rejected;
         return $this->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function submit(): bool
+    {
+        $this->status = Status::Submitted;
+        return $this->save();
+    }
+
+    public function reservation(): HasOne
+    {
+        return $this->hasOne(Reservation::class);
     }
 }
