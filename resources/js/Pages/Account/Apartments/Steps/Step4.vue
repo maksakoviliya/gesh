@@ -11,8 +11,8 @@
 	})
 
 	const form = useForm({
-		lon: props.apartment.data.lon,
-		lat: props.apartment.data.lat,
+		lon: props.apartment.data.lon ?? 87.98709856259356,
+		lat: props.apartment.data.lat ?? 52.92596754124867,
 	})
 
 	const submit = () => {

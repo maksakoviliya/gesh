@@ -1,15 +1,29 @@
 <script setup>
 	import { ref, onMounted, onUnmounted } from 'vue'
-	import { loadYmap, yandexMap } from 'vue-yandex-maps'
+	import { loadYmap, ymapMarker } from 'vue-yandex-maps'
 
 	const props = defineProps({
-		lat: Number | null,
-		lon: Number | null,
+		lat: {
+			type: [Number, String],
+			required: true,
+		},
+		lon: {
+			type: [Number, String],
+			required: true,
+		},
+		isInput: {
+			type: Boolean,
+			default: true,
+		},
+		markers: {
+			type: [Array],
+			default: () => [],
+		},
 	})
 
 	const emit = defineEmits(['updateLon', 'updateLat'])
 
-	const center = ref([props.lat ?? 52.92596754124867, props.lon ?? 87.98709856259356])
+	const center = ref([props.lat, props.lon])
 
 	const mapElement = ref(null)
 	const map = ref(null)
@@ -18,8 +32,6 @@
 		if (!mapElement.value) {
 			return
 		}
-
-		console.log('[props.lat, props.lon]', center.value)
 		await loadYmap({
 			apiKey: '4b6179ba-b733-4d2b-af35-b06f33fc0141',
 			lang: 'ru_RU',
@@ -35,6 +47,11 @@
 			center: center.value,
 			zoom: 11,
 			controls: ymapControls,
+		})
+
+		props.markers.map((mark) => {
+			const placemark = new globalThis.ymaps.Placemark([mark.lat, mark.lon])
+			map.value.geoObjects.add(placemark)
 		})
 
 		map.value.events.add('boundschange', function (event) {
@@ -80,7 +97,10 @@
 			ref="mapElement"
 			style="height: 450px"
 		/>
-		<div class="absolute bottom-1/2 left-1/2 -translate-x-1/2 text-sky-500">
+		<div
+			class="absolute bottom-1/2 left-1/2 -translate-x-1/2 text-sky-500"
+			v-if="props.isInput"
+		>
 			<OhVueIcon
 				name="hi-location-marker"
 				scale="2.8"
