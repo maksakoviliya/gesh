@@ -46,7 +46,7 @@ const routes = ref([
                 v-else
                 class="pt-4"
             >
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <CardInList :reservation="reservation" v-for="reservation in reservations.data"/>
                 </div>
             </div>

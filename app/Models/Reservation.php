@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Reservation\Status;
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,7 +47,7 @@ final class Reservation extends Model
      */
     public static function createFromReservationRequest(ReservationRequest $reservationRequest): Model|Builder
     {
-        return Reservation::query()
+        $reservation =  Reservation::query()
             ->create([
                 'user_id' => $reservationRequest->user_id,
                 'apartment_id' => $reservationRequest->apartment_id,
@@ -59,6 +60,18 @@ final class Reservation extends Model
                 'range' => $reservationRequest->range,
                 'price' => $reservationRequest->price,
         ]);
+        $period = CarbonPeriod::create(
+            $reservationRequest->start,
+            $reservationRequest->end->subDay(),
+        );
+        foreach ($period as $date) {
+            DisabledDate::query()
+                ->create([
+                    'apartment_id' => $reservationRequest->apartment_id,
+                    'date' => $date,
+                ]);
+        }
+        return $reservation;
     }
 
     public function setStatus(Status $status): bool

@@ -9,6 +9,8 @@
 	import TextareaInput from '@/Components/Inputs/TextareaInput.vue'
 	import EmptyState from '@/Components/EmptyState.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
+    import {ref} from "vue";
+    import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 
 	const props = defineProps({
 		chats: {
@@ -19,6 +21,9 @@
 		},
 		chat: {
 			type: [Object, null],
+		},
+		apartment: {
+			type: Object,
 		},
 	})
 
@@ -46,11 +51,30 @@
 			}
 		)
 	}
+
+    const routes = ref([
+        {
+            id: 'account',
+            route: route('account.index'),
+            label: 'Аккаунт',
+        },
+        {
+            id: 'apartments',
+            route: route('account.apartments.list'),
+            label: 'Мои объекты',
+        },
+        {
+            id: 'chat',
+            route: route('account.apartments.list'),
+            label: 'Чаты',
+        },
+    ])
 </script>
 
 <template>
 	<AppLayout>
 		<Container>
+            <Breadcrumbs :routes="routes"/>
 			<Heading
 				class="mt-8"
 				title="Чат объекта"

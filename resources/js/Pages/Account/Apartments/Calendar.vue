@@ -19,6 +19,7 @@
 	export default {
 		props: {
 			apartment: Object | Array,
+            events: Array
 		},
 		components: {
 			ButtonComponent,
@@ -41,6 +42,13 @@
 						id: 'apartments',
 						route: route('account.apartments.list'),
 						label: 'Объекты',
+					},
+					{
+						id: 'apartments.apartment',
+						route: route('apartment', {
+							apartment: this.apartment.data.id,
+						}),
+						label: 'Объект',
 					},
 					{
 						id: 'apartments.calendar',
@@ -92,6 +100,8 @@
 					},
 					select: this.handleSelect,
 					unselect: this.handleUnselect,
+                    eventClick: this.handleEventClick,
+                    events: this.events,
 				},
 			}
 		},
@@ -109,6 +119,8 @@
 				end: null,
 				price: null,
 			})
+
+            const selectedEvent = ref()
 
 			const submitPriceForm = () => {
 				priceForm
@@ -137,6 +149,7 @@
 
 			const calendar = ref(null)
 			const handleSelect = (range) => {
+                selectedEvent.value = null
 				rangeForm.start = range.startStr
 				rangeForm.end = dayjs(range.endStr).subtract(1, 'day').hour(23).minute(59)
 			}
@@ -183,6 +196,10 @@
 				return `${start.format('DD MMM')} - ${end.format('DD MMM')}`
 			})
 
+            const handleEventClick = (val) => {
+                selectedEvent.value = val
+            }
+
 			return {
 				priceForm,
 				submitPriceForm,
@@ -192,6 +209,8 @@
 				handleUnselect,
 				getRangeLabel,
 				calendar,
+                handleEventClick,
+                selectedEvent
 			}
 		},
 	}
@@ -206,10 +225,37 @@
 					<FullCalendar
 						ref="calendar"
 						:options="calendarOptions"
-					/>
+                    />
 				</div>
 				<div class="lg:px-6 pt-1 mt-8 lg:mt-0 w-full lg:w-5/12 form lg:sticky lg:top-24">
-					<template v-if="!(rangeForm.start && rangeForm.end)">
+                    <template v-if="rangeForm.start && rangeForm.end">
+                        <Heading :title="getRangeLabel" />
+                        <div class="mt-8 flex flex-col gap-3">
+                            <Input
+                                v-model="rangeForm.price"
+                                type="number"
+                                :error="rangeForm.errors.price"
+                                label="Цена, ₽"
+                            />
+                            <ButtonComponent
+                                :disabled="!rangeForm.isDirty"
+                                class="mt-6"
+                                label="Сохранить"
+                                @click="submitRangeForm"
+                            />
+                        </div>
+                    </template>
+                    <template v-else-if="selectedEvent">
+                        <Heading title="Событие" />
+                        <div class="mt-8 flex flex-col gap-3">
+                            {{selectedEvent}}
+                            <ButtonComponent
+                                class="mt-6"
+                                label="Сохранить"
+                            />
+                        </div>
+                    </template>
+					<template v-else>
 						<Heading title="Базовая цена" />
 						<div class="mt-8 flex flex-col gap-3">
 							<Input
@@ -229,23 +275,6 @@
 								class="mt-6"
 								label="Сохранить"
 								@click="submitPriceForm"
-							/>
-						</div>
-					</template>
-					<template v-else>
-						<Heading :title="getRangeLabel" />
-						<div class="mt-8 flex flex-col gap-3">
-							<Input
-								v-model="rangeForm.price"
-								type="number"
-								:error="rangeForm.errors.price"
-								label="Цена, ₽"
-							/>
-							<ButtonComponent
-								:disabled="!rangeForm.isDirty"
-								class="mt-6"
-								label="Сохранить"
-								@click="submitRangeForm"
 							/>
 						</div>
 					</template>

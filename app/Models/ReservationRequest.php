@@ -66,9 +66,10 @@ final class ReservationRequest extends Model
     /**
      * @return bool
      */
-    public function submit(): bool
+    public function submit(Reservation $reservation): bool
     {
         $this->status = Status::Submitted;
+        $this->reservation_id = $reservation->id;
         return $this->save();
     }
 

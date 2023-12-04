@@ -242,4 +242,12 @@ final class Apartment extends Model implements HasMedia
         }
         return $price;
     }
+
+    /**
+     * @return HasMany
+     */
+    public function disabledDates(): HasMany
+    {
+        return $this->hasMany(DisabledDate::class);
+    }
 }

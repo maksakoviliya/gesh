@@ -4,14 +4,14 @@ import Container from '@/Components/Container.vue'
 import Gallery from '@/Components/Gallery.vue'
 import Heading from '@/Components/Heading.vue'
 import {computed, ref} from 'vue'
-import Calendar from '@/Components/Calendar.vue'
 import Counter from '@/Components/Counter.vue'
 import ButtonComponent from '@/Components/ButtonComponent.vue'
 import Avatar from "@/Components/Avatar.vue";
-import {router, useForm} from "@inertiajs/vue3";
+import {useForm} from "@inertiajs/vue3";
 import dayjs from 'dayjs'
 import {Popover, PopoverButton, PopoverPanel} from '@headlessui/vue'
 import useToasts from "@/hooks/useToasts";
+import Datepicker from "@/Components/Datepicker.vue";
 
 const props = defineProps({
     apartment: Array | Object,
@@ -84,7 +84,7 @@ const basePrice = computed(() => {
         const totalPrice = customPrice ?? price
         details.value.push({
             date: date.format('DD.MM.YYYY'),
-            price:totalPrice
+            price: totalPrice
         })
         sum += totalPrice
     }
@@ -102,6 +102,10 @@ const createReservationRequest = () => {
         }
     })
 }
+
+const disabledDates = computed(() => {
+    return props.apartment.data.disabled_dates?.map(item => dayjs(item.date).add(1, 'day'))
+})
 </script>
 
 <template>
@@ -183,7 +187,8 @@ const createReservationRequest = () => {
                         </div>
                     </div>
                     <div class="mt-4">
-                        <Calendar range :start="form.start" :end="form.end" @setDates="handleSetDates"/>
+                        <Datepicker range :start="form.start" :disabled-dates="disabledDates"
+                                    :end="form.end" @setDates="handleSetDates"/>
                         <Counter
                             v-model="form.guests"
                             class="mt-4"

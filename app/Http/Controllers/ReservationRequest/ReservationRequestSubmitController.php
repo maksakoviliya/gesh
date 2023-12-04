@@ -14,12 +14,13 @@ final class ReservationRequestSubmitController extends Controller
 {
     public function __invoke(SubmitRequest $request, ReservationRequest $reservationRequest): JsonResponse
     {
-        $reservationRequest->submit();
+        $reservation = Reservation::createFromReservationRequest($reservationRequest);
+
+        $reservationRequest->submit($reservation);
         /** @var ReservationRequest $reservationRequest */
         $reservationRequest = ReservationRequest::query()
             ->find($reservationRequest->id);
 
-        Reservation::createFromReservationRequest($reservationRequest);
 
         return response()->json([
             'success' => true,
