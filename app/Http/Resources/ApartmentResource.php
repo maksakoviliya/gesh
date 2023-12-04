@@ -20,6 +20,8 @@ class ApartmentResource extends JsonResource
             'description' => $this->resource->description,
             'address' => $this->resource->address,
             'bedrooms' => $this->resource->bedrooms,
+            'lat' => $this->resource->lat,
+            'lon' => $this->resource->lon,
             'beds' => $this->resource->beds,
             'bathrooms' => $this->resource->bathrooms,
             'guests' => $this->resource->guests,
