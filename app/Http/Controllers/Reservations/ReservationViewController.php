@@ -16,9 +16,9 @@ final class ReservationViewController extends Controller
 {
     public function __invoke(Request $request, Reservation $reservation): Response
     {
-        $page = 'Reservations/Reservation';
-        if ($reservation->status === Status::Pending->value) {
-            $page = 'Reservations/Payment';
+        $page = 'Account/Reservations/Reservation';
+        if ($reservation->status === Status::Pending) {
+            $page = 'Account/Reservations/Payment';
         }
         return Inertia::render($page, [
             'reservation' => new ReservationResource($reservation)

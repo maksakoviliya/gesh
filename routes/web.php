@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Account\AccountIndexController;
 use App\Http\Controllers\Account\AccountProfileController;
-use App\Http\Controllers\Account\Apartments\AccountChatController;
+use App\Http\Controllers\Account\Apartments\OwnerChatController;
 use App\Http\Controllers\Account\Apartments\AccountChatsController;
 use App\Http\Controllers\Account\Apartments\CalendarController;
 use App\Http\Controllers\Account\Apartments\CreateController;
@@ -14,6 +14,7 @@ use App\Http\Controllers\Account\Apartments\StepController;
 use App\Http\Controllers\Account\Apartments\StoreController;
 use App\Http\Controllers\Account\Apartments\UpdateCalendarController;
 use App\Http\Controllers\Account\Apartments\UpdatePriceController;
+use App\Http\Controllers\Account\Reservations\ReservationsListController;
 use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\ApartmentShowController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestStoreController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestSubmitController;
+use App\Http\Controllers\Reservations\ReservationPayController;
 use App\Http\Controllers\Reservations\ReservationViewController;
 use App\Http\Controllers\Social\SocialCallbackController;
 use App\Http\Controllers\Social\SocialRedirectController;
@@ -44,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
             // Apartments
             Route::prefix('apartments')
                 ->as('apartments.')
-                ->namespace('App\\Http\\Controllers\\Account\\Apartments\\')
+//                ->namespace('App\\Http\\Controllers\\Account\\Apartments\\')
                 ->group(function () {
                     Route::get('/', ListController::class)->name('list');
                     Route::get('create', CreateController::class)->name('create');
@@ -53,9 +55,12 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::get('{apartment}/pending', PendingController::class)->name('pending');
                     Route::get('{apartment}/calendar', CalendarController::class)->name('calendar');
                     Route::get('{apartment}/chats', AccountChatsController::class)->name('chats');
-                    Route::get('{apartment}/chats/{chat}', AccountChatController::class)->name('chat');
+                    Route::get('{apartment}/chats/{chat}', OwnerChatController::class)->name('owner.chat');
                     Route::post('{apartment}/calendar/update', UpdateCalendarController::class)->name('calendar.update');
                     Route::post('{apartment}/price/update', UpdatePriceController::class)->name('price.update');
+
+                    Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)->name('reservation-requests.store');
+                    Route::get('{apartment}/chat', ChatController::class)->name('chat');
                 });
 
             // Reservation Requests
@@ -65,24 +70,20 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::post('{reservationRequest}/reject', ReservationRequestRejectController::class)->name('reject');
                     Route::post('{reservationRequest}/submit', ReservationRequestSubmitController::class)->name('submit');
                 });
+
+            // Chat
+            Route::prefix('chat')->as('chat.')->group(function () {
+                Route::post('{chat}', MessageStoreController::class)->name('messages.store');
+            });
+
+            // Reservations
+            Route::prefix('reservations')
+                ->as('reservations.')->group(function () {
+                    Route::get('/', ReservationsListController::class)->name('list');
+                    Route::get('{reservation}', ReservationViewController::class)->name('view');
+                    Route::post('{reservation}', ReservationPayController::class)->name('pay');
+                });
         });
-
-    // Apartments
-    Route::prefix('apartments')->as('apartments.')->group(function () {
-        Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)->name('reservation-requests.store');
-        Route::get('{apartment}/chat', ChatController::class)->name('chat');
-    });
-
-    // Chat
-    Route::prefix('chat')->as('chat.')->group(function () {
-        Route::post('{chat}', MessageStoreController::class)->name('messages.store');
-    });
-
-    // Reservations
-    Route::prefix('reservations')
-        ->as('reservations.')->group(function () {
-        Route::get('{reservation}', ReservationViewController::class)->name('view');
-    });
 });
 //Route::middleware([
 //    'auth:sanctum',

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Enums\Reservation;
+declare(strict_types=1);
+
+namespace App\Enums\Transactions;
 
 enum Status: string
 {
     case Pending = 'pending';
-    case Paid = 'paid';
 }

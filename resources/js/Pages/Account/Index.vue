@@ -20,7 +20,7 @@
 		},
 		{
 			id: 'reservations',
-			key: 'profile',
+			key: 'reservations.list',
 			title: 'Мои бронирования',
 			subtitle: 'Места куда вы поедете',
 			icon: 'md-mapshomework-outlined',

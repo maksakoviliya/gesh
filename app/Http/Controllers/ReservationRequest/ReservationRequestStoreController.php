@@ -33,7 +33,7 @@ final class ReservationRequestStoreController extends Controller
                 'user_id' => Auth::id(),
                 'reservation_request_id' => $reservation_request->id
         ]);
-        return to_route('apartments.chat', [
+        return to_route('account.apartments.chat', [
             'apartment' => $apartment->id
         ]);
     }

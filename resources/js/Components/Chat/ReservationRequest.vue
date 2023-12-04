@@ -72,7 +72,7 @@ const handleSubmit = () => {
 
 const goToReservation = () => {
     if (request.value.reservation?.id) {
-        const url = props.isOwner ? 'account.reservations.view' : 'reservations.view'
+        const url = props.isOwner ? 'account.reservations.owner.view' : 'account.reservations.view'
         router.visit(route(url, {
             reservation: request.value.reservation?.id
         }))
@@ -86,7 +86,6 @@ const goToReservation = () => {
         :class="[
             request.status === 'rejected' ? 'opacity-40' : '',
             request.status === 'submitted' ? 'border-teal-600' : '',
-
              ]"
     >
         <div

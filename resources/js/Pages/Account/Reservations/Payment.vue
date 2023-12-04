@@ -2,12 +2,13 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Container from '@/Components/Container.vue'
 import Heading from "@/Components/Heading.vue";
-import {Link} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
 import ButtonComponent from "@/Components/ButtonComponent.vue";
+import Breadcrumbs from "@/Components/Breadcrumbs.vue";
 
 const props = defineProps({
     reservation: {
@@ -65,12 +66,45 @@ const subtitle = computed(() => {
     return result.filter(item => !!item).join(' · ')
 })
 
+const pay = () => {
+    router.post(route('account.reservations.pay', {
+        reservation: props.reservation.data.id
+    }))
+}
+
+const routes = ref([
+    {
+        id: 'account',
+        route: route('account.index'),
+        label: 'Аккаунт',
+    },
+    {
+        id: 'reservations',
+        route: route('account.reservations.list'),
+        label: 'Мои бронирования',
+    },
+    {
+        id: 'reservation',
+        route: route('account.reservations.view', {
+            reservation: props.reservation.data?.id
+        }),
+        label: 'Бронирование',
+    },
+    {
+        id: 'reservation.pay',
+        route: route('account.reservations.view', {
+            reservation: props.reservation.data?.id
+        }),
+        label: 'Оплата',
+    },
+])
 </script>
 
 <template>
     <AppLayout>
         <Container>
-            <div class="relative flex-col md:flex-row flex items-start gap-4">
+            <Breadcrumbs :routes="routes"/>
+            <div class="relative flex-col md:flex-row flex items-start gap-4 mt-6">
                 <div class="md:w-1/2 lg:w-2/3">
                     <Heading title="Оплата бронирования"
                              subtitle="Вы должны оплатить не позднее суток, иначе бронирование отменится."/>
@@ -102,7 +136,7 @@ const subtitle = computed(() => {
                             Оплата:
                         </div>
                         <div class="mt-3">
-                            <ButtonComponent :auto-width="true" class="px-12" label="Оплатить" />
+                            <ButtonComponent @click="pay" :auto-width="true" class="px-12" label="Оплатить" />
                         </div>
                     </div>
                 </div>
@@ -180,6 +214,14 @@ const subtitle = computed(() => {
                             <dd class="mt-1 font-medium leading-6 text-neutral-600 ">{{
                                     basePrice?.toLocaleString()
                                 }}₽
+                            </dd>
+                        </div>
+                        <div class="py-2 flex w-full items-baseline justify-between">
+                            <dt class="font-light leading-6 text-пкфн-600">
+                                <div>Гости:</div>
+                            </dt>
+                            <dd class="mt-1 font-medium leading-6 text-neutral-600 ">
+                                {{ props.reservation.data.guests }}
                             </dd>
                         </div>
                         <div class="py-2 flex w-full items-baseline justify-between"

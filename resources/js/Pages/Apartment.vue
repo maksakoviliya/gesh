@@ -94,7 +94,7 @@ const basePrice = computed(() => {
 const {errorToast} = useToasts()
 
 const createReservationRequest = () => {
-    return form.post(route('apartments.reservation-requests.store', {
+    return form.post(route('account.apartments.reservation-requests.store', {
         apartment: props.apartment.data.id
     }), {
         onError: () => {

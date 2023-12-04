@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-final class AccountChatController extends Controller
+final class OwnerChatController extends Controller
 {
     public function __invoke(Request $request, Apartment $apartment, Chat $chat): Response
     {
@@ -27,7 +27,7 @@ final class AccountChatController extends Controller
             ->with(['user'])
             ->where('chat_id', $chat->id)
             ->paginate(100);
-        return Inertia::render('Account/Apartments/Chat', [
+        return Inertia::render('Account/Apartments/Owner/OwnerChat', [
             'chats' => ChatResource::collection($chats),
             'chat' => new ChatResource($chat),
             'messages' =>  MessageResource::collection($messages)

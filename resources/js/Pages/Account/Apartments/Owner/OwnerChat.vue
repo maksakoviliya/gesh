@@ -23,9 +23,8 @@
 	})
 
 	const selectChat = (chat) => {
-		console.log('chat', chat)
 		router.visit(
-			route('account.apartments.chat', {
+			route('account.apartments.owner.chat', {
 				chat: chat.id,
 				apartment: chat.apartment.id,
 			})
@@ -62,7 +61,7 @@
 			>
 				<div class="w-full md:w-2/3 h-full relative">
 					<div
-						v-if="props.messages?.data?.length"
+						v-if="props.chat && props.messages?.data?.length"
 						class="absolute inset-x-0 top-0 bottom-32 overflow-auto flex flex-col items-start gap-1.5"
 					>
 						<component
@@ -75,10 +74,10 @@
 					</div>
 					<EmptyState
 						v-else
-						title="Сообщений пока нет"
-						subtitle="Напишите первым!"
+						:title="props.chat ? 'Сообщений пока нет' : 'Выберите чат'"
+						:subtitle="props.chat ? 'Напишите первым!' : 'И одобрите запрос на бронирование'"
 					/>
-					<div class="absolute inset-x-0 bottom-0 flex items-start gap-3">
+					<div class="absolute inset-x-0 bottom-0 flex items-start gap-3" v-if="props.chat">
 						<TextareaInput
 							v-model="form.message"
 							id="message"

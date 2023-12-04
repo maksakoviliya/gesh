@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Reservation\Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,10 @@ final class Reservation extends Model
     protected $guarded = [
         'id',
         'created_at'
+    ];
+
+    protected $casts = [
+        'status' => Status::class
     ];
 
     protected $with = [
@@ -54,5 +59,11 @@ final class Reservation extends Model
                 'range' => $reservationRequest->range,
                 'price' => $reservationRequest->price,
         ]);
+    }
+
+    public function setStatus(Status $status): bool
+    {
+        $this->status = $status;
+        return $this->save();
     }
 }
