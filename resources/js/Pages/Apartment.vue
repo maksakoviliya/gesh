@@ -97,7 +97,7 @@
 
 	const createReservationRequest = () => {
 		return form.post(
-			route('apartments.reservation-requests.store', {
+			route('reservation-requests.store', {
 				apartment: props.apartment.data.id,
 			}),
 			{

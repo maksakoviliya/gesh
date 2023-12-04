@@ -59,7 +59,6 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::post('{apartment}/calendar/update', UpdateCalendarController::class)->name('calendar.update');
                     Route::post('{apartment}/price/update', UpdatePriceController::class)->name('price.update');
 
-                    Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)->name('reservation-requests.store');
                     Route::get('{apartment}/chat', ChatController::class)->name('chat');
                 });
 
@@ -84,6 +83,8 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::post('{reservation}', ReservationPayController::class)->name('pay');
                 });
         });
+
+    Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)->name('reservation-requests.store');
 });
 //Route::middleware([
 //    'auth:sanctum',
