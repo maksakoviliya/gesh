@@ -107,6 +107,13 @@
 			}
 		)
 	}
+
+	const markers = ref([
+		{
+			center: [props.apartment.data.lat, props.apartment.data.lon],
+			img: props.apartment.data.media[0]?.src,
+		},
+	])
 </script>
 
 <template>
@@ -186,12 +193,7 @@
 							:lon="props.apartment.data.lon"
 							:lat="props.apartment.data.lat"
 							:is-input="false"
-							:markers="[
-								{
-									lon: props.apartment.data.lon,
-									lat: props.apartment.data.lat,
-								},
-							]"
+							:markers="markers"
 						/>
 					</div>
 				</div>
