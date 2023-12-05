@@ -18,7 +18,7 @@ createInertiaApp({
 			.use(ZiggyVue)
 			.use(
 				createYmaps({
-					apikey: '9fa90fbc-ce5f-4dc9-ae6d-433e0ec7338b',
+					apikey: '4b6179ba-b733-4d2b-af35-b06f33fc0141',
 				})
 			)
 			.mount(el)
