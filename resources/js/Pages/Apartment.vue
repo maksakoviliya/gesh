@@ -122,8 +122,8 @@
 				class="mt-6"
 				:images="apartment.data.media"
 			/>
-			<div class="flex flex-col items-start md:flex-row gap-6 justify-between mt-6 relative">
-				<div class="w-full">
+			<div class="flex flex-col items-start lg:flex-row gap-6 justify-between mt-6 relative">
+				<div class="w-full lg:w-2/3">
 					<Heading
 						:title="getTitle()"
 						:subtitle="getSubtitle()"
@@ -193,9 +193,9 @@
 					</div>
 				</div>
 				<div
-					class="md:sticky rounded-lg shadow-lg border border-neutral-100 w-full md:w-7/12 lg:1/3 top-28 p-6"
+					class="relative lg:sticky rounded-lg shadow-lg border border-neutral-100 w-full lg:w-1/3 lg:top-28 p-6"
 				>
-					<div class="flex gap-4">
+					<div class="flex flex-wrap gap-4">
 						<div class="text-2xl md:text-3xl font-semibold flex items-center gap-2">
 							{{ props.apartment.data.weekdays_price?.toLocaleString() }}₽
 							<div class="flex flex-col">
@@ -258,7 +258,7 @@
 										leave-to-class="translate-y-1 opacity-0"
 									>
 										<PopoverPanel
-											class="absolute left-1/2 z-10 mt-3 w-screen max-w-xs z-10 bg-white -translate-x-1/2 transform px-4 sm:px-0"
+											class="absolute left-0 lg:left-1/2 mt-3 w-screen max-w-xs z-10 bg-white lg:-translate-x-1/2 transform pr-4 sm:pr-0"
 										>
 											<div
 												class="overflow-hidden h-full rounded-lg shadow-lg ring-1 ring-black/5"
