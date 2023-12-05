@@ -19,6 +19,7 @@ use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\ApartmentShowController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomeMapController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestStoreController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestSubmitController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\Social\SocialRedirectController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/map', HomeMapController::class)->name('home.map');
 Route::get('/apartments/{apartment}', ApartmentShowController::class)->name('apartment');
 
 // Social Auth

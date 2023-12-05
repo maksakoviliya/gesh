@@ -178,7 +178,10 @@
 					>
 						{{ props.apartment.data.description }}
 					</div>
-					<div class="mt-4 py-4 border-t">
+					<div
+						class="mt-4 py-4 border-t"
+						v-if="props.apartment.data.lon && props.apartment.data.lat"
+					>
 						<Map
 							:lon="props.apartment.data.lon"
 							:lat="props.apartment.data.lat"
