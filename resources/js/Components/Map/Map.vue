@@ -77,7 +77,7 @@
 				<template #cluster="{ coordinates, length }">
 					<div
 						class="bg-white p-1 rounded-full w-12 h-12 cursor-pointer"
-						@click="map!.setLocation({ coordinates, zoom: 8 })"
+						@click="map!.setLocation({ coordinates, zoom: 14 })"
 					>
 						<div
 							class="rounded-full w-full h-full flex items-center justify-center font-semibold text-sm text-neutral-800 bg-gray-300"
