@@ -92,7 +92,7 @@ final class StoreRequest extends FormRequest
         return [
             'category_id.required' => 'Необходимо укзать категорию жилья.',
             'type.required' => 'Необходимо укзать тип жилья.',
-            'total_media' => 'Необходимо загрузить изображение'
+            'total_media' => 'Необходимо загрузить изображение',
         ];
     }
 

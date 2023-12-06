@@ -14,17 +14,14 @@ use Inertia\Response;
 
 final class ReservationsListController extends Controller
 {
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    public function __invoke(Request $request): \Inertia\Response
+    public function __invoke(Request $request): Response
     {
         $reservations = Reservation::query()
             ->where('user_id', Auth::id())
             ->get();
+
         return Inertia::render('Account/Reservations/List', [
-            'reservations' => ReservationResource::collection($reservations)
+            'reservations' => ReservationResource::collection($reservations),
         ]);
     }
 }

@@ -15,26 +15,22 @@ use Illuminate\Support\Facades\Auth;
 
 final class ReservationRequestStoreController extends Controller
 {
-    /**
-     * @param StoreRequest $request
-     * @param Apartment $apartment
-     * @return RedirectResponse
-     */
     public function __invoke(StoreRequest $request, Apartment $apartment): RedirectResponse
     {
         $chat = Chat::query()
             ->firstOrCreate([
                 'apartment_id' => $apartment->id,
-                'user_id' => Auth::id()
+                'user_id' => Auth::id(),
             ]);
         $reservation_request = ReservationRequest::createFromArray($request->validated(), $apartment);
         Message::query()->firstOrCreate([
-                'chat_id' => $chat->id,
-                'user_id' => Auth::id(),
-                'reservation_request_id' => $reservation_request->id
+            'chat_id' => $chat->id,
+            'user_id' => Auth::id(),
+            'reservation_request_id' => $reservation_request->id,
         ]);
+
         return to_route('account.apartments.chat', [
-            'apartment' => $apartment->id
+            'apartment' => $apartment->id,
         ]);
     }
 }

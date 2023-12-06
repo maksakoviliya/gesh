@@ -21,16 +21,16 @@ final class OwnerChatController extends Controller
         $chats = Chat::with(['last_message', 'apartment', 'user', 'apartment'])
             ->where('apartment_id', $apartment->id)
             ->get()
-            ->sortByDesc('last_message.created_at')
-        ;
+            ->sortByDesc('last_message.created_at');
         $messages = Message::query()
             ->with(['user'])
             ->where('chat_id', $chat->id)
             ->paginate(100);
+
         return Inertia::render('Account/Apartments/Owner/OwnerChat', [
             'chats' => ChatResource::collection($chats),
             'chat' => new ChatResource($chat),
-            'messages' =>  MessageResource::collection($messages)
+            'messages' => MessageResource::collection($messages),
         ]);
     }
 }

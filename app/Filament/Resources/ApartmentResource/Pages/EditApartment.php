@@ -17,19 +17,19 @@ class EditApartment extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-        Action::make('approve')
-            ->color('success')
-            ->label('Одобрить')
-            ->disabled(fn(Apartment $record) => $record->status === Status::Published)
-            ->action(function (Apartment $record) {
-                $record->approve();
-                Notification::make()
-                    ->success()
-                    ->title('Жилье одобрено')
-                    ->body('Теперь это объявление доступно для всех.')
-                    ->send();
-            })
-            ->requiresConfirmation(),
+            Action::make('approve')
+                ->color('success')
+                ->label('Одобрить')
+                ->disabled(fn (Apartment $record) => $record->status === Status::Published)
+                ->action(function (Apartment $record) {
+                    $record->approve();
+                    Notification::make()
+                        ->success()
+                        ->title('Жилье одобрено')
+                        ->body('Теперь это объявление доступно для всех.')
+                        ->send();
+                })
+                ->requiresConfirmation(),
             Actions\DeleteAction::make(),
         ];
     }

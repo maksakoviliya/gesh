@@ -12,22 +12,60 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * App\Models\Reservation
+ *
+ * @property string $id
+ * @property string $user_id
+ * @property string $apartment_id
+ * @property string|null $reservation_request_id
+ * @property string $start
+ * @property string $end
+ * @property int $guests
+ * @property int $children
+ * @property int $total_guests
+ * @property int $range
+ * @property int $price
+ * @property Status $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Apartment|null $apartment
+ * @property-read \App\Models\User|null $user
+ * @method static Builder|Reservation newModelQuery()
+ * @method static Builder|Reservation newQuery()
+ * @method static Builder|Reservation query()
+ * @method static Builder|Reservation whereApartmentId($value)
+ * @method static Builder|Reservation whereChildren($value)
+ * @method static Builder|Reservation whereCreatedAt($value)
+ * @method static Builder|Reservation whereEnd($value)
+ * @method static Builder|Reservation whereGuests($value)
+ * @method static Builder|Reservation whereId($value)
+ * @method static Builder|Reservation wherePrice($value)
+ * @method static Builder|Reservation whereRange($value)
+ * @method static Builder|Reservation whereReservationRequestId($value)
+ * @method static Builder|Reservation whereStart($value)
+ * @method static Builder|Reservation whereStatus($value)
+ * @method static Builder|Reservation whereTotalGuests($value)
+ * @method static Builder|Reservation whereUpdatedAt($value)
+ * @method static Builder|Reservation whereUserId($value)
+ * @mixin \Eloquent
+ */
 final class Reservation extends Model
 {
     use HasFactory, HasUlids;
 
     protected $guarded = [
         'id',
-        'created_at'
+        'created_at',
     ];
 
     protected $casts = [
-        'status' => Status::class
+        'status' => Status::class,
     ];
 
     protected $with = [
         'user',
-        'apartment'
+        'apartment',
     ];
 
     public function user(): BelongsTo
@@ -40,14 +78,9 @@ final class Reservation extends Model
         return $this->belongsTo(Apartment::class);
     }
 
-
-    /**
-     * @param ReservationRequest $reservationRequest
-     * @return Model|Builder
-     */
     public static function createFromReservationRequest(ReservationRequest $reservationRequest): Model|Builder
     {
-        $reservation =  Reservation::query()
+        $reservation = Reservation::query()
             ->create([
                 'user_id' => $reservationRequest->user_id,
                 'apartment_id' => $reservationRequest->apartment_id,
@@ -59,7 +92,7 @@ final class Reservation extends Model
                 'total_guests' => $reservationRequest->total_guests,
                 'range' => $reservationRequest->range,
                 'price' => $reservationRequest->price,
-        ]);
+            ]);
         $period = CarbonPeriod::create(
             $reservationRequest->start,
             $reservationRequest->end->subDay(),
@@ -71,12 +104,14 @@ final class Reservation extends Model
                     'date' => $date,
                 ]);
         }
+
         return $reservation;
     }
 
     public function setStatus(Status $status): bool
     {
         $this->status = $status;
+
         return $this->save();
     }
 }

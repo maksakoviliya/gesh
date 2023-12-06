@@ -9,13 +9,13 @@ use App\Http\Requests\Chat\Messages\StoreRequest;
 use App\Models\Chat\Chat;
 use App\Models\Chat\Message;
 use Illuminate\Http\RedirectResponse;
-use Inertia\Inertia;
 
 final class MessageStoreController extends Controller
 {
     public function __invoke(StoreRequest $request, Chat $chat): RedirectResponse
     {
         Message::createFromArray($request->validated());
+
         return back();
     }
 }

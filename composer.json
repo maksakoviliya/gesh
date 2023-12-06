@@ -24,10 +24,12 @@
         "socialiteproviders/google": "^4.1",
         "socialiteproviders/vkontakte": "^5.0",
         "spatie/laravel-permission": "^6.1",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "yoomoney/yookassa-sdk-php": "^3.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
+        "barryvdh/laravel-ide-helper": "*",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.18",
@@ -52,7 +54,11 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan filament:upgrade",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -n",
+            "@php artisan ide-helper:meta",
+            "./vendor/bin/pint"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

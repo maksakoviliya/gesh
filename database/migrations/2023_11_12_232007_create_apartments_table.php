@@ -67,7 +67,7 @@ return new class extends Migration
             // Step 12
             // Sales
 
-//            $table->json('')
+            //            $table->json('')
 
             $table->timestamps();
         });

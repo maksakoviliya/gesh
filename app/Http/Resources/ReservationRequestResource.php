@@ -25,7 +25,7 @@ class ReservationRequestResource extends JsonResource
             'status' => $this->resource->status,
             'status_text' => $this->resource->status_text,
             'created_at' => Carbon::parse($this->resource->created_at)->format('d.m.Y H:i'),
-            'reservation' => new ReservationResource($this->whenLoaded('reservation'))
+            'reservation' => new ReservationResource($this->whenLoaded('reservation')),
         ];
     }
 }

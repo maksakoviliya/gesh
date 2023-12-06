@@ -22,8 +22,9 @@ final class ApartmentShowController extends Controller
             },
             'disabledDates' => function ($query) {
                 $query->whereDate('date', '>=', Carbon::now());
-            }
+            },
         ]);
+
         return Inertia::render('Apartment', [
             'apartment' => new ApartmentResource($apartment),
         ]);

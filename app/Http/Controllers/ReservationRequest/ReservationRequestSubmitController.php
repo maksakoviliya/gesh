@@ -21,7 +21,6 @@ final class ReservationRequestSubmitController extends Controller
         $reservationRequest = ReservationRequest::query()
             ->find($reservationRequest->id);
 
-
         return response()->json([
             'success' => true,
             'status' => $reservationRequest->status,

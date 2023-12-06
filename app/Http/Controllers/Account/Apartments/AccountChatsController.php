@@ -20,8 +20,9 @@ final class AccountChatsController extends Controller
             ->where('apartment_id', $apartment->id)
             ->get()
             ->sortByDesc('last_message.created_at');
+
         return Inertia::render('Account/Apartments/Owner/OwnerChat', [
-            'chats' => ChatResource::collection($chats)
+            'chats' => ChatResource::collection($chats),
         ]);
     }
 }

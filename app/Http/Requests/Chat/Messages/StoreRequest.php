@@ -19,7 +19,7 @@ class StoreRequest extends FormRequest
         $this->merge([
             'user_id' => Auth::id(),
             'chat_id' => $this->chat?->id,
-            'apartment_id' => $this->chat?->apartment?->id
+            'apartment_id' => $this->chat?->apartment?->id,
         ]);
     }
 
@@ -28,7 +28,7 @@ class StoreRequest extends FormRequest
         return [
             'chat_id' => 'required|exists:chats,id',
             'user_id' => 'required|exists:users,id',
-            'message' => 'required|string|min:1|max:9999'
+            'message' => 'required|string|min:1|max:9999',
         ];
     }
 }

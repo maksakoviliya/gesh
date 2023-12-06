@@ -1,18 +1,16 @@
 <script setup>
-defineProps({
-    center: Boolean,
-    title: String,
-    subtitle: String
-})
+	defineProps({
+		center: Boolean,
+		title: String,
+		subtitle: String,
+	})
 </script>
 
 <template>
-    <div :class="center ? 'text-center' : 'text-start'">
-        <div class="text-2xl font-bold">
-            {{ title }}
-        </div>
-        <div class="font-light text-neutral-500 mt-2" v-if="subtitle">
-            {{ subtitle }}
-        </div>
-    </div>
+	<div class="center ? 'text-center' : 'text-start'">
+		<h2 class="text-3xl font-bold tracking-tight text-neutral-800 sm:text-4xl">{{ title }}</h2>
+		<p class="mt-2 text-lg leading-8 text-neutral-600">
+			{{ subtitle }}
+		</p>
+	</div>
 </template>

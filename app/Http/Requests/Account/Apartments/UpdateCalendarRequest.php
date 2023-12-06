@@ -10,7 +10,7 @@ class UpdateCalendarRequest extends FormRequest
 {
     public function authorize(): bool
     {
-         return $this->user()->can('update', $this->apartment);
+        return $this->user()->can('update', $this->apartment);
     }
 
     public function rules(): array

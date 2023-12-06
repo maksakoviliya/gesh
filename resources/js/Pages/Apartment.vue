@@ -228,6 +228,7 @@
 							range
 							:start="form.start"
 							:end="form.end"
+							:disabled-dates="props.apartment.data.disabled_dates?.map((item) => item.date)"
 							@setDates="handleSetDates"
 						/>
 						<Counter

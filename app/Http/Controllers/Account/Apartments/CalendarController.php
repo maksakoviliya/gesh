@@ -9,7 +9,6 @@ use App\Http\Resources\ApartmentResource;
 use App\Models\Apartment;
 use App\Models\Reservation;
 use App\Models\ReservationRequest;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -30,7 +29,7 @@ final class CalendarController extends Controller
                     'start' => $item->start,
                     'end' => $item->end,
                     'allDay' => true,
-                    'className' => 'bg-red-200 border-red-200 px-2'
+                    'className' => 'bg-red-200 border-red-200 px-2',
                 ];
             }));
         $reservations = collect(Reservation::query()
@@ -43,13 +42,14 @@ final class CalendarController extends Controller
                     'start' => $item->start,
                     'end' => $item->end,
                     'allDay' => true,
-                    'className' => 'bg-blue-500 border-green-200 px-2'
+                    'className' => 'bg-blue-500 border-green-200 px-2',
                 ];
             }));
         $events = $reservationRequests->merge($reservations);
+
         return Inertia::render('Account/Apartments/Calendar', [
             'apartment' => new ApartmentResource($apartment),
-            'events' => $events
+            'events' => $events,
         ]);
     }
 }

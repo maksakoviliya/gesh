@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Account\AccountIndexController;
 use App\Http\Controllers\Account\AccountProfileController;
-use App\Http\Controllers\Account\Apartments\OwnerChatController;
 use App\Http\Controllers\Account\Apartments\AccountChatsController;
 use App\Http\Controllers\Account\Apartments\CalendarController;
 use App\Http\Controllers\Account\Apartments\CreateController;
 use App\Http\Controllers\Account\Apartments\ListController;
+use App\Http\Controllers\Account\Apartments\OwnerChatController;
 use App\Http\Controllers\Account\Apartments\PendingController;
 use App\Http\Controllers\Account\Apartments\StepController;
 use App\Http\Controllers\Account\Apartments\StoreController;
@@ -81,8 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::prefix('reservations')
                 ->as('reservations.')->group(function () {
                     Route::get('/', ReservationsListController::class)->name('list');
+                    Route::get('{reservation}/pay', ReservationPayController::class)->name('pay');
                     Route::get('{reservation}', ReservationViewController::class)->name('view');
-                    Route::post('{reservation}', ReservationPayController::class)->name('pay');
                 });
         });
 

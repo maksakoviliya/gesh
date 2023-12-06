@@ -42,4 +42,9 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
+
+    'yookassa' => [
+        'shop_id' => env('YOOKASSA_SHOP_ID', null),
+        'secret' => env('YOOKASSA_SECRET', null),
+    ],
 ];

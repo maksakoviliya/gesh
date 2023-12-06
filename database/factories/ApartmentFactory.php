@@ -39,8 +39,8 @@ class ApartmentFactory extends Factory
             'index' => 'index',
 
             // Step 4
-            'lon' => $this->faker->longitude(1,60),
-            'lat' => $this->faker->latitude(1,60),
+            'lon' => $this->faker->longitude(1, 60),
+            'lat' => $this->faker->latitude(1, 60),
 
             // Step 5
             'guests' => rand(1, 5),
@@ -79,7 +79,7 @@ class ApartmentFactory extends Factory
                 $imageUrl = $this->faker->imageUrl;
                 $apartment->addMediaFromUrl($imageUrl)->toMediaCollection();
             } catch (\Exception $exception) {
-                
+
             }
         });
     }

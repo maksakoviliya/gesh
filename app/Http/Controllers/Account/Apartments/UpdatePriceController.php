@@ -13,11 +13,12 @@ final class UpdatePriceController extends Controller
     public function __invoke(UpdatePriceRequest $request, Apartment $apartment)
     {
         $apartment->update([
-            "weekdays_price" => $request->validated('weekdays_price'),
-            "weekends_price" => $request->validated('weekends_price')
+            'weekdays_price' => $request->validated('weekdays_price'),
+            'weekends_price' => $request->validated('weekends_price'),
         ]);
+
         return to_route('account.apartments.calendar', [
-            'apartment' => $apartment
+            'apartment' => $apartment,
         ]);
     }
 }

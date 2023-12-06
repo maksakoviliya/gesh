@@ -8,18 +8,29 @@ use App\Enums\Reservation\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Models\Transaction;
+use App\Services\PaymentServiceContract;
+use Error;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
 
 final class ReservationPayController extends Controller
 {
-    public function __invoke(Request $request, Reservation $reservation)
+    public function __invoke(Request $request, Reservation $reservation, PaymentServiceContract $paymentService): Response
     {
         $transaction = Transaction::createForReservation($reservation);
-        if ($transaction->amount >= $reservation->price) {
-            $reservation->setStatus(Status::Paid);
-        }
-        return redirect()->route('account.reservations.view', [
-            'reservation' => $reservation->id
+
+        $redirectUrl = $paymentService->createPayment($reservation->price, [
+            'reservation_id' => $reservation->id,
+            'transaction_id' => $transaction->id,
         ]);
+
+        if (!$redirectUrl) {
+            throw new Error('PaymentService Error');
+        }
+
+        $reservation->setStatus(Status::Paid);
+
+        return Inertia::location($redirectUrl);
     }
 }

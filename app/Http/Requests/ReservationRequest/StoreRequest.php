@@ -9,23 +9,17 @@ use Illuminate\Support\Facades\Auth;
 
 final class StoreRequest extends FormRequest
 {
-    /**
-     * @return bool
-     */
     public function authorize(): bool
     {
         return Auth::check();
     }
 
-    /**
-     * @return void
-     */
     protected function prepareForValidation(): void
     {
         $this->merge([
             'apartment_id' => $this->apartment?->id,
             'total_guests' => $this->input('guests', 0) + $this->input('children', 0),
-            'user_id' => Auth::id()
+            'user_id' => Auth::id(),
         ]);
     }
 
@@ -46,8 +40,8 @@ final class StoreRequest extends FormRequest
                 'required',
                 'integer',
                 'min:1',
-                "max:{$this->apartment->guests}"
-            ]
+                "max:{$this->apartment->guests}",
+            ],
         ];
     }
 }

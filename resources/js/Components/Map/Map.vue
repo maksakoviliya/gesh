@@ -19,6 +19,14 @@
 	const map = shallowRef<null | YMap>(null)
 
 	const props = defineProps({
+		lon: {
+			type: [String, Number, null],
+			default: 87.98709856259356,
+		},
+		lat: {
+			type: [String, Number, null],
+			default: 52.92596754124867,
+		},
 		markers: {
 			type: Array,
 			default: () => [],
@@ -44,7 +52,7 @@
 			v-model="map"
 			:settings="{
 				location: {
-					center: [87.98709856259356, 52.92596754124867],
+					center: [props.lat, props.lon],
 					zoom: 13,
 				},
 			}"

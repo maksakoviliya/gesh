@@ -13,7 +13,7 @@ class DatePriceResource extends JsonResource
     {
         return [
             'date' => $this->resource->date,
-            'price' => $this->resource->price
+            'price' => $this->resource->price,
         ];
     }
 }

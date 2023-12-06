@@ -14,7 +14,7 @@ final class ReservationResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'apartment' => new ApartmentResource($this->resource->apartment->load('datePrices')),
+            'apartment' => new ApartmentResource($this->resource->apartment?->load('datePrices')),
             'user' => new UserResource($this->resource->user),
             'start' => Carbon::parse($this->resource->start)->format('d.m.Y'),
             'end' => Carbon::parse($this->resource->end)->format('d.m.Y'),

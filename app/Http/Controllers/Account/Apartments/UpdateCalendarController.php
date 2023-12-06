@@ -22,13 +22,14 @@ final class UpdateCalendarController extends Controller
         foreach ($period as $date) {
             DatePrice::query()->updateOrCreate([
                 'apartment_id' => $apartment->id,
-                'date' => $date
+                'date' => $date,
             ], [
-                'price' => $request->validated('price')
+                'price' => $request->validated('price'),
             ]);
         }
+
         return to_route('account.apartments.calendar', [
-            'apartment' => $apartment
+            'apartment' => $apartment,
         ]);
     }
 }

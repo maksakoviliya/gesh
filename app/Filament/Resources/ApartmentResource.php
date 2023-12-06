@@ -7,7 +7,6 @@ use App\Enums\Apartments\Type;
 use App\Filament\Resources\ApartmentResource\Pages;
 use App\Models\Apartment;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
-use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -29,92 +28,92 @@ class ApartmentResource extends Resource
     {
         return $form
             ->schema([
-                        Forms\Components\Group::make()
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make('Шаг 1')
                             ->schema([
-                                Forms\Components\Section::make('Шаг 1')
-                                    ->schema([
-                                        Select::make('category')
-                                            ->relationship('category', 'title')
-                                            ->preload()
-                                            ->columnSpan('full'),
+                                Select::make('category')
+                                    ->relationship('category', 'title')
+                                    ->preload()
+                                    ->columnSpan('full'),
+                            ])
+                            ->columns(3),
+                        Forms\Components\Section::make('Шаг 2')
+                            ->schema([
+                                Select::make('type')
+                                    ->options([
+                                        Type::WHOLE->value => 'Жилье целиком',
+                                        Type::ROOM->value => 'Комната',
+                                        Type::HOSTEL->value => 'Общая комната',
                                     ])
-                                    ->columns(3),
-                                Forms\Components\Section::make('Шаг 2')
-                                    ->schema([
-                                        Select::make('type')
-                                            ->options([
-                                                Type::WHOLE->value => 'Жилье целиком',
-                                                Type::ROOM->value => 'Комната',
-                                                Type::HOSTEL->value => 'Общая комната',
-                                            ])
-                                            ->columnSpan('full'),
-                                    ])
-                                    ->columns(3),
-                                Forms\Components\Section::make('Шаг 3')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('country_code')->disabled(),
-                                        Forms\Components\TextInput::make('state'),
-                                        Forms\Components\TextInput::make('city'),
-                                        Forms\Components\TextInput::make('street'),
-                                        Forms\Components\TextInput::make('building'),
-                                        Forms\Components\TextInput::make('housing'),
-                                        Forms\Components\TextInput::make('room'),
-                                        Forms\Components\TextInput::make('floor'),
-                                        Forms\Components\TextInput::make('entrance'),
-                                        Forms\Components\TextInput::make('index'),
-                                    ])->collapsible()->columns()->collapsed(),
-                                Forms\Components\Section::make('Шаг 4')
-                                    ->schema([
-//                                        Map::make('location')->label('Гугл карта не рабоатет. Нужен ключ.')->columnSpan('full'),
-                                        Forms\Components\TextInput::make('lat'),
-                                        Forms\Components\TextInput::make('lon'),
-                                    ])->collapsible()->collapsed()->columns(),
-                                Forms\Components\Section::make('Шаг 5')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('guests'),
-                                        Forms\Components\TextInput::make('bedrooms'),
-                                        Forms\Components\TextInput::make('beds'),
-                                        Forms\Components\TextInput::make('bathrooms'),
-                                    ])->collapsible()->columns(4),
-                                Forms\Components\Section::make('Шаг 6')
-                                    ->schema([
-                                        Select::make('features')
-                                            ->relationship('features', 'title')
-                                            ->multiple()
-                                            ->preload()
-                                            ->columnSpan('full'),
-                                    ])->collapsible(),
-                                Forms\Components\Section::make('Шаг 8')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('title'),
-                                    ])->collapsible(),
-                                Forms\Components\Section::make('Шаг 9')
-                                    ->schema([
-                                        Forms\Components\Textarea::make('description'),
-                                    ])->collapsible(),
-                                Forms\Components\Section::make('Шаг 10')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('weekdays_price')->label('Цена в будни'),
-                                        Forms\Components\TextInput::make('weekends_price')->label('Цена в выходные'),
-                                    ])->collapsible()->columns(),
-                                Forms\Components\Section::make('Шаг 11')
-                                    ->schema([
-                                        Forms\Components\Toggle::make('fast_reserve')->label('Моментальное бронирование'),
-                                    ])->collapsible()->columns(),
+                                    ->columnSpan('full'),
+                            ])
+                            ->columns(3),
+                        Forms\Components\Section::make('Шаг 3')
+                            ->schema([
+                                Forms\Components\TextInput::make('country_code')->disabled(),
+                                Forms\Components\TextInput::make('state'),
+                                Forms\Components\TextInput::make('city'),
+                                Forms\Components\TextInput::make('street'),
+                                Forms\Components\TextInput::make('building'),
+                                Forms\Components\TextInput::make('housing'),
+                                Forms\Components\TextInput::make('room'),
+                                Forms\Components\TextInput::make('floor'),
+                                Forms\Components\TextInput::make('entrance'),
+                                Forms\Components\TextInput::make('index'),
+                            ])->collapsible()->columns()->collapsed(),
+                        Forms\Components\Section::make('Шаг 4')
+                            ->schema([
+                                //                                        Map::make('location')->label('Гугл карта не рабоатет. Нужен ключ.')->columnSpan('full'),
+                                Forms\Components\TextInput::make('lat'),
+                                Forms\Components\TextInput::make('lon'),
+                            ])->collapsible()->collapsed()->columns(),
+                        Forms\Components\Section::make('Шаг 5')
+                            ->schema([
+                                Forms\Components\TextInput::make('guests'),
+                                Forms\Components\TextInput::make('bedrooms'),
+                                Forms\Components\TextInput::make('beds'),
+                                Forms\Components\TextInput::make('bathrooms'),
+                            ])->collapsible()->columns(4),
+                        Forms\Components\Section::make('Шаг 6')
+                            ->schema([
+                                Select::make('features')
+                                    ->relationship('features', 'title')
+                                    ->multiple()
+                                    ->preload()
+                                    ->columnSpan('full'),
+                            ])->collapsible(),
+                        Forms\Components\Section::make('Шаг 8')
+                            ->schema([
+                                Forms\Components\TextInput::make('title'),
+                            ])->collapsible(),
+                        Forms\Components\Section::make('Шаг 9')
+                            ->schema([
+                                Forms\Components\Textarea::make('description'),
+                            ])->collapsible(),
+                        Forms\Components\Section::make('Шаг 10')
+                            ->schema([
+                                Forms\Components\TextInput::make('weekdays_price')->label('Цена в будни'),
+                                Forms\Components\TextInput::make('weekends_price')->label('Цена в выходные'),
+                            ])->collapsible()->columns(),
+                        Forms\Components\Section::make('Шаг 11')
+                            ->schema([
+                                Forms\Components\Toggle::make('fast_reserve')->label('Моментальное бронирование'),
+                            ])->collapsible()->columns(),
 
-
-                            ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
-                       Forms\Components\Group::make()
+                    ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
+                Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\Placeholder::make('status')
                                     ->label('Статус')
-                                    ->content(fn (Apartment $record) => __('statuses.' . $record->status->value)),
+                                    ->content(fn (Apartment $record) => __('statuses.'.$record->status->value)),
                                 Forms\Components\Placeholder::make('user')
                                     ->label('Владелец')
-                                    ->content(function(Apartment $record){
+                                    ->content(function (Apartment $record) {
                                         $url = UserResource::getUrl('edit', ['record' => $record->user_id]);
+
                                         return new HtmlString("<a href={$url}>{$record->user->name}</a>");
                                     }),
                                 Forms\Components\Placeholder::make('created_at')
@@ -132,10 +131,10 @@ class ApartmentResource extends Resource
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('media')
                                     ->multiple()
-                                    ->maxFiles(10)
+                                    ->maxFiles(10),
                             ])
                             ->collapsible(),
-                    ])
+                    ]),
             ])
             ->columns(3);
     }
@@ -150,9 +149,9 @@ class ApartmentResource extends Resource
                     ->badge(),
                 TextColumn::make('user.name')
                     ->description(fn (Apartment $record): string => $record->user->email)
-                ->url(function($record) {
-                    return UserResource::getUrl('edit', ['record' => $record->user]);
-                }),
+                    ->url(function ($record) {
+                        return UserResource::getUrl('edit', ['record' => $record->user]);
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(fn (Status $state): string => __("statuses.{$state->value}"))

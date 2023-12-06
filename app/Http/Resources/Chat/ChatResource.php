@@ -17,7 +17,7 @@ final class ChatResource extends JsonResource
             'id' => $this->resource->id,
             'user' => new UserResource($this->resource->user),
             'apartment' => new ApartmentResource($this->resource->apartment),
-            'last_message'=> new MessageResource($this->whenLoaded('last_message'))
+            'last_message' => new MessageResource($this->whenLoaded('last_message')),
         ];
     }
 }

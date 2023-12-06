@@ -7,7 +7,6 @@ namespace App\Http\Controllers\ReservationRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest\RejectRequest;
 use App\Models\ReservationRequest;
-use Illuminate\Http\RedirectResponse;
 
 final class ReservationRequestRejectController extends Controller
 {
@@ -15,6 +14,7 @@ final class ReservationRequestRejectController extends Controller
     {
         $reservationRequest->reject($request->validated('status_text'));
         $reservationRequest = ReservationRequest::query()->find($reservationRequest->id);
+
         return response()->json([
             'success' => true,
             'status' => $reservationRequest->status,

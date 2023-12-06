@@ -20,8 +20,9 @@ final class ReservationViewController extends Controller
         if ($reservation->status === Status::Pending) {
             $page = 'Account/Reservations/Payment';
         }
+
         return Inertia::render($page, [
-            'reservation' => new ReservationResource($reservation)
+            'reservation' => new ReservationResource($reservation),
         ]);
     }
 }
