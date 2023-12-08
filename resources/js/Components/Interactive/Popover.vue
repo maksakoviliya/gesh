@@ -1,5 +1,12 @@
 <script setup>
 import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
+
+const props = defineProps({
+    maxWidthClass: {
+        type: String,
+        default: 'max-w-xs'
+    }
+})
 </script>
 
 <template>
@@ -18,7 +25,8 @@ import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
             leave-to-class="translate-y-1 opacity-0"
         >
             <PopoverPanel
-                class="absolute left-0 lg:left-1/2 mt-3 w-screen max-w-xs z-10 lg:-translate-x-1/2 transform pr-4 sm:pr-0"
+                :class="props.maxWidthClass"
+                class="absolute left-0 lg:left-1/2 mt-3 w-screen z-20 lg:-translate-x-1/2 transform pr-4 sm:pr-0"
             >
                 <div
                     class="overflow-hidden bg-white h-full rounded-lg shadow-lg ring-1 ring-black/5"
