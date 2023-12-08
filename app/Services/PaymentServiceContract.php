@@ -10,7 +10,7 @@ interface PaymentServiceContract
 {
     public function getClient();
 
-    public function createPayment(int $amount, array $additionalParameters = null);
+    public function createPayment(int $amount, string $return_url, string $description);
 
     public function callback(Request $request);
 }

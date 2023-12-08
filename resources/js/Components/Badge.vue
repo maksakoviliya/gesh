@@ -17,6 +17,8 @@ const classes  = computed(() => {
             return 'bg-green-200 text-teal-800'
         case 'warning':
             return 'bg-yellow-200 text-yellow-800'
+        case 'pending':
+            return 'bg-sky-200 text-sky-800'
         default:
             return 'bg-gray-200 text-neutral-800'
     }

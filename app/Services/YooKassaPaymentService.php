@@ -19,31 +19,30 @@ class YooKassaPaymentService implements PaymentServiceContract
         return $client;
     }
 
-    public function createPayment(int $amount, array $additionalParameters = null)
+    public function createPayment(int $amount, string $return_url, string $description)
     {
-//        try {
-            $client = $this->getClient();
-            $payment = $client->createPayment(
-                [
-                    'amount' => [
-                        'value' => $amount,
-                        'currency' => 'RUB',
-                    ],
-                    'confirmation' => [
-                        'type' => 'redirect',
-                        'return_url' => route('account.reservations.view', [
-                            'reservation' => Arr::get($additionalParameters, 'reservation_id'),
-                        ]),
-                    ],
-                    'capture' => true,
-                    'description' => Arr::get($additionalParameters, 'reservation_id'),
+        //        try {
+        $client = $this->getClient();
+        $payment = $client->createPayment(
+            [
+                'amount' => [
+                    'value' => $amount,
+                    'currency' => 'RUB',
                 ],
-                uniqid('', true)
-            );
-            return $payment->getConfirmation()->getConfirmationUrl();
-//        } catch (\Throwable $exception) {
-//            Log::error($exception->getMessage());
-//        }
+                'confirmation' => [
+                    'type' => 'redirect',
+                    'return_url' => $return_url,
+                ],
+                'capture' => true,
+                'description' => $description,
+            ],
+            uniqid('', true)
+        );
+
+        return $payment->getConfirmation()->getConfirmationUrl();
+        //        } catch (\Throwable $exception) {
+        //            Log::error($exception->getMessage());
+        //        }
     }
 
     public function callback(Request $request)

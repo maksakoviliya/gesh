@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Apartment|null $apartment
  * @property-read \App\Models\User|null $user
+ *
  * @method static Builder|Reservation newModelQuery()
  * @method static Builder|Reservation newQuery()
  * @method static Builder|Reservation query()
@@ -48,6 +49,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Reservation whereTotalGuests($value)
  * @method static Builder|Reservation whereUpdatedAt($value)
  * @method static Builder|Reservation whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 final class Reservation extends Model
@@ -61,6 +63,8 @@ final class Reservation extends Model
 
     protected $casts = [
         'status' => Status::class,
+        'start' => 'datetime',
+        'end' => 'datetime',
     ];
 
     protected $with = [
@@ -113,5 +117,11 @@ final class Reservation extends Model
         $this->status = $status;
 
         return $this->save();
+    }
+
+    public function getFirstPaymentAmount(): int
+    {
+        $totalPrice = ceil($this->price * 1.15);
+        return (int) ceil($totalPrice * 0.3);
     }
 }

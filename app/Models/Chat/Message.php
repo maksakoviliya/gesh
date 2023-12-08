@@ -24,6 +24,7 @@ use Illuminate\Support\Arr;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read ReservationRequest|null $reservation_request
  * @property-read User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message query()
@@ -35,6 +36,7 @@ use Illuminate\Support\Arr;
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereReservationRequestId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Message extends Model

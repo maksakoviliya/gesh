@@ -65,6 +65,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read \App\Models\User|null $user
+ *
  * @method static \Database\Factories\ApartmentFactory factory($count = null, $state = [])
  * @method static Builder|Apartment filter(\Illuminate\Http\Request $request)
  * @method static Builder|Apartment newModelQuery()
@@ -100,6 +101,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Apartment whereUserId($value)
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
+ *
  * @mixin \Eloquent
  */
 final class Apartment extends Model implements HasMedia

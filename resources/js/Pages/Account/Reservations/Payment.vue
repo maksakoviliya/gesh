@@ -6,9 +6,9 @@
 	import { computed, ref } from 'vue'
 	import dayjs from 'dayjs'
 	import customParseFormat from 'dayjs/plugin/customParseFormat'
-	import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
+    import Popover from "@/Components/Interactive/Popover.vue";
 
 	const props = defineProps({
 		reservation: {
@@ -107,6 +107,18 @@
 			label: 'Оплата',
 		},
 	])
+
+    const servicePrice = computed(() => {
+        return Math.ceil(basePrice.value*0.15)
+    })
+
+    const totalPrice = computed(() => {
+        return basePrice.value + servicePrice.value
+    })
+
+    const firstPayment = computed(() => {
+        return Math.ceil(totalPrice.value * 0.3)
+    })
 </script>
 
 <template>
@@ -142,12 +154,14 @@
 					</div>
 					<div>
 						<div class="font-semibold text-xl mt-4 pt-2 border-t border-gray-100">Оплата:</div>
-						<ButtonComponent
-							class="mt-3 px-16"
-							:auto-width="true"
-							label="Перейти к оплате"
-							@click="redirectToPayPage"
-						/>
+                        <ButtonComponent
+                            class="mt-3 px-16"
+                            :auto-width="true"
+                            :label="`Перейти к оплате: ${firstPayment.toLocaleString()}₽`"
+                            @click="redirectToPayPage"
+                        />
+                        <div class="font-light text-sm text-neutral-800 leading-tight mt-2">
+                            Сейчас вам необходимо оплатить только 30% от общей суммы, чтобы забронировать жилье. Оставшуюся сумму вы сможете перевести хозяину при заселении в жилье. Таким образом, вы можете забронировать жилье заранее и не переживать о полной оплате до момента заселения. Оплата оставшейся суммы при заселении гарантирует вам получение жилья и удобство в расчетах.</div>
 					</div>
 				</div>
 				<div
@@ -180,77 +194,83 @@
 					</div>
 					<div class="font-semibold text-xl mt-4 pt-2 border-t border-gray-100">Детализация цены:</div>
 					<dl class="divide-y divide-gray-100">
-						<div class="py-4 flex w-full items-baseline justify-between">
-							<dt class="font-light leading-6 text-пкфн-600">
-								<Popover class="relative">
-									<PopoverButton
-										class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
-									>
-										{{ detalizationText }}
-									</PopoverButton>
-
-									<transition
-										enter-active-class="transition duration-200 ease-out"
-										enter-from-class="translate-y-1 opacity-0"
-										enter-to-class="translate-y-0 opacity-100"
-										leave-active-class="transition duration-150 ease-in"
-										leave-from-class="translate-y-0 opacity-100"
-										leave-to-class="translate-y-1 opacity-0"
-									>
-										<PopoverPanel
-											class="absolute left-1/2 z-10 mt-3 w-screen max-w-xs z-10 bg-white -translate-x-1/2 transform px-4 sm:px-0"
-										>
-											<div
-												class="overflow-hidden h-full rounded-lg shadow-lg ring-1 ring-black/5"
-											>
-												<dl class="divide-y divide-gray-100 max-h-52 overflow-auto">
-													<div
-														class="py-1 px-4 flex w-full items-baseline justify-between"
-														v-for="item in details"
-														:key="item.date"
-													>
-														<dt class="font-light text-sm leading-6 text-gray-600">
-															{{ item.date }}
-														</dt>
-														<dd class="mt-1 text-sm font-medium leading-6 text-neutral-600">
-															{{ item.price?.toLocaleString() }}₽
-														</dd>
-													</div>
-												</dl>
-											</div>
-										</PopoverPanel>
-									</transition>
-								</Popover>
+                        <div class="py-2 flex w-full items-baseline justify-between">
+                            <dt class="font-light leading-6 text-пкфн-600">
+                                <div>Гости:</div>
+                            </dt>
+                            <dd class="mt-1 font-medium leading-6 text-neutral-600">
+                                {{ props.reservation.data.guests }}
+                            </dd>
+                        </div>
+                        <div
+                            class="py-2 flex w-full items-baseline justify-between"
+                            v-if="props.reservation.data.children > 0"
+                        >
+                            <dt class="font-light leading-6 text-пкфн-600">
+                                <div>Дети:</div>
+                            </dt>
+                            <dd class="mt-1 font-medium leading-6 text-neutral-600">
+                                {{ props.reservation.data.children }}
+                            </dd>
+                        </div>
+                        <div class="py-4 flex flex-col gap-2">
+                            <div class="flex w-full items-baseline justify-between" >
+                                <dt class="font-light leading-6 text-gray-600">
+                                    <Popover>
+                                        <template #toggle>
+                                            <div class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition">
+                                                {{ detalizationText }}
+                                            </div>
+                                        </template>
+                                        <template #content>
+                                            <dl class="divide-y divide-gray-100 max-h-52 overflow-auto">
+                                                <div
+                                                    class="py-1 px-4 flex w-full items-baseline justify-between"
+                                                    v-for="item in details"
+                                                    :key="item.date"
+                                                >
+                                                    <dt class="font-light text-sm leading-6 text-gray-600">
+                                                        {{ item.date }}
+                                                    </dt>
+                                                    <dd class="mt-1 text-sm font-medium leading-6 text-neutral-600">
+                                                        {{ item.price?.toLocaleString() }}₽
+                                                    </dd>
+                                                </div>
+                                            </dl>
+                                        </template>
+                                    </Popover>
+                                </dt>
+                                <dd class="mt-1 font-medium leading-6 text-neutral-600">
+                                    {{ basePrice?.toLocaleString() }}₽
+                                </dd>
+                            </div>
+                            <div class="flex w-full items-baseline justify-between" >
+                                <dt class="font-light leading-6">
+                                    <Popover>
+                                        <template #toggle>
+                                            <div class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition">
+                                                Сервисный сбор
+                                            </div>
+                                        </template>
+                                        <template #content>
+                                            <div class="max-h-52 p-4 text-neutral-600 leading-tight text-sm">
+                                                Благодаря этому сбору мы развиваем наш сервис и, в том числе, обеспечиваем путешественников круглосуточной поддержкой.
+                                                <br> Данный сервисный сбор удерживатеся при отмене без уважительных причин.
+                                            </div>
+                                        </template>
+                                    </Popover>
+                                </dt>
+                                <dd class="mt-1 font-medium leading-6 text-neutral-600">
+                                    {{ servicePrice?.toLocaleString() }}₽
+                                </dd>
+                            </div>
+                        </div>
+						<div class="pt-4 flex w-full items-baseline justify-between">
+							<dt class="font-bold leading-6 text-neutral-00">
+								<div>Итого:</div>
 							</dt>
-							<dd class="mt-1 font-medium leading-6 text-neutral-600">
-								{{ basePrice?.toLocaleString() }}₽
-							</dd>
-						</div>
-						<div class="py-2 flex w-full items-baseline justify-between">
-							<dt class="font-light leading-6 text-пкфн-600">
-								<div>Гости:</div>
-							</dt>
-							<dd class="mt-1 font-medium leading-6 text-neutral-600">
-								{{ props.reservation.data.guests }}
-							</dd>
-						</div>
-						<div
-							class="py-2 flex w-full items-baseline justify-between"
-							v-if="props.reservation.data.children > 0"
-						>
-							<dt class="font-light leading-6 text-пкфн-600">
-								<div>Дети:</div>
-							</dt>
-							<dd class="mt-1 font-medium leading-6 text-neutral-600">
-								{{ props.reservation.data.children }}
-							</dd>
-						</div>
-						<div class="py-2 flex w-full items-baseline justify-between">
-							<dt class="font-light leading-6 text-пкфн-600">
-								<div>Стоимость:</div>
-							</dt>
-							<dd class="mt-1 font-medium leading-6 text-neutral-600">
-								{{ props.reservation.data.price.toLocaleString() }}₽
+							<dd class="mt-1 font-bold leading-6 text-neutral-800">
+								{{ totalPrice.toLocaleString() }}₽
 							</dd>
 						</div>
 					</dl>

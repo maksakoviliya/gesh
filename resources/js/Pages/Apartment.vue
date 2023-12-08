@@ -9,10 +9,10 @@
 	import Avatar from '@/Components/Avatar.vue'
 	import { useForm } from '@inertiajs/vue3'
 	import dayjs from 'dayjs'
-	import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 	import useToasts from '@/hooks/useToasts'
 	import Datepicker from '@/Components/Datepicker.vue'
 	import Map from '@/Components/Map/Map.vue'
+    import Popover from "@/Components/Interactive/Popover.vue";
 
 	const props = defineProps({
 		apartment: Array | Object,
@@ -92,6 +92,14 @@
 		}
 		return sum
 	})
+
+    const servicePrice = computed(() => {
+        return Math.ceil(basePrice.value*0.15)
+    })
+
+    const totalPrice = computed(() => {
+        return basePrice.value + servicePrice.value
+    })
 
 	const { errorToast } = useToasts()
 
@@ -200,7 +208,7 @@
 				<div
 					class="relative lg:sticky rounded-lg shadow-lg border border-neutral-100 w-full lg:w-1/3 lg:top-28 p-6"
 				>
-					<div class="flex flex-wrap gap-4">
+					<div class="flex flex-wrap gap-2 xl:gap-4">
 						<div class="text-2xl md:text-3xl font-semibold flex items-center gap-2">
 							{{ props.apartment.data.weekdays_price?.toLocaleString() }}₽
 							<div class="flex flex-col">
@@ -223,7 +231,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="mt-4">
+					<div class="mt-4 ">
 						<Datepicker
 							range
 							:start="form.start"
@@ -244,57 +252,7 @@
 							subtitle="0-12 лет"
 						/>
 					</div>
-					<hr class="mt-4" />
-					<dl class="divide-y divide-gray-100">
-						<div class="py-4 flex w-full items-baseline justify-between">
-							<dt class="font-light leading-6 text-пкфн-600">
-								<Popover class="relative">
-									<PopoverButton
-										class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
-									>
-										{{ detalizationText }}
-									</PopoverButton>
-
-									<transition
-										enter-active-class="transition duration-200 ease-out"
-										enter-from-class="translate-y-1 opacity-0"
-										enter-to-class="translate-y-0 opacity-100"
-										leave-active-class="transition duration-150 ease-in"
-										leave-from-class="translate-y-0 opacity-100"
-										leave-to-class="translate-y-1 opacity-0"
-									>
-										<PopoverPanel
-											class="absolute left-0 lg:left-1/2 mt-3 w-screen max-w-xs z-10 bg-white lg:-translate-x-1/2 transform pr-4 sm:pr-0"
-										>
-											<div
-												class="overflow-hidden h-full rounded-lg shadow-lg ring-1 ring-black/5"
-											>
-												<dl class="divide-y divide-gray-100 max-h-52 overflow-auto">
-													<div
-														class="py-1 px-4 flex w-full items-baseline justify-between"
-														v-for="item in details"
-														:key="item.date"
-													>
-														<dt class="font-light text-sm leading-6 text-gray-600">
-															{{ item.date }}
-														</dt>
-														<dd class="mt-1 text-sm font-medium leading-6 text-neutral-600">
-															{{ item.price?.toLocaleString() }}₽
-														</dd>
-													</div>
-												</dl>
-											</div>
-										</PopoverPanel>
-									</transition>
-								</Popover>
-							</dt>
-							<dd class="mt-1 font-medium leading-6 text-neutral-600">
-								{{ basePrice?.toLocaleString() }}₽
-							</dd>
-						</div>
-					</dl>
-					<hr class="mb-4" />
-					<div class="flex flex-col gap-3">
+					<div class="flex flex-col gap-3 mt-4">
 						<ButtonComponent
 							v-if="props.apartment.data.fast_reserve"
 							label="Моментальное бронирование"
@@ -306,7 +264,71 @@
 						/>
 					</div>
 					<div class="font-light text-sm text-center mt-3 text-neutral-500">Пока вы ни за что не платите</div>
-				</div>
+                    <dl class="divide-y divide-gray-100 border-t mt-4">
+                        <div class="py-4 flex flex-col gap-2">
+                            <div class="flex w-full items-baseline justify-between" >
+                                <dt class="font-light leading-6 text-gray-600">
+                                    <Popover>
+                                        <template #toggle>
+                                            <div class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition">
+                                                {{ detalizationText }}
+                                            </div>
+                                        </template>
+                                        <template #content>
+                                            <dl class="divide-y divide-gray-100 max-h-52 overflow-auto">
+                                                <div
+                                                    class="py-1 px-4 flex w-full items-baseline justify-between"
+                                                    v-for="item in details"
+                                                    :key="item.date"
+                                                >
+                                                    <dt class="font-light text-sm leading-6 text-gray-600">
+                                                        {{ item.date }}
+                                                    </dt>
+                                                    <dd class="mt-1 text-sm font-medium leading-6 text-neutral-600">
+                                                        {{ item.price?.toLocaleString() }}₽
+                                                    </dd>
+                                                </div>
+                                            </dl>
+                                        </template>
+                                    </Popover>
+                                </dt>
+                                <dd class="mt-1 font-medium leading-6 text-neutral-600">
+                                    {{ basePrice?.toLocaleString() }}₽
+                                </dd>
+                            </div>
+                            <div class="flex w-full items-baseline justify-between" >
+                                <dt class="font-light leading-6">
+                                    <Popover>
+                                        <template #toggle>
+                                            <div class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition">
+                                                Сервисный сбор
+                                            </div>
+                                        </template>
+                                        <template #content>
+                                            <div class="max-h-52 p-4 text-neutral-600 leading-tight text-sm">
+                                                Благодаря этому сбору мы развиваем наш сервис и, в том числе, обеспечиваем путешественников круглосуточной поддержкой.
+                                                <br> Данный сервисный сбор удерживатеся при отмене без уважительных причин.
+                                            </div>
+                                        </template>
+                                    </Popover>
+                                </dt>
+                                <dd class="mt-1 font-medium leading-6 text-neutral-600">
+                                    {{ servicePrice?.toLocaleString() }}₽
+                                </dd>
+                            </div>
+                        </div>
+                    </dl>
+                    <div class="border-t pt-4 flex flex-col gap-2">
+                        <div class="flex w-full items-baseline justify-between" >
+                            <dt class="font-bold leading-6 text-neutral-800">
+                                Итого:
+                            </dt>
+                            <dd class="mt-1 font-bold leading-6 text-lg text-neutral-800">
+                                {{ totalPrice?.toLocaleString() }}₽
+                            </dd>
+                        </div>
+                    </div>
+                </div>
 			</div>
 		</Container>
 	</AppLayout>

@@ -1,7 +1,7 @@
 <script setup>
 import ButtonComponent from '@/Components/ButtonComponent.vue'
 import Modal from '@/Components/Modals/Modal.vue'
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import Input from '@/Components/Input.vue'
 import {router, useForm} from '@inertiajs/vue3'
 import useToasts from '@/hooks/useToasts'
@@ -63,7 +63,7 @@ const handleSubmit = () => {
             isOpenModalSubmit.value = false
             request.value.status = res.data?.status
             request.value.reservation_id = res.data?.reservation_id
-            successToast('Создано новое бронирование. Ожмдайте оплату.')
+            successToast('Создано новое бронирование. Ожидайте оплату.')
         })
         .catch((error) => {
             errorToast('Что-то пошло не так.')
@@ -78,6 +78,14 @@ const goToReservation = () => {
         }))
     }
 }
+
+const servicePrice = computed(() => {
+    return Math.ceil(request.value.price * 0.15)
+})
+
+const totalPrice = computed(() => {
+    return request.value.price + servicePrice.value
+})
 </script>
 
 <template>
@@ -208,10 +216,26 @@ const goToReservation = () => {
                     </div>
                     <div class="py-2 flex w-full items-baseline justify-between">
                         <dt class="font-light leading-6 text-пкфн-600">
-                            <div>Стоимость:</div>
+                            <div>{{ request.range }} ночи:</div>
                         </dt>
                         <dd class="mt-1 font-medium leading-6 text-neutral-600 ">
                             {{ request.price.toLocaleString() }}₽
+                        </dd>
+                    </div>
+                    <div class="py-2 flex w-full items-baseline justify-between">
+                        <dt class="font-light leading-6 text-пкфн-600">
+                            <div>Сервисный сбор:</div>
+                        </dt>
+                        <dd class="mt-1 font-medium leading-6 text-neutral-600 ">
+                            {{ servicePrice.toLocaleString() }}₽
+                        </dd>
+                    </div>
+                    <div class="py-2 flex w-full items-baseline justify-between">
+                        <dt class="font-bold leading-6 text-neutral-800">
+                            <div>Итого:</div>
+                        </dt>
+                        <dd class="mt-1 font-bold leading-6 text-neutral-800 ">
+                            {{ totalPrice.toLocaleString() }}₽
                         </dd>
                     </div>
                 </dl>

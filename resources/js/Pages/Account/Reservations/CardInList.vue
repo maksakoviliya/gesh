@@ -35,6 +35,8 @@ const  badgeText = computed(() => {
             return 'Ожидает оплаты'
         case 'paid':
             return 'Оплачено'
+        case 'first_payment':
+            return 'Предоплата'
         default:
             return 'info'
     }
@@ -45,6 +47,8 @@ const badgeType = computed(() => {
             return 'warning'
         case 'paid':
             return 'success'
+        case 'first_payment':
+            return 'pending'
         default:
             return 'info'
     }

@@ -15,11 +15,11 @@ namespace App\Models{
  * App\Models\Apartment
  *
  * @property string $id
- * @property \App\Enums\Apartments\Status $status
+ * @property Status $status
  * @property int $step
  * @property string $user_id
  * @property int|null $category_id
- * @property \App\Enums\Apartments\Type|null $type
+ * @property Type|null $type
  * @property string|null $country_code
  * @property string|null $state
  * @property string|null $city
@@ -50,44 +50,45 @@ namespace App\Models{
  * @property-read int|null $disabled_dates_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
  * @property-read int|null $features_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\ApartmentFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment filter(\Illuminate\Http\Request $request)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment published()
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment query()
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBathrooms($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBedrooms($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBeds($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBuilding($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCountryCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereEntrance($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereFastReserve($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereFloor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereGuests($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereHousing($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereIndex($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereLat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereLon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereRoom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereStep($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereStreet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereWeekdaysPrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereWeekendsPrice($value)
+ * @method static Builder|Apartment filter(\Illuminate\Http\Request $request)
+ * @method static Builder|Apartment newModelQuery()
+ * @method static Builder|Apartment newQuery()
+ * @method static Builder|Apartment published()
+ * @method static Builder|Apartment query()
+ * @method static Builder|Apartment whereBathrooms($value)
+ * @method static Builder|Apartment whereBedrooms($value)
+ * @method static Builder|Apartment whereBeds($value)
+ * @method static Builder|Apartment whereBuilding($value)
+ * @method static Builder|Apartment whereCategoryId($value)
+ * @method static Builder|Apartment whereCity($value)
+ * @method static Builder|Apartment whereCountryCode($value)
+ * @method static Builder|Apartment whereCreatedAt($value)
+ * @method static Builder|Apartment whereDescription($value)
+ * @method static Builder|Apartment whereEntrance($value)
+ * @method static Builder|Apartment whereFastReserve($value)
+ * @method static Builder|Apartment whereFloor($value)
+ * @method static Builder|Apartment whereGuests($value)
+ * @method static Builder|Apartment whereHousing($value)
+ * @method static Builder|Apartment whereId($value)
+ * @method static Builder|Apartment whereIndex($value)
+ * @method static Builder|Apartment whereLat($value)
+ * @method static Builder|Apartment whereLon($value)
+ * @method static Builder|Apartment whereRoom($value)
+ * @method static Builder|Apartment whereState($value)
+ * @method static Builder|Apartment whereStatus($value)
+ * @method static Builder|Apartment whereStep($value)
+ * @method static Builder|Apartment whereStreet($value)
+ * @method static Builder|Apartment whereTitle($value)
+ * @method static Builder|Apartment whereType($value)
+ * @method static Builder|Apartment whereUpdatedAt($value)
+ * @method static Builder|Apartment whereUserId($value)
+ * @method static Builder|Apartment whereWeekdaysPrice($value)
+ * @method static Builder|Apartment whereWeekendsPrice($value)
+ * @mixin \Eloquent
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -115,6 +116,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	final class Category extends \Eloquent {}
 }
@@ -128,11 +130,11 @@ namespace App\Models\Chat{
  * @property string $apartment_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Apartment|null $apartment
+ * @property-read Apartment|null $apartment
  * @property-read \App\Models\Chat\Message|null $last_message
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Chat\Message> $messages
  * @property-read int|null $messages_count
- * @property-read \App\Models\User|null $user
+ * @property-read User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Chat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Chat newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Chat query()
@@ -141,6 +143,7 @@ namespace App\Models\Chat{
  * @method static \Illuminate\Database\Eloquent\Builder|Chat whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Chat whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Chat whereUserId($value)
+ * @mixin \Eloquent
  */
 	final class Chat extends \Eloquent {}
 }
@@ -157,8 +160,8 @@ namespace App\Models\Chat{
  * @property string|null $read_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\ReservationRequest|null $reservation_request
- * @property-read \App\Models\User|null $user
+ * @property-read ReservationRequest|null $reservation_request
+ * @property-read User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message query()
@@ -170,6 +173,7 @@ namespace App\Models\Chat{
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereReservationRequestId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereUserId($value)
+ * @mixin \Eloquent
  */
 	class Message extends \Eloquent {}
 }
@@ -193,6 +197,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	class DatePrice extends \Eloquent {}
 }
@@ -214,6 +219,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|DisabledDate whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DisabledDate whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DisabledDate whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	final class DisabledDate extends \Eloquent {}
 }
@@ -242,6 +248,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereSubtitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	class Feature extends \Eloquent {}
 }
@@ -261,28 +268,29 @@ namespace App\Models{
  * @property int $total_guests
  * @property int $range
  * @property int $price
- * @property \App\Enums\Reservation\Status $status
+ * @property Status $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Apartment|null $apartment
  * @property-read \App\Models\User|null $user
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation query()
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereApartmentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereChildren($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereEnd($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereGuests($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereRange($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereReservationRequestId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereStart($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereTotalGuests($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereUserId($value)
+ * @method static Builder|Reservation newModelQuery()
+ * @method static Builder|Reservation newQuery()
+ * @method static Builder|Reservation query()
+ * @method static Builder|Reservation whereApartmentId($value)
+ * @method static Builder|Reservation whereChildren($value)
+ * @method static Builder|Reservation whereCreatedAt($value)
+ * @method static Builder|Reservation whereEnd($value)
+ * @method static Builder|Reservation whereGuests($value)
+ * @method static Builder|Reservation whereId($value)
+ * @method static Builder|Reservation wherePrice($value)
+ * @method static Builder|Reservation whereRange($value)
+ * @method static Builder|Reservation whereReservationRequestId($value)
+ * @method static Builder|Reservation whereStart($value)
+ * @method static Builder|Reservation whereStatus($value)
+ * @method static Builder|Reservation whereTotalGuests($value)
+ * @method static Builder|Reservation whereUpdatedAt($value)
+ * @method static Builder|Reservation whereUserId($value)
+ * @mixin \Eloquent
  */
 	final class Reservation extends \Eloquent {}
 }
@@ -301,7 +309,7 @@ namespace App\Models{
  * @property int $total_guests
  * @property int $range
  * @property int $price
- * @property \App\Enums\ReservationRequest\Status|null $status
+ * @property Status|null $status
  * @property string|null $status_text
  * @property string|null $reservation_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -326,6 +334,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereTotalGuests($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUserId($value)
+ * @mixin \Eloquent
  */
 	final class ReservationRequest extends \Eloquent {}
 }
@@ -338,19 +347,20 @@ namespace App\Models{
  * @property string $reservation_id
  * @property int $amount
  * @property string $user_id
- * @property \App\Enums\Transactions\Status $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction query()
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereReservationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUserId($value)
+ * @property Status $status
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Transaction newModelQuery()
+ * @method static Builder|Transaction newQuery()
+ * @method static Builder|Transaction query()
+ * @method static Builder|Transaction whereAmount($value)
+ * @method static Builder|Transaction whereCreatedAt($value)
+ * @method static Builder|Transaction whereId($value)
+ * @method static Builder|Transaction whereReservationId($value)
+ * @method static Builder|Transaction whereStatus($value)
+ * @method static Builder|Transaction whereUpdatedAt($value)
+ * @method static Builder|Transaction whereUserId($value)
+ * @mixin Eloquent
  */
 	final class Transaction extends \Eloquent {}
 }
@@ -371,7 +381,7 @@ namespace App\Models{
  * @property string|null $two_factor_recovery_codes
  * @property string|null $two_factor_confirmed_at
  * @property string|null $social_id
- * @property \App\Enums\SocialAuthProvider|null $social_provider
+ * @property SocialAuthProvider|null $social_provider
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -410,6 +420,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
+ * @mixin \Eloquent
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser {}
 }

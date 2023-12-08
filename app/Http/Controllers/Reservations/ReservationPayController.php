@@ -18,18 +18,19 @@ final class ReservationPayController extends Controller
 {
     public function __invoke(Request $request, Reservation $reservation, PaymentServiceContract $paymentService): Response
     {
-        $transaction = Transaction::createForReservation($reservation);
+        $redirectUrl = $paymentService->createPayment(
+            $reservation->getFirstPaymentAmount(),
+            route('account.reservations.view', [
+                'reservation' => $reservation->id,
+            ]),
+            "Бронирование #{$reservation->id}. C {$reservation->start->format('d.m.Y')} по {$reservation->end->format('d.m.Y')}"
+            );
 
-        $redirectUrl = $paymentService->createPayment($reservation->price, [
-            'reservation_id' => $reservation->id,
-            'transaction_id' => $transaction->id,
-        ]);
-
-        if (!$redirectUrl) {
+        if (! $redirectUrl) {
             throw new Error('PaymentService Error');
         }
 
-        $reservation->setStatus(Status::Paid);
+        $reservation->setStatus(Status::FirstPayment);
 
         return Inertia::location($redirectUrl);
     }
