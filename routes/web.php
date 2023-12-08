@@ -25,6 +25,7 @@ use App\Http\Controllers\ReservationRequest\ReservationRequestStoreController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestSubmitController;
 use App\Http\Controllers\Reservations\ReservationPayController;
 use App\Http\Controllers\Reservations\ReservationViewController;
+use App\Http\Controllers\Search\SearchCityController;
 use App\Http\Controllers\Social\SocialCallbackController;
 use App\Http\Controllers\Social\SocialRedirectController;
 use Illuminate\Support\Facades\Route;
@@ -88,6 +89,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)->name('reservation-requests.store');
 });
+
+Route::post('search/city', SearchCityController::class)->name('search.city');
 //Route::middleware([
 //    'auth:sanctum',
 //    config('jetstream.auth_session'),

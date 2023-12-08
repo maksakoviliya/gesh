@@ -34,10 +34,10 @@
 			@input="$emit('update:modelValue', $event.target.value)"
 			:type="type ?? 'text'"
 			autocomplete="new-password"
-			class="peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md shadow-none outline-none transition disabled:opacity-70 focus:ring-0 pl-4 disabled:cursor-not-allowed"
+			class="peer w-full p-4 pt-6 font-light dark:text-slate-300 bg-white dark:bg-slate-800 border-2 rounded-md shadow-none outline-none transition disabled:opacity-70 focus:ring-0 pl-4 disabled:cursor-not-allowed"
 			:class="`
-                    ${error ? 'border-rose-500' : 'border-neutral-300'}
-                ${error ? 'focus:border-rose-500' : 'focus:border-black'}
+                    ${error ? 'border-rose-500' : 'border-neutral-300 dark:border-slate-400'}
+                ${error ? 'focus:border-rose-500' : 'focus:border-black dark:focus:border-slate-300'}
             `"
 		/>
 
@@ -46,7 +46,7 @@
 		<label
 			:for="id"
 			class="absolute text-md duration-150 cursor-text transform -translate-y-3 scale-75 top-5 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
-			:class="error ? 'text-rose-500' : 'text-zinc-400'"
+			:class="error ? 'text-rose-500' : 'text-zinc-400 dark:text-slate-400'"
 		>
 			{{ label
 			}}<sup

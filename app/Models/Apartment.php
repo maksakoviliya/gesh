@@ -136,6 +136,20 @@ final class Apartment extends Model implements HasMedia
                 ->first();
             $query->where('category_id', $category->id);
         }
+        if ($city = $request->get('city')) {
+            $query->where('city', 'like', "%$city%");
+        }
+        if ($guests = $request->get('guests')) {
+            $query->where('guests', '>=', $guests);
+        }
+        if ($request->has('start') && $request->has('end')) {
+            $start = Carbon::createFromFormat('d_m_Y', $request->get('start'));
+            $end = Carbon::createFromFormat('d_m_Y', $request->get('end'));
+            $query->whereDoesntHave('reservations', function (Builder $query) use ($start, $end) {
+                $query->whereDate('start', '>', $start)
+                    ->whereDate('end', '<', $end->subDay());
+            });
+        }
 
         return $query;
     }

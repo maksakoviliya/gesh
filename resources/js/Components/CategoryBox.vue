@@ -17,10 +17,11 @@
         p-3
         border-b-2
         hover:text-neutral-800
+        dark:hover:text-slate-300
         transition
         cursor-pointer
         ${props.selected ? 'border-b-neutral-800' : 'border-transparent'}
-    ${props.selected ? 'text-neutral-800' : 'text-neutral-500'}`
+    ${props.selected ? 'text-neutral-800 dark:text-white' : 'text-neutral-500 dark:text-slate-400'}`
 	)
 
 	const page = usePage()
@@ -38,19 +39,6 @@
 		)
 
 		router.visit(url)
-		//
-		// const updatedQuery: any = {
-		//     ...currentQuery,
-		//     category: label
-		// }
-		//
-		// if (params?.get('category') === label) {
-		//     delete updatedQuery.category;
-		// }
-		//
-
-		//
-		// router.push(url);
 	}
 </script>
 

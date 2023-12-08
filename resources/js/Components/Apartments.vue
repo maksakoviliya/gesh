@@ -1,6 +1,7 @@
 <script setup>
 	import AppartmentsCard from '@/Components/AppartmentsCard.vue'
 	import EmptyState from '@/Components/EmptyState.vue'
+	import { router } from '@inertiajs/vue3'
 
 	defineProps({
 		apartments: Array | null,
@@ -11,6 +12,8 @@
 	<EmptyState
 		title="Ничего не найдено"
 		subtitle="Не удалось найти жилья по вашему запросу"
+		action-label="Сбросить фильтр"
+		@click="router.visit(route('home'))"
 		v-if="!apartments.data.length"
 	/>
 	<div
