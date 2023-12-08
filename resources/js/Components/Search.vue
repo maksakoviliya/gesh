@@ -5,6 +5,7 @@ import {computed, ref} from "vue";
 import Popover from "@/Components/Interactive/Popover.vue";
 import Counter from "@/Components/Counter.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import '@vuepic/vue-datepicker/dist/main.css'
 import Input from "@/Components/Input.vue";
 import dayjs from "dayjs";
 import 'dayjs/locale/ru'
