@@ -33,8 +33,8 @@
 			<Map
 				class="mt-24"
 				:is-input="false"
-				:lat="52.92596754124867"
-				:lon="87.98709856259356"
+				:lat="87.98709856259356"
+				:lon="52.92596754124867"
 				:markers="markers"
 			/>
 			<ViewToggler :to="route('home')">
