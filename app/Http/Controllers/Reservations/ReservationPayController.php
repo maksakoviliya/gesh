@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Reservations;
 use App\Enums\Reservation\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
-use App\Models\Transaction;
 use App\Services\PaymentServiceContract;
 use Error;
 use Illuminate\Http\Request;
@@ -24,7 +23,7 @@ final class ReservationPayController extends Controller
                 'reservation' => $reservation->id,
             ]),
             "Бронирование #{$reservation->id}. C {$reservation->start->format('d.m.Y')} по {$reservation->end->format('d.m.Y')}"
-            );
+        );
 
         if (! $redirectUrl) {
             throw new Error('PaymentService Error');

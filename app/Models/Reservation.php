@@ -122,6 +122,7 @@ final class Reservation extends Model
     public function getFirstPaymentAmount(): int
     {
         $totalPrice = ceil($this->price * 1.15);
+
         return (int) ceil($totalPrice * 0.3);
     }
 }

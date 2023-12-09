@@ -22,8 +22,9 @@ final class SearchCityController extends Controller
                 ->limit(10)
                 ->pluck('city');
         }
+
         return response()->json([
-            'data' => $cities
+            'data' => $cities,
         ]);
     }
 }
