@@ -145,9 +145,9 @@ final class Apartment extends Model implements HasMedia
         if ($request->has('start') && $request->has('end')) {
             $start = Carbon::createFromFormat('d_m_Y', $request->get('start'));
             $end = Carbon::createFromFormat('d_m_Y', $request->get('end'));
-            $query->whereDoesntHave('reservations', function (Builder $query) use ($start, $end) {
-                $query->whereDate('start', '>', $start)
-                    ->whereDate('end', '<', $end->subDay());
+            $query->whereDoesntHave('disabledDates', function (Builder $q) use ($start, $end) {
+                $q->whereDate('date', '>', $start)
+                    ->whereDate('date', '<', $end->subDay());
             });
         }
 
@@ -300,21 +300,17 @@ final class Apartment extends Model implements HasMedia
 
     public function getPriceForDay(Carbon $day): int
     {
-        Log::info((string) $day->format('d.m.Y'));
         $dayPrice = $this->datePrices()->whereDate('date', $day)->first();
         if (! $dayPrice) {
             $dayOfWeek = $day->dayOfWeek;
-            Log::info((string) $dayOfWeek);
             if ($dayOfWeek === 5 || $dayOfWeek === 6) {
                 Log::info((string) $this->weekends_price);
 
                 return $this->weekends_price;
             }
-            Log::info((string) $this->weekdays_price);
 
             return $this->weekdays_price;
         }
-        Log::info((string) $dayPrice->price);
 
         return $dayPrice->price;
     }
@@ -340,6 +336,6 @@ final class Apartment extends Model implements HasMedia
 
     public function reservations(): HasMany
     {
-        $this->hasMany(Reservation::class);
+        return $this->hasMany(Reservation::class);
     }
 }
