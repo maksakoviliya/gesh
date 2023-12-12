@@ -12,6 +12,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
@@ -179,6 +180,19 @@ class ApartmentResource extends Resource
                         ->icon('heroicon-o-document-arrow-down')
                         ->action(function (Collection $records) {
                             return Apartment::export($records);
+                        }),
+                    Tables\Actions\BulkAction::make('approve')
+                        ->label('Одобрить')
+                        ->icon('heroicon-o-check-circle')
+                        ->action(function (Collection $records) {
+                            foreach ($records as $apartment) {
+                                $apartment->approve();
+                            }
+                            Notification::make()
+                                ->success()
+                                ->title('Одобрено!')
+                                ->body('Выбранные объекты одобрены и опубликованы')
+                                ->send();
                         }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
