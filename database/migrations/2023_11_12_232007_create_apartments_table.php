@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Category;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +13,10 @@ return new class extends Migration
 
             $table->string('status');
             $table->unsignedSmallInteger('step')->default(1);
-            $table->foreignIdFor(User::class);
+            $table->foreignUlid('user_id')->nullable();
 
             // Step 1
-            $table->foreignIdFor(Category::class)->nullable();
+            $table->foreignUlid('category_id')->nullable();
 
             // Step 2
             $table->string('type')->nullable();

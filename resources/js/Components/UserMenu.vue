@@ -48,7 +48,7 @@ const redirectToDashboard = () => {
         <div class="flex flex-row items-center gap-3">
             <div
                 @click="toggleOpen"
-                class="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+                class="p-4 md:py-1 md:px-2 border dark:border-slate-700 dark:text-slate-200 border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
             >
                 <OhVueIcon
                     name="hi-solid-menu"
@@ -65,7 +65,7 @@ const redirectToDashboard = () => {
         </div>
         <div
             v-if="isOpen"
-            class="absolute rounded-xl shadow-md w-[40vw] md:w-[22vw] bg-white overflow-hidden right-0 top-12 text-sm"
+            class="absolute rounded-xl shadow-md dark:shadow-xl dark:border dark:border-slate-700 w-[40vw] md:w-[22vw] bg-white dark:bg-slate-800 overflow-hidden right-0 top-12 text-sm"
         >
             <div class="flex flex-col cursor-pointer">
                 <template v-if="!$page.props.user">

@@ -23,7 +23,7 @@
 			<Apartments :apartments="apartments" />
 			<ViewToggler :to="route('home.map')">
 				<div class="flex text-sm font-semibold items-center gap-3">
-					Показать карту
+					<span class="whitespace-nowrap">Показать карту</span>
 					<OhVueIcon
 						name="hi-map"
 						scale="1.2"

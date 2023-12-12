@@ -6,9 +6,14 @@ namespace App\Models;
 
 use App\Enums\Apartments\Status;
 use App\Enums\Apartments\Type;
+use App\Exports\ApartmentsExport;
+use App\Imports\ApartmentsImport;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Database\Factories\ApartmentFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,9 +24,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * App\Models\Apartment
@@ -55,19 +64,19 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property bool|null $fast_reserve
- * @property-read \App\Models\Category|null $category
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DatePrice> $datePrices
+ * @property-read Category|null $category
+ * @property-read Collection<int, DatePrice> $datePrices
  * @property-read int|null $date_prices_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DisabledDate> $disabledDates
+ * @property-read Collection<int, DisabledDate> $disabledDates
  * @property-read int|null $disabled_dates_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
+ * @property-read Collection<int, Feature> $features
  * @property-read int|null $features_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
+ * @property-read MediaCollection<int, Media> $media
  * @property-read int|null $media_count
- * @property-read \App\Models\User|null $user
+ * @property-read User|null $user
  *
- * @method static \Database\Factories\ApartmentFactory factory($count = null, $state = [])
- * @method static Builder|Apartment filter(\Illuminate\Http\Request $request)
+ * @method static ApartmentFactory factory($count = null, $state = [])
+ * @method static Builder|Apartment filter(Request $request)
  * @method static Builder|Apartment newModelQuery()
  * @method static Builder|Apartment newQuery()
  * @method static Builder|Apartment published()
@@ -102,7 +111,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 final class Apartment extends Model implements HasMedia
 {
@@ -337,5 +346,24 @@ final class Apartment extends Model implements HasMedia
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public static function export(Collection $collection): BinaryFileResponse
+    {
+        $export = new ApartmentsExport($collection);
+        return Excel::download(
+            export: $export,
+            fileName: 'apartments.xlsx',
+            writerType: \Maatwebsite\Excel\Excel::XLSX
+        );
+    }
+
+    public static function import(string $filename)
+    {
+        Excel::import(new ApartmentsImport(), $filename, 'imports');
     }
 }

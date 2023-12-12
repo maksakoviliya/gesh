@@ -6,6 +6,7 @@ use App\Enums\Apartments\Status;
 use App\Enums\Apartments\Type;
 use App\Filament\Resources\ApartmentResource\Pages;
 use App\Models\Apartment;
+use App\Models\User;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -16,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 
 class ApartmentResource extends Resource
@@ -109,13 +111,10 @@ class ApartmentResource extends Resource
                                 Forms\Components\Placeholder::make('status')
                                     ->label('Статус')
                                     ->content(fn (Apartment $record) => __('statuses.'.$record->status->value)),
-                                Forms\Components\Placeholder::make('user')
-                                    ->label('Владелец')
-                                    ->content(function (Apartment $record) {
-                                        $url = UserResource::getUrl('edit', ['record' => $record->user_id]);
-
-                                        return new HtmlString("<a href={$url}>{$record->user->name}</a>");
-                                    }),
+                                Select::make('user')->relationship('user', 'name')
+                                ->searchable()
+                                    ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->email}")
+                                    ->preload(),
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
                                     ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
@@ -176,6 +175,12 @@ class ApartmentResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('export')
+                        ->label('Экспортировать в .xlsx')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function(Collection $records) {
+                            return Apartment::export($records);
+                        }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

@@ -1,6 +1,7 @@
 <script setup>
 import {Head, Link, router} from '@inertiajs/vue3';
 import Navbar from "@/Components/Navbar.vue";
+import SpeedDial from "@/Components/SpeedDial.vue";
 
 defineProps({
     title: String,
@@ -248,8 +249,11 @@ defineProps({
         </main>
 
         <footer>
-            <div class="h-12"></div>
+            <div class="h-12">
+            </div>
         </footer>
         <!--        </div>-->
+
+        <SpeedDial v-if="!!$page.props.user" />
     </div>
 </template>

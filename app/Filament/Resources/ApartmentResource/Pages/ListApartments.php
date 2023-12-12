@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\ApartmentResource\Pages;
 
 use App\Filament\Resources\ApartmentResource;
+use App\Models\Apartment;
 use Filament\Actions;
+use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Pages\ListRecords;
 
 class ListApartments extends ListRecords
@@ -13,6 +15,21 @@ class ListApartments extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('import')
+                ->label('Импорт из Excel')
+                ->icon('heroicon-o-document-arrow-up')
+                ->color('success')
+                ->form([
+                    FileUpload::make('filename')
+                        ->multiple(false)
+                        ->disk('imports')
+                        ->label('Файл')
+                        ->required(),
+                ])
+            ->modalSubmitActionLabel('Импортировать')
+                ->action(function (array $data): void {
+                    Apartment::import($data['filename']);
+                }),
             Actions\CreateAction::make(),
         ];
     }

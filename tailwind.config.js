@@ -20,7 +20,8 @@ export default {
 		},
 	},
 
-	darkMode: 'class',
+	// darkMode: 'class',
+	darkMode: 'media',
 
 	plugins: [forms, typography],
 }
