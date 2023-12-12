@@ -6,6 +6,7 @@ use App\Filament\Resources\ApartmentResource;
 use App\Models\Apartment;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 
 class ListApartments extends ListRecords
@@ -29,6 +30,11 @@ class ListApartments extends ListRecords
                 ->modalSubmitActionLabel('Импортировать')
                 ->action(function (array $data): void {
                     Apartment::import($data['filename']);
+                    Notification::make()
+                        ->success()
+                        ->title('Импорт завершен')
+                        ->body('Проверьте объявления и одобрите их')
+                        ->send();
                 }),
             Actions\CreateAction::make(),
         ];
