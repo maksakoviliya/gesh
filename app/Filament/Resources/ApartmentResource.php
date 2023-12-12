@@ -191,6 +191,7 @@ class ApartmentResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Одобрено!')
+                                ->color('success')
                                 ->body('Выбранные объекты одобрены и опубликованы')
                                 ->send();
                         }),
