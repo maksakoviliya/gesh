@@ -61,7 +61,6 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::get('{apartment}/chats/{chat}', OwnerChatController::class)->name('owner.chat');
                     Route::post('{apartment}/calendar/update', UpdateCalendarController::class)->name('calendar.update');
                     Route::post('{apartment}/price/update', UpdatePriceController::class)->name('price.update');
-
                     Route::get('{apartment}/chat', ChatController::class)->name('chat');
                 });
 

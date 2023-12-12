@@ -15,6 +15,7 @@ class TestContreoller extends Controller
         $collection = Apartment::query()
             ->whereNotNull('created_at')
             ->get();
+
         return Apartment::export($collection);
     }
 }

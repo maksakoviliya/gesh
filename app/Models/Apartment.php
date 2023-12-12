@@ -355,6 +355,7 @@ final class Apartment extends Model implements HasMedia
     public static function export(Collection $collection): BinaryFileResponse
     {
         $export = new ApartmentsExport($collection);
+
         return Excel::download(
             export: $export,
             fileName: 'apartments.xlsx',

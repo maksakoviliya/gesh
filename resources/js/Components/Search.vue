@@ -89,7 +89,7 @@
 					<div class="text-sm pl-6 pr-2 text-gray-600 darK:text-slate-200 flex flex-row items-center gap-3">
 						<div class="hidden sm:block font-semibold">{{ guestLabel }}</div>
 						<div
-							class="p-2 bg-sky-600 dark:bg-sky-800 rounded-full text-white"
+							class="p-2 bg-sky-600 dark:bg-sky-800 w-9 h-9 rounded-full text-white flex flex-col items-center justify-center"
 							@click.prevent="onSubmit"
 						>
 							<OhVueIcon name="bi-search" />
@@ -100,7 +100,7 @@
 		</template>
 		<template #content>
 			<div class="p-4 flex flex-col gap-4">
-				<div class="h-auto flex items-stretch flex-col md:flex-row gap-2 md:gap-4 w-full justify-between">
+				<div class="flex items-stretch flex-col md:flex-row gap-2 md:gap-4 w-full justify-between">
 					<div class="h-full overflow-auto w-full">
 						<CitySearch
 							@select="handleSelectCity"
@@ -149,7 +149,7 @@
 					<ButtonComponent
 						label="Поиск"
 						:auto-width="true"
-						class="px-16"
+						class="px-8"
 						@click.prevent="onSubmit"
 					/>
 				</div>

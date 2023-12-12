@@ -26,7 +26,7 @@ class ListApartments extends ListRecords
                         ->label('Файл')
                         ->required(),
                 ])
-            ->modalSubmitActionLabel('Импортировать')
+                ->modalSubmitActionLabel('Импортировать')
                 ->action(function (array $data): void {
                     Apartment::import($data['filename']);
                 }),

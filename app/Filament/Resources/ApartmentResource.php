@@ -18,7 +18,6 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\HtmlString;
 
 class ApartmentResource extends Resource
 {
@@ -112,7 +111,7 @@ class ApartmentResource extends Resource
                                     ->label('Статус')
                                     ->content(fn (Apartment $record) => __('statuses.'.$record->status->value)),
                                 Select::make('user')->relationship('user', 'name')
-                                ->searchable()
+                                    ->searchable()
                                     ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->email}")
                                     ->preload(),
                                 Forms\Components\Placeholder::make('created_at')
@@ -178,7 +177,7 @@ class ApartmentResource extends Resource
                     Tables\Actions\BulkAction::make('export')
                         ->label('Экспортировать в .xlsx')
                         ->icon('heroicon-o-document-arrow-down')
-                        ->action(function(Collection $records) {
+                        ->action(function (Collection $records) {
                             return Apartment::export($records);
                         }),
                     Tables\Actions\DeleteBulkAction::make(),

@@ -25,11 +25,9 @@
 		>
 			<PopoverPanel
 				:class="props.maxWidthClass"
-				class="absolute left-0 md:left-1/2 mt-3 w-screen z-20 md:-translate-x-1/2 transform pr-4 sm:pr-0"
+				class="fixed md:absolute inset-0 md:bottom-auto md:h-auto md:top-full h-screen overflow-auto md:left-1/2 mt-3 w-screen z-20 md:-translate-x-1/2 transform md:overflow-visible sm:pr-0 bg-white dark:bg-slate-800"
 			>
-				<div
-					class="overflow-hidden bg-white dark:bg-slate-800 h-full rounded-lg shadow-lg dark:shadow-xl ring-1 ring-black/5"
-				>
+				<div class="h-full overflow-auto rounded-lg shadow-lg dark:shadow-xl ring-1 ring-black/5">
 					<slot name="content" />
 				</div>
 			</PopoverPanel>

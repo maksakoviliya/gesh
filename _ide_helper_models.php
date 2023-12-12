@@ -43,18 +43,18 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property bool|null $fast_reserve
- * @property-read \App\Models\Category|null $category
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DatePrice> $datePrices
+ * @property-read Category|null $category
+ * @property-read Collection<int, DatePrice> $datePrices
  * @property-read int|null $date_prices_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DisabledDate> $disabledDates
+ * @property-read Collection<int, DisabledDate> $disabledDates
  * @property-read int|null $disabled_dates_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
+ * @property-read Collection<int, Feature> $features
  * @property-read int|null $features_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
+ * @property-read MediaCollection<int, Media> $media
  * @property-read int|null $media_count
- * @property-read \App\Models\User|null $user
- * @method static \Database\Factories\ApartmentFactory factory($count = null, $state = [])
- * @method static Builder|Apartment filter(\Illuminate\Http\Request $request)
+ * @property-read User|null $user
+ * @method static ApartmentFactory factory($count = null, $state = [])
+ * @method static Builder|Apartment filter(Request $request)
  * @method static Builder|Apartment newModelQuery()
  * @method static Builder|Apartment newQuery()
  * @method static Builder|Apartment published()
@@ -88,7 +88,7 @@ namespace App\Models{
  * @method static Builder|Apartment whereUserId($value)
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
  * @property-read int|null $reservations_count
  */
