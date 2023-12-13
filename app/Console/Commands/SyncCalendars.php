@@ -14,21 +14,29 @@ use Log;
 
 class SyncCalendars extends Command
 {
-    protected $signature = 'sync-calendars';
+    protected $signature = 'sync-calendars {apartment_id?}';
 
     protected $description = 'Sync calendars by ical links';
 
     public function handle()
     {
-        $links = ICalLink::all();
+        if (!$apartment_id = $this->argument('apartment_id')) {
+            $links = ICalLink::all();
+            SideReservation::query()
+                ->delete();
+        } else {
+            $links = ICalLink::query()
+                ->where('apartment_id', $apartment_id)
+                ->get();
+            SideReservation::query()
+                ->where('apartment_id', $apartment_id)
+                ->delete();
+        }
         /** @var ICalLink $link */
         foreach ($links as $link) {
             //            try {
             $ical = new ICal();
             $ical->initUrl($link->link);
-            SideReservation::query()
-                ->where('apartment_id', $link->apartment_id)
-                ->delete();
             /** @var Event $event */
             foreach ($ical->events() as $event) {
                 SideReservation::query()

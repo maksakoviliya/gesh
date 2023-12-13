@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Account\Apartments;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\Apartments\UpdatePriceRequest;
 use App\Models\Apartment;
+use Illuminate\Support\Facades\Artisan;
 
 final class UpdatePriceController extends Controller
 {
@@ -24,7 +25,14 @@ final class UpdatePriceController extends Controller
             $links[] = ['link' => \Arr::get($item, 'link')];
         }
         $apartment->ICalLinks()->createMany($links);
-        $apartment->load('ICalLinks');
+
+        Artisan::call('sync-calendars', [
+            'apartment_id' => $apartment->id
+        ]);
+
+        $apartment = Apartment::query()
+            ->with(['ICalLinks', 'reservations'])
+            ->find($apartment->id);
 
         return to_route('account.apartments.calendar', [
             'apartment' => $apartment,
