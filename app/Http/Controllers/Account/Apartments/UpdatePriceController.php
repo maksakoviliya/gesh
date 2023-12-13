@@ -17,6 +17,15 @@ final class UpdatePriceController extends Controller
             'weekends_price' => $request->validated('weekends_price'),
         ]);
 
+        // TODO: Возможно есть решение красивее
+        $apartment->ICalLinks()->delete();
+        $links = [];
+        foreach ($request->validated('i_cal_links') as $item) {
+            $links[] = ['link' => \Arr::get($item, 'link')];
+        }
+        $apartment->ICalLinks()->createMany($links);
+        $apartment->load('ICalLinks');
+
         return to_route('account.apartments.calendar', [
             'apartment' => $apartment,
         ]);

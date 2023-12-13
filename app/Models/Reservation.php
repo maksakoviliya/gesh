@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Apartment|null $apartment
  * @property-read \App\Models\User|null $user
- *
  * @method static Builder|Reservation newModelQuery()
  * @method static Builder|Reservation newQuery()
  * @method static Builder|Reservation query()
@@ -49,7 +48,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Reservation whereTotalGuests($value)
  * @method static Builder|Reservation whereUpdatedAt($value)
  * @method static Builder|Reservation whereUserId($value)
- *
  * @mixin \Eloquent
  */
 final class Reservation extends Model
@@ -97,17 +95,17 @@ final class Reservation extends Model
                 'range' => $reservationRequest->range,
                 'price' => $reservationRequest->price,
             ]);
-        $period = CarbonPeriod::create(
-            $reservationRequest->start,
-            $reservationRequest->end->subDay(),
-        );
-        foreach ($period as $date) {
-            DisabledDate::query()
-                ->create([
-                    'apartment_id' => $reservationRequest->apartment_id,
-                    'date' => $date,
-                ]);
-        }
+        //        $period = CarbonPeriod::create(
+        //            $reservationRequest->start,
+        //            $reservationRequest->end->subDay(),
+        //        );
+        //        foreach ($period as $date) {
+        //            DisabledDate::query()
+        //                ->create([
+        //                    'apartment_id' => $reservationRequest->apartment_id,
+        //                    'date' => $date,
+        //                ]);
+        //        }
 
         return $reservation;
     }

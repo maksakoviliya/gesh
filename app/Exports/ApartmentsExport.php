@@ -8,13 +8,10 @@ use App\Models\Apartment;
 use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-
 use Maatwebsite\Excel\Concerns\WithMapping;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-final class ApartmentsExport implements FromCollection
-    , WithHeadings
-    , WithMapping
+final class ApartmentsExport implements FromCollection, WithHeadings, WithMapping
 {
     public function __construct(public Collection $collection)
     {
@@ -64,8 +61,7 @@ final class ApartmentsExport implements FromCollection
     }
 
     /**
-     * @param Apartment $row
-     * @return array
+     * @param  Apartment  $row
      */
     public function map($row): array
     {

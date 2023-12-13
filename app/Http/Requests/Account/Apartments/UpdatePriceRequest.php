@@ -18,6 +18,8 @@ class UpdatePriceRequest extends FormRequest
         return [
             'weekdays_price' => 'required|integer|min:2|max:9999999',
             'weekends_price' => 'required|integer|min:2|max:9999999',
+            'i_cal_links' => 'array|max:5',
+            'i_cal_links.*.link' => 'required|url',
         ];
     }
 }

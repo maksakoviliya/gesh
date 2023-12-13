@@ -28,11 +28,11 @@ final class ApartmentsImport implements ToModel, WithHeadingRow
                 'phone' => $phone ?? null,
             ]);
         }
-        $category = Category::query()->where('title', 'like', "%" . Arr::get($row, 'kategoriia') . "%")->first();
-        if (!$category) {
+        $category = Category::query()->where('title', 'like', '%'.Arr::get($row, 'kategoriia').'%')->first();
+        if (! $category) {
             $category = Category::query()->where('slug', 'rooms')->first();
         }
-        $apartment =  Apartment::query()->updateOrCreate([
+        $apartment = Apartment::query()->updateOrCreate([
             'lon' => Arr::get($row, 'koordinaty_lon'),
             'lat' => Arr::get($row, 'koordinaty_lat'),
         ], [
@@ -62,12 +62,12 @@ final class ApartmentsImport implements ToModel, WithHeadingRow
             'fast_reserve' => Arr::get($row, 'mgnovennoe_bronirovanie') === 'Да',
         ]);
 
-        if(!$apartment) {
+        if (! $apartment) {
             throw new Exception('Cannot create new apartment');
         }
 
         $photos = Arr::get($row, 'fotografii');
-        if($photos) {
+        if ($photos) {
             $photos = explode(',', $photos);
             foreach ($photos as $url) {
                 try {

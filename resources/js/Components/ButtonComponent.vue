@@ -9,6 +9,7 @@
 		small: Boolean | null,
 		autoWidth: Boolean | null,
 		fontLight: Boolean | null,
+        circle: Boolean | null,
 		bgClass: {
 			type: String,
 			default: 'bg-sky-600 dark:bg-sky-800',
@@ -28,9 +29,9 @@
 		return `relative
     disabled:opacity-30
     disabled:cursor-not-allowed
-    rounded-lg
     transition
     ${props.autoWidth ? 'w-auto' : 'w-full'}
+    ${props.circle ? 'rounded-full' : 'rounded-lg'}
     ${props.outline ? 'bg-white dark:bg-slate-800' : props.bgClass}
     ${props.outline ? 'border-black dark:border-slate-400' : props.borderClass}
     ${props.outline ? 'text-black dark:text-slate-100' : props.textClass}

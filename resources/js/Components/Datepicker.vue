@@ -52,7 +52,6 @@ const handleInvalidSelect = (date) => {
                    :partial-range="false"
                    auto-apply
                    :month-change-on-scroll="false"
-                   min-range="1"
                    max-range="30"
                    :disabled-dates="props.disabledDates"
                    disable-year-select

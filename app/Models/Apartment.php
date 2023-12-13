@@ -13,6 +13,7 @@ use Carbon\CarbonPeriod;
 use Database\Factories\ApartmentFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,14 +68,11 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @property-read Category|null $category
  * @property-read Collection<int, DatePrice> $datePrices
  * @property-read int|null $date_prices_count
- * @property-read Collection<int, DisabledDate> $disabledDates
- * @property-read int|null $disabled_dates_count
  * @property-read Collection<int, Feature> $features
  * @property-read int|null $features_count
  * @property-read MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read User|null $user
- *
  * @method static ApartmentFactory factory($count = null, $state = [])
  * @method static Builder|Apartment filter(Request $request)
  * @method static Builder|Apartment newModelQuery()
@@ -110,7 +108,14 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static Builder|Apartment whereUserId($value)
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
- *
+ * @property-read Collection<int, \App\Models\ICalLink> $ICalLinks
+ * @property-read int|null $i_cal_links_count
+ * @property-read Collection<int, \App\Models\DisabledDate> $disabledDates
+ * @property-read int|null $disabled_dates_count
+ * @property-read Collection<int, \App\Models\Reservation> $reservations
+ * @property-read int|null $reservations_count
+ * @property-read Collection<int, \App\Models\SideReservation> $sideReservations
+ * @property-read int|null $side_reservations_count
  * @mixin Eloquent
  */
 final class Apartment extends Model implements HasMedia
@@ -154,9 +159,24 @@ final class Apartment extends Model implements HasMedia
         if ($request->has('start') && $request->has('end')) {
             $start = Carbon::createFromFormat('d_m_Y', $request->get('start'));
             $end = Carbon::createFromFormat('d_m_Y', $request->get('end'));
+
+            dd(SideReservation::query()->where('apartment_id', '01hhgpj8bj8x1bx9v01q8cyc0q')
+                ->whereDate('start', '>=', $start)
+                ->whereDate('end', '>', $end)
+                ->orderBy('start')
+                ->get());
+
             $query->whereDoesntHave('disabledDates', function (Builder $q) use ($start, $end) {
                 $q->whereDate('date', '>', $start)
                     ->whereDate('date', '<', $end->subDay());
+            })
+            ->whereDoesntHave('reservations', function (Builder $q) use ($start, $end) {
+                $q->whereDate('start', '>=', $start)
+                    ->whereDate('end', '<', $end->subDay());
+            })
+            ->whereDoesntHave('sideReservations', function (Builder $q) use ($start, $end) {
+                $q->whereDate('start', '>=', $start)
+                    ->whereDate('end', '<', $end->subDay())->toSql();
             });
         }
 
@@ -253,7 +273,7 @@ final class Apartment extends Model implements HasMedia
 
         if ($images = Arr::get($data, 'media')) {
             foreach ($images as $image) {
-                if (! $image instanceof UploadedFile) {
+                if (!$image instanceof UploadedFile) {
                     continue;
                 }
                 $this->addMedia($image)
@@ -310,10 +330,10 @@ final class Apartment extends Model implements HasMedia
     public function getPriceForDay(Carbon $day): int
     {
         $dayPrice = $this->datePrices()->whereDate('date', $day)->first();
-        if (! $dayPrice) {
+        if (!$dayPrice) {
             $dayOfWeek = $day->dayOfWeek;
             if ($dayOfWeek === 5 || $dayOfWeek === 6) {
-                Log::info((string) $this->weekends_price);
+                Log::info((string)$this->weekends_price);
 
                 return $this->weekends_price;
             }
@@ -363,8 +383,45 @@ final class Apartment extends Model implements HasMedia
         );
     }
 
-    public static function import(string $filename)
+    public static function import(string $filename): void
     {
+        // TODO: Добавить try catch и обработку ошибок
         Excel::import(new ApartmentsImport(), $filename, 'imports');
+    }
+
+    public function ICalLinks(): HasMany
+    {
+        return $this->hasMany(ICalLink::class);
+    }
+
+    public function sideReservations(): HasMany
+    {
+        return $this->hasMany(SideReservation::class);
+    }
+
+    protected function allDisabledDays(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $disabledDays = $this->disabledDates()->pluck('date')->values();
+                $reservations = $this->reservations()
+                    ->select('start', 'end', 'apartment_id', 'id')
+                    ->whereDate('start', '>=', Carbon::now()->subDays(2)->startOfDay())->get();
+                $side_reservations = $this->sideReservations()
+                    ->select('start', 'end', 'apartment_id', 'id')
+                    ->whereDate('start', '>=', Carbon::now()->subDays(2)->startOfDay())->get();
+
+                foreach ($reservations->merge($side_reservations) as $reservation) {
+                    $period = CarbonPeriod::create(
+                        $reservation->start,
+                        $reservation->end->subDay(),
+                    );
+                    foreach ($period as $day) {
+                        $disabledDays[] = $day;
+                    }
+                }
+                return $disabledDays;
+            },
+        );
     }
 }

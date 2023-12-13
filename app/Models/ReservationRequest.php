@@ -33,7 +33,6 @@ use Illuminate\Support\Arr;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Reservation|null $reservation
  * @property-read \App\Models\User|null $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest query()
@@ -52,7 +51,6 @@ use Illuminate\Support\Arr;
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereTotalGuests($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUserId($value)
- *
  * @mixin \Eloquent
  */
 final class ReservationRequest extends Model
@@ -74,6 +72,9 @@ final class ReservationRequest extends Model
     {
         $start = Carbon::parse(Arr::get($data, 'start'))->startOfDay();
         $end = Carbon::parse(Arr::get($data, 'end'))->subDay()->startOfDay();
+        if ($end < $start) {
+            $end = $end->addDay();
+        }
         $price = $apartment->getPriceForRange($start, $end);
 
         return self::query()->firstOrCreate([

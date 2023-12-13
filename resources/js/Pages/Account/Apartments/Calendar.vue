@@ -15,6 +15,7 @@
 	import { computed, ref } from 'vue'
 	import dayjs from 'dayjs'
 	import 'dayjs/locale/ru'
+    import ICalLinks from "@/Components/ICalLinks.vue";
 
 	export default {
 		props: {
@@ -22,6 +23,7 @@
             events: Array
 		},
 		components: {
+            ICalLinks,
 			ButtonComponent,
 			Heading,
 			Input,
@@ -112,6 +114,7 @@
 			const priceForm = useForm({
 				weekdays_price: props.apartment.data.weekdays_price,
 				weekends_price: props.apartment.data.weekends_price,
+                i_cal_links: props.apartment.data.i_cal_links ?? []
 			})
 
 			const rangeForm = useForm({
@@ -141,7 +144,7 @@
 							onSuccess: () => {
 								let calendarApi = calendar.value.getApi()
 								calendarApi.render()
-								successToast('Цены обновлены!')
+								successToast('Данные обновлены!')
 							},
 						}
 					)
@@ -220,14 +223,14 @@
 	<AppLayout>
 		<Container>
 			<Breadcrumbs :routes="routes" />
-			<div class="flex flex-col items-start lg:flex-row w-full mt-4 xl:mt-12 relative">
-				<div class="w-full h-auto">
+			<div class="flex flex-col items-start lg:flex-row w-full  mt-4 xl:mt-12 relative">
+				<div class="w-full h-auto md:w-2/3 ">
 					<FullCalendar
 						ref="calendar"
 						:options="calendarOptions"
                     />
 				</div>
-				<div class="lg:px-6 pt-1 mt-8 lg:mt-0 w-full lg:w-5/12 form lg:sticky lg:top-24">
+				<div class="lg:px-6 pt-1 mt-8 lg:mt-0 w-full md:w-1/3 form lg:sticky lg:top-24">
                     <template v-if="rangeForm.start && rangeForm.end">
                         <Heading :title="getRangeLabel" />
                         <div class="mt-8 flex flex-col gap-3">
@@ -256,27 +259,35 @@
                         </div>
                     </template>
 					<template v-else>
-						<Heading title="Базовая цена" />
-						<div class="mt-8 flex flex-col gap-3">
+						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200">Базовая цена</div>
+						<div class="mt-3 flex flex-col gap-3">
 							<Input
 								v-model="priceForm.weekdays_price"
 								type="number"
+                                id="weekdays_price"
 								:error="priceForm.errors.weekdays_price"
 								label="Цена в будни, ₽"
 							/>
 							<Input
 								v-model="priceForm.weekends_price"
 								type="number"
+                                id="weekends_price"
 								:error="priceForm.errors.weekends_price"
 								label="Цена в выходные, ₽"
 							/>
-							<ButtonComponent
-								:disabled="!priceForm.isDirty"
-								class="mt-6"
-								label="Сохранить"
-								@click="submitPriceForm"
-							/>
 						</div>
+						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">Синхронизация</div>
+						<div class="mt-3 flex flex-col gap-3">
+							<ICalLinks v-model="priceForm.i_cal_links"
+                                       @reset="priceForm.clearErrors()"
+                                       :errors="priceForm.errors" />
+						</div>
+                        <ButtonComponent
+                            :disabled="!priceForm.isDirty"
+                            class="mt-6"
+                            label="Сохранить"
+                            @click="submitPriceForm"
+                        />
 					</template>
 				</div>
 			</div>

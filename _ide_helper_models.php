@@ -46,8 +46,6 @@ namespace App\Models{
  * @property-read Category|null $category
  * @property-read Collection<int, DatePrice> $datePrices
  * @property-read int|null $date_prices_count
- * @property-read Collection<int, DisabledDate> $disabledDates
- * @property-read int|null $disabled_dates_count
  * @property-read Collection<int, Feature> $features
  * @property-read int|null $features_count
  * @property-read MediaCollection<int, Media> $media
@@ -89,8 +87,14 @@ namespace App\Models{
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
  * @mixin Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ICalLink> $ICalLinks
+ * @property-read int|null $i_cal_links_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DisabledDate> $disabledDates
+ * @property-read int|null $disabled_dates_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
  * @property-read int|null $reservations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SideReservation> $sideReservations
+ * @property-read int|null $side_reservations_count
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -257,6 +261,27 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\ICalLink
+ *
+ * @property int $id
+ * @property string $apartment_id
+ * @property string $link
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|ICalLink newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ICalLink newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ICalLink query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereApartmentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereLink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereUpdatedAt($value)
+ */
+	class ICalLink extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Reservation
  *
  * @property string $id
@@ -339,6 +364,34 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	final class ReservationRequest extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\SideReservation
+ *
+ * @property string $id
+ * @property string $apartment_id
+ * @property \Illuminate\Support\Carbon $start
+ * @property \Illuminate\Support\Carbon $end
+ * @property string|null $description
+ * @property string|null $summary
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Apartment|null $apartment
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereApartmentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereStart($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereSummary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereUpdatedAt($value)
+ */
+	final class SideReservation extends \Eloquent {}
 }
 
 namespace App\Models{

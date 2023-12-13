@@ -15,7 +15,7 @@ final class EditController extends Controller
     public function __invoke(Request $request, Apartment $apartment): Response
     {
         return Inertia::render('Account/Apartments/Edit', [
-            'apartment' => $apartment
+            'apartment' => $apartment,
         ]);
     }
 }
