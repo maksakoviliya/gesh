@@ -160,11 +160,11 @@ final class Apartment extends Model implements HasMedia
             $start = Carbon::createFromFormat('d_m_Y', $request->get('start'));
             $end = Carbon::createFromFormat('d_m_Y', $request->get('end'));
 
-            dd(SideReservation::query()->where('apartment_id', '01hhgpj8bj8x1bx9v01q8cyc0q')
-                ->whereDate('start', '>=', $start)
-                ->whereDate('end', '>', $end)
-                ->orderBy('start')
-                ->get());
+//            dd(SideReservation::query()->where('apartment_id', '01hhgpj8bj8x1bx9v01q8cyc0q')
+//                ->whereDate('start', '>=', $start)
+//                ->whereDate('end', '>', $end)
+//                ->orderBy('start')
+//                ->get());
 
             $query->whereDoesntHave('disabledDates', function (Builder $q) use ($start, $end) {
                 $q->whereDate('date', '>', $start)
@@ -176,7 +176,7 @@ final class Apartment extends Model implements HasMedia
             })
             ->whereDoesntHave('sideReservations', function (Builder $q) use ($start, $end) {
                 $q->whereDate('start', '>=', $start)
-                    ->whereDate('end', '<', $end->subDay())->toSql();
+                ->whereDate('end', '>', $end->subDay());
             });
         }
 
