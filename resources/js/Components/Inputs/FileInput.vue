@@ -81,10 +81,12 @@
 			}'>Перетащите или <span class='underline font-medium'>выберите</span> изображения</div>`"
 		/>
 		<div
-			v-if="!!error"
-			class="text-rose-500 text-sm font-light"
+			v-if="!!errors"
+			class="text-rose-500 text-sm font-light flex flex-col gap-1"
 		>
-			{{ error }}
+			<div v-for="key in Object.keys(errors)">
+                {{ errors[key]}}
+            </div>
 		</div>
 	</div>
 </template>

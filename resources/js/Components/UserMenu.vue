@@ -83,7 +83,7 @@ const redirectToDashboard = () => {
                         :href="route('account.index')"
                         label="Аккаунт"
                     />
-                    <hr/>
+                    <hr class="dark:border-slate-600"/>
                     <MenuLink
                         v-if="$page.props.user.data.is_admin"
                         @click="redirectToDashboard"

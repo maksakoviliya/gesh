@@ -53,7 +53,7 @@
 			<div class="mt-10 flex flex-col gap-4">
 				<slot></slot>
 			</div>
-			<div class="fixed inset-x-0 bottom-0 py-4 bg-white border-t z-20">
+			<div class="fixed inset-x-0 bottom-0 py-4 bg-white dark:bg-slate-800 border-t z-20">
 				<Container :sm="true">
 					<div class="flex justify-between gap-6">
 						<ButtonComponent

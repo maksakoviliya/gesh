@@ -17,7 +17,7 @@
 			:href="route.route"
 			v-for="(route, i) in routes"
 			:key="route.key"
-			class="text-sm text-neutral-800 font-medium"
+			class="text-sm text-neutral-800 dark:text-slate-200 font-medium"
 			:class="i < routes.length - 1 ? 'hover:underline' : ''"
 		>
 			{{ route.label }}

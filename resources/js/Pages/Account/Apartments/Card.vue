@@ -19,7 +19,13 @@
 					step: props.apartment.step,
 				})
 			)
-		}
+		} else {
+            return router.visit(
+                route('account.apartments.edit', {
+                    apartment: props.apartment.id,
+                })
+            )
+        }
 	}
 
 	const goToCalendar = (id) => {
@@ -77,7 +83,7 @@
 			<!--                {location?.region}, {location?.label}-->
 			<!--            </div>-->
 			<div
-				class="font-light text-neutral-500"
+				class="font-light text-neutral-500 dark:text-slate-400"
 				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
 				{{ props.apartment.category?.title ?? 'Нет типа' }}

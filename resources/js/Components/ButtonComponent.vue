@@ -11,11 +11,11 @@
 		fontLight: Boolean | null,
 		bgClass: {
 			type: String,
-			default: 'bg-sky-600',
+			default: 'bg-sky-600 dark:bg-sky-800',
 		},
 		borderClass: {
 			type: String,
-			default: 'border-sky-600',
+			default: 'border-sky-600 dark:border-sky-800',
 		},
 		textClass: {
 			type: String,
@@ -31,14 +31,14 @@
     rounded-lg
     transition
     ${props.autoWidth ? 'w-auto' : 'w-full'}
-    ${props.outline ? 'bg-white' : props.bgClass}
-    ${props.outline ? 'border-black' : props.borderClass}
-    ${props.outline ? 'text-black' : props.textClass}
+    ${props.outline ? 'bg-white dark:bg-slate-800' : props.bgClass}
+    ${props.outline ? 'border-black dark:border-slate-400' : props.borderClass}
+    ${props.outline ? 'text-black dark:text-slate-100' : props.textClass}
     ${props.outline ? 'hover:opacity-60' : 'hover:opacity-80'}
     ${props.small ? 'text-sm' : 'text-md'}
     ${props.small ? 'py-1' : 'py-3'}
     ${props.small ? 'font-light' : props.fontLight ? 'font-normal' : 'font-semibold'}
-    ${props.small ? 'border-[1px]' : 'border-2'}`
+    ${props.small ? 'border' : 'border-2'}`
 	})
 </script>
 

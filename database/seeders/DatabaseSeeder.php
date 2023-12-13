@@ -36,6 +36,13 @@ class DatabaseSeeder extends Seeder
                     'email_verified_at' => Carbon::now(),
                     'password' => Hash::make('123123123'),
                 ]);
+                $user = User::factory()->create([
+                    'name' => 'Maister Anton',
+                    'email' => 'rus2131@yandex.ru',
+                    'phone' => '+79822495558',
+                    'email_verified_at' => Carbon::now(),
+                    'password' => Hash::make('19конькентавр12'),
+                ]);
                 $admin->assignRole($role);
                 $user->assignRole($role);
     }

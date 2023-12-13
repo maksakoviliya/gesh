@@ -3,8 +3,14 @@ import {Head, Link, router} from '@inertiajs/vue3';
 import Navbar from "@/Components/Navbar.vue";
 import SpeedDial from "@/Components/SpeedDial.vue";
 
-defineProps({
-    title: String,
+const props = defineProps({
+    title: {
+        type: String
+    },
+    hiddenSpeedDial: {
+        type: [Boolean, null],
+        default: false
+    }
 });
 </script>
 
@@ -254,6 +260,6 @@ defineProps({
         </footer>
         <!--        </div>-->
 
-        <SpeedDial v-if="!!$page.props.user" />
+        <SpeedDial v-if="!!$page.props.user && !props.hiddenSpeedDial" />
     </div>
 </template>

@@ -48,7 +48,7 @@
 			data-dial-toggle="speed-dial-menu-default"
 			aria-controls="speed-dial-menu-default"
 			aria-expanded="false"
-			class="flex items-center justify-center text-white shadow-lg bg-sky-700 rounded-full w-10 h-10 md:w-14 md:h-14 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 outline-none"
+			class="flex items-center justify-center text-white shadow-lg bg-sky-700 dark:bg-sky-800 rounded-full w-10 h-10 md:w-14 md:h-14 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 outline-none"
 		>
 			<svg
 				class="w-4 h-4 transition-transform group-hover:rotate-45"
