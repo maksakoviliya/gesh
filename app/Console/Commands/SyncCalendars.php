@@ -20,6 +20,7 @@ class SyncCalendars extends Command
 
     public function handle()
     {
+        Log::info('Start sync calendars');
         if (!$apartment_id = $this->argument('apartment_id')) {
             $links = ICalLink::all();
             SideReservation::query()
@@ -52,5 +53,6 @@ class SyncCalendars extends Command
             //                Log::info($exception->getMessage());
             //            }
         }
+        Log::info('Finish sync calendars');
     }
 }
