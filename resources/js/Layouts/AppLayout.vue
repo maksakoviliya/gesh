@@ -1,5 +1,5 @@
 <script setup>
-	import { Head, Link, router } from '@inertiajs/vue3'
+	import { Head } from '@inertiajs/vue3'
 	import Navbar from '@/Components/Navbar.vue'
 	import Footer from '@/Components/Footer.vue'
 	import SpeedDial from '@/Components/SpeedDial.vue'

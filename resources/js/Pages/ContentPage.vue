@@ -16,14 +16,14 @@
 
 <template>
 	<AppLayout>
-		<Container>
+		<Container xs>
 			<Heading
 				:title="props.title"
 				class="mt-12"
 			/>
 			<div
 				v-html="props.content"
-				class="mt-10 mx-auto max-w-2xl text-neutral-800 dark:text-slate-300 text-justify"
+				class="mt-10 text-neutral-800 dark:text-slate-300 leading-loose"
 			></div>
 		</Container>
 	</AppLayout>

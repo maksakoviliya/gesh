@@ -12,7 +12,7 @@
 					<Link
 						:href="route('home')"
 						class="hover:underline"
-						>gesh-resort.online</Link
+						>gesh-resort.ru</Link
 					>
 				</span>
 				<div
