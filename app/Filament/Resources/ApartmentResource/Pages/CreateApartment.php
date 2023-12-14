@@ -16,6 +16,7 @@ final class CreateApartment extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         Arr::set($data, 'status', Status::Draft);
+
         return $data;
     }
 }

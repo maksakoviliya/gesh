@@ -1,11 +1,21 @@
 <script setup>
-	import Rooms from '@/Components/Bedrooms.vue'
 	import Guests from '@/Components/Guests.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import { router } from '@inertiajs/vue3'
 	import Beds from '@/Components/Apartments/Beds.vue'
 	import Bathrooms from '@/Components/Apartments/Bathrooms.vue'
 	import Bedrooms from '@/Components/Bedrooms.vue'
+
+	import { OhVueIcon, addIcons } from 'oh-vue-icons'
+	import { HiSolidLink } from 'oh-vue-icons/icons'
+	import { onMounted, ref } from 'vue'
+	import { initFlowbite } from 'flowbite'
+
+	onMounted(() => {
+		initFlowbite()
+	})
+
+	addIcons(HiSolidLink)
 
 	const props = defineProps({
 		apartment: Object,
@@ -20,12 +30,12 @@
 				})
 			)
 		} else {
-            return router.visit(
-                route('account.apartments.edit', {
-                    apartment: props.apartment.id,
-                })
-            )
-        }
+			return router.visit(
+				route('account.apartments.edit', {
+					apartment: props.apartment.id,
+				})
+			)
+		}
 	}
 
 	const goToCalendar = (id) => {
@@ -58,16 +68,31 @@
 				return 'bg-green-300 text-neutral-900'
 		}
 	}
+
+	const copyText = ref('Копировать ссылку')
+	const handleCopy = (id) => {
+		copyText.value = 'Скопировано'
+		navigator.clipboard
+			.writeText(
+				route('apartment', {
+					apartment: id,
+				})
+			)
+			.then(() => {
+				copyText.value = 'Скопировано'
+				setTimeout(() => {
+					copyText.value = 'Копировать ссылку'
+				}, 1500)
+			})
+	}
 </script>
 
 <template>
 	<div class="col-span-1 cursor-pointer group">
 		<div class="flex flex-col gap-2 w-full">
-			<div
-				class="aspect-square w-full relative overflow-hidden rounded-xl"
-				@click="handleClick"
-			>
+			<div class="aspect-square w-full relative overflow-hidden rounded-xl">
 				<img
+					@click="handleClick"
 					class="object-cover h-full w-full group-hover:scale-110 transition"
 					:src="props.apartment.media.length ? props.apartment.media[0]?.src : '/img/no-photo.jpeg'"
 					:alt="props.apartment.title"
@@ -77,6 +102,27 @@
 					:class="getStatusColor(props.apartment.status)"
 				>
 					{{ props.apartment.status_text }}
+				</div>
+				<div class="absolute top-3 start-3">
+					<div
+						v-if="props.apartment.status === 'published'"
+						:data-tooltip-target="`link_${props.apartment.id}`"
+						@click="handleCopy(props.apartment.id)"
+						class="px-2 rounded-full text-xs w-8 h-8 aspect-square flex flex-col items-center justify-center bg-transparent text-neutral-800 hover:bg-white transition dark:hover:bg-slate-800 dark:hover:text-slate-100"
+					>
+						<OhVueIcon name="hi-solid-link" />
+					</div>
+					<div
+						:id="`link_${props.apartment.id}`"
+						role="tooltip"
+						class="absolute z-20 break-words whitespace-nowrap invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+					>
+						{{ copyText }}
+						<div
+							class="tooltip-arrow"
+							data-popper-arrow
+						></div>
+					</div>
 				</div>
 			</div>
 			<!--            <div class="font-semibold text-lg">-->

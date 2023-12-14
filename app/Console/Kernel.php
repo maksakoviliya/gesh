@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->command('sync-calendars')->everyFifteenMinutes();
+        $schedule->command('sync-calendars')->everyFifteenMinutes();
     }
 
     protected function commands(): void

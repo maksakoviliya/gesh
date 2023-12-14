@@ -66,7 +66,7 @@ class ApartmentResource extends Resource
                                 Forms\Components\TextInput::make('room'),
                                 Forms\Components\TextInput::make('floor'),
                                 Forms\Components\TextInput::make('entrance'),
-//                                Forms\Components\TextInput::make('index'),
+                                //                                Forms\Components\TextInput::make('index'),
                             ])->collapsible()->columns()->collapsed(),
                         Forms\Components\Section::make('Шаг 4')
                             ->schema([
@@ -153,9 +153,10 @@ class ApartmentResource extends Resource
                 TextColumn::make('user.name')
                     ->description(fn (Apartment $record): string => $record->user?->email ?? '')
                     ->url(function ($record) {
-                        if (!$record->user) {
+                        if (! $record->user) {
                             return null;
                         }
+
                         return UserResource::getUrl('edit', ['record' => $record->user]);
                     }),
                 Tables\Columns\TextColumn::make('status')

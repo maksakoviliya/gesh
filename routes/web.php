@@ -19,6 +19,8 @@ use App\Http\Controllers\Account\Reservations\ReservationsListController;
 use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\ApartmentShowController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
+use App\Http\Controllers\Content\PolicyPageController;
+use App\Http\Controllers\Content\RulesPageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeMapController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
@@ -34,6 +36,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/map', HomeMapController::class)->name('home.map');
 Route::get('/apartments/{apartment}', ApartmentShowController::class)->name('apartment');
+
+Route::get('/policy', PolicyPageController::class)->name('policy');
+Route::get('/rules', RulesPageController::class)->name('rules');
 
 // Social Auth
 Route::get('/auth/redirect/{provider}', SocialRedirectController::class)->name('social_redirect');

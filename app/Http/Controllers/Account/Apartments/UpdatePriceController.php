@@ -27,7 +27,7 @@ final class UpdatePriceController extends Controller
         $apartment->ICalLinks()->createMany($links);
 
         Artisan::call('sync-calendars', [
-            'apartment_id' => $apartment->id
+            'apartment_id' => $apartment->id,
         ]);
 
         $apartment = Apartment::query()
