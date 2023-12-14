@@ -24,9 +24,9 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title'),
-                Forms\Components\TextInput::make('slug'),
-                Forms\Components\Textarea::make('icon')->columnSpan(2),
+                Forms\Components\TextInput::make('title')->required(),
+                Forms\Components\TextInput::make('slug')->required(),
+                Forms\Components\Textarea::make('icon')->columnSpan(2)->required(),
                 Forms\Components\Textarea::make('description')->columnSpan(2),
             ]);
     }
