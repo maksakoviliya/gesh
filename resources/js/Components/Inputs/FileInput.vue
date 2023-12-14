@@ -76,6 +76,7 @@
 			@updatefiles="handleUpdateFiles"
 			@warning="handleWarning"
 			:allow-multiple="true"
+			:allow-reorder="true"
 			:labelIdle="`<div class='${
 				!!error ? 'text-rose-500' : ''
 			}'>Перетащите или <span class='underline font-medium'>выберите</span> изображения</div>`"
@@ -85,8 +86,8 @@
 			class="text-rose-500 text-sm font-light flex flex-col gap-1"
 		>
 			<div v-for="key in Object.keys(errors)">
-                {{ errors[key]}}
-            </div>
+				{{ errors[key] }}
+			</div>
 		</div>
 	</div>
 </template>

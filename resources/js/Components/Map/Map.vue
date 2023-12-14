@@ -37,10 +37,12 @@
 		},
 	})
 
+	const center = [props.lat, props.lon]
+
 	const emit = defineEmits(['updateLon', 'updateLat'])
 	const handleChange = (object) => {
-		emit('updateLat', map.value.center[0])
-		emit('updateLon', map.value.center[1])
+		// emit('updateLat', map.value.center[0])
+		// emit('updateLon', map.value.center[1])
 	}
 
 	addIcons(HiLocationMarker)
@@ -52,7 +54,7 @@
 			v-model="map"
 			:settings="{
 				location: {
-					center: [props.lat, props.lon],
+					center,
 					zoom: 13,
 				},
 			}"
