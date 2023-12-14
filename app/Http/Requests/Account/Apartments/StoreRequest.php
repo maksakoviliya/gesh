@@ -69,7 +69,7 @@ final class StoreRequest extends FormRequest
             // Step 7:
             'media' => ['sometimes', 'nullable', 'array', 'max:10'],
             'total_media' => 'sometimes|required|numeric|min:1',
-            'media.*' => 'sometimes|required|image|max:2048',
+            'media.*' => 'sometimes|required|image|max:6000',
             'remove' => 'sometimes|nullable|array',
 
             // Step 8:
