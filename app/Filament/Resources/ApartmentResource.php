@@ -147,8 +147,11 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('categories.title')
                     ->badge(),
                 TextColumn::make('user.name')
-                    ->description(fn (Apartment $record): string => $record->user->email)
+                    ->description(fn (Apartment $record): string => $record->user?->email ?? '')
                     ->url(function ($record) {
+                        if (!$record->user) {
+                            return null;
+                        }
                         return UserResource::getUrl('edit', ['record' => $record->user]);
                     }),
                 Tables\Columns\TextColumn::make('status')
@@ -197,7 +200,8 @@ class ApartmentResource extends Resource
                         }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array
