@@ -62,7 +62,7 @@ class ApartmentResource extends Resource
                                 Forms\Components\TextInput::make('room'),
                                 Forms\Components\TextInput::make('floor'),
                                 Forms\Components\TextInput::make('entrance'),
-                                Forms\Components\TextInput::make('index'),
+//                                Forms\Components\TextInput::make('index'),
                             ])->collapsible()->columns()->collapsed(),
                         Forms\Components\Section::make('Шаг 4')
                             ->schema([

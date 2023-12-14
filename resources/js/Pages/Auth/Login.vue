@@ -1,5 +1,5 @@
 <script setup>
-	import { Head, useForm } from '@inertiajs/vue3'
+	import { Head, useForm, Link } from '@inertiajs/vue3'
 	import ModalLayout from '@/Layouts/ModalLayout.vue'
 	import Heading from '@/Components/Heading.vue'
 	import Input from '@/Components/Input.vue'
@@ -20,7 +20,7 @@
 		password: '',
 	})
 
-	const { successToast } = useToasts()
+	const { successToast, errorToast } = useToasts()
 
 	const submit = () => {
 		form.transform((data) => {
@@ -31,8 +31,12 @@
 			}
 			return data
 		}).post(route('login'), {
-			onError: (error) => form.setError('email', error.message),
-			onFinish: () => {
+			onError: (error) => {
+				form.setError('email', error.email)
+				errorToast('Возникла ошибка.')
+			},
+			onSuccess: (res) => {
+				console.log('res', res)
 				successToast('Успешный вход в аккаунт.')
 				form.reset('password')
 			},
@@ -100,6 +104,14 @@
 			<hr class="my-4" />
 			<div class="flex flex-col gap-2">
 				<SocialAuth />
+			</div>
+			<div class="text-neutral-800 dark:text-slate-400 mt-4 text-sm text-center">
+				Еще нет аккаунта?
+				<Link
+					:href="route('register')"
+					class="underline hover:text-neutral-700 dark:hover:text-slate-300"
+					>Зарегистрироваться</Link
+				>
 			</div>
 		</template>
 	</ModalLayout>

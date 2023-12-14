@@ -9,7 +9,7 @@
 		small: Boolean | null,
 		autoWidth: Boolean | null,
 		fontLight: Boolean | null,
-        circle: Boolean | null,
+		circle: Boolean | null,
 		bgClass: {
 			type: String,
 			default: 'bg-sky-600 dark:bg-sky-800',
@@ -34,7 +34,7 @@
     ${props.circle ? 'rounded-full' : 'rounded-lg'}
     ${props.outline ? 'bg-white dark:bg-slate-800' : props.bgClass}
     ${props.outline ? 'border-black dark:border-slate-400' : props.borderClass}
-    ${props.outline ? 'text-black dark:text-slate-100' : props.textClass}
+    ${props.outline ? 'text-black dark:text-slate-300' : props.textClass}
     ${props.outline ? 'hover:opacity-60' : 'hover:opacity-80'}
     ${props.small ? 'text-sm' : 'text-md'}
     ${props.small ? 'py-1' : 'py-3'}

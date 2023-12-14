@@ -24,7 +24,7 @@ class UserResource extends Resource
             ->schema([
                 TextInput::make('name')->required()->columnSpan('full'),
                 TextInput::make('email')->unique(ignoreRecord: true)->nullable(),
-                TextInput::make('phone')->unique()->nullable(),
+                TextInput::make('phone')->unique(ignoreRecord: true)->nullable(),
                 TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))

@@ -107,12 +107,12 @@
 						:error="form.errors.floor"
 					/>
 				</div>
-				<Input
-					id="index"
-					v-model="form.index"
-					label="Индекс"
-					:error="form.errors.index"
-				/>
+				<!--				<Input-->
+				<!--					id="index"-->
+				<!--					v-model="form.index"-->
+				<!--					label="Индекс"-->
+				<!--					:error="form.errors.index"-->
+				<!--				/>-->
 			</div>
 		</div>
 	</Form>
