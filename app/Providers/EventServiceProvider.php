@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Events\ReservationRequest\CreatedEvent;
-use App\Listeners\ReservationRequest\CreatedListener;
+use App\Events\Reservation\PaidEvent;
+use App\Events\ReservationRequest\CreatedEvent as ReservationRequestCreatedEvent;
+use App\Listeners\Reservation\PaidListener;
+use App\Listeners\ReservationRequest\CreatedListener as ReservationRequestCreatedListener;
+use App\Events\Reservation\CreatedEvent as ReservationCreatedEvent;
+use App\Listeners\Reservation\CreatedListener as ReservationCreatedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -24,8 +28,14 @@ final class EventServiceProvider extends ServiceProvider
             VKontakteExtendSocialite::class.'@handle',
             GoogleExtendSocialite::class.'@handle',
         ],
-        CreatedEvent::class => [
-            CreatedListener::class
+        ReservationRequestCreatedEvent::class => [
+            ReservationRequestCreatedListener::class
+        ],
+        ReservationCreatedEvent::class => [
+            ReservationCreatedListener::class
+        ],
+        PaidEvent::class => [
+            PaidListener::class
         ]
     ];
 

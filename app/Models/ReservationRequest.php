@@ -118,7 +118,7 @@ final class ReservationRequest extends Model
         return $this->hasOne(Reservation::class);
     }
 
-    public function apartment()
+    public function apartment(): BelongsTo
     {
         return $this->belongsTo(Apartment::class);
     }

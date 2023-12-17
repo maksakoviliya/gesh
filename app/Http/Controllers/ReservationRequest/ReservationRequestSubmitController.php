@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\ReservationRequest;
 
+use App\Events\Reservation\CreatedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest\SubmitRequest;
 use App\Models\Reservation;
@@ -14,7 +15,10 @@ final class ReservationRequestSubmitController extends Controller
 {
     public function __invoke(SubmitRequest $request, ReservationRequest $reservationRequest): JsonResponse
     {
+        /** @var Reservation $reservation */
         $reservation = Reservation::createFromReservationRequest($reservationRequest);
+
+        CreatedEvent::dispatch($reservation);
 
         $reservationRequest->submit($reservation);
         /** @var ReservationRequest $reservationRequest */
