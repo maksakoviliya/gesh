@@ -98,7 +98,7 @@ const handleSecondaryAction = () => {
               lg:h-auto
               md:h-auto
               border-0
-              rounded-lg
+              md:rounded-lg
               shadow-lg
               relative
               flex

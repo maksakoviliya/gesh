@@ -99,7 +99,7 @@
 			</div>
 		</template>
 		<template #content>
-			<div class="p-4 flex flex-col gap-4">
+			<div class="p-4 flex flex-col gap-4 bg-white dark:bg-slate-800">
 				<div class="flex items-stretch flex-col md:flex-row gap-2 md:gap-4 w-full justify-between">
 					<div class="h-full overflow-auto w-full">
 						<CitySearch

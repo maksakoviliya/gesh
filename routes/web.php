@@ -15,12 +15,14 @@ use App\Http\Controllers\Account\Apartments\StepController;
 use App\Http\Controllers\Account\Apartments\StoreController;
 use App\Http\Controllers\Account\Apartments\UpdateCalendarController;
 use App\Http\Controllers\Account\Apartments\UpdatePriceController;
+use App\Http\Controllers\Account\Notifications\NotificationsIndexController;
 use App\Http\Controllers\Account\Reservations\ReservationsListController;
 use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\ApartmentShowController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
 use App\Http\Controllers\Content\PolicyPageController;
 use App\Http\Controllers\Content\RulesPageController;
+use App\Http\Controllers\HasUnreadNotificationsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeMapController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
@@ -79,6 +81,13 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::post('{reservationRequest}/submit', ReservationRequestSubmitController::class)->name('submit');
                 });
 
+            // Notifications
+            Route::prefix('notifications')
+                ->as('notifications.')
+                ->group(function() {
+                    Route::get('/', NotificationsIndexController::class)->name('index');
+                });
+
             // Chat
             Route::prefix('chat')->as('chat.')->group(function () {
                 Route::post('{chat}', MessageStoreController::class)->name('messages.store');
@@ -94,6 +103,9 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
     Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)->name('reservation-requests.store');
+
+    // Profile
+    Route::get('has-unread-notifications', HasUnreadNotificationsController::class)->name('has_unread_notifications');
 });
 
 Route::post('search/city', SearchCityController::class)->name('search.city');

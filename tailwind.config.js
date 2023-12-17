@@ -22,8 +22,8 @@ export default {
 		},
 	},
 
-	// darkMode: 'class',
-	darkMode: 'media',
+	darkMode: 'class',
+	// darkMode: 'media',
 
 	plugins: [forms, typography, flowbite],
 }

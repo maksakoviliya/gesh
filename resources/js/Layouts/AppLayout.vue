@@ -26,7 +26,5 @@
 		</main>
 
 		<Footer />
-
-		<SpeedDial v-if="!!$page.props.user && !props.hiddenSpeedDial" />
 	</div>
 </template>

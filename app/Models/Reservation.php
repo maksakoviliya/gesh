@@ -97,17 +97,8 @@ final class Reservation extends Model
                 'range' => $reservationRequest->range,
                 'price' => $reservationRequest->price,
             ]);
-        //        $period = CarbonPeriod::create(
-        //            $reservationRequest->start,
-        //            $reservationRequest->end->subDay(),
-        //        );
-        //        foreach ($period as $date) {
-        //            DisabledDate::query()
-        //                ->create([
-        //                    'apartment_id' => $reservationRequest->apartment_id,
-        //                    'date' => $date,
-        //                ]);
-        //        }
+
+
 
         return $reservation;
     }

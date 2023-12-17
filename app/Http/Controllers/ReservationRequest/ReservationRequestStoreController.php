@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\ReservationRequest;
 
+use App\Events\ReservationRequest\CreatedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest\StoreRequest;
 use App\Models\Apartment;
@@ -28,6 +29,8 @@ final class ReservationRequestStoreController extends Controller
             'user_id' => Auth::id(),
             'reservation_request_id' => $reservation_request->id,
         ]);
+
+        CreatedEvent::dispatch($reservation_request);
 
         return to_route('account.apartments.chat', [
             'apartment' => $apartment->id,

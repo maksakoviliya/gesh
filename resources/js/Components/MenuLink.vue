@@ -12,10 +12,14 @@ const linkClass = 'px-4 py-3 hover:bg-neutral-100 dark:hover:bg-slate-700 dark:t
 
 <template>
     <Link :href="href" v-if="href" :class="linkClass">
-        {{ label }}
+        <slot>
+            {{ label }}
+        </slot>
     </Link>
     <div @click="$emit('click')" v-else :class="linkClass">
-        {{ label }}
+        <slot>
+            {{ label }}
+        </slot>
     </div>
 </template>
 
