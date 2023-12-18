@@ -26,7 +26,7 @@
 			@keydown.prevent.enter="emit('onEnter')"
 			:type="type ?? 'text'"
 			autocomplete="new-password"
-			class="peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md shadow-none outline-none transition disabled:opacity-70 focus:ring-0 resize-none pl-4 disabled:cursor-not-allowed"
+			class="peer w-full p-4 pt-6 font-light bg-white dark:bg-slate-800 border-2 dark:border-slate-700 dark:text-white rounded-md shadow-none outline-none transition disabled:opacity-70 focus:ring-0 resize-none pl-4 disabled:cursor-not-allowed"
 			:class="`
                     ${error ? 'border-rose-500' : 'border-neutral-300'}
                 ${error ? 'focus:border-rose-500' : 'focus:border-black'}

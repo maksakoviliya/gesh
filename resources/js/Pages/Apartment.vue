@@ -12,7 +12,7 @@
 	import useToasts from '@/hooks/useToasts'
 	import Datepicker from '@/Components/Datepicker.vue'
 	import Map from '@/Components/Map/Map.vue'
-    import Popover from "@/Components/Interactive/Popover.vue";
+	import Popover from '@/Components/Interactive/Popover.vue'
 
 	const props = defineProps({
 		apartment: Array | Object,
@@ -93,13 +93,13 @@
 		return sum
 	})
 
-    const servicePrice = computed(() => {
-        return Math.ceil(basePrice.value*0.15)
-    })
+	const servicePrice = computed(() => {
+		return Math.ceil(basePrice.value * 0.15)
+	})
 
-    const totalPrice = computed(() => {
-        return basePrice.value + servicePrice.value
-    })
+	const totalPrice = computed(() => {
+		return basePrice.value + servicePrice.value
+	})
 
 	const { errorToast } = useToasts()
 
@@ -109,8 +109,8 @@
 				apartment: props.apartment.data.id,
 			}),
 			{
-				onError: () => {
-					errorToast('Error')
+				onError: (err) => {
+					errorToast(Object.values(err)[0])
 				},
 			}
 		)
@@ -206,16 +206,28 @@
 					</div>
 				</div>
 				<div
-					class="relative lg:sticky rounded-lg shadow-lg border border-neutral-100 w-full lg:w-1/3 lg:top-28 p-6"
+					class="relative lg:sticky rounded-lg shadow-lg border border-neutral-100 dark:border-slate-700 dark:shadow-gray-900 w-full lg:w-1/3 lg:top-28 p-6"
 				>
 					<div class="flex flex-wrap gap-2 xl:gap-4">
-						<div class="text-2xl md:text-3xl font-semibold flex items-center gap-2">
+						<div class="text-2xl md:text-3xl font-semibold flex items-center gap-2 dark:text-white">
 							{{ props.apartment.data.weekdays_price?.toLocaleString() }}₽
-							<div class="flex flex-col">
-								<span class="text-neutral-500 font-light text-sm leading-none whitespace-nowrap"
+							<div
+								class="flex flex-col"
+								v-if="props.apartment.data.weekdays_price !== props.apartment.data.weekends_price"
+							>
+								<span
+									class="text-neutral-500 dark:text-slate-400 font-light text-sm leading-none whitespace-nowrap"
 									>ночь в</span
 								>
-								<span class="text-neutral-500 font-light text-sm leading-none">будни</span>
+								<span class="text-neutral-500 dark:text-slate-400 font-light text-sm leading-none"
+									>будни</span
+								>
+							</div>
+							<div v-else>
+								<span
+									class="text-neutral-500 dark:text-slate-400 font-light text-sm leading-none whitespace-nowrap"
+									>/ ночь</span
+								>
 							</div>
 						</div>
 						<div
@@ -231,7 +243,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="mt-4 ">
+					<div class="mt-4">
 						<Datepicker
 							range
 							:start="form.start"
@@ -254,7 +266,7 @@
 					</div>
 					<div class="flex flex-col gap-3 mt-4">
 						<ButtonComponent
-							v-if="props.apartment.data.fast_reserve"
+							v-if="props.apartment.data.fast_reserve && false"
 							label="Моментальное бронирование"
 						/>
 						<ButtonComponent
@@ -264,71 +276,75 @@
 						/>
 					</div>
 					<div class="font-light text-sm text-center mt-3 text-neutral-500">Пока вы ни за что не платите</div>
-                    <dl class="divide-y divide-gray-100 border-t mt-4">
-                        <div class="py-4 flex flex-col gap-2">
-                            <div class="flex w-full items-baseline justify-between" >
-                                <dt class="font-light leading-6 text-gray-600">
-                                    <Popover>
-                                        <template #toggle>
-                                            <div class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition">
-                                                {{ detalizationText }}
-                                            </div>
-                                        </template>
-                                        <template #content>
-                                            <dl class="divide-y divide-gray-100 max-h-52 overflow-auto">
-                                                <div
-                                                    class="py-1 px-4 flex w-full items-baseline justify-between"
-                                                    v-for="item in details"
-                                                    :key="item.date"
-                                                >
-                                                    <dt class="font-light text-sm leading-6 text-gray-600">
-                                                        {{ item.date }}
-                                                    </dt>
-                                                    <dd class="mt-1 text-sm font-medium leading-6 text-neutral-600">
-                                                        {{ item.price?.toLocaleString() }}₽
-                                                    </dd>
-                                                </div>
-                                            </dl>
-                                        </template>
-                                    </Popover>
-                                </dt>
-                                <dd class="mt-1 font-medium leading-6 text-neutral-600">
-                                    {{ basePrice?.toLocaleString() }}₽
-                                </dd>
-                            </div>
-                            <div class="flex w-full items-baseline justify-between" >
-                                <dt class="font-light leading-6">
-                                    <Popover>
-                                        <template #toggle>
-                                            <div class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition">
-                                                Сервисный сбор
-                                            </div>
-                                        </template>
-                                        <template #content>
-                                            <div class="max-h-52 p-4 text-neutral-600 leading-tight text-sm">
-                                                Благодаря этому сбору мы развиваем наш сервис и, в том числе, обеспечиваем путешественников круглосуточной поддержкой.
-                                                <br> Данный сервисный сбор удерживатеся при отмене без уважительных причин.
-                                            </div>
-                                        </template>
-                                    </Popover>
-                                </dt>
-                                <dd class="mt-1 font-medium leading-6 text-neutral-600">
-                                    {{ servicePrice?.toLocaleString() }}₽
-                                </dd>
-                            </div>
-                        </div>
-                    </dl>
-                    <div class="border-t pt-4 flex flex-col gap-2">
-                        <div class="flex w-full items-baseline justify-between" >
-                            <dt class="font-bold leading-6 text-neutral-800">
-                                Итого:
-                            </dt>
-                            <dd class="mt-1 font-bold leading-6 text-lg text-neutral-800">
-                                {{ totalPrice?.toLocaleString() }}₽
-                            </dd>
-                        </div>
-                    </div>
-                </div>
+					<dl class="divide-y divide-gray-100 border-t mt-4">
+						<div class="py-4 flex flex-col gap-2">
+							<div class="flex w-full items-baseline justify-between">
+								<dt class="font-light leading-6 text-gray-600">
+									<Popover>
+										<template #toggle>
+											<div
+												class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
+											>
+												{{ detalizationText }}
+											</div>
+										</template>
+										<template #content>
+											<dl class="divide-y divide-gray-100 max-h-52 overflow-auto">
+												<div
+													class="py-1 px-4 flex w-full items-baseline justify-between"
+													v-for="item in details"
+													:key="item.date"
+												>
+													<dt class="font-light text-sm leading-6 text-gray-600">
+														{{ item.date }}
+													</dt>
+													<dd class="mt-1 text-sm font-medium leading-6 text-neutral-600">
+														{{ item.price?.toLocaleString() }}₽
+													</dd>
+												</div>
+											</dl>
+										</template>
+									</Popover>
+								</dt>
+								<dd class="mt-1 font-medium leading-6 text-neutral-600">
+									{{ basePrice?.toLocaleString() }}₽
+								</dd>
+							</div>
+							<div class="flex w-full items-baseline justify-between">
+								<dt class="font-light leading-6">
+									<Popover>
+										<template #toggle>
+											<div
+												class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
+											>
+												Сервисный сбор
+											</div>
+										</template>
+										<template #content>
+											<div class="max-h-52 p-4 text-neutral-600 leading-tight text-sm">
+												Благодаря этому сбору мы развиваем наш сервис и, в том числе,
+												обеспечиваем путешественников круглосуточной поддержкой.
+												<br />
+												Данный сервисный сбор удерживатеся при отмене без уважительных причин.
+											</div>
+										</template>
+									</Popover>
+								</dt>
+								<dd class="mt-1 font-medium leading-6 text-neutral-600">
+									{{ servicePrice?.toLocaleString() }}₽
+								</dd>
+							</div>
+						</div>
+					</dl>
+					<div class="border-t pt-4 flex flex-col gap-2">
+						<div class="flex w-full items-baseline justify-between">
+							<dt class="font-bold leading-6 text-neutral-800">Итого:</dt>
+							<dd class="mt-1 font-bold leading-6 text-lg text-neutral-800">
+								{{ totalPrice?.toLocaleString() }}₽
+							</dd>
+						</div>
+					</div>
+				</div>
 			</div>
 		</Container>
 	</AppLayout>

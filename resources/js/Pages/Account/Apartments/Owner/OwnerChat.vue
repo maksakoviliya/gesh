@@ -9,8 +9,8 @@
 	import TextareaInput from '@/Components/Inputs/TextareaInput.vue'
 	import EmptyState from '@/Components/EmptyState.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
-    import {ref} from "vue";
-    import Breadcrumbs from "@/Components/Breadcrumbs.vue";
+	import { ref } from 'vue'
+	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
 
 	const props = defineProps({
 		chats: {
@@ -52,29 +52,29 @@
 		)
 	}
 
-    const routes = ref([
-        {
-            id: 'account',
-            route: route('account.index'),
-            label: 'Аккаунт',
-        },
-        {
-            id: 'apartments',
-            route: route('account.apartments.list'),
-            label: 'Мои объекты',
-        },
-        {
-            id: 'chat',
-            route: route('account.apartments.list'),
-            label: 'Чаты',
-        },
-    ])
+	const routes = ref([
+		{
+			id: 'account',
+			route: route('account.index'),
+			label: 'Аккаунт',
+		},
+		{
+			id: 'apartments',
+			route: route('account.apartments.list'),
+			label: 'Мои объекты',
+		},
+		{
+			id: 'chat',
+			route: route('account.apartments.list'),
+			label: 'Чаты',
+		},
+	])
 </script>
 
 <template>
 	<AppLayout>
 		<Container>
-            <Breadcrumbs :routes="routes"/>
+			<Breadcrumbs :routes="routes" />
 			<Heading
 				class="mt-8"
 				title="Чат объекта"
@@ -101,7 +101,10 @@
 						:title="props.chat ? 'Сообщений пока нет' : 'Выберите чат'"
 						:subtitle="props.chat ? 'Напишите первым!' : 'И одобрите запрос на бронирование'"
 					/>
-					<div class="absolute inset-x-0 bottom-0 flex items-start gap-3" v-if="props.chat">
+					<div
+						class="absolute inset-x-0 bottom-0 flex items-start gap-3"
+						v-if="props.chat"
+					>
 						<TextareaInput
 							v-model="form.message"
 							id="message"
@@ -143,12 +146,12 @@
 							:key="chat.id"
 							@click="selectChat(chat)"
 							class="gap-2 px-4 py-2 cursor-pointer flex flex-col w-full hover:bg-gray-100 transition"
-							:class="props.chat?.data.id === chat.id ? 'bg-gray-100' : ''"
+							:class="props.chat?.data.id === chat.id ? 'bg-gray-100 dark:bg-slate-700' : ''"
 						>
 							<div class="flex items-center gap-2">
 								<Avatar :src="chat.user.avatar" />
 								<div class="flex flex-col">
-									<div class="text-sm font-bold text-neutral-800">
+									<div class="text-sm font-bold text-neutral-800 dark:text-white">
 										{{ chat.user.name }}
 									</div>
 									<div

@@ -15,15 +15,17 @@
 	import { computed, ref } from 'vue'
 	import dayjs from 'dayjs'
 	import 'dayjs/locale/ru'
-    import ICalLinks from "@/Components/ICalLinks.vue";
+	import ICalLinks from '@/Components/ICalLinks.vue'
+	import ReservationRequestEvent from '@/Pages/Account/Apartments/Calendar/ReservationRequestEvent.vue'
 
 	export default {
 		props: {
 			apartment: Object | Array,
-            events: Array
+			events: Array,
 		},
 		components: {
-            ICalLinks,
+			ReservationRequestEvent,
+			ICalLinks,
 			ButtonComponent,
 			Heading,
 			Input,
@@ -102,8 +104,8 @@
 					},
 					select: this.handleSelect,
 					unselect: this.handleUnselect,
-                    eventClick: this.handleEventClick,
-                    events: this.events,
+					eventClick: this.handleEventClick,
+					events: this.events,
 				},
 			}
 		},
@@ -114,7 +116,7 @@
 			const priceForm = useForm({
 				weekdays_price: props.apartment.data.weekdays_price,
 				weekends_price: props.apartment.data.weekends_price,
-                i_cal_links: props.apartment.data.i_cal_links ?? []
+				i_cal_links: props.apartment.data.i_cal_links ?? [],
 			})
 
 			const rangeForm = useForm({
@@ -123,7 +125,7 @@
 				price: null,
 			})
 
-            const selectedEvent = ref()
+			const selectedEvent = ref()
 
 			const submitPriceForm = () => {
 				priceForm
@@ -152,7 +154,7 @@
 
 			const calendar = ref(null)
 			const handleSelect = (range) => {
-                selectedEvent.value = null
+				selectedEvent.value = null
 				rangeForm.start = range.startStr
 				rangeForm.end = dayjs(range.endStr).subtract(1, 'day').hour(23).minute(59)
 			}
@@ -199,9 +201,9 @@
 				return `${start.format('DD MMM')} - ${end.format('DD MMM')}`
 			})
 
-            const handleEventClick = (val) => {
-                selectedEvent.value = val
-            }
+			const handleEventClick = (val) => {
+				selectedEvent.value = val
+			}
 
 			return {
 				priceForm,
@@ -212,8 +214,8 @@
 				handleUnselect,
 				getRangeLabel,
 				calendar,
-                handleEventClick,
-                selectedEvent
+				handleEventClick,
+				selectedEvent,
 			}
 		},
 	}
@@ -223,71 +225,77 @@
 	<AppLayout>
 		<Container>
 			<Breadcrumbs :routes="routes" />
-			<div class="flex flex-col items-start lg:flex-row w-full  mt-4 xl:mt-12 relative">
-				<div class="w-full h-auto md:w-2/3 ">
+			<div class="flex flex-col items-start lg:flex-row w-full mt-4 xl:mt-12 relative">
+				<div class="w-full h-auto md:w-2/3">
 					<FullCalendar
 						ref="calendar"
 						:options="calendarOptions"
-                    />
+					/>
 				</div>
 				<div class="lg:px-6 pt-1 mt-8 lg:mt-0 w-full md:w-1/3 form lg:sticky lg:top-24">
-                    <template v-if="rangeForm.start && rangeForm.end">
-                        <Heading :title="getRangeLabel" />
-                        <div class="mt-8 flex flex-col gap-3">
-                            <Input
-                                v-model="rangeForm.price"
-                                type="number"
-                                :error="rangeForm.errors.price"
-                                label="Цена, ₽"
-                            />
-                            <ButtonComponent
-                                :disabled="!rangeForm.isDirty"
-                                class="mt-6"
-                                label="Сохранить"
-                                @click="submitRangeForm"
-                            />
-                        </div>
-                    </template>
-                    <template v-else-if="selectedEvent">
-                        <Heading title="Событие" />
-                        <div class="mt-8 flex flex-col gap-3">
-                            {{selectedEvent}}
-                            <ButtonComponent
-                                class="mt-6"
-                                label="Сохранить"
-                            />
-                        </div>
-                    </template>
+					<template v-if="rangeForm.start && rangeForm.end">
+						<Heading :title="getRangeLabel" />
+						<div class="mt-8 flex flex-col gap-3">
+							<Input
+								v-model="rangeForm.price"
+								type="number"
+								:error="rangeForm.errors.price"
+								label="Цена, ₽"
+							/>
+							<ButtonComponent
+								:disabled="!rangeForm.isDirty"
+								class="mt-6"
+								label="Сохранить"
+								@click="submitRangeForm"
+							/>
+						</div>
+					</template>
+					<template v-else-if="selectedEvent">
+						<Heading title="Событие" />
+						<div class="mt-8 flex flex-col gap-3">
+							<!--							{{ selectedEvent }}-->
+							<ReservationRequestEvent
+								:event="selectedEvent.event.extendedProps"
+								v-if="selectedEvent.event.extendedProps.type === 'App\\Models\\ReservationRequest'"
+							/>
+							<!--							<ButtonComponent-->
+							<!--								class="mt-6"-->
+							<!--								label="Сохранить"-->
+							<!--							/>-->
+						</div>
+					</template>
 					<template v-else>
 						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200">Базовая цена</div>
 						<div class="mt-3 flex flex-col gap-3">
 							<Input
 								v-model="priceForm.weekdays_price"
 								type="number"
-                                id="weekdays_price"
+								id="weekdays_price"
 								:error="priceForm.errors.weekdays_price"
 								label="Цена в будни, ₽"
 							/>
 							<Input
 								v-model="priceForm.weekends_price"
 								type="number"
-                                id="weekends_price"
+								id="weekends_price"
 								:error="priceForm.errors.weekends_price"
 								label="Цена в выходные, ₽"
 							/>
 						</div>
 						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">Синхронизация</div>
 						<div class="mt-3 flex flex-col gap-3">
-							<ICalLinks v-model="priceForm.i_cal_links"
-                                       @reset="priceForm.clearErrors()"
-                                       :errors="priceForm.errors" />
+							<ICalLinks
+								v-model="priceForm.i_cal_links"
+								@reset="priceForm.clearErrors()"
+								:errors="priceForm.errors"
+							/>
 						</div>
-                        <ButtonComponent
-                            :disabled="!priceForm.isDirty"
-                            class="mt-6"
-                            label="Сохранить"
-                            @click="submitPriceForm"
-                        />
+						<ButtonComponent
+							:disabled="!priceForm.isDirty"
+							class="mt-6"
+							label="Сохранить"
+							@click="submitPriceForm"
+						/>
 					</template>
 				</div>
 			</div>
@@ -296,16 +304,17 @@
 </template>
 
 <style>
-.fc-toolbar-title {
-    @apply dark:text-slate-200
-}
-.fc-col-header-cell  {
-    @apply dark:text-slate-400
-}
-.fc-theme-standard td, .fc-theme-standard th {
-    @apply dark:border-slate-400
-}
-.fc-theme-standard .fc-scrollgrid {
-    @apply dark:border-slate-400
-}
+	.fc-toolbar-title {
+		@apply dark:text-slate-200;
+	}
+	.fc-col-header-cell {
+		@apply dark:text-slate-400;
+	}
+	.fc-theme-standard td,
+	.fc-theme-standard th {
+		@apply dark:border-slate-400;
+	}
+	.fc-theme-standard .fc-scrollgrid {
+		@apply dark:border-slate-400;
+	}
 </style>

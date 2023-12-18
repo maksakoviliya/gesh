@@ -16,6 +16,7 @@ use App\Http\Controllers\Account\Apartments\StoreController;
 use App\Http\Controllers\Account\Apartments\UpdateCalendarController;
 use App\Http\Controllers\Account\Apartments\UpdatePriceController;
 use App\Http\Controllers\Account\Notifications\NotificationsIndexController;
+use App\Http\Controllers\Account\Notifications\NotificationsReadController;
 use App\Http\Controllers\Account\Reservations\ReservationsListController;
 use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\ApartmentShowController;
@@ -86,6 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
                 ->as('notifications.')
                 ->group(function() {
                     Route::get('/', NotificationsIndexController::class)->name('index');
+                    Route::post('{notification}', NotificationsReadController::class)->name('read');
                 });
 
             // Chat

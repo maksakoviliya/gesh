@@ -26,7 +26,7 @@ class CreatedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Запрос на бронирование')
+            ->subject('Ваше жилье хотят забронировать')
             ->line('Ваше жилье хотят забронировать');
     }
 

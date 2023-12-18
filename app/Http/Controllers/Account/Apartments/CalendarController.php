@@ -23,6 +23,7 @@ final class CalendarController extends Controller
             'ICalLinks',
         ]);
         $reservationRequests = collect(ReservationRequest::query()
+            ->with(['user', 'apartment'])
             ->where('apartment_id', $apartment->id)
             ->whereNull('reservation_id')
             ->get()
@@ -32,8 +33,12 @@ final class CalendarController extends Controller
                     'title' => 'Запрос',
                     'start' => $item->start,
                     'end' => $item->end,
+                    'type' => ReservationRequest::class,
                     'allDay' => true,
                     'className' => 'bg-red-200 border-red-200 px-2',
+                    'data' => [
+                        'reservation_request' => $item,
+                    ]
                 ];
             }));
         $reservations = collect(Reservation::query()
@@ -44,6 +49,7 @@ final class CalendarController extends Controller
                     'id' => $item->id,
                     'title' => 'Резерв',
                     'start' => $item->start,
+                    'type' => Reservation::class,
                     'end' => $item->end,
                     'allDay' => true,
                     'className' => 'bg-blue-500 border-green-200 px-2',
@@ -57,6 +63,7 @@ final class CalendarController extends Controller
                     'id' => $item->id,
                     'title' => $item->summary,
                     'start' => $item->start,
+                    'type' => SideReservation::class,
                     'end' => $item->end,
                     'allDay' => true,
                     'className' => 'bg-yellow-500 border-yellow-200 px-2 opacity-80 hover:opacity-100',
