@@ -1,1 +1,0 @@
-import{a as s,c}from"./app-3d6882c3.js";const t=["src"],o={__name:"Avatar",props:{src:String},setup(r){return(a,e)=>(s(),c("img",{class:"rounded-full w-[30px] h-[30px]",alt:"Avatar",src:r.src??"/img/no-user.svg"},null,8,t))}};export{o as _};

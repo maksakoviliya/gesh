@@ -126,7 +126,7 @@
 
 <template>
 	<AppLayout>
-		<Container>
+		<Container sm>
 			<div
 				v-if="props.apartment.data.address"
 				class="text-3xl font-semibold"
