@@ -86,7 +86,7 @@
 
 				<div class="fixed inset-0 w-screen overflow-y-auto">
 					<!-- Container to center the panel -->
-					<div class="flex min-h-full items-center justify-center p-4 md:p-6 xl:p-10">
+					<div class="flex min-h-full items-start justify-center p-4 md:p-6 xl:p-10 gap-4">
 						<TransitionChild
 							enter="duration-300 ease-out"
 							enter-from="opacity-0 scale-95"
@@ -95,16 +95,10 @@
 							leave-from="opacity-100 scale-100"
 							leave-to="opacity-0 scale-95"
 						>
-							<DialogPanel class="w-full max-w-7xl rounded-xl p-6 bg-white relative">
-								<div
-									@click="openAllPhotos(false)"
-									class="absolute top-0 left-full ml-4 w-16 h-16 bg-white flex flex-col items-center justify-center rounded-full hover:bg-gray-100 cursor-pointer"
-								>
-									<OhVueIcon name="hi-solid-x" />
-								</div>
+							<DialogPanel class="w-full max-w-7xl rounded-xl p-6 bg-white relative flex">
 								<div class="grid gap-4 grid-cols-1 md:grid-cols-2">
 									<div
-										class="cursor-pointer [&:nth-child(3n)]:col-span-2"
+										class="cursor-pointer md:[&:nth-child(3n)]:col-span-2"
 										v-for="image in props.images"
 										:key="image.id"
 									>
@@ -117,6 +111,12 @@
 								</div>
 							</DialogPanel>
 						</TransitionChild>
+						<div
+							@click="openAllPhotos(false)"
+							class="sticky top-4 aspect-square w-6 md:w-16 h-6 md:h-16 bg-white flex flex-col items-center justify-center rounded-full hover:bg-gray-100 cursor-pointer"
+						>
+							<OhVueIcon name="hi-solid-x" />
+						</div>
 					</div>
 				</div>
 			</Dialog>
