@@ -20,7 +20,7 @@
 		emit('update:modelValue', props.modelValue - 1)
 	}
 	const onAdd = () => {
-		if (props.modelValue > 9) {
+		if (props.modelValue > 19) {
 			return
 		}
 		emit('update:modelValue', props.modelValue + 1)

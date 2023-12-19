@@ -11,15 +11,15 @@
 		fontLight: Boolean | null,
 		circle: Boolean | null,
 		bgClass: {
-			type: String,
+			type: [String, null],
 			default: 'bg-sky-600 dark:bg-sky-800',
 		},
 		borderClass: {
-			type: String,
+			type: [String, null],
 			default: 'border-sky-600 dark:border-sky-800',
 		},
 		textClass: {
-			type: String,
+			type: [String, null],
 			default: 'text-white',
 		},
 		danger: Boolean,
@@ -32,8 +32,8 @@
     transition
     ${props.autoWidth ? 'w-auto' : 'w-full'}
     ${props.circle ? 'rounded-full' : 'rounded-lg'}
-    ${props.outline ? 'bg-white dark:bg-slate-800' : props.bgClass}
-    ${props.outline ? 'border-black dark:border-slate-400' : props.borderClass}
+    ${props.outline ? 'bg-white dark:bg-slate-800' : props.bgClass ?? 'bg-sky-600 dark:bg-sky-800'}
+    ${props.outline ? 'border-black dark:border-slate-400' : props.borderClass ?? 'border-sky-600 dark:border-sky-800'}
     ${props.outline ? 'text-black dark:text-slate-300' : props.textClass}
     ${props.outline ? 'hover:opacity-60' : 'hover:opacity-80'}
     ${props.small ? 'text-sm' : 'text-md'}

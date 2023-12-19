@@ -97,8 +97,8 @@
 									:disabled="disabled"
 									:label="actionLabel"
 									@click="handleSubmit"
-									:bg-class="props.actionColor === 'danger' ? 'bg-rose-500' : ''"
-									:border-class="props.actionColor === 'danger' ? 'border-rose-500' : ''"
+									:bg-class="props.actionColor === 'danger' ? 'bg-rose-500' : null"
+									:border-class="props.actionColor === 'danger' ? 'border-rose-500' : null"
 								/>
 							</div>
 							<slot name="footer" />

@@ -1,10 +1,16 @@
 <script setup>
 	import { computed, ref } from 'vue'
-	import { Dialog, DialogPanel, TransitionRoot, TransitionChild } from '@headlessui/vue'
+
+	import CustomModal from '@/Components/Modals/CustomModal.vue'
+	import FullScreenModal from '@/Components/Modals/FullScreenModal.vue'
+	import { Swiper, SwiperSlide, useSwiper } from 'swiper/vue'
+	import 'swiper/css'
+	import { Navigation } from 'swiper/modules'
+	import 'swiper/css/navigation'
 
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
-	import { HiSolidX } from 'oh-vue-icons/icons'
-	addIcons(HiSolidX)
+	import { HiChevronLeft, HiChevronRight } from 'oh-vue-icons/icons'
+	addIcons(HiChevronLeft, HiChevronRight)
 
 	const props = defineProps({
 		images: {
@@ -14,42 +20,49 @@
 	})
 
 	const imagesLimited = computed(() => {
-		return props.images.slice(0, 4)
+		return props.images.slice(0, 5)
 	})
 
 	const getImageWrapperClasses = (index) => {
-		let result = []
-		if (index === 0) {
-			result.push('row-span-2', imagesLimited.value.length <= 1 ? 'col-span-full' : 'col-span-2')
+		switch (imagesLimited.value.length) {
+			case 1:
+				return 'row-span-2 col-span-full max-h-[600px]'
+			case 2:
+				return 'row-span-2 col-span-2 max-h-[600px]'
+			case 3:
+				return index === 0 ? 'row-span-2 col-span-2 ' : 'col-span-2'
+			case 4:
+				return 'row-span-2 col-span-1'
+			case 5:
+				return index === 0 ? 'row-span-2 col-span-2' : ''
 		}
-		if (index === 1) {
-			result.push(
-				imagesLimited.value.length <= 3 ? 'row-span-2' : '',
-				imagesLimited.value.length <= 2 ? 'col-span-2' : ''
-			)
-		}
-		if (index === 2) {
-			result.push(
-				imagesLimited.value.length <= 4 ? 'row-span-2' : '',
-				'row-span-2',
-				imagesLimited.value.length <= 3 ? 'col-span-1' : ''
-			)
-		}
-		return result.join(' ')
 	}
 
 	const isOpen = ref(false)
-	const openAllPhotos = (value) => {
-		isOpen.value = value
+
+	const slideIndex = ref(null)
+
+	const handleClose = () => {
+		slideIndex.value = null
+	}
+
+	const handleCloseGallery = () => {
+		isOpen.value = false
+	}
+
+	const handleShowGallery = (index) => {
+		slideIndex.value = index
+	}
+
+	const initSwiper = (swiper) => {
+		swiper.slideTo(slideIndex.value)
 	}
 </script>
 
 <template>
-	<div
-		class="rounded-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-2 md:max-h-72 gap-1 overflow-hidden"
-	>
+	<div class="rounded-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-1 overflow-hidden">
 		<div
-			@click="openAllPhotos(true)"
+			@click="isOpen = true"
 			class="group overflow-hidden"
 			:class="getImageWrapperClasses(i)"
 			v-for="(img, i) in imagesLimited"
@@ -61,65 +74,71 @@
 			/>
 		</div>
 
-		<TransitionRoot
-			:show="isOpen"
-			as="template"
+		<CustomModal
+			key="gallery"
+			:is-open="isOpen"
+			@close="handleCloseGallery"
 		>
-			<Dialog
-				:open="isOpen"
-				@close="openAllPhotos(false)"
-				class="relative z-50"
-			>
-				<TransitionChild
-					enter="duration-300 ease-out"
-					enter-from="opacity-0"
-					enter-to="opacity-100"
-					leave="duration-200 ease-in"
-					leave-from="opacity-100"
-					leave-to="opacity-0"
+			<div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+				<div
+					class="cursor-pointer md:[&:nth-child(3n)]:col-span-2"
+					v-for="(image, index) in props.images"
+					:key="image.id"
+					@click="handleShowGallery(index)"
 				>
-					<div
-						class="fixed inset-0 bg-black/30"
-						aria-hidden="true"
+					<img
+						class="w-full h-full object-cover"
+						:src="image.src"
+						alt=""
 					/>
-				</TransitionChild>
+				</div>
+			</div>
 
-				<div class="fixed inset-0 w-screen overflow-y-auto">
-					<!-- Container to center the panel -->
-					<div class="flex min-h-full items-start justify-center p-4 md:p-6 xl:p-10 gap-4">
-						<TransitionChild
-							enter="duration-300 ease-out"
-							enter-from="opacity-0 scale-95"
-							enter-to="opacity-100 scale-100"
-							leave="duration-200 ease-in"
-							leave-from="opacity-100 scale-100"
-							leave-to="opacity-0 scale-95"
-						>
-							<DialogPanel class="w-full max-w-7xl rounded-xl p-6 bg-white relative flex">
-								<div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-									<div
-										class="cursor-pointer md:[&:nth-child(3n)]:col-span-2"
-										v-for="image in props.images"
-										:key="image.id"
-									>
-										<img
-											class="w-full h-full object-cover"
-											:src="image.src"
-											alt=""
-										/>
-									</div>
-								</div>
-							</DialogPanel>
-						</TransitionChild>
-						<div
-							@click="openAllPhotos(false)"
-							class="sticky top-4 aspect-square w-6 md:w-16 h-6 md:h-16 bg-white flex flex-col items-center justify-center rounded-full hover:bg-gray-100 cursor-pointer"
-						>
-							<OhVueIcon name="hi-solid-x" />
-						</div>
+			<FullScreenModal
+				key="slider"
+				:is-open="slideIndex !== null"
+				@close="handleClose"
+			>
+				<div class="w-full h-full flex items-center gap-4 justify-between p-6">
+					<div
+						id="swiper_prev"
+						class="aspect-square w-6 md:w-16 h-6 md:h-16 hover:bg-gray-200 flex flex-col items-center justify-center rounded-full bg-gray-100 cursor-pointer"
+					>
+						<OhVueIcon
+							name="hi-chevron-left"
+							scale="1.6"
+						/>
+					</div>
+					<Swiper
+						@swiper="initSwiper"
+						:auto-height="true"
+						:slides-per-view="1"
+						:modules="[Navigation]"
+						:navigation="{
+							prevEl: '#swiper_prev',
+							nextEl: '#swiper_next',
+							disabledClass: 'opacity-0 pointer-events-none',
+						}"
+					>
+						<SwiperSlide v-for="slide in props.images">
+							<img
+								class="h-full w-full object-cover mx-auto max-h-[90vh]"
+								:src="slide.src"
+								alt=""
+							/>
+						</SwiperSlide>
+					</Swiper>
+					<div
+						id="swiper_next"
+						class="aspect-square w-6 md:w-16 h-6 md:h-16 hover:bg-gray-200 flex flex-col items-center justify-center rounded-full bg-gray-100 cursor-pointer"
+					>
+						<OhVueIcon
+							name="hi-chevron-right"
+							scale="1.6"
+						/>
 					</div>
 				</div>
-			</Dialog>
-		</TransitionRoot>
+			</FullScreenModal>
+		</CustomModal>
 	</div>
 </template>
