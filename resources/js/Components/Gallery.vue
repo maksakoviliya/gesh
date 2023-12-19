@@ -87,7 +87,7 @@
 					@click="handleShowGallery(index)"
 				>
 					<img
-						class="w-full h-full object-cover"
+						class="w-full object-cover"
 						:src="image.src"
 						alt=""
 					/>
