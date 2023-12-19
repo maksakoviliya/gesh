@@ -48,7 +48,7 @@ final class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'total_guests.max' => 'Максимальное число гостей: :max.'
+            'total_guests.max' => 'Максимальное число гостей: :max.',
         ];
     }
 }

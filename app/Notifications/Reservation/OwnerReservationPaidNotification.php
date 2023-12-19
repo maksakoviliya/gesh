@@ -6,7 +6,6 @@ namespace App\Notifications\Reservation;
 
 use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -17,7 +16,7 @@ class OwnerReservationPaidNotification extends Notification
     public function __construct(public Reservation $reservation)
     {
     }
-    
+
     public function via(object $notifiable): array
     {
         return ['mail', 'database'];
@@ -33,7 +32,7 @@ class OwnerReservationPaidNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'reservation_id'
+            'reservation_id',
         ];
     }
 }

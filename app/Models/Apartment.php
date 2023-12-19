@@ -417,11 +417,11 @@ final class Apartment extends Model implements HasMedia
                 $disabledDays = $this->disabledDates()->pluck('date')->values();
                 $reservations = $this->reservations()
                     ->select('start', 'end', 'apartment_id', 'id')
-                    ->whereDate('start', '>=', Carbon::now()->subDays(2)->startOfDay())->get();
+                    ->get();
+
                 $side_reservations = $this->sideReservations()
                     ->select('start', 'end', 'apartment_id', 'id')
-                    ->whereDate('start', '>=', Carbon::now()->subDays(2)->startOfDay())->get();
-
+                    ->get();
                 foreach ($reservations->merge($side_reservations) as $reservation) {
                     $period = CarbonPeriod::create(
                         $reservation->start,

@@ -17,7 +17,7 @@ class ContentPageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel= 'Страницы';
+    protected static ?string $navigationLabel = 'Страницы';
 
     protected static ?string $label = 'Страница';
 
@@ -74,7 +74,7 @@ class ContentPageResource extends Resource
     {
         return [
             'index' => Pages\ListContentPages::route('/'),
-//            'create' => Pages\CreateContentPage::route('/create'),
+            //            'create' => Pages\CreateContentPage::route('/create'),
             'edit' => Pages\EditContentPage::route('/{record}/edit'),
         ];
     }

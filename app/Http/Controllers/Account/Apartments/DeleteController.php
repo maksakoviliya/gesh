@@ -13,6 +13,7 @@ final class DeleteController extends Controller
     public function __invoke(DeleteRequest $request, Apartment $apartment)
     {
         $apartment->delete();
+
         return redirect()->back()->with('info', 'Объект успешно удален.');
     }
 }

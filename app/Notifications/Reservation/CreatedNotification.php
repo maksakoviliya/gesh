@@ -6,7 +6,6 @@ namespace App\Notifications\Reservation;
 
 use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -34,7 +33,7 @@ final class CreatedNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'reservation_id' => $this->reservation->id
+            'reservation_id' => $this->reservation->id,
         ];
     }
 }

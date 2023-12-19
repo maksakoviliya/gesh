@@ -17,7 +17,7 @@ final class PolicyPageController extends Controller
 
         return Inertia::render('ContentPage', [
             'content' => $content?->content ?? 'Нет контента',
-            'title' =>  $content?->title ?? 'Политикаконфиденциальности',
+            'title' => $content?->title ?? 'Политикаконфиденциальности',
         ]);
     }
 }

@@ -8,7 +8,6 @@ use App\Http\Controllers\Account\Apartments\AccountChatsController;
 use App\Http\Controllers\Account\Apartments\CalendarController;
 use App\Http\Controllers\Account\Apartments\CreateController;
 use App\Http\Controllers\Account\Apartments\DeleteController;
-use App\Http\Controllers\Account\Apartments\EditController;
 use App\Http\Controllers\Account\Apartments\ListController;
 use App\Http\Controllers\Account\Apartments\OwnerChatController;
 use App\Http\Controllers\Account\Apartments\PendingController;
@@ -86,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
             // Notifications
             Route::prefix('notifications')
                 ->as('notifications.')
-                ->group(function() {
+                ->group(function () {
                     Route::get('/', NotificationsIndexController::class)->name('index');
                     Route::post('{notification}', NotificationsReadController::class)->name('read');
                 });

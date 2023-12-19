@@ -86,15 +86,20 @@ namespace App\Models{
  * @method static Builder|Apartment whereUserId($value)
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
- * @mixin Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ICalLink> $ICalLinks
+ * @property-read Collection<int, \App\Models\ICalLink> $ICalLinks
  * @property-read int|null $i_cal_links_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DisabledDate> $disabledDates
+ * @property-read Collection<int, \App\Models\DisabledDate> $disabledDates
  * @property-read int|null $disabled_dates_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
+ * @property-read Collection<int, \App\Models\Reservation> $reservations
  * @property-read int|null $reservations_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SideReservation> $sideReservations
+ * @property-read Collection<int, \App\Models\SideReservation> $sideReservations
  * @property-read int|null $side_reservations_count
+ * @mixin Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment withoutTrashed()
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -182,6 +187,29 @@ namespace App\Models\Chat{
  * @mixin \Eloquent
  */
 	class Message extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\ContentPage
+ *
+ * @property string $id
+ * @property string $title
+ * @property string $slug
+ * @property string|null $content
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereUpdatedAt($value)
+ */
+	final class ContentPage extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -276,6 +304,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereLink($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	class ICalLink extends \Eloquent {}
 }
@@ -362,6 +391,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Apartment|null $apartment
  */
 	final class ReservationRequest extends \Eloquent {}
 }
@@ -390,6 +420,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereStart($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereSummary($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	final class SideReservation extends \Eloquent {}
 }
@@ -429,8 +460,8 @@ namespace App\Models{
  * @property string|null $email
  * @property string|null $avatar
  * @property |null $phone
- * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property \Illuminate\Support\Carbon|null $phone_verified_at
+ * @property Carbon|null $email_verified_at
+ * @property Carbon|null $phone_verified_at
  * @property string|null $password
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
@@ -438,45 +469,45 @@ namespace App\Models{
  * @property string|null $social_id
  * @property SocialAuthProvider|null $social_provider
  * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Apartment> $apartments
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Apartment> $apartments
  * @property-read int|null $apartments_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
+ * @property-read Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
  * @property-read string $profile_photo_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
+ * @property-read Collection<int, Role> $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read Collection<int, PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
- * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions, $without = false)
- * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null, $without = false)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialProvider($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorConfirmedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorRecoveryCodes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorSecret($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User withoutPermission($permissions)
- * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
- * @mixin \Eloquent
+ * @method static UserFactory factory($count = null, $state = [])
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User permission($permissions, $without = false)
+ * @method static Builder|User query()
+ * @method static Builder|User role($roles, $guard = null, $without = false)
+ * @method static Builder|User whereAvatar($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User wherePhone($value)
+ * @method static Builder|User wherePhoneVerifiedAt($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereSocialId($value)
+ * @method static Builder|User whereSocialProvider($value)
+ * @method static Builder|User whereTwoFactorConfirmedAt($value)
+ * @method static Builder|User whereTwoFactorRecoveryCodes($value)
+ * @method static Builder|User whereTwoFactorSecret($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User withoutPermission($permissions)
+ * @method static Builder|User withoutRole($roles, $guard = null)
+ * @mixin Eloquent
  */
-	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser {}
+	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser, \Illuminate\Contracts\Auth\MustVerifyEmail {}
 }
 

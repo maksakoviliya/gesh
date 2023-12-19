@@ -24,8 +24,8 @@ final class StoreRequest extends FormRequest
         }
         if ($this->input('step') === 7) {
             $totalMedia = count(
-                    $this->input('media', [])
-                )
+                $this->input('media', [])
+            )
                 + count(
                     $this->input('remove', []))
                 + count(

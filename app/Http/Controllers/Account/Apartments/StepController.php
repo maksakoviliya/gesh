@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Account\Apartments;
 
-use App\Enums\Apartments\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApartmentResource;
 use App\Http\Resources\CategoryResource;

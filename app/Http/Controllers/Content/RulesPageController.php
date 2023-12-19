@@ -18,7 +18,7 @@ final class RulesPageController extends Controller
 
         return Inertia::render('ContentPage', [
             'content' => $content?->content ?? 'Нет контента',
-            'title' =>  $content?->title ?? 'Правила пользования',
+            'title' => $content?->title ?? 'Правила пользования',
         ]);
     }
 }

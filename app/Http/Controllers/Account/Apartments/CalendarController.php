@@ -38,7 +38,7 @@ final class CalendarController extends Controller
                     'className' => 'bg-red-200 border-red-200 px-2',
                     'data' => [
                         'reservation_request' => $item,
-                    ]
+                    ],
                 ];
             }));
         $reservations = collect(Reservation::query()
