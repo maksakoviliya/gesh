@@ -94,7 +94,7 @@
 	})
 
 	const servicePrice = computed(() => {
-		return Math.ceil(basePrice.value * 0.15)
+		return Math.ceil(basePrice.value * 0.18)
 	})
 
 	const totalPrice = computed(() => {
