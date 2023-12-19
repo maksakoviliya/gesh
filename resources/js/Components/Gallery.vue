@@ -1,5 +1,10 @@
 <script setup>
-	import { computed } from 'vue'
+	import { computed, ref } from 'vue'
+	import { Dialog, DialogPanel, TransitionRoot, TransitionChild } from '@headlessui/vue'
+
+	import { OhVueIcon, addIcons } from 'oh-vue-icons'
+	import { HiSolidX } from 'oh-vue-icons/icons'
+	addIcons(HiSolidX)
 
 	const props = defineProps({
 		images: {
@@ -32,6 +37,11 @@
 		}
 		return result.join(' ')
 	}
+
+	const isOpen = ref(false)
+	const openAllPhotos = (value) => {
+		isOpen.value = value
+	}
 </script>
 
 <template>
@@ -39,6 +49,7 @@
 		class="rounded-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-2 md:max-h-72 gap-1 overflow-hidden"
 	>
 		<div
+			@click="openAllPhotos(true)"
 			class="group overflow-hidden"
 			:class="getImageWrapperClasses(i)"
 			v-for="(img, i) in imagesLimited"
@@ -49,5 +60,66 @@
 				alt=""
 			/>
 		</div>
+
+		<TransitionRoot
+			:show="isOpen"
+			as="template"
+		>
+			<Dialog
+				:open="isOpen"
+				@close="openAllPhotos(false)"
+				class="relative z-50"
+			>
+				<TransitionChild
+					enter="duration-300 ease-out"
+					enter-from="opacity-0"
+					enter-to="opacity-100"
+					leave="duration-200 ease-in"
+					leave-from="opacity-100"
+					leave-to="opacity-0"
+				>
+					<div
+						class="fixed inset-0 bg-black/30"
+						aria-hidden="true"
+					/>
+				</TransitionChild>
+
+				<div class="fixed inset-0 w-screen overflow-y-auto">
+					<!-- Container to center the panel -->
+					<div class="flex min-h-full items-center justify-center p-4 md:p-6 xl:p-10">
+						<TransitionChild
+							enter="duration-300 ease-out"
+							enter-from="opacity-0 scale-95"
+							enter-to="opacity-100 scale-100"
+							leave="duration-200 ease-in"
+							leave-from="opacity-100 scale-100"
+							leave-to="opacity-0 scale-95"
+						>
+							<DialogPanel class="w-full max-w-7xl rounded-xl p-6 bg-white relative">
+								<div
+									@click="openAllPhotos(false)"
+									class="absolute top-0 left-full ml-4 w-16 h-16 bg-white flex flex-col items-center justify-center rounded-full hover:bg-gray-100 cursor-pointer"
+								>
+									<OhVueIcon name="hi-solid-x" />
+								</div>
+								<div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+									<div
+										class="cursor-pointer [&:nth-child(3n)]:col-span-2"
+										v-for="image in props.images"
+										:key="image.id"
+									>
+										<img
+											class="w-full h-full object-cover"
+											:src="image.src"
+											alt=""
+										/>
+									</div>
+								</div>
+							</DialogPanel>
+						</TransitionChild>
+					</div>
+				</div>
+			</Dialog>
+		</TransitionRoot>
 	</div>
 </template>
