@@ -49,8 +49,9 @@
 					},
 					{
 						id: 'apartments.apartment',
-						route: route('account.apartments.edit', {
+						route: route('account.apartments.step', {
 							apartment: this.apartment.data.id,
+							step: this.apartment.data.step,
 						}),
 						label: 'Объект',
 					},
