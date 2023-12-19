@@ -87,7 +87,7 @@
 					@click="handleShowGallery(index)"
 				>
 					<img
-						class="w-full object-cover"
+						class="w-full h-full object-cover"
 						:src="image.src"
 						alt=""
 					/>
@@ -122,7 +122,7 @@
 					>
 						<SwiperSlide v-for="slide in props.images">
 							<img
-								class="h-full w-full object-cover mx-auto max-h-[90vh]"
+								class="h-full w-auto object-cover mx-auto max-h-[90vh]"
 								:src="slide.src"
 								alt=""
 							/>
