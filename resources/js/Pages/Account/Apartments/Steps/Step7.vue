@@ -16,6 +16,7 @@
 	const form = useForm({
 		media: [],
 		remove: [],
+		current: props.apartment.data.media,
 	})
 
 	const submit = () => {
@@ -46,6 +47,7 @@
 	<Form
 		:step="7"
 		@onNextStep="submit"
+		:edit="props.apartment.data.status === 'published'"
 		@onPrevStep="
 			router.visit(
 				route('account.apartments.step', {

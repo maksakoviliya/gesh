@@ -23,7 +23,9 @@
 <template>
 	<Form
 		:step="12"
+		:edit="props.apartment.data.status === 'published'"
 		@onNextStep="submit"
+		:next-button-label="props.apartment.data.status === 'draft' ? 'Отправить на модерацию' : 'Далее'"
 		@onPrevStep="
 			router.visit(
 				route('account.apartments.step', {
@@ -35,7 +37,12 @@
 	>
 		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
 			<div class="font-bold text-5xl">Почти готово</div>
-			<div class="text-xl mt-4">Осталось отправить объявление отправлено на модерацию.</div>
+			<div class="text-xl mt-4">
+				<template v-if="props.apartment.data.status === 'draft'">
+					Осталось отправить объявление отправлено на модерацию.
+				</template>
+				<template v-else> Дождитесь одобрения объявления. </template>
+			</div>
 		</div>
 	</Form>
 </template>

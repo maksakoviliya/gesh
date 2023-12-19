@@ -28,6 +28,7 @@
 	<Form
 		:step="8"
 		@onNextStep="submit"
+		:edit="props.apartment.data.status === 'published'"
 		@onPrevStep="
 			router.visit(
 				route('account.apartments.step', {

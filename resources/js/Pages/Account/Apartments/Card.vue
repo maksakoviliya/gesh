@@ -7,35 +7,28 @@
 	import Bedrooms from '@/Components/Bedrooms.vue'
 
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
-	import { HiSolidLink } from 'oh-vue-icons/icons'
+	import { HiSolidLink, HiTrash } from 'oh-vue-icons/icons'
 	import { onMounted, ref } from 'vue'
 	import { initFlowbite } from 'flowbite'
+	import ModalConfirmDeleting from '@/Components/Modals/ModalConfirmDeleting.vue'
 
 	onMounted(() => {
 		initFlowbite()
 	})
 
-	addIcons(HiSolidLink)
+	addIcons(HiSolidLink, HiTrash)
 
 	const props = defineProps({
 		apartment: Object,
 	})
 
 	const handleClick = () => {
-		if (props.apartment.status === 'draft') {
-			return router.visit(
-				route('account.apartments.step', {
-					apartment: props.apartment.id,
-					step: props.apartment.step,
-				})
-			)
-		} else {
-			return router.visit(
-				route('account.apartments.edit', {
-					apartment: props.apartment.id,
-				})
-			)
-		}
+		return router.visit(
+			route('account.apartments.step', {
+				apartment: props.apartment.id,
+				step: props.apartment.status !== 'published' ? props.apartment.step : 1,
+			})
+		)
 	}
 
 	const goToCalendar = (id) => {
@@ -85,6 +78,19 @@
 				}, 1500)
 			})
 	}
+
+	const isOpenDeleteModalConfirmation = ref(false)
+
+	const deleteApartment = () => {
+		router.visit(
+			route('account.apartments.delete', {
+				apartment: props.apartment.id,
+			}),
+			{
+				method: 'post',
+			}
+		)
+	}
 </script>
 
 <template>
@@ -98,17 +104,18 @@
 					:alt="props.apartment.title"
 				/>
 				<div
-					class="absolute top-3 right-3 px-2 rounded-full text-xs"
+					class="absolute top-3 end-3 px-2 rounded-full text-xs"
 					:class="getStatusColor(props.apartment.status)"
 				>
 					{{ props.apartment.status_text }}
 				</div>
-				<div class="absolute top-3 start-3">
+
+				<div class="absolute top-3 start-3 opacity-0 group-hover:opacity-100 flex flex-col gap-2">
 					<div
 						v-if="props.apartment.status === 'published'"
 						:data-tooltip-target="`link_${props.apartment.id}`"
 						@click="handleCopy(props.apartment.id)"
-						class="px-2 rounded-full text-xs w-8 h-8 aspect-square flex flex-col items-center justify-center bg-transparent text-neutral-800 hover:bg-white transition dark:hover:bg-slate-800 dark:hover:text-slate-100"
+						class="px-2 rounded-full text-xs w-8 h-8 aspect-square flex flex-col items-center justify-center bg-neutral-100 text-neutral-800 hover:bg-white transition dark:hover:bg-slate-800 dark:hover:text-slate-100"
 					>
 						<OhVueIcon name="hi-solid-link" />
 					</div>
@@ -118,6 +125,25 @@
 						class="absolute z-20 break-words whitespace-nowrap invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
 					>
 						{{ copyText }}
+						<div
+							class="tooltip-arrow"
+							data-popper-arrow
+						></div>
+					</div>
+
+					<div
+						@click="isOpenDeleteModalConfirmation = true"
+						:data-tooltip-target="`delete_${props.apartment.id}`"
+						class="rounded-full text-xs bg-rose-300 flex w-7 h-7 flex-col items-center justify-center hover:bg-rose-400 transition text-neutral-800"
+					>
+						<OhVueIcon name="hi-trash" />
+					</div>
+					<div
+						:id="`delete_${props.apartment.id}`"
+						role="tooltip"
+						class="absolute z-20 break-words whitespace-nowrap invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+					>
+						Удалить объект
 						<div
 							class="tooltip-arrow"
 							data-popper-arrow
@@ -147,15 +173,8 @@
 				<Bathrooms :bathrooms="props.apartment.bathrooms" />
 			</div>
 			<ButtonComponent
-				v-if="props.apartment.status === 'draft'"
 				:small="true"
 				@click="handleClick"
-				:label="'Редактировать'"
-			/>
-			<ButtonComponent
-				v-if="props.apartment.status === 'pending'"
-				:disabled="true"
-				:small="true"
 				:label="'Редактировать'"
 			/>
 			<ButtonComponent
@@ -172,5 +191,11 @@
 				label="Чат"
 			/>
 		</div>
+
+		<ModalConfirmDeleting
+			:is-open="isOpenDeleteModalConfirmation"
+			@onSubmit="deleteApartment"
+			@onClose="isOpenDeleteModalConfirmation = false"
+		/>
 	</div>
 </template>

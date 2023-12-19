@@ -41,8 +41,8 @@
 
 	const emit = defineEmits(['updateLon', 'updateLat'])
 	const handleChange = (object) => {
-		// emit('updateLat', map.value.center[0])
-		// emit('updateLon', map.value.center[1])
+		emit('updateLat', map.value.center[0])
+		emit('updateLon', map.value.center[1])
 	}
 
 	addIcons(HiLocationMarker)

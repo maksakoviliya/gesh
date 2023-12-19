@@ -17,13 +17,10 @@ class ApartmentPolicy
     //        //
     //    }
     //
-    //    /**
-    //     * Determine whether the user can view the model.
-    //     */
-    //    public function view(User $user, Apartment $apartment): bool
-    //    {
-    //        //
-    //    }
+    public function view(User $user, Apartment $apartment): bool
+    {
+        return $user->id === $apartment->user_id || $user->hasRole('admin');
+    }
     //
     //    /**
     //     * Determine whether the user can create models.
@@ -33,21 +30,15 @@ class ApartmentPolicy
     //        //
     //    }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Apartment $apartment): bool
     {
         return $user->id === $apartment->user_id || $user->hasRole('admin');
     }
 
-    //    /**
-    //     * Determine whether the user can delete the model.
-    //     */
-    //    public function delete(User $user, Apartment $apartment): bool
-    //    {
-    //        //
-    //    }
+    public function delete(User $user, Apartment $apartment): bool
+    {
+        return $user->id === $apartment->user_id || $user->hasRole('admin');
+    }
     //
     //    /**
     //     * Determine whether the user can restore the model.

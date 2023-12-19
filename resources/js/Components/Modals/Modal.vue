@@ -17,6 +17,10 @@
 		actionLabel: String,
 		disabled: Boolean,
 		secondaryActionLabel: String,
+		actionColor: {
+			type: [String, null],
+			default: null,
+		},
 	})
 
 	const showModal = computed(() => {
@@ -93,6 +97,8 @@
 									:disabled="disabled"
 									:label="actionLabel"
 									@click="handleSubmit"
+									:bg-class="props.actionColor === 'danger' ? 'bg-rose-500' : ''"
+									:border-class="props.actionColor === 'danger' ? 'border-rose-500' : ''"
 								/>
 							</div>
 							<slot name="footer" />

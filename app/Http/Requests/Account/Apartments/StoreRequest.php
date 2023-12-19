@@ -23,7 +23,14 @@ final class StoreRequest extends FormRequest
             ]);
         }
         if ($this->input('step') === 7) {
-            $totalMedia = count($this->input('media', [])) + count($this->input('remove', []));
+            $totalMedia = count(
+                    $this->input('media', [])
+                )
+                + count(
+                    $this->input('remove', []))
+                + count(
+                    $this->input('current', [])
+                );
             $this->merge([
                 'total_media' => $totalMedia,
             ]);
@@ -58,7 +65,7 @@ final class StoreRequest extends FormRequest
             'lat' => 'sometimes|required',
 
             // Step 5:
-            'guests' => 'sometimes|required|numeric|min:1|max:10',
+            'guests' => 'sometimes|required|numeric|min:1|max:20',
             'bedrooms' => 'sometimes|required|numeric|min:0|max:10',
             'beds' => 'sometimes|required|numeric|min:0|max:10',
             'bathrooms' => 'sometimes|required|numeric|min:0|max:10',

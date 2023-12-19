@@ -1,4 +1,6 @@
 <script setup>
+	import { computed } from 'vue'
+
 	const props = defineProps({
 		images: {
 			type: Array,
@@ -6,13 +8,27 @@
 		},
 	})
 
+	const imagesLimited = computed(() => {
+		return props.images.slice(0, 4)
+	})
+
 	const getImageWrapperClasses = (index) => {
 		let result = []
 		if (index === 0) {
-			result.push('row-span-2', props.images.length <= 1 ? 'col-span-full' : 'col-span-2')
+			result.push('row-span-2', imagesLimited.value.length <= 1 ? 'col-span-full' : 'col-span-2')
 		}
 		if (index === 1) {
-			result.push('row-span-2', props.images.length <= 2 ? 'col-span-2' : '')
+			result.push(
+				imagesLimited.value.length <= 3 ? 'row-span-2' : '',
+				imagesLimited.value.length <= 2 ? 'col-span-2' : ''
+			)
+		}
+		if (index === 2) {
+			result.push(
+				imagesLimited.value.length <= 4 ? 'row-span-2' : '',
+				'row-span-2',
+				imagesLimited.value.length <= 3 ? 'col-span-1' : ''
+			)
 		}
 		return result.join(' ')
 	}
@@ -25,7 +41,7 @@
 		<div
 			class="group overflow-hidden"
 			:class="getImageWrapperClasses(i)"
-			v-for="(img, i) in images"
+			v-for="(img, i) in imagesLimited"
 		>
 			<img
 				:src="img.src"

@@ -33,6 +33,7 @@
 <template>
 	<Form
 		:step="2"
+		:edit="props.apartment.data.status === 'published'"
 		@onNextStep="submit"
 		@onPrevStep="
 			router.visit(

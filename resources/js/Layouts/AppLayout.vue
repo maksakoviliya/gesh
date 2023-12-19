@@ -12,6 +12,10 @@
 			type: [Boolean, null],
 			default: false,
 		},
+		hiddenFooter: {
+			type: [Boolean, null],
+			default: false,
+		},
 	})
 </script>
 
@@ -25,6 +29,6 @@
 			<slot />
 		</main>
 
-		<Footer />
+		<Footer v-if="!props.hiddenFooter" />
 	</div>
 </template>

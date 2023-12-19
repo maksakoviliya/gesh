@@ -1,16 +1,18 @@
 <script setup>
-	import Container from '@/Components/Container.vue'
 	import AppLayout from '@/Layouts/AppLayout.vue'
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
-	import { ref } from 'vue'
+	import { onMounted, ref } from 'vue'
 	import Heading from '@/Components/Heading.vue'
 	import EmptyState from '@/Components/EmptyState.vue'
 	import { router } from '@inertiajs/vue3'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import Card from '@/Pages/Account/Apartments/Card.vue'
+	import Container from '@/Components/Container.vue'
+	import useToasts from '@/hooks/useToasts'
 
-	defineProps({
+	const props = defineProps({
 		apartments: Array | Object,
+		flash: Object,
 	})
 
 	const routes = ref([
@@ -29,6 +31,17 @@
 	const add = () => {
 		router.visit(route('account.apartments.create'))
 	}
+
+	const { successToast } = useToasts()
+	onMounted(() => {
+		console.log('props.flash.success', props.flash.success)
+		if (props.flash.success) {
+			successToast(props.flash.success)
+		}
+		if (props.flash.info) {
+			successToast(props.flash.info)
+		}
+	})
 </script>
 
 <template>
@@ -54,7 +67,7 @@
 				title="Объектов пока нет"
 				subtitle="Добавьте ваш объект для того чтобы он стал виден всем"
 				action-label="Добавить"
-				@onClick="add"
+				@click="add"
 			/>
 			<div
 				v-else

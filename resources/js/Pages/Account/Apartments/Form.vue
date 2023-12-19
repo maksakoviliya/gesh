@@ -25,22 +25,43 @@
 		},
 	])
 
-	defineProps({
-		step: Number,
+	const props = defineProps({
+		step: {
+			type: Number,
+		},
+		hiddenNextStep: {
+			type: Boolean,
+			default: false,
+		},
+		nextButtonLabel: {
+			type: String,
+			default: 'Далее',
+		},
+		edit: {
+			type: Boolean,
+			required: true,
+		},
 	})
+
+	const title = ref(props.edit ? 'Редактировать объект' : 'Добавить объект')
+	const subtitle = ref(
+		props.edit
+			? 'Управляйте своим объектом недвижимости'
+			: 'Как можно подробнее опишите объект, который вы хотите разместить'
+	)
 
 	const emit = defineEmits(['onNextStep', 'onPrevStep'])
 </script>
 
 <template>
-	<AppLayout>
+	<AppLayout hidden-footer>
 		<Container :sm="true">
 			<Breadcrumbs :routes="routes" />
 			<div class="flex flex-col md:flex-row gap-4 items-center justify-between">
 				<Heading
 					class="mt-6"
-					title="Добавить объект"
-					subtitle="Как можно подробнее опишите объект, который вы хотите разместить"
+					:title="title"
+					:subtitle="subtitle"
 				/>
 				<!--				<ButtonComponent-->
 				<!--					label="Сохранить и выйти"-->
@@ -57,7 +78,7 @@
 				<Container :sm="true">
 					<div class="flex justify-between gap-6">
 						<ButtonComponent
-							:disabled="step < 2"
+							:disabled="props.step < 2"
 							:auto-width="true"
 							class="px-8"
 							:outline="true"
@@ -65,10 +86,11 @@
 							@click="emit('onPrevStep')"
 						/>
 						<ButtonComponent
+							v-if="!props.hiddenNextStep"
 							@click="emit('onNextStep')"
 							:auto-width="true"
 							class="px-8"
-							label="Далее"
+							:label="props.nextButtonLabel"
 						/>
 					</div>
 				</Container>

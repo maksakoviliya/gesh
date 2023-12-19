@@ -7,6 +7,7 @@ use App\Http\Controllers\Account\AccountProfileController;
 use App\Http\Controllers\Account\Apartments\AccountChatsController;
 use App\Http\Controllers\Account\Apartments\CalendarController;
 use App\Http\Controllers\Account\Apartments\CreateController;
+use App\Http\Controllers\Account\Apartments\DeleteController;
 use App\Http\Controllers\Account\Apartments\EditController;
 use App\Http\Controllers\Account\Apartments\ListController;
 use App\Http\Controllers\Account\Apartments\OwnerChatController;
@@ -63,8 +64,8 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::get('/', ListController::class)->name('list');
                     Route::get('create', CreateController::class)->name('create');
                     Route::get('{apartment}/step/{step}', StepController::class)->name('step');
-                    Route::get('{apartment}/edit', EditController::class)->name('edit');
                     Route::post('{apartment}/store', StoreController::class)->name('store');
+                    Route::post('{apartment}/delete', DeleteController::class)->name('delete');
                     Route::get('{apartment}/pending', PendingController::class)->name('pending');
                     Route::get('{apartment}/calendar', CalendarController::class)->name('calendar');
                     Route::get('{apartment}/chats', AccountChatsController::class)->name('chats');
