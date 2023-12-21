@@ -25,7 +25,6 @@
 			:value="modelValue"
 			@input="$emit('update:modelValue', $event.target.value)"
 			@keydown.prevent.enter="emit('onEnter')"
-			:type="type ?? 'text'"
 			autocomplete="new-password"
 			class="peer w-full p-4 pt-6 font-light bg-white dark:bg-slate-800 border-2 dark:text-white rounded-md shadow-none outline-none transition disabled:opacity-70 focus:ring-0 resize-none pl-4 disabled:cursor-not-allowed"
 			:class="`
