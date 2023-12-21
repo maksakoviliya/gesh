@@ -22,7 +22,7 @@ final class HomeController extends Controller
             ->published()
             ->filter($request)
             ->orderBy('updated_at')
-            ->paginate(2)
+            ->paginate(24)
             ->withQueryString();
 
         return Inertia::render('Home', [
