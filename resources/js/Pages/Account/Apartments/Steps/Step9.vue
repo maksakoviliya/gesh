@@ -47,6 +47,7 @@
 				<TextareaInput
 					id="description"
 					v-model="form.description"
+					textarea-class="min-h-[60vh]"
 					label="Описание"
 					:error="form.errors.description"
 				/>

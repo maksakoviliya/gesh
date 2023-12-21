@@ -7,6 +7,7 @@
 		disabled: Boolean | null,
 		required: Boolean | null,
 		modelValue: String,
+		textareaClass: String | null,
 	})
 
 	const emit = defineEmits(['onEnter', 'update:modelValue'])
@@ -26,10 +27,11 @@
 			@keydown.prevent.enter="emit('onEnter')"
 			:type="type ?? 'text'"
 			autocomplete="new-password"
-			class="peer w-full p-4 pt-6 font-light bg-white dark:bg-slate-800 border-2 dark:border-slate-700 dark:text-white rounded-md shadow-none outline-none transition disabled:opacity-70 focus:ring-0 resize-none pl-4 disabled:cursor-not-allowed"
+			class="peer w-full p-4 pt-6 font-light bg-white dark:bg-slate-800 border-2 dark:text-white rounded-md shadow-none outline-none transition disabled:opacity-70 focus:ring-0 resize-none pl-4 disabled:cursor-not-allowed"
 			:class="`
-                    ${error ? 'border-rose-500' : 'border-neutral-300'}
-                ${error ? 'focus:border-rose-500' : 'focus:border-black'}
+                    ${error ? 'border-rose-500' : 'border-neutral-300 dark:border-slate-700'}
+                ${error ? 'focus:border-rose-500' : 'focus:border-black dark:border-slate-800'}
+                ${textareaClass}
             `"
 		/>
 		<label

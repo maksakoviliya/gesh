@@ -54,19 +54,19 @@
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-10 gap-6">
 				<Link
 					:href="route(`account.${section.key}`)"
-					class="shadow-lg p-6 rounded-xl hover:shadow-xl transition cursor-pointer border border-neutral-100 hover:opacity-70"
+					class="shadow-lg p-6 rounded-xl hover:shadow-xl transition cursor-pointer border border-neutral-100 dark:border-slate-700 hover:opacity-70"
 					v-for="section in sections"
 					:key="section.id"
 				>
 					<OhVueIcon
 						:name="section.icon"
-						class="text-neutral-400"
+						class="text-neutral-400 dark:text-slate-200"
 						scale="2"
 					/>
-					<div class="text-lg font-semibold mt-6">
+					<div class="text-lg font-semibold mt-6 dark:text-white">
 						{{ section.title }}
 					</div>
-					<div class="text-neutral-500 font-light">{{ section.subtitle }}</div>
+					<div class="text-neutral-500 font-light dark:text-slate-400">{{ section.subtitle }}</div>
 				</Link>
 			</div>
 		</Container>
