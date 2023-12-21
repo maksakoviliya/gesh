@@ -5,32 +5,41 @@
 	defineProps({
 		user: Object,
 	})
-
-	const active = ref(null)
-
-	const setActive = (value) => {
-		active.value = value
-	}
 </script>
 <template>
 	<div class="flex flex-col gap-3">
 		<ProfileFormItem
-			:disabed="active !== 'name'"
+			key="name"
+			field="name"
+			:url="
+				route('account.profile.update', {
+					account: user.id,
+				})
+			"
 			label="Имя"
-			@onActivation="setActive('name')"
-			:value="user.data.name"
+			:value="user.name"
 		/>
 		<ProfileFormItem
-			:disabed="active !== 'email'"
+			key="email"
+			field="email"
+			:url="
+				route('account.profile.update', {
+					account: user.id,
+				})
+			"
 			label="Email"
-			@onActivation="setActive('email')"
-			:value="user.data.email ?? 'Укажите email'"
+			:value="user.email ?? 'Укажите email'"
 		/>
 		<ProfileFormItem
-			:disabed="active !== 'phone'"
+			key="phone"
+			field="phone"
+			:url="
+				route('account.profile.update', {
+					account: user.id,
+				})
+			"
 			label="Телефон"
-			@onActivation="setActive('phone')"
-			:value="user.data.phone ?? 'Укажите номер телефона'"
+			:value="user.phone ?? 'Укажите номер телефона'"
 		/>
 	</div>
 </template>

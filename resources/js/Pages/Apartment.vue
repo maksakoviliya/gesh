@@ -143,32 +143,29 @@
 						:title="getTitle()"
 						:subtitle="getSubtitle()"
 					/>
-					<hr class="my-4" />
-					<div class="flex justify-between gap-x-6">
-						<div class="flex min-w-0 gap-x-4">
+					<hr class="my-4 dark:border-slate-600" />
+					<div class="flex justify-between items-start gap-x-6">
+						<div class="flex items-center min-w-0 gap-x-4">
 							<Avatar
 								:src="props.apartment.data.owner.avatar"
 								class="h-12 w-12 flex-none rounded-full bg-gray-50"
 							/>
-							<div class="min-w-0 flex-auto">
-								<p class="text-sm font-semibold leading-6 text-gray-900">
-									Хозяин: {{ props.apartment.data.owner.name }}
-								</p>
-								<p class="mt-1 truncate text-xs leading-5 text-gray-500">
-									{{ props.apartment.data.owner.email }}
-								</p>
+							<div class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-100">
+								{{ props.apartment.data.owner.name }}
 							</div>
 						</div>
 						<div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-							<p class="text-sm leading-6 text-gray-900">Владелец</p>
-							<p class="mt-1 text-xs leading-5 text-gray-500">
+							<p class="text-sm leading-6 text-gray-900 dark:text-slate-200">Владелец</p>
+							<p class="mt-1 text-xs leading-5 text-gray-500 dark:text-slate-400">
 								На сайте
-								<time datetime="2023-01-23T13:23Z">2 года</time>
+								<time datetime="2023-01-23T13:23Z">
+									{{ props.apartment.data.owner.since }}
+								</time>
 							</p>
 						</div>
 					</div>
 					<template v-if="!!props.apartment.data.features.length">
-						<hr class="my-4" />
+						<hr class="my-4 dark:border-slate-600" />
 						<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 							<div
 								v-for="feature in props.apartment.data.features"
@@ -176,10 +173,10 @@
 								class="flex items-center gap-3"
 							>
 								<div
-									class="text-neutral-800"
+									class="text-neutral-800 dark:text-slate-100"
 									v-html="feature.icon"
 								></div>
-								<div class="text-sm text-neutral-500">{{ feature.title }}</div>
+								<div class="text-sm text-neutral-500 dark:text-slate-400">{{ feature.title }}</div>
 							</div>
 						</div>
 					</template>
@@ -188,13 +185,13 @@
 					<!--                        {{ props.apartment.data.category?.title }}-->
 					<!--                    </div>-->
 					<div
-						class="mt-4 py-4 border-t"
+						class="mt-4 py-4 border-t dark:border-slate-600"
 						v-if="props.apartment.data.description"
 					>
 						{{ props.apartment.data.description }}
 					</div>
 					<div
-						class="mt-4 py-4 border-t"
+						class="mt-4 py-4 border-t dark:border-slate-600"
 						v-if="props.apartment.data.lon && props.apartment.data.lat"
 					>
 						<Map
@@ -231,15 +228,18 @@
 							</div>
 						</div>
 						<div
-							class="text-2xl md:text-3xl font-semibold flex items-center gap-2"
+							class="text-2xl md:text-3xl font-semibold flex items-center gap-2 dark:text-white"
 							v-if="props.apartment.data.weekdays_price !== props.apartment.data.weekends_price"
 						>
 							{{ props.apartment.data.weekends_price?.toLocaleString() }}₽
 							<div class="flex flex-col">
-								<span class="text-neutral-500 font-light text-sm leading-none whitespace-nowrap"
+								<span
+									class="text-neutral-500 font-light text-sm dark:text-slate-400 leading-none whitespace-nowrap"
 									>ночь в</span
 								>
-								<span class="text-neutral-500 font-light text-sm leading-none">выходные</span>
+								<span class="text-neutral-500 font-light text-sm dark:text-slate-400 leading-none"
+									>выходные</span
+								>
 							</div>
 						</div>
 					</div>
@@ -275,30 +275,38 @@
 							label="Продолжить"
 						/>
 					</div>
-					<div class="font-light text-sm text-center mt-3 text-neutral-500">Пока вы ни за что не платите</div>
-					<dl class="divide-y divide-gray-100 border-t mt-4">
+					<div class="font-light text-sm text-center mt-3 text-neutral-500 dark:text-slate-400">
+						Пока вы ни за что не платите
+					</div>
+					<dl class="divide-y divide-gray-100 border-t dark:border-slate-700 mt-4">
 						<div class="py-4 flex flex-col gap-2">
 							<div class="flex w-full items-baseline justify-between">
 								<dt class="font-light leading-6 text-gray-600">
 									<Popover>
 										<template #toggle>
 											<div
-												class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
+												class="font-light leading-none text-gray-600 dark:text-slate-400 outline-none border-b border-gray-400 dark:border-slate-600 hover:border-gray-600 dark:hover:border-slate-500 transition"
 											>
 												{{ detalizationText }}
 											</div>
 										</template>
 										<template #content>
-											<dl class="divide-y divide-gray-100 max-h-52 overflow-auto">
+											<dl
+												class="divide-y divide-gray-100 dark:divide-slate-700 max-h-52 overflow-auto"
+											>
 												<div
 													class="py-1 px-4 flex w-full items-baseline justify-between"
 													v-for="item in details"
 													:key="item.date"
 												>
-													<dt class="font-light text-sm leading-6 text-gray-600">
+													<dt
+														class="font-light text-sm leading-6 text-gray-600 dark:text-slate-400"
+													>
 														{{ item.date }}
 													</dt>
-													<dd class="mt-1 text-sm font-medium leading-6 text-neutral-600">
+													<dd
+														class="mt-1 text-sm font-medium leading-6 text-neutral-600 dark:text-slate-200"
+													>
 														{{ item.price?.toLocaleString() }}₽
 													</dd>
 												</div>
@@ -306,7 +314,7 @@
 										</template>
 									</Popover>
 								</dt>
-								<dd class="mt-1 font-medium leading-6 text-neutral-600">
+								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-100">
 									{{ basePrice?.toLocaleString() }}₽
 								</dd>
 							</div>
@@ -315,13 +323,15 @@
 									<Popover>
 										<template #toggle>
 											<div
-												class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
+												class="font-light leading-none dark:text-slate-400 dark:border-slate-600 dark:hover:border-slate-500 text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
 											>
 												Сервисный сбор
 											</div>
 										</template>
 										<template #content>
-											<div class="max-h-52 p-4 text-neutral-600 leading-tight text-sm">
+											<div
+												class="max-h-52 p-4 text-neutral-600 leading-tight text-sm dark:text-slate-300"
+											>
 												Благодаря этому сбору мы развиваем наш сервис и, в том числе,
 												обеспечиваем путешественников круглосуточной поддержкой.
 												<br />
@@ -330,16 +340,16 @@
 										</template>
 									</Popover>
 								</dt>
-								<dd class="mt-1 font-medium leading-6 text-neutral-600">
+								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-100">
 									{{ servicePrice?.toLocaleString() }}₽
 								</dd>
 							</div>
 						</div>
 					</dl>
-					<div class="border-t pt-4 flex flex-col gap-2">
+					<div class="border-t pt-4 flex flex-col gap-2 dark:border-slate-700">
 						<div class="flex w-full items-baseline justify-between">
-							<dt class="font-bold leading-6 text-neutral-800">Итого:</dt>
-							<dd class="mt-1 font-bold leading-6 text-lg text-neutral-800">
+							<dt class="font-bold leading-6 text-neutral-800 dark:text-slate-100">Итого:</dt>
+							<dd class="mt-1 font-bold leading-6 text-lg text-neutral-800 dark:text-slate-100">
 								{{ totalPrice?.toLocaleString() }}₽
 							</dd>
 						</div>

@@ -25,7 +25,7 @@
 			/>
 		</div>
 		<div
-			class="absolute opacity-0 bottom-0 left-1/2 -translate-x-1/2 bg-sky-600 hover:bg-sky-400 cursor-pointer transition aspect-square rounded-full w-10 group-hover:opacity-100 flex flex-col items-center justify-center text-white"
+			class="absolute opacity-0 bottom-0 left-1/2 -translate-x-1/2 bg-sky-600 hover:bg-sky-400 dark:bg-sky-700 dark:hover:bg-sky-600 cursor-pointer transition aspect-square rounded-full w-10 group-hover:opacity-100 flex flex-col items-center justify-center text-white"
 		>
 			<OhVueIcon
 				name="co-pencil"

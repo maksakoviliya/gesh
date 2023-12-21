@@ -22,6 +22,10 @@
 			})
 		)
 	}
+
+	const onEnter = () => {
+		form.description += '\n'
+	}
 </script>
 
 <template>
@@ -47,6 +51,8 @@
 				<TextareaInput
 					id="description"
 					v-model="form.description"
+					textarea-class="min-h-[60vh]"
+					@onEnter="onEnter"
 					label="Описание"
 					:error="form.errors.description"
 				/>

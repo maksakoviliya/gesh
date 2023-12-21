@@ -69,6 +69,7 @@
 		>
 			<img
 				:src="img.src"
+				:srcset="img.srcset"
 				class="object-cover w-full h-full transition cursor-pointer group-hover:scale-110"
 				alt=""
 			/>
@@ -88,6 +89,7 @@
 				>
 					<img
 						class="w-full h-full object-cover"
+						:srcset="image.srcset"
 						:src="image.src"
 						alt=""
 					/>
@@ -122,6 +124,7 @@
 					>
 						<SwiperSlide v-for="slide in props.images">
 							<img
+								:srcset="slide.srcset"
 								class="h-full w-auto object-cover mx-auto max-h-[90vh]"
 								:src="slide.src"
 								alt=""
