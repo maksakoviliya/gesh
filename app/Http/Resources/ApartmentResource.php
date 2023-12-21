@@ -9,6 +9,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ApartmentResource extends JsonResource
 {
+    public function paginationInformation($request, $paginated, $default)
+    {
+        dd($request, $paginated, $default);
+        $default['links']['custom'] = 'https://example.com';
+
+        return $default;
+    }
+
     public function toArray(Request $request): array
     {
         return [

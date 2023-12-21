@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ApartmentResource;
+use App\Http\Resources\ApartmentCollection;
 use App\Http\Resources\CategoryResource;
 use App\Models\Apartment;
 use App\Models\Category;
@@ -14,7 +14,7 @@ use Inertia\Response;
 
 final class HomeController extends Controller
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request)
     {
         $categories = Category::all();
         $apartments = Apartment::query()
@@ -22,11 +22,12 @@ final class HomeController extends Controller
             ->published()
             ->filter($request)
             ->orderBy('updated_at')
-            ->paginate(20);
+            ->paginate(2)
+            ->withQueryString();
 
         return Inertia::render('Home', [
             'categories' => CategoryResource::collection($categories),
-            'apartments' => ApartmentResource::collection($apartments),
+            'apartments' => new ApartmentCollection($apartments),
         ]);
     }
 }

@@ -1,10 +1,10 @@
 <script setup>
+	import Apartments from '@/Components/Apartments/Apartments.vue'
 	import AppLayout from '@/Layouts/AppLayout.vue'
 	import Categories from '@/Components/Categories.vue'
-	import Container from '@/Components/Container.vue'
-	import Apartments from '@/Components/Apartments.vue'
-	import ViewToggler from '@/Components/ViewToggler.vue'
 
+	import Container from '@/Components/Container.vue'
+	import ViewToggler from '@/Components/ViewToggler.vue'
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
 	import { HiMap } from 'oh-vue-icons/icons'
 
@@ -18,7 +18,7 @@
 
 <template>
 	<AppLayout>
-		<Container>
+		<Container class="pb-32">
 			<Categories :categories="categories.data" />
 			<Apartments :apartments="apartments" />
 			<ViewToggler :to="route('home.map')">
