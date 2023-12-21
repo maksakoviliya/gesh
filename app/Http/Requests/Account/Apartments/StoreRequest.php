@@ -83,7 +83,7 @@ final class StoreRequest extends FormRequest
             'title' => 'sometimes|nullable|max:255',
 
             // Step 9:
-            'description' => 'sometimes|nullable|max:1000',
+            'description' => 'sometimes|nullable|max:3000',
 
             // Step 10:
             'weekdays_price' => 'sometimes|required|integer|max:9999999',

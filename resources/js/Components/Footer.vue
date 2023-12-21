@@ -4,8 +4,8 @@
 </script>
 
 <template>
-	<footer class="absolute bottom-0 w-full bg-white dark:bg-slate-800 border-t dark:border-slate-700">
-		<Container class="py-6 lg:py-8">
+	<footer class="fixed bottom-0 w-full z-10 bg-white dark:bg-slate-800 border-t dark:border-slate-700">
+		<Container class="py-3 lg:py-4">
 			<div class="flex flex-col md:flex-row gap-6 sm:items-center sm:justify-between">
 				<span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
 					>© {{ new Date().getFullYear() }}

@@ -31,7 +31,7 @@
 		<Container>
 			<Categories :categories="categories.data" />
 			<Map
-				class="mt-24"
+				class="my-24"
 				:is-input="false"
 				:lat="87.98709856259356"
 				:lon="52.92596754124867"

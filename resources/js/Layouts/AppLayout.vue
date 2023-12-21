@@ -20,7 +20,7 @@
 </script>
 
 <template>
-	<div class="min-h-screen pb-32 relative">
+	<div class="min-h-screen pb-44 relative">
 		<Head :title="title" />
 
 		<Navbar />

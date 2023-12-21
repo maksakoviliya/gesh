@@ -275,30 +275,38 @@
 							label="Продолжить"
 						/>
 					</div>
-					<div class="font-light text-sm text-center mt-3 text-neutral-500">Пока вы ни за что не платите</div>
-					<dl class="divide-y divide-gray-100 border-t mt-4">
+					<div class="font-light text-sm text-center mt-3 text-neutral-500 dark:text-slate-400">
+						Пока вы ни за что не платите
+					</div>
+					<dl class="divide-y divide-gray-100 border-t dark:border-slate-700 mt-4">
 						<div class="py-4 flex flex-col gap-2">
 							<div class="flex w-full items-baseline justify-between">
 								<dt class="font-light leading-6 text-gray-600">
 									<Popover>
 										<template #toggle>
 											<div
-												class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
+												class="font-light leading-none text-gray-600 dark:text-slate-400 outline-none border-b border-gray-400 dark:border-slate-600 hover:border-gray-600 dark:hover:border-slate-500 transition"
 											>
 												{{ detalizationText }}
 											</div>
 										</template>
 										<template #content>
-											<dl class="divide-y divide-gray-100 max-h-52 overflow-auto">
+											<dl
+												class="divide-y divide-gray-100 dark:divide-slate-700 max-h-52 overflow-auto"
+											>
 												<div
 													class="py-1 px-4 flex w-full items-baseline justify-between"
 													v-for="item in details"
 													:key="item.date"
 												>
-													<dt class="font-light text-sm leading-6 text-gray-600">
+													<dt
+														class="font-light text-sm leading-6 text-gray-600 dark:text-slate-400"
+													>
 														{{ item.date }}
 													</dt>
-													<dd class="mt-1 text-sm font-medium leading-6 text-neutral-600">
+													<dd
+														class="mt-1 text-sm font-medium leading-6 text-neutral-600 dark:text-slate-200"
+													>
 														{{ item.price?.toLocaleString() }}₽
 													</dd>
 												</div>
@@ -306,7 +314,7 @@
 										</template>
 									</Popover>
 								</dt>
-								<dd class="mt-1 font-medium leading-6 text-neutral-600">
+								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-100">
 									{{ basePrice?.toLocaleString() }}₽
 								</dd>
 							</div>
@@ -315,13 +323,15 @@
 									<Popover>
 										<template #toggle>
 											<div
-												class="font-light leading-none text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
+												class="font-light leading-none dark:text-slate-400 dark:border-slate-600 dark:hover:border-slate-500 text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
 											>
 												Сервисный сбор
 											</div>
 										</template>
 										<template #content>
-											<div class="max-h-52 p-4 text-neutral-600 leading-tight text-sm">
+											<div
+												class="max-h-52 p-4 text-neutral-600 leading-tight text-sm dark:text-slate-300"
+											>
 												Благодаря этому сбору мы развиваем наш сервис и, в том числе,
 												обеспечиваем путешественников круглосуточной поддержкой.
 												<br />
@@ -330,16 +340,16 @@
 										</template>
 									</Popover>
 								</dt>
-								<dd class="mt-1 font-medium leading-6 text-neutral-600">
+								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-100">
 									{{ servicePrice?.toLocaleString() }}₽
 								</dd>
 							</div>
 						</div>
 					</dl>
-					<div class="border-t pt-4 flex flex-col gap-2">
+					<div class="border-t pt-4 flex flex-col gap-2 dark:border-slate-700">
 						<div class="flex w-full items-baseline justify-between">
-							<dt class="font-bold leading-6 text-neutral-800">Итого:</dt>
-							<dd class="mt-1 font-bold leading-6 text-lg text-neutral-800">
+							<dt class="font-bold leading-6 text-neutral-800 dark:text-slate-100">Итого:</dt>
+							<dd class="mt-1 font-bold leading-6 text-lg text-neutral-800 dark:text-slate-100">
 								{{ totalPrice?.toLocaleString() }}₽
 							</dd>
 						</div>

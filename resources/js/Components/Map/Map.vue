@@ -49,7 +49,8 @@
 
 	const darkMode = ref(document.documentElement.classList.contains('dark'))
 	const theme = computed(() => {
-		return darkMode ? 'dark' : 'light'
+		return 'light'
+		// return darkMode ? 'dark' : 'light'
 	})
 </script>
 

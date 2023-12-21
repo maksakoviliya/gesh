@@ -14,7 +14,7 @@
 		panelClass: {
 			type: String,
 			default:
-				'fixed md:absolute inset-0 md:bottom-auto md:h-auto md:top-full h-screen overflow-auto  mt-3 w-screen z-20 transform md:overflow-visible sm:pr-0 dark:bg-slate-800',
+				'fixed md:absolute inset-0 md:bottom-auto md:h-auto md:top-full h-screen overflow-auto  mt-3 w-screen z-50 transform md:overflow-visible sm:pr-0 ',
 		},
 	})
 
@@ -49,7 +49,9 @@
 			leave-to-class="translate-y-1 opacity-0"
 		>
 			<PopoverPanel :class="[props.maxWidthClass, positionClass, props.panelClass]">
-				<div class="h-full overflow-auto rounded-lg shadow-lg dark:shadow-xl ring-1 ring-black/5">
+				<div
+					class="h-full overflow-auto rounded-lg bg-white dark:bg-slate-800 shadow-lg dark:shadow-xl ring-1 ring-black/5"
+				>
 					<slot name="content" />
 				</div>
 			</PopoverPanel>
