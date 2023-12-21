@@ -89,7 +89,7 @@
 				>
 					<img
 						class="w-full h-full object-cover"
-						:srcset="img.srcset"
+						:srcset="image.srcset"
 						:src="image.src"
 						alt=""
 					/>
@@ -124,7 +124,7 @@
 					>
 						<SwiperSlide v-for="slide in props.images">
 							<img
-								:srcset="img.srcset"
+								:srcset="slide.srcset"
 								class="h-full w-auto object-cover mx-auto max-h-[90vh]"
 								:src="slide.src"
 								alt=""
