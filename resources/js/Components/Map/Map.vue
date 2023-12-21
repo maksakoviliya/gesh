@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { shallowRef } from 'vue'
+	import { computed, ref, shallowRef } from 'vue'
 	import type { YMap } from '@yandex/ymaps3-types'
 	import { HiLocationMarker } from 'oh-vue-icons/icons'
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
@@ -46,11 +46,16 @@
 	}
 
 	addIcons(HiLocationMarker)
+
+	const darkMode = ref(document.documentElement.classList.contains('dark'))
+	const theme = computed(() => {
+		return darkMode ? 'dark' : 'light'
+	})
 </script>
 
 <template>
 	<div class="h-[50vh] overflow-hidden rounded-xl relative shadow-lg">
-		<yandex-map
+		<YandexMap
 			v-model="map"
 			:settings="{
 				location: {
@@ -65,7 +70,11 @@
 			<yandex-map-controls :settings="{ position: 'right' }">
 				<yandex-map-zoom-control />
 			</yandex-map-controls>
-			<yandex-map-default-scheme-layer />
+			<yandex-map-default-scheme-layer
+				:settings="{
+					theme: theme,
+				}"
+			/>
 
 			<yandex-map-default-features-layer />
 			<yandex-map-clusterer>
@@ -97,7 +106,7 @@
 					</div>
 				</template>
 			</yandex-map-clusterer>
-		</yandex-map>
+		</YandexMap>
 
 		<div
 			class="absolute bottom-1/2 left-1/2 -translate-x-1/2 text-sky-500"

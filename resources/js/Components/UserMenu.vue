@@ -14,14 +14,6 @@
 
 	addIcons(HiSolidMenu, HiX)
 
-	const isOpen = ref(false)
-	const setIsOpen = (value) => {
-		isOpen.value = value
-	}
-	const toggleOpen = () => {
-		setIsOpen(!isOpen.value)
-	}
-
 	const { successToast } = useToasts()
 
 	const logout = () => {
@@ -63,18 +55,18 @@
 			@onClose="setShowLogoutDialog(false)"
 			@onLogout="logout"
 		/>
-
 		<Popover
-			max-width-class="max-w-[40vw] md:max-w-[22vw]"
+			max-width-class="max-w-screen"
 			position="left"
+			panel-class="absolute top-full right-0 w-auto  md:bottom-auto md:h-auto md:top-full  mt-3  z-20 transform md:overflow-visible sm:pr-0 "
 		>
-			<template #toggle>
+			<template #toggle="{ open }">
 				<div
 					class="p-4 md:py-1 md:px-2 border dark:border-slate-700 dark:text-slate-200 border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
 				>
 					<OhVueIcon
 						name="hi-solid-menu"
-						v-if="!isOpen"
+						v-if="!open"
 					/>
 					<OhVueIcon
 						name="hi-x"
@@ -92,7 +84,7 @@
 			</template>
 			<template #content>
 				<div
-					class="rounded-xl shadow-md dark:shadow-xl dark:border overflow-hidden dark:border-slate-700 w-[40vw] md:w-[22vw] bg-white dark:bg-slate-800 text-sm"
+					class="rounded-xl shadow-md dark:shadow-xl dark:border overflow-hidden dark:border-slate-700 w-full bg-white dark:bg-slate-800 text-sm"
 				>
 					<div class="flex flex-col cursor-pointer">
 						<div class="p-4">

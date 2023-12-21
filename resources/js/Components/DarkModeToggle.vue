@@ -75,7 +75,7 @@
 			>
 				<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
 			</svg>
-			<div class="text-xs leading-none text-neutral-500 dark:text-slate-200">Темная тема</div>
+			<div class="text-xs leading-none text-neutral-500 dark:text-slate-200 whitespace-nowrap">Темная тема</div>
 		</SwitchLabel>
 	</SwitchGroup>
 </template>
