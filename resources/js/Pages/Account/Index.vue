@@ -13,7 +13,7 @@
 	const sections = ref([
 		{
 			id: 'profile',
-			key: 'profile',
+			key: 'profile.index',
 			title: 'Личная информация',
 			subtitle: 'Предоставьте личные и контактные данные',
 			icon: 'ri-profile-line',
