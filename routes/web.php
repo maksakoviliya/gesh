@@ -17,6 +17,7 @@ use App\Http\Controllers\Account\Apartments\UpdateCalendarController;
 use App\Http\Controllers\Account\Apartments\UpdatePriceController;
 use App\Http\Controllers\Account\Notifications\NotificationsIndexController;
 use App\Http\Controllers\Account\Notifications\NotificationsReadController;
+use App\Http\Controllers\Account\Profile\AccountProfileUpdateController;
 use App\Http\Controllers\Account\Reservations\ReservationsListController;
 use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\ApartmentShowController;
@@ -53,7 +54,13 @@ Route::middleware('auth:sanctum')->group(function () {
         ->as('account.')
         ->group(function () {
             Route::get('/', AccountIndexController::class)->name('index');
-            Route::get('profile', AccountProfileController::class)->name('profile');
+
+            Route::prefix('profile')
+                ->as('profile.')
+                ->group(function() {
+                    Route::get('/', AccountProfileController::class)->name('index');
+                    Route::post('update', AccountProfileUpdateController::class)->name('update');
+                });
 
             // Apartments
             Route::prefix('apartments')

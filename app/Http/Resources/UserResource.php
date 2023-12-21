@@ -10,6 +10,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
+
+    /**
+     * @var bool
+     */
+    private mixed $showContacts;
+
+    public function __construct(mixed $resource, bool $showContacts = false)
+    {
+        parent::__construct($resource);
+        $this->showContacts = $showContacts;
+    }
+
     public function toArray(Request $request): array
     {
         return [
@@ -22,6 +34,8 @@ class UserResource extends JsonResource
                 CarbonInterface::DIFF_ABSOLUTE,
                 true
             ),
+            'email' => $this->when($this->showContacts, $this->resource->email),
+            'phone' => $this->when($this->showContacts, $this->resource->phone),
             'is_admin' => $this->resource->hasRole('admin'),
         ];
     }

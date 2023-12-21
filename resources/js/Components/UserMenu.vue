@@ -106,10 +106,10 @@
 								:href="route('account.index')"
 								label="Аккаунт"
 							/>
-							<MenuLink
-								:href="route('account.index')"
-								label="Сообщения"
-							/>
+							<!--							<MenuLink-->
+							<!--								:href="route('account.index')"-->
+							<!--								label="Сообщения"-->
+							<!--							/>-->
 							<MenuLink :href="route('account.notifications.index')">
 								<div class="inline-block relative pr-4">
 									Уведомления
