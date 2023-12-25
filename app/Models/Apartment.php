@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
@@ -142,6 +141,13 @@ final class Apartment extends Model implements HasMedia
         'type' => Type::class,
         'fast_reserve' => 'boolean',
     ];
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('responsive')
+            ->performOnCollections('default')
+            ->withResponsiveImages();
+    }
 
     public function category(): BelongsTo
     {
@@ -281,23 +287,21 @@ final class Apartment extends Model implements HasMedia
             $this->features()->sync($features);
         }
 
-        if ($images = Arr::get($data, 'media')) {
-            foreach ($images as $image) {
-                if (! $image instanceof UploadedFile) {
+        //Step 7
+        if ($mediaIds = Arr::get($data, 'media')) {
+            $medias = [];
+            foreach ($mediaIds as $uuid) {
+                /** @var Media $image */
+                $image = $this->media()->where('uuid', $uuid)->first();
+                if (!$image) {
                     continue;
                 }
-                $this->addMedia($image)
-                    ->withResponsiveImages()
-                    ->toMediaCollection();
+                if ($image?->collection_name !== 'default') {
+                    $image = $image->move($this);
+                }
+                $medias[] = $image->getKey();
             }
-        }
-
-        if ($remove = Arr::get($data, 'remove')) {
-            foreach ($remove as $id) {
-                Media::query()
-                    ->find($id)
-                    ->delete();
-            }
+            Media::setNewOrder($medias);
         }
 
         $this->step = Arr::get($data, 'step') + 1;

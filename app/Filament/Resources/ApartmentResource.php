@@ -134,6 +134,7 @@ class ApartmentResource extends Resource
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('media')
                                     ->multiple()
+                                    ->reorderable()
                                     ->maxFiles(10),
                             ])
                             ->collapsible(),

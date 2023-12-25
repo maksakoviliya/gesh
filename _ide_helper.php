@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.33.0.
+ * Generated for Laravel 10.38.2.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6868,13 +6868,14 @@
          *
          * @param string $path
          * @param string $data
+         * @param bool $lock
          * @return int 
          * @static 
          */ 
-        public static function append($path, $data)
+        public static function append($path, $data, $lock = false)
         {
                         /** @var \Illuminate\Filesystem\Filesystem $instance */
-                        return $instance->append($path, $data);
+                        return $instance->append($path, $data, $lock);
         }
                     /**
          * Get or set UNIX mode of a file or directory.
@@ -13556,6 +13557,7 @@
      * @method static \Illuminate\Routing\RouteRegistrar controller(string $controller)
      * @method static \Illuminate\Routing\RouteRegistrar domain(string $value)
      * @method static \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
+     * @method static \Illuminate\Routing\RouteRegistrar missing(\Closure $missing)
      * @method static \Illuminate\Routing\RouteRegistrar name(string $value)
      * @method static \Illuminate\Routing\RouteRegistrar namespace(string|null $value)
      * @method static \Illuminate\Routing\RouteRegistrar prefix(string $prefix)
@@ -14012,6 +14014,18 @@
         {
                         /** @var \Illuminate\Routing\Router $instance */
                         $instance->substituteImplicitBindings($route);
+        }
+                    /**
+         * Register a callback to to run after implicit bindings are substituted.
+         *
+         * @param callable $callback
+         * @return \Illuminate\Routing\Router 
+         * @static 
+         */ 
+        public static function substituteImplicitBindingsUsing($callback)
+        {
+                        /** @var \Illuminate\Routing\Router $instance */
+                        return $instance->substituteImplicitBindingsUsing($callback);
         }
                     /**
          * Register a route matched event listener.
@@ -14564,16 +14578,50 @@
                         return $instance->dropDatabaseIfExists($name);
         }
                     /**
-         * Determine if the given table exists.
+         * Get the tables for the database.
          *
-         * @param string $table
-         * @return bool 
+         * @return array 
          * @static 
          */ 
-        public static function hasTable($table)
+        public static function getTables()
         {
                         /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
-                        return $instance->hasTable($table);
+                        return $instance->getTables();
+        }
+                    /**
+         * Get the views for the database.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getViews()
+        {
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->getViews();
+        }
+                    /**
+         * Get all of the table names for the database.
+         *
+         * @deprecated Will be removed in a future Laravel version.
+         * @return array 
+         * @static 
+         */ 
+        public static function getAllTables()
+        {
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->getAllTables();
+        }
+                    /**
+         * Get all of the view names for the database.
+         *
+         * @deprecated Will be removed in a future Laravel version.
+         * @return array 
+         * @static 
+         */ 
+        public static function getAllViews()
+        {
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->getAllViews();
         }
                     /**
          * Get the columns for a given table.
@@ -14586,6 +14634,30 @@
         {
                         /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
                         return $instance->getColumns($table);
+        }
+                    /**
+         * Get the indexes for a given table.
+         *
+         * @param string $table
+         * @return array 
+         * @static 
+         */ 
+        public static function getIndexes($table)
+        {
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->getIndexes($table);
+        }
+                    /**
+         * Get the foreign keys for a given table.
+         *
+         * @param string $table
+         * @return array 
+         * @static 
+         */ 
+        public static function getForeignKeys($table)
+        {
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->getForeignKeys($table);
         }
                     /**
          * Drop all tables from the database.
@@ -14608,28 +14680,6 @@
         {
                         /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
                         $instance->dropAllViews();
-        }
-                    /**
-         * Get all of the table names for the database.
-         *
-         * @return array 
-         * @static 
-         */ 
-        public static function getAllTables()
-        {
-                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
-                        return $instance->getAllTables();
-        }
-                    /**
-         * Get all of the view names for the database.
-         *
-         * @return array 
-         * @static 
-         */ 
-        public static function getAllViews()
-        {
-                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
-                        return $instance->getAllViews();
         }
                     /**
          * Set the default string length for migrations.
@@ -14684,6 +14734,41 @@
         public static function useNativeSchemaOperationsIfPossible($value = true)
         {            //Method inherited from \Illuminate\Database\Schema\Builder         
                         \Illuminate\Database\Schema\MySqlBuilder::useNativeSchemaOperationsIfPossible($value);
+        }
+                    /**
+         * Determine if the given table exists.
+         *
+         * @param string $table
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasTable($table)
+        {            //Method inherited from \Illuminate\Database\Schema\Builder         
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->hasTable($table);
+        }
+                    /**
+         * Determine if the given view exists.
+         *
+         * @param string $view
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasView($view)
+        {            //Method inherited from \Illuminate\Database\Schema\Builder         
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->hasView($view);
+        }
+                    /**
+         * Get the user-defined types that belong to the database.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getTypes()
+        {            //Method inherited from \Illuminate\Database\Schema\Builder         
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->getTypes();
         }
                     /**
          * Determine if the given table has a given column.
@@ -18480,6 +18565,13 @@
      * 
      *
      */ 
+        class Number {
+         
+    }
+            /**
+     * 
+     *
+     */ 
         class Str {
                     /**
          * 
@@ -18492,6 +18584,18 @@
         public static function sanitizeHtml($html)
         {
                         return \Illuminate\Support\Str::sanitizeHtml($html);
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Support\SupportServiceProvider::packageBooted()
+         * @param string $value
+         * @return string 
+         * @static 
+         */ 
+        public static function ucwords($value)
+        {
+                        return \Illuminate\Support\Str::ucwords($value);
         }
          
     }
@@ -18559,6 +18663,17 @@
         public static function sanitizeHtml()
         {
                         return \Illuminate\Support\Stringable::sanitizeHtml();
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Support\SupportServiceProvider::packageBooted()
+         * @return \Illuminate\Support\Stringable 
+         * @static 
+         */ 
+        public static function ucwords()
+        {
+                        return \Illuminate\Support\Stringable::ucwords();
         }
          
     }
@@ -19102,70 +19217,6 @@
      
 }
 
-    namespace Intervention\Image\Facades { 
-            /**
-     * 
-     *
-     */ 
-        class Image {
-                    /**
-         * Overrides configuration settings
-         *
-         * @param array $config
-         * @return self 
-         * @static 
-         */ 
-        public static function configure($config = [])
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->configure($config);
-        }
-                    /**
-         * Initiates an Image instance from different input types
-         *
-         * @param mixed $data
-         * @return \Intervention\Image\Image 
-         * @static 
-         */ 
-        public static function make($data)
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->make($data);
-        }
-                    /**
-         * Creates an empty image canvas
-         *
-         * @param int $width
-         * @param int $height
-         * @param mixed $background
-         * @return \Intervention\Image\Image 
-         * @static 
-         */ 
-        public static function canvas($width, $height, $background = null)
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->canvas($width, $height, $background);
-        }
-                    /**
-         * Create new cached image and run callback
-         * (requires additional package intervention/imagecache)
-         *
-         * @param \Closure $callback
-         * @param int $lifetime
-         * @param boolean $returnObj
-         * @return \Image 
-         * @static 
-         */ 
-        public static function cache($callback, $lifetime = null, $returnObj = false)
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->cache($callback, $lifetime, $returnObj);
-        }
-         
-    }
-     
-}
-
     namespace Laravel\Socialite\Facades { 
             /**
      * 
@@ -19584,6 +19635,16 @@
         {
                         /** @var \Livewire\LivewireManager $instance */
                         return $instance->withCookies($cookies);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function withHeaders($headers)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->withHeaders($headers);
         }
                     /**
          * 
@@ -27269,6 +27330,7 @@ namespace  {
             class Log extends \Illuminate\Support\Facades\Log {}
             class Mail extends \Illuminate\Support\Facades\Mail {}
             class Notification extends \Illuminate\Support\Facades\Notification {}
+            class Number extends \Illuminate\Support\Number {}
             class Password extends \Illuminate\Support\Facades\Password {}
             class Process extends \Illuminate\Support\Facades\Process {}
             class Queue extends \Illuminate\Support\Facades\Queue {}
@@ -27286,7 +27348,6 @@ namespace  {
             class View extends \Illuminate\Support\Facades\View {}
             class Vite extends \Illuminate\Support\Facades\Vite {}
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
-            class Image extends \Intervention\Image\Facades\Image {}
             class Socialite extends \Laravel\Socialite\Facades\Socialite {}
             class Livewire extends \Livewire\Livewire {}
             class Excel extends \Maatwebsite\Excel\Facades\Excel {}

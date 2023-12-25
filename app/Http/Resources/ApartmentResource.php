@@ -43,7 +43,7 @@ class ApartmentResource extends JsonResource
             'guests' => $this->resource->guests,
             'created_at' => $this->resource->created_at,
             'thumb' => $this->resource->getFirstMedia(),
-            'media' => ImageResource::collection($this->whenLoaded('media')),
+            'media' => ImageResource::collection($this->resource->getMedia()),
             'weekdays_price' => $this->resource->weekdays_price,
             'weekends_price' => $this->resource->weekends_price,
             'category' => new CategoryResource($this->resource->category),

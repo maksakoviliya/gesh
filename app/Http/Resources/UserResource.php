@@ -10,7 +10,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
-
     /**
      * @var bool
      */

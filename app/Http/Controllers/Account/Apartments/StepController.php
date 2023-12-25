@@ -49,6 +49,7 @@ final class StepController extends Controller
             ]),
             7 => Inertia::render('Account/Apartments/Steps/Step7', [
                 'apartment' => $apartment,
+                'csrf_token' => csrf_token(),
             ]),
             8 => Inertia::render('Account/Apartments/Steps/Step8', [
                 'apartment' => $apartment,

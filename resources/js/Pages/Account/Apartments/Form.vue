@@ -5,7 +5,7 @@
 	import Heading from '@/Components/Heading.vue'
 	import { ref } from 'vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
-	import { router } from '@inertiajs/vue3'
+	import FullScreenLoader from '@/Components/Loaders/FullScreenLoader.vue'
 
 	const routes = ref([
 		{
@@ -51,6 +51,19 @@
 	)
 
 	const emit = defineEmits(['onNextStep', 'onPrevStep'])
+
+	const loading = ref(false)
+	const startLoading = () => {
+		loading.value = true
+	}
+	const stopLoading = () => {
+		loading.value = false
+	}
+
+	defineExpose({
+		startLoading,
+		stopLoading,
+	})
 </script>
 
 <template>
@@ -96,5 +109,6 @@
 				</Container>
 			</div>
 		</Container>
+		<FullScreenLoader :loading="loading" />
 	</AppLayout>
 </template>

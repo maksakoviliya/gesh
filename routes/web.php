@@ -11,7 +11,9 @@ use App\Http\Controllers\Account\Apartments\DeleteController;
 use App\Http\Controllers\Account\Apartments\ListController;
 use App\Http\Controllers\Account\Apartments\OwnerChatController;
 use App\Http\Controllers\Account\Apartments\PendingController;
+use App\Http\Controllers\Account\Apartments\RemoveApartmentMediaController;
 use App\Http\Controllers\Account\Apartments\StepController;
+use App\Http\Controllers\Account\Apartments\StoreApartmentMediaController;
 use App\Http\Controllers\Account\Apartments\StoreController;
 use App\Http\Controllers\Account\Apartments\UpdateCalendarController;
 use App\Http\Controllers\Account\Apartments\UpdatePriceController;
@@ -24,6 +26,7 @@ use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
 use App\Http\Controllers\Content\PolicyPageController;
 use App\Http\Controllers\Content\RulesPageController;
+use App\Http\Controllers\GetMediaController;
 use App\Http\Controllers\HasUnreadNotificationsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeMapController;
@@ -57,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
             Route::prefix('profile')
                 ->as('profile.')
-                ->group(function() {
+                ->group(function () {
                     Route::get('/', AccountProfileController::class)->name('index');
                     Route::post('update', AccountProfileUpdateController::class)->name('update');
                 });
@@ -70,6 +73,8 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::get('/', ListController::class)->name('list');
                     Route::get('create', CreateController::class)->name('create');
                     Route::get('{apartment}/step/{step}', StepController::class)->name('step');
+                    Route::post('{apartment}/media', StoreApartmentMediaController::class)->name('media.store');
+                    Route::post('{apartment}/remove-media', RemoveApartmentMediaController::class)->name('media.remove');
                     Route::post('{apartment}/store', StoreController::class)->name('store');
                     Route::post('{apartment}/delete', DeleteController::class)->name('delete');
                     Route::get('{apartment}/pending', PendingController::class)->name('pending');
@@ -118,6 +123,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('search/city', SearchCityController::class)->name('search.city');
+
+Route::get('media/{id}', GetMediaController::class)->name('media');
 //Route::middleware([
 //    'auth:sanctum',
 //    config('jetstream.auth_session'),

@@ -12,9 +12,10 @@ final class ImageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->resource->id,
-            'src' => $this->resource->getFullUrl(),
-            'srcset' => $this->resource->getSrcset(),
+            'id' => $this->resource->uuid,
+            'src' => $this->resource->getFullUrl('responsive'),
+            'srcset' => $this->resource->getSrcset('responsive'),
+            'order' => $this->resource->order_column,
         ];
     }
 }

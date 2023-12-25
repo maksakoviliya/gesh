@@ -97,7 +97,7 @@ final class ReservationRequest extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function reject(string $status_text = null): bool
+    public function reject(?string $status_text = null): bool
     {
         $this->status_text = $status_text;
         $this->status = Status::Rejected;

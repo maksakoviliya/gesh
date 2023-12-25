@@ -39,6 +39,11 @@ class ApartmentPolicy
     {
         return $user->id === $apartment->user_id || $user->hasRole('admin');
     }
+
+    public function remove_media(User $user, Apartment $apartment): bool
+    {
+        return $user->id === $apartment->user_id || $user->hasRole('admin');
+    }
     //
     //    /**
     //     * Determine whether the user can restore the model.

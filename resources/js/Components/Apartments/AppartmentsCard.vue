@@ -24,6 +24,7 @@
 				<img
 					class="object-cover h-full w-full group-hover:scale-110 transition"
 					:src="props.apartment.media.length ? props.apartment.media[0]?.src : '/img/no-photo.jpeg'"
+					:srcset="props.apartment.media.length ? props.apartment.media[0]?.srcset : null"
 					:alt="props.apartment.title"
 				/>
 			</div>

@@ -16,8 +16,9 @@ final class AccountProfileController extends Controller
     public function __invoke(Request $request): Response
     {
         $user = Auth::user();
+
         return Inertia::render('Account/Profile', [
-            'user' => new UserResource($user, true)
+            'user' => new UserResource($user, true),
         ]);
     }
 }
