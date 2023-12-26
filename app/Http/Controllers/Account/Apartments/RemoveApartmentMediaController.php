@@ -14,7 +14,7 @@ final class RemoveApartmentMediaController extends Controller
     public function __invoke(RemoveApartmentMediaRequest $request, Apartment $apartment): JsonResponse
     {
         $image = $apartment->media()->where('uuid', $request->validated('id'))->first();
-//        dd($image);
+        //        dd($image);
         $image->delete();
 
         return response()->json([

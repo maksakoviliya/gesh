@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Database\Factories\FeatureFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Feature newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Feature newQuery()
@@ -29,7 +28,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereSubtitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class Feature extends Model

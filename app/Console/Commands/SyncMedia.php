@@ -34,7 +34,7 @@ class SyncMedia extends Command
 
         foreach ($images as $image) {
             \Artisan::call('media-library:regenerate', [
-                '--ids'=>$image->id
+                '--ids' => $image->id,
             ]);
 
             $bar->advance();

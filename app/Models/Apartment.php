@@ -75,7 +75,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @property-read MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read User|null $user
- *
  * @method static ApartmentFactory factory($count = null, $state = [])
  * @method static Builder|Apartment filter(Request $request)
  * @method static Builder|Apartment newModelQuery()
@@ -111,7 +110,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static Builder|Apartment whereUserId($value)
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
- *
  * @property-read Collection<int, \App\Models\ICalLink> $ICalLinks
  * @property-read int|null $i_cal_links_count
  * @property-read Collection<int, \App\Models\DisabledDate> $disabledDates
@@ -120,7 +118,11 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @property-read int|null $reservations_count
  * @property-read Collection<int, \App\Models\SideReservation> $sideReservations
  * @property-read int|null $side_reservations_count
- *
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static Builder|Apartment onlyTrashed()
+ * @method static Builder|Apartment whereDeletedAt($value)
+ * @method static Builder|Apartment withTrashed()
+ * @method static Builder|Apartment withoutTrashed()
  * @mixin Eloquent
  */
 final class Apartment extends Model implements HasMedia
@@ -293,7 +295,7 @@ final class Apartment extends Model implements HasMedia
             foreach ($mediaIds as $uuid) {
                 /** @var Media $image */
                 $image = $this->media()->where('uuid', $uuid)->first();
-                if (!$image) {
+                if (! $image) {
                     continue;
                 }
                 if ($image?->collection_name !== 'default') {
