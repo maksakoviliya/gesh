@@ -171,26 +171,59 @@ final class Apartment extends Model implements HasMedia
             $query->where('guests', '>=', $guests);
         }
         if ($request->has('start') && $request->has('end')) {
-            $start = Carbon::createFromFormat('d_m_Y', $request->get('start'));
-            $end = Carbon::createFromFormat('d_m_Y', $request->get('end'));
+            $start = Carbon::createFromFormat('d_m_Y', $request->get('start'), 'Europe/Moscow')->setTime(15, 00);
+            $end = Carbon::createFromFormat('d_m_Y', $request->get('end'), 'Europe/Moscow')->setTime(12, 00);
 
-            //            dd(SideReservation::query()->where('apartment_id', '01hhgpj8bj8x1bx9v01q8cyc0q')
+//            $apart = Apartment::find('01hjj2b52xjds09wze7twbgb97');
+//
+//                        dd($apart->sideReservations()
+//                        ->where(function($subQuery) use ($start, $end) {
+//                            $subQuery->whereDate('start', '>=', $start)
+//                                ->whereDate('end', '<=', $end);
+//                        })
+//                            ->orWhere(function($subQuery) use ($start, $end) {
+//                                $subQuery
+//                                    ->whereDate('start', '>=', $start)
+//                                    ->whereDate('start', '<', $end)
+//                                    ->whereDate('end', '>', $end);
+//                            })
+//                            ->orWhere(function($subQuery) use ($start, $end) {
+//                                $subQuery
+//                                    ->whereDate('start', '<', $start)
+//                                    ->whereDate('end', '>', $start)
+//                                    ->whereDate('end', '<=', $end);
+//                            })
+//                            ->get());
             //                ->whereDate('start', '>=', $start)
             //                ->whereDate('end', '>', $end)
             //                ->orderBy('start')
             //                ->get());
-
-            $query->whereDoesntHave('disabledDates', function (Builder $q) use ($start, $end) {
-                $q->whereDate('date', '>', $start)
-                    ->whereDate('date', '<', $end->subDay());
-            })
-                ->whereDoesntHave('reservations', function (Builder $q) use ($start, $end) {
-                    $q->whereDate('start', '>=', $start)
-                        ->whereDate('end', '<', $end->subDay());
-                })
+            $query
+//                ->whereDoesntHave('disabledDates', function (Builder $q) use ($start, $end) {
+//                $q->whereDate('date', '>', $start)
+//                    ->whereDate('date', '<', $end->subDay());
+//            })
+//                ->whereDoesntHave('reservations', function (Builder $q) use ($start, $end) {
+//                    $q->whereDate('start', '>=', $start)
+//                        ->whereDate('end', '<', $end->subDay());
+//                })
                 ->whereDoesntHave('sideReservations', function (Builder $q) use ($start, $end) {
-                    $q->whereDate('start', '>=', $start)
-                        ->whereDate('end', '>', $end->subDay());
+                    $q->where(function($subQuery) use ($start, $end) {
+                        $subQuery->whereDate('start', '>=', $start)
+                            ->whereDate('end', '<=', $end);
+                    })
+                        ->orWhere(function($subQuery) use ($start, $end) {
+                            $subQuery
+                                ->whereDate('start', '>=', $start)
+                                ->whereDate('start', '<', $end)
+                                ->whereDate('end', '>', $end);
+                        })
+                        ->orWhere(function($subQuery) use ($start, $end) {
+                            $subQuery
+                                ->whereDate('start', '<', $start)
+                                ->whereDate('end', '>', $start)
+                                ->whereDate('end', '<=', $end);
+                        });
                 });
         }
 

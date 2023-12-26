@@ -17,6 +17,7 @@
 	import 'dayjs/locale/ru'
 	import ICalLinks from '@/Components/ICalLinks.vue'
 	import ReservationRequestEvent from '@/Pages/Account/Apartments/Calendar/ReservationRequestEvent.vue'
+	import SideReservationEvent from '@/Components/Reservations/SideReservationEvent.vue'
 
 	export default {
 		props: {
@@ -24,6 +25,7 @@
 			events: Array,
 		},
 		components: {
+			SideReservationEvent,
 			ReservationRequestEvent,
 			ICalLinks,
 			ButtonComponent,
@@ -64,6 +66,7 @@
 					},
 				],
 				calendarOptions: {
+					timeZone: 'Europe/Moscow',
 					plugins: [dayGridPlugin, interactionPlugin, multiMonthPlugin],
 					multiMonthMaxColumns: 1,
 					// headerToolbar: false,
@@ -80,6 +83,19 @@
 					},
 					selectable: true,
 					unselectCancel: '.form',
+					slotLabelFormat: [
+						{
+							month: 'long',
+							week: 'short',
+						}, // top level of text
+						{
+							weekday: 'narrow',
+							day: 'numeric',
+						}, // lower level of text
+					],
+					slotDuration: {
+						hours: 12,
+					},
 					dayCellContent: (day) => {
 						let price = null
 						const date = this.apartment.data.dates.find((item) => {
@@ -98,9 +114,9 @@
 						}
 						return {
 							html: `<div class="flex flex-col w-full h-full justify-between">
-                        <div class="font-semibold text-right text-neutral-800 dark:text-slate-100">${day.dayNumberText}</div>
-                        <div class="font-light text-neutral-500 dark:text-slate-300 text-sm">${price}₽</div>
-                    </div>`,
+		                       <div class="font-semibold text-right text-neutral-800 dark:text-slate-100">${day.dayNumberText}</div>
+		                       <div class="font-light text-neutral-500 dark:text-slate-300 text-sm">${price}₽</div>
+		                   </div>`,
 						}
 					},
 					select: this.handleSelect,
@@ -254,10 +270,13 @@
 					<template v-else-if="selectedEvent">
 						<Heading title="Событие" />
 						<div class="mt-8 flex flex-col gap-3">
-							<!--							{{ selectedEvent }}-->
 							<ReservationRequestEvent
 								:event="selectedEvent.event.extendedProps"
 								v-if="selectedEvent.event.extendedProps.type === 'App\\Models\\ReservationRequest'"
+							/>
+							<SideReservationEvent
+								:event="selectedEvent.event"
+								v-if="selectedEvent.event.extendedProps.type === 'App\\Models\\SideReservation'"
 							/>
 							<!--							<ButtonComponent-->
 							<!--								class="mt-6"-->
@@ -308,13 +327,16 @@
 	.fc-toolbar-title {
 		@apply dark:text-slate-200;
 	}
+
 	.fc-col-header-cell {
 		@apply dark:text-slate-400;
 	}
+
 	.fc-theme-standard td,
 	.fc-theme-standard th {
 		@apply dark:border-slate-400;
 	}
+
 	.fc-theme-standard .fc-scrollgrid {
 		@apply dark:border-slate-400;
 	}
