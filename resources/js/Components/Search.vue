@@ -13,8 +13,11 @@
 	import qs from 'query-string'
 	import { router } from '@inertiajs/vue3'
 	import { usePage } from '@inertiajs/vue3'
+	import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 	addIcons(BiSearch)
+
+	dayjs.locale('ru')
 
 	const page = usePage()
 	const locationLabel = ref(page.props.query['city'] ?? 'Везде')
@@ -33,10 +36,9 @@
 		city.value = value
 	}
 
-	const date = ref([dayjs().toDate(), dayjs().add(1, 'week').toDate()])
+	const date = ref([])
 	const isDateInitial = ref(true)
 	const handleSetDates = (dates) => {
-		dayjs.locale('ru')
 		isDateInitial.value = false
 		date.value = dates
 		let start = dayjs(dates[0])
@@ -51,6 +53,29 @@
 		}
 		durationLabel.value = `${start.format('DD MMM')} - ${end.format('DD MMM')}`
 	}
+
+	onMounted(() => {
+		if (page.props.query['start'] && page.props.query['end']) {
+			dayjs.extend(customParseFormat)
+			let start = dayjs(page.props.query['start'], 'DD_MM_YYYY')
+			let end = dayjs(page.props.query['end'], 'DD_MM_YYYY')
+			if (start.date() === end.date()) {
+				durationLabel.value = `${start.format('DD MMM')}`
+				return
+			}
+			if (start.month() === end.month()) {
+				durationLabel.value = `${start.date()} - ${end.date()} ${end.format('MMM')}`
+			} else {
+				durationLabel.value = `${start.format('DD MMM')} - ${end.format('DD MMM')}`
+			}
+			date.value = [
+				dayjs(page.props.query['start'], 'DD_MM_YYYY').toDate(),
+				dayjs(page.props.query['end'], 'DD_MM_YYYY').toDate(),
+			]
+		} else {
+			date.value = [dayjs().toDate(), dayjs().add(1, 'week').toDate()]
+		}
+	})
 
 	const onSubmit = () => {
 		const params = page.props.query

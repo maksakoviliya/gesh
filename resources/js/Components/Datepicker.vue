@@ -57,14 +57,13 @@
 		:month-change-on-scroll="false"
 		max-range="30"
 		:disabled-dates="props.disabledDates"
-		disable-year-select
 		month-name-format="long"
 		locale="ru"
 		format="dd.MM.yyyy"
 		placeholder="Выберите даты"
 		:min-date="new Date()"
 		:enable-time-picker="false"
-		:hide-navigation="['month', 'year', 'time']"
+		:hide-navigation="['month', 'time']"
 	>
 	</VueDatePicker>
 </template>
