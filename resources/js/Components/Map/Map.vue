@@ -55,7 +55,7 @@
 </script>
 
 <template>
-	<div class="h-[50vh] overflow-hidden rounded-xl relative shadow-lg">
+	<div class="h-[60vh] max-h-screen overflow-hidden rounded-xl relative shadow-lg">
 		<YandexMap
 			v-model="map"
 			:settings="{

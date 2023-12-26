@@ -16,7 +16,7 @@
 					>
 				</span>
 				<div
-					class="text-gray-500 dark:text-gray-400 font-medium flex flex-col sm:flex-row sm:items-end md:items-center gap-3 md:gap-6 lg:gap-6"
+					class="text-gray-500 dark:text-gray-400 font-medium text-xs flex flex-col sm:flex-row sm:items-end md:items-center gap-3 md:gap-6 lg:gap-6"
 				>
 					<Link
 						:href="route('policy')"

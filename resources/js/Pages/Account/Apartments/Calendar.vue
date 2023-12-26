@@ -18,6 +18,7 @@
 	import ICalLinks from '@/Components/ICalLinks.vue'
 	import ReservationRequestEvent from '@/Pages/Account/Apartments/Calendar/ReservationRequestEvent.vue'
 	import SideReservationEvent from '@/Components/Reservations/SideReservationEvent.vue'
+	import Toggle from '@/Components/Inputs/Toggle.vue'
 
 	export default {
 		props: {
@@ -25,6 +26,7 @@
 			events: Array,
 		},
 		components: {
+			Toggle,
 			SideReservationEvent,
 			ReservationRequestEvent,
 			ICalLinks,
@@ -113,7 +115,7 @@
 							price = date.price
 						}
 						return {
-							html: `<div class="flex flex-col w-full h-full justify-between">
+							html: `<div class="flex flex-col w-full h-full justify-between disabled">
 		                       <div class="font-semibold text-right text-neutral-800 dark:text-slate-100">${day.dayNumberText}</div>
 		                       <div class="font-light text-neutral-500 dark:text-slate-300 text-sm">${price}₽</div>
 		                   </div>`,
@@ -140,6 +142,7 @@
 				start: null,
 				end: null,
 				price: null,
+				disabled: null,
 			})
 
 			const selectedEvent = ref()
@@ -170,10 +173,20 @@
 			}
 
 			const calendar = ref(null)
+			const disabledDates = computed(() =>
+				props.events.filter((item) => item.type === 'App\\Models\\DisabledDate')
+			)
+
 			const handleSelect = (range) => {
+				console.log('range', range)
 				selectedEvent.value = null
 				rangeForm.start = range.startStr
+				// rangeForm.end = range.endStr
 				rangeForm.end = dayjs(range.endStr).subtract(1, 'day').hour(23).minute(59)
+
+				// rangeForm.disabled = range.reduce((accumulator, currentValue) => {
+				// 	accumulator || currentValue.start
+				// }, false)
 			}
 			const submitRangeForm = () => {
 				rangeForm
@@ -202,6 +215,7 @@
 				rangeForm.start = null
 				rangeForm.end = null
 				rangeForm.price = null
+				rangeForm.disabled = null
 			}
 
 			const getRangeLabel = computed(() => {
@@ -233,6 +247,7 @@
 				calendar,
 				handleEventClick,
 				selectedEvent,
+				disabledDates,
 			}
 		},
 	}
@@ -258,6 +273,12 @@
 								type="number"
 								:error="rangeForm.errors.price"
 								label="Цена, ₽"
+							/>
+							<Toggle
+								v-model="rangeForm.disabled"
+								:label="
+									rangeForm.disabled ? 'Недоступно для бронирования' : 'Доступно для бронирования'
+								"
 							/>
 							<ButtonComponent
 								:disabled="!rangeForm.isDirty"
@@ -339,5 +360,13 @@
 
 	.fc-theme-standard .fc-scrollgrid {
 		@apply dark:border-slate-400;
+	}
+
+	.side_reservation_event {
+		@apply bg-yellow-500 border-yellow-200 dark:bg-yellow-800 dark:border-yellow-600 px-2 opacity-80 hover:opacity-100 cursor-pointer;
+	}
+
+	.fc .fc-bg-event.disabled_date_event {
+		@apply bg-red-400;
 	}
 </style>

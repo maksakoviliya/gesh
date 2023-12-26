@@ -185,7 +185,7 @@
 					<!--                        {{ props.apartment.data.category?.title }}-->
 					<!--                    </div>-->
 					<div
-						class="mt-4 py-4 border-t dark:border-slate-600"
+						class="mt-4 py-4 border-t dark:border-slate-600 dark:text-slate-400"
 						v-if="props.apartment.data.description"
 					>
 						{{ props.apartment.data.description }}

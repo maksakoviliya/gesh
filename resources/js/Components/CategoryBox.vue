@@ -32,7 +32,7 @@
 
 		const url = qs.stringifyUrl(
 			{
-				url: '/',
+				url: route(route().current()),
 				query: params,
 			},
 			{ skipNull: true }

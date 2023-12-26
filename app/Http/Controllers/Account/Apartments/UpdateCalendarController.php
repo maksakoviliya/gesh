@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\Apartments\UpdateCalendarRequest;
 use App\Models\Apartment;
 use App\Models\DatePrice;
+use App\Models\DisabledDate;
 use Carbon\CarbonPeriod;
 
 final class UpdateCalendarController extends Controller
@@ -20,12 +21,22 @@ final class UpdateCalendarController extends Controller
         );
 
         foreach ($period as $date) {
-            DatePrice::query()->updateOrCreate([
-                'apartment_id' => $apartment->id,
-                'date' => $date,
-            ], [
-                'price' => $request->validated('price'),
-            ]);
+            if ($request->validated('price')) {
+                DatePrice::query()->updateOrCreate([
+                    'apartment_id' => $apartment->id,
+                    'date' => $date,
+                ], [
+                    'price' => $request->validated('price'),
+                ]);
+            }
+            if ($request->validated('disabled') === false) {
+                DisabledDate::query()->whereDate('date', $date)->delete();
+            } elseif ($request->validated('disabled') === true) {
+                DisabledDate::query()->updateOrCreate([
+                    'apartment_id' => $apartment->id,
+                    'date' => $date->setTime(15,0),
+                ]);
+            }
         }
 
         return to_route('account.apartments.calendar', [

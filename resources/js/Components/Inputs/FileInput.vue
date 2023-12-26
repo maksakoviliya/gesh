@@ -59,7 +59,7 @@
 		emit('reset')
 	}
 
-	const maxFiles = ref(10)
+	const maxFiles = ref(20)
 
 	const handleWarning = (error) => {
 		console.log('Warning: ', error)

@@ -60,7 +60,7 @@
 </script>
 
 <template>
-	<div class="rounded-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-1 overflow-hidden">
+	<div class="rounded-xl grid grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-1 overflow-hidden">
 		<div
 			@click="isOpen = true"
 			class="group overflow-hidden"
