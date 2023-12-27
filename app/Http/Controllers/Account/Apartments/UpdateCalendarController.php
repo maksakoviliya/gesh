@@ -10,6 +10,7 @@ use App\Models\Apartment;
 use App\Models\DatePrice;
 use App\Models\DisabledDate;
 use Carbon\CarbonPeriod;
+use Inertia\Inertia;
 
 final class UpdateCalendarController extends Controller
 {

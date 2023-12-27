@@ -19,7 +19,7 @@ class UpdateCalendarRequest extends FormRequest
             'start' => 'required|date',
             'end' => 'required|date',
             'price' => 'nullable|integer|min:2|max:9999999',
-            'disabled' => 'required|boolean',
+            'disabled' => 'nullable|boolean',
         ];
     }
 }

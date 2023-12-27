@@ -206,7 +206,7 @@
 							onSuccess: () => {
 								let calendarApi = calendar.value.getApi()
 								calendarApi.render()
-								successToast('Цены обновлены!')
+								successToast('Данные обновлены!')
 							},
 						}
 					)

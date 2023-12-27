@@ -88,6 +88,7 @@ final class ReservationRequest extends Model
             'total_guests' => Arr::get($data, 'total_guests'),
             'range' => Arr::get($data, 'range'),
             'price' => $price,
+            'status' => Status::Pending,
         ]);
     }
 
