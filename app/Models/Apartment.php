@@ -173,6 +173,37 @@ final class Apartment extends Model implements HasMedia
         if ($request->has('start') && $request->has('end')) {
             $start = Carbon::createFromFormat('d_m_Y', $request->get('start'), 'Europe/Moscow')->setTime(15, 00);
             $end = Carbon::createFromFormat('d_m_Y', $request->get('end'), 'Europe/Moscow')->setTime(12, 00);
+
+
+//            $apart = Apartment::find('01hhes40frzneyjrdr8jvyrne9');
+//
+//            $sr = SideReservation::query()
+//                ->where('apartment_id', $apart->id)
+//                            ->where(function ($subQuery) use ($start, $end) {
+//                $subQuery->whereDate('start', '<=', $start)
+//                    ->whereDate('end', '>=', $end)
+////                    ->whereDate('end', '>=', $start)
+//                ;
+//            })
+
+//            $query->where(function ($subQuery) use ($start, $end) {
+//                $subQuery->whereDate('start', '>=', $start)
+//                    ->whereDate('end', '<=', $end);
+//            })
+//                ->orWhere(function ($subQuery) use ($start, $end) {
+//                    $subQuery
+//                        ->whereDate('start', '>=', $start)
+//                        ->whereDate('start', '<', $end)
+//                        ->whereDate('end', '>', $end);
+//                })
+//                ->orWhere(function ($subQuery) use ($start, $end) {
+//                    $subQuery
+//                        ->whereDate('start', '<', $start)
+//                        ->whereDate('end', '>', $start)
+//                        ->whereDate('end', '<=', $end);
+//                })
+//            ->get();
+
             $query
                 ->whereDoesntHave('disabledDates', function (Builder $q) use ($start, $end) {
                     $q->whereDate('date', '>', $start)
@@ -212,6 +243,10 @@ final class Apartment extends Model implements HasMedia
                                 ->whereDate('start', '<', $start)
                                 ->whereDate('end', '>', $start)
                                 ->whereDate('end', '<=', $end);
+                        })
+                        ->orWhere(function ($subQuery) use ($start, $end) {
+                            $subQuery->whereDate('start', '<=', $start)
+                                ->whereDate('end', '>=', $end);
                         });
                 });
         }
@@ -443,16 +478,16 @@ final class Apartment extends Model implements HasMedia
         return Attribute::make(
             get: function () {
                 $disabledDays = $this->disabledDates()
-                    ->whereDate('date', '>=', now() )
+                    ->whereDate('date', '>=', now())
                     ->pluck('date')
                     ->values();
                 $reservations = $this->reservations()
-                    ->whereDate('end', '>=', now() )
+                    ->whereDate('end', '>=', now())
                     ->select('start', 'end', 'apartment_id', 'id')
                     ->get();
 
                 $side_reservations = $this->sideReservations()
-                    ->whereDate('end', '>=', now() )
+                    ->whereDate('end', '>=', now())
                     ->select('start', 'end', 'apartment_id', 'id')
                     ->get();
                 foreach ($reservations->merge($side_reservations) as $reservation) {

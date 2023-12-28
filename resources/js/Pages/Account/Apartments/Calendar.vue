@@ -23,7 +23,7 @@
 	export default {
 		props: {
 			apartment: Object | Array,
-			events: Array,
+			eventsData: Array,
 		},
 		components: {
 			Toggle,
@@ -124,7 +124,13 @@
 					select: this.handleSelect,
 					unselect: this.handleUnselect,
 					eventClick: this.handleEventClick,
-					events: this.events,
+					events: this.eventsData.map((item) => {
+						item.start = dayjs(item.start).toDate()
+						item.end = dayjs(item.end).toDate()
+						console.log('start', item.start)
+						console.log('end', item.end)
+						return item
+					}),
 				},
 			}
 		},

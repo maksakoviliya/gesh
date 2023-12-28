@@ -33,8 +33,8 @@ final class CalendarController extends Controller
                 return [
                     'id' => $item->id,
                     'title' => 'Запрос',
-                    'start' => $item->start,
-                    'end' => $item->end,
+                    'start' => $item->start->setTime(15, 0),
+                    'end' => $item->end->setTime(12, 0),
                     'type' => ReservationRequest::class,
                     'allDay' => true,
                     'className' => 'bg-red-200 border-red-200 px-2',
@@ -50,9 +50,9 @@ final class CalendarController extends Controller
                 return [
                     'id' => $item->id,
                     'title' => 'Резерв',
-                    'start' => $item->start,
+                    'start' => $item->start->setTime(15, 0),
                     'type' => Reservation::class,
-                    'end' => $item->end,
+                    'end' => $item->end->setTime(12, 0),
                     'allDay' => true,
                     'className' => 'bg-blue-500 border-green-200 px-2',
                 ];
@@ -64,9 +64,9 @@ final class CalendarController extends Controller
                 return [
                     'id' => $item->id,
                     'title' => $item->summary,
-                    'start' => $item->start,
+                    'start' => $item->start->setTime(15, 0),
                     'type' => SideReservation::class,
-                    'end' => $item->end,
+                    'end' => $item->end->setTime(12, 0),
                     'allDay' => true,
                     'className' => 'side_reservation_event',
                 ];
@@ -91,7 +91,7 @@ final class CalendarController extends Controller
 
         return Inertia::render('Account/Apartments/Calendar', [
             'apartment' => new ApartmentResource($apartment),
-            'events' => $events,
+            'eventsData' => $events,
         ]);
     }
 }

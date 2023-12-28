@@ -9,8 +9,10 @@ use App\Models\Apartment;
 use App\Models\User;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
@@ -136,6 +138,16 @@ class ApartmentResource extends Resource
                                     ->multiple()
                                     ->reorderable()
                                     ->maxFiles(10),
+                            ])
+                            ->collapsible()->collapsed(),
+
+                        Forms\Components\Section::make('Сслки ICAL')
+                            ->schema([
+                                Repeater::make('ICalLinks')
+                                    ->relationship()
+                                    ->schema([
+                                        TextInput::make('link')->required()->unique(ignoreRecord: true),
+                                    ])
                             ])
                             ->collapsible(),
                     ]),

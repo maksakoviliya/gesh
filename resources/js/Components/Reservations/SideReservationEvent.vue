@@ -15,9 +15,12 @@
 <template>
 	<div>
 		<div>
+			{{ props.event }}
+		</div>
+		<div>
 			Title: <b>{{ props.event.title }}</b>
 		</div>
-		<div>Start: {{ dayjs(props.event.start).tz('Europe/Moscow').format('DD.MM.YYYY HH:mm') }}</div>
-		<div>End: {{ dayjs(props.event.end).tz('Europe/Moscow').format('DD.MM.YYYY HH:mm') }}</div>
+		<div>Start: {{ dayjs(props.event.start).format('DD.MM.YYYY HH:mm') }}</div>
+		<div>End: {{ dayjs(props.event.end).format('DD.MM.YYYY HH:mm') }}</div>
 	</div>
 </template>
