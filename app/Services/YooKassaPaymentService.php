@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use YooKassa\Client;
@@ -18,7 +19,7 @@ class YooKassaPaymentService implements PaymentServiceContract
         return $client;
     }
 
-    public function createPayment(int $amount, string $return_url, string $description)
+    public function createPayment(int $amount, string $return_url, Reservation $reservation)
     {
         //        try {
         $client = $this->getClient();
@@ -33,7 +34,10 @@ class YooKassaPaymentService implements PaymentServiceContract
                     'return_url' => $return_url,
                 ],
                 'capture' => true,
-                'description' => $description,
+                'description' => $reservation->getPaymentDescription(),
+                'metadata' => [
+                    'reservation_id' => $reservation->id
+                ]
             ],
             uniqid('', true)
         );

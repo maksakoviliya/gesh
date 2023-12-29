@@ -20,19 +20,15 @@ final class ReservationPayController extends Controller
     {
         $redirectUrl = $paymentService->createPayment(
             $reservation->getFirstPaymentAmount(),
-            route('account.reservations.view', [
+            route('account.reservations.pay.redirect', [
                 'reservation' => $reservation->id,
             ]),
-            "Бронирование #{$reservation->id}. C {$reservation->start->format('d.m.Y')} по {$reservation->end->format('d.m.Y')}"
+            $reservation
         );
 
-        if (! $redirectUrl) {
+        if (!$redirectUrl) {
             throw new Error('PaymentService Error');
         }
-
-        // TODO: Настроить на успешный редирект
-        $reservation->setStatus(Status::FirstPayment);
-        PaidEvent::dispatch($reservation);
 
         return Inertia::location($redirectUrl);
     }

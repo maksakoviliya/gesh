@@ -34,6 +34,7 @@ use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestStoreController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestSubmitController;
 use App\Http\Controllers\Reservations\ReservationPayController;
+use App\Http\Controllers\Reservations\ReservationPayRedirectController;
 use App\Http\Controllers\Reservations\ReservationViewController;
 use App\Http\Controllers\Search\SearchCityController;
 use App\Http\Controllers\Social\SocialCallbackController;
@@ -112,6 +113,7 @@ Route::middleware('auth:sanctum')->group(function () {
                 ->as('reservations.')->group(function () {
                     Route::get('/', ReservationsListController::class)->name('list');
                     Route::get('{reservation}/pay', ReservationPayController::class)->name('pay');
+                    Route::get('{reservation}/pay-redirect', ReservationPayRedirectController::class)->name('pay.redirect');
                     Route::get('{reservation}', ReservationViewController::class)->name('view');
                 });
         });

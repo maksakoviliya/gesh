@@ -111,4 +111,9 @@ final class Reservation extends Model
 
         return (int) ceil($totalPrice * 0.3);
     }
+
+    public function getPaymentDescription(): string
+    {
+        return "Бронирование #{$this->id}. C {$this->start->format('d.m.Y')} по {$this->end->format('d.m.Y')}";
+    }
 }

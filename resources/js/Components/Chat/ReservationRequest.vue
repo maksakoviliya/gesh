@@ -5,7 +5,6 @@
 	import Input from '@/Components/Input.vue'
 	import { router, useForm } from '@inertiajs/vue3'
 	import useToasts from '@/hooks/useToasts'
-	import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 
 	const props = defineProps({
 		item: {
@@ -116,10 +115,21 @@
 			Взрослые: {{ request.guests }}
 			<span v-if="request.children > 0"> | Дети: {{ request.children }}</span>
 		</div>
-		<div v-if="!props.compact">
-			<div class="flex justify-end gap-2">
+		<div class="flex items-center gap-2">
+			<div class="font-light text-neutral-800 dark:text-slate-200">
+				Цена: {{ request.price.toLocaleString() }}₽
+			</div>
+			|
+			<div class="font-light text-neutral-800 dark:text-slate-200">
+				Сервисный сбор: {{ servicePrice.toLocaleString() }}₽
+			</div>
+		</div>
+		<div class="font-light text-neutral-800 dark:text-slate-200">Итого: {{ totalPrice.toLocaleString() }}₽</div>
+
+		<template v-if="!props.compact">
+			<div class="flex justify-end gap-2 mt-3">
 				<template v-if="props.isOwner">
-					<template v-if="!request.status">
+					<template v-if="request.status === 'pending'">
 						<ButtonComponent
 							label="Отказать"
 							@click="isOpenModalReject = true"
@@ -151,7 +161,7 @@
 					/>
 				</template>
 			</div>
-		</div>
+		</template>
 		<div
 			class="font-light text-neutral-800"
 			v-if="request.status === 'rejected'"

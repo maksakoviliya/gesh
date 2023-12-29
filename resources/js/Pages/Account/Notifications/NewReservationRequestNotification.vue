@@ -30,7 +30,10 @@
 				"
 				class="flex items-center gap-2 group"
 			>
-				<Avatar :src="notification.data.reservation_request.apartment.media[0].src" />
+				<Avatar
+					square
+					:src="notification.data.reservation_request.apartment?.media[0]?.src"
+				/>
 				<div class="font-medium text-sm dark:text-white group-hover:underline">ваш объект</div>
 			</Link>
 			<div>

@@ -1,14 +1,20 @@
 <script setup>
-defineProps({
-    src: String
-})
+	const props = defineProps({
+		src: {
+			type: String,
+		},
+		square: {
+			type: Boolean,
+			default: false,
+		},
+	})
 </script>
 
 <template>
-    <img
-        class="rounded-full w-[30px] h-[30px]"
-        alt="Avatar"
-        :src="src ?? '/img/no-user.svg'"
-    />
+	<img
+		class="w-[30px] h-[30px]"
+		:class="props.square ? 'rounded' : 'rounded-full'"
+		alt="Avatar"
+		:src="props.src ?? '/img/no-user.svg'"
+	/>
 </template>
-
