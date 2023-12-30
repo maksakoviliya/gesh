@@ -24,23 +24,19 @@
 	])
 
 	const page = usePage()
-	const form = useForm(
-		{
-			name: page.props.user?.data?.name,
-			phone: page.props.user?.data?.phone,
-		},
-		{
-			preserveScroll: true,
-		}
-	)
+	const form = useForm({
+		name: page.props.user?.data?.name,
+		phone: page.props.user?.data?.phone,
+	})
 	const { successToast } = useToasts()
 
 	const submit = () => {
 		form.post(route('transfer.schedule'), {
-			onFinish: () => {
+			onSuccess: () => {
 				form.reset()
 				successToast('Заявка на трансфер отправлена')
 			},
+			preserveScroll: true,
 		})
 	}
 </script>

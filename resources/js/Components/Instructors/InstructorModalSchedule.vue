@@ -32,7 +32,7 @@
 			}),
 			{
 				preserveScroll: true,
-				onFinish: () => {
+				onSuccess: () => {
 					form.reset()
 					isOpen.value = false
 					successToast('Запись прошла успешно!')
