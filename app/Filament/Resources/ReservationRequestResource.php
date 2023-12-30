@@ -29,15 +29,19 @@ class ReservationRequestResource extends Resource
             ->schema([
                 Forms\Components\Select::make('apartment')
                 ->relationship('apartment', 'id'),
-                Forms\Components\Select::make('user')
-                ->relationship('user', 'id'),
+//                Forms\Components\Select::make('user')
+//                ->relationship('user', 'id'),
                 Forms\Components\DatePicker::make('start'),
                 Forms\Components\DatePicker::make('end'),
                 Forms\Components\TextInput::make('guests'),
                 Forms\Components\TextInput::make('children'),
                 Forms\Components\TextInput::make('total_guests'),
                 Forms\Components\TextInput::make('price'),
-                Forms\Components\TextInput::make('status'),
+                Forms\Components\Select::make('status')->options([
+                    Status::Pending->value => 'Ожидает решения',
+                    Status::Rejected->value => 'Отменен',
+                    Status::Submitted->value => 'Подтвержден',
+                ])->required(),
                 Forms\Components\TextInput::make('status_text'),
                 Forms\Components\Select::make('reservation')
                 ->relationship('reservation', 'id')

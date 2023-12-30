@@ -12,5 +12,6 @@ return [
     'reservation_request' => [
         ReservationRequestStatus::Submitted->value => 'Одобрен',
         ReservationRequestStatus::Pending->value => 'Ожидает',
+        ReservationRequestStatus::Rejected->value => 'Отказано',
     ]
 ];
