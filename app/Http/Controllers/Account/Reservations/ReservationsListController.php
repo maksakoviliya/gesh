@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Account\Reservations;
 
+use App\Enums\ReservationRequest\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReservationRequestResource;
 use App\Http\Resources\ReservationResource;
@@ -23,6 +24,7 @@ final class ReservationsListController extends Controller
             ->get();
         $reservation_requests = ReservationRequest::query()
             ->where('user_id', Auth::id())
+            ->where('status', Status::Pending)
             ->get();
 
         return Inertia::render('Account/Reservations/List', [
