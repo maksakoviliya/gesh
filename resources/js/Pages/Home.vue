@@ -7,6 +7,7 @@
 	import ViewToggler from '@/Components/ViewToggler.vue'
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
 	import { HiMap } from 'oh-vue-icons/icons'
+	import ServicesBanner from '@/Components/ServiceBanner/ServicesBanner.vue'
 
 	addIcons(HiMap)
 
@@ -19,6 +20,7 @@
 <template>
 	<AppLayout>
 		<Container class="pb-32">
+			<ServicesBanner class="mt-6" />
 			<Categories :categories="categories.data" />
 			<Apartments :apartments="apartments" />
 			<ViewToggler :to="route('home.map')">

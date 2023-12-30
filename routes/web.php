@@ -30,6 +30,7 @@ use App\Http\Controllers\GetMediaController;
 use App\Http\Controllers\HasUnreadNotificationsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeMapController;
+use App\Http\Controllers\Instructors\InstructorsListController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestStoreController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestSubmitController;
@@ -44,6 +45,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/map', HomeMapController::class)->name('home.map');
 Route::get('/apartments/{apartment}', ApartmentShowController::class)->name('apartment');
+
+// Instructors
+Route::prefix('instructors')
+    ->as('instructors.')
+    ->group(function () {
+        Route::get('/', InstructorsListController::class)->name('list');
+    });
 
 Route::get('/policy', PolicyPageController::class)->name('policy');
 Route::get('/rules', RulesPageController::class)->name('rules');
