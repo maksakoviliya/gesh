@@ -39,7 +39,8 @@ class InstructorResource extends Resource
                 Forms\Components\Select::make('user')
                     ->searchable()
                     ->relationship('user', 'id')
-                    ->preload()
+                    ->preload(),
+                Forms\Components\Textarea::make('description')
             ]);
     }
 
