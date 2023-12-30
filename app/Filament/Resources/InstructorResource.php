@@ -38,7 +38,7 @@ class InstructorResource extends Resource
                 ])->required(),
                 Forms\Components\Select::make('user')
                     ->searchable()
-                    ->relationship('user', 'email')
+                    ->relationship('user', 'id')
                     ->preload()
             ]);
     }
