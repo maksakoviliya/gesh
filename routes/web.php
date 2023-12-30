@@ -31,6 +31,8 @@ use App\Http\Controllers\HasUnreadNotificationsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeMapController;
 use App\Http\Controllers\Instructors\InstructorsListController;
+use App\Http\Controllers\Instructors\InstructorsScheduleController;
+use App\Http\Controllers\Instructors\InstructorsViewController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestStoreController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestSubmitController;
@@ -51,6 +53,8 @@ Route::prefix('instructors')
     ->as('instructors.')
     ->group(function () {
         Route::get('/', InstructorsListController::class)->name('list');
+        Route::get('{instructor}', InstructorsViewController::class)->name('view');
+        Route::post('{instructor}/schedule', InstructorsScheduleController::class)->name('schedule');
     });
 
 Route::get('/policy', PolicyPageController::class)->name('policy');

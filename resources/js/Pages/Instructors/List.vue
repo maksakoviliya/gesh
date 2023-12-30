@@ -4,9 +4,9 @@
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
 	import { ref } from 'vue'
 	import PageBanner from '@/Components/PageBanner.vue'
-	import Card from '@/components/Instructors/Card.vue'
 	import EmptyState from '@/Components/EmptyState.vue'
-	import { router } from '@inertiajs/vue3'
+	import { router, Link } from '@inertiajs/vue3'
+	import InstructorCard from '@/Components/Instructors/InstructorCard.vue'
 
 	const routes = ref([
 		{
@@ -61,10 +61,10 @@
 					class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
 					v-else
 				>
-					<Card
+					<InstructorCard
 						v-for="instructor in props.instructors.data"
-						:key="instructor.id"
 						:instructor="instructor"
+						:key="instructor.id"
 					/>
 				</div>
 			</div>

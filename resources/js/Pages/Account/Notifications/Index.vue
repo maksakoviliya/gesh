@@ -90,9 +90,13 @@
 					:key="notification.id"
 				>
 					<NewReservationRequestNotification
-						v-if="notification.type === 'App\\Notifications\\ReservationRequest\\CreatedNotification'"
+						v-if="
+							notification.type === 'App\\Notifications\\ReservationRequest\\CreatedNotification' &&
+							notification.data?.reservation_request?.apartment
+						"
 						:notification="notification"
 					/>
+					<div v-else>{{ notification.type }}</div>
 					<button
 						v-if="!notification.read_at"
 						class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
