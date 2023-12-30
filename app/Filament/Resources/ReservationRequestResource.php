@@ -52,8 +52,8 @@ class ReservationRequestResource extends Resource
 //                    ->limit(1),
                 Tables\Columns\TextColumn::make('apartment.category.title')->label('')
                     ->description(fn(ReservationRequest $record): string => $record->apartment->id)
-                    ->url(function ($record) {
-                        return ApartmentResource::getUrl('edit', ['record' => $record->apartment]);
+                    ->url(function (ReservationRequest $record) {
+                        return ApartmentResource::getUrl('edit', ['record' => $record->apartment->id]);
                     }),
                 Tables\Columns\TextColumn::make('status')
                     ->formatStateUsing(fn($state) => __('statuses.reservation_request.' . $state->value))
