@@ -28,7 +28,7 @@
 			/>
 			<div
 				v-if="props.instructor.description"
-				class="absolute inset-0 bg-neutral-800 bg-opacity-0 group-hover:bg-opacity-50 transition text-white p-4 md:p-6 overflow-auto"
+				class="absolute inset-0 bg-neutral-800/60 opacity-0 group-hover:opacity-100 transition text-white p-4 md:p-6 overflow-auto"
 			>
 				{{ props.instructor.description }}
 			</div>

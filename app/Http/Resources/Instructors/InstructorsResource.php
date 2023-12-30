@@ -15,6 +15,7 @@ final class InstructorsResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
+            'description' => $this->resource->description,
             'type' => __('instructors.types.' . $this->resource->type->value),
             'created_at' => $this->resource->created_at,
             'avatar' => new ImageResource($this->resource->getFirstMedia('avatar'))
