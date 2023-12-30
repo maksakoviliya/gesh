@@ -29,8 +29,8 @@ class ReservationRequestResource extends Resource
             ->schema([
                 Forms\Components\Select::make('apartment')
                 ->relationship('apartment', 'id'),
-//                Forms\Components\Select::make('user')
-//                ->relationship('user', 'id'),
+                Forms\Components\Select::make('user')
+                ->relationship('user', 'id'),
                 Forms\Components\DatePicker::make('start'),
                 Forms\Components\DatePicker::make('end'),
                 Forms\Components\TextInput::make('guests'),
