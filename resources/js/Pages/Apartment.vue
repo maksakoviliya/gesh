@@ -104,16 +104,22 @@
 	const { errorToast } = useToasts()
 
 	const createReservationRequest = () => {
-		return form.post(
-			route('reservation-requests.store', {
-				apartment: props.apartment.data.id,
-			}),
-			{
-				onError: (err) => {
-					errorToast(Object.values(err)[0])
-				},
-			}
-		)
+		return form
+			.transform((data) => {
+				data.start = dayjs(data.start).add(5, 'hour').toDate()
+				data.end = dayjs(data.end).add(5, 'hour').toDate()
+				return data
+			})
+			.post(
+				route('reservation-requests.store', {
+					apartment: props.apartment.data.id,
+				}),
+				{
+					onError: (err) => {
+						errorToast(Object.values(err)[0])
+					},
+				}
+			)
 	}
 
 	const markers = ref([
@@ -270,13 +276,12 @@
 							label="Моментальное бронирование"
 						/>
 						<ButtonComponent
-							:outline="true"
 							@click="createReservationRequest"
-							label="Продолжить"
+							label="Запрос на бронирование"
 						/>
 					</div>
 					<div class="font-light text-sm text-center mt-3 text-neutral-500 dark:text-slate-400">
-						Пока вы ни за что не платите
+						Пока вы ни за что не платите, а просто свяжетесь с собственником жилья
 					</div>
 					<dl class="divide-y divide-gray-100 border-t dark:border-slate-700 mt-4">
 						<div class="py-4 flex flex-col gap-2">
