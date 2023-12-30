@@ -48,8 +48,8 @@ class ReservationRequestResource extends Resource
     {
         return $table
             ->columns([
-                SpatieMediaLibraryImageColumn::make('apartment.media')->label('Объект')
-                    ->limit(1),
+//                SpatieMediaLibraryImageColumn::make('apartment.media')->label('Объект')
+//                    ->limit(1),
                 Tables\Columns\TextColumn::make('apartment.category.title')->label('')
                     ->description(fn(ReservationRequest $record): string => $record->apartment->id)
                     ->url(function ($record) {
