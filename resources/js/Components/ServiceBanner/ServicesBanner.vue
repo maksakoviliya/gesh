@@ -23,7 +23,7 @@
 			Инструкторы
 		</ServiceBannerLink>
 		<ServiceBannerLink
-			:href="route('instructors.list')"
+			:href="route('transfer.index')"
 			srcset="
                 /img/ServicesBanner/Transfer/transfer_w_190.jpg 190w,
                 /img/ServicesBanner/Transfer/transfer_w_628.jpg 628w,

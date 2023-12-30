@@ -42,6 +42,8 @@ use App\Http\Controllers\Reservations\ReservationViewController;
 use App\Http\Controllers\Search\SearchCityController;
 use App\Http\Controllers\Social\SocialCallbackController;
 use App\Http\Controllers\Social\SocialRedirectController;
+use App\Http\Controllers\Transfer\TransferIndexController;
+use App\Http\Controllers\Transfer\TransferScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -55,6 +57,14 @@ Route::prefix('instructors')
         Route::get('/', InstructorsListController::class)->name('list');
         Route::get('{instructor}', InstructorsViewController::class)->name('view');
         Route::post('{instructor}/schedule', InstructorsScheduleController::class)->name('schedule');
+    });
+
+// Transfer
+Route::prefix('transfer')
+    ->as('transfer.')
+    ->group(function () {
+        Route::get('/', TransferIndexController::class)->name('index');
+        Route::post('/', TransferScheduleController::class)->name('schedule');
     });
 
 Route::get('/policy', PolicyPageController::class)->name('policy');
