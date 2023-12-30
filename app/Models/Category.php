@@ -41,6 +41,7 @@ final class Category extends Model
         'title',
         'description',
         'icon',
+        'title_single'
     ];
 
     public function apartments(): BelongsToMany

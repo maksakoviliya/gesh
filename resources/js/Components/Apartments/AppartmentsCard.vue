@@ -28,14 +28,15 @@
 					:alt="props.apartment.title"
 				/>
 			</div>
-			<!--            <div class="font-semibold text-lg">-->
-			<!--                {location?.region}, {location?.label}-->
-			<!--            </div>-->
+			<div class="font-semibold text-lg">
+				{{ props.apartment.title ?? props.apartment.category?.title_single }}
+				({{ props.apartment.city }})
+			</div>
 			<div
 				class="font-light text-neutral-500 dark:text-slate-300"
 				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
-				{{ props.apartment.category?.title ?? 'Нет типа' }}
+				{{ props.apartment.category?.title_single ?? 'Нет типа' }}
 			</div>
 			<div class="flex flex-row items-center gap-1">
 				<!--				<div class="font-semibold">-->
