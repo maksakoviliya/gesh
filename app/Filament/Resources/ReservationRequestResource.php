@@ -70,7 +70,7 @@ class ReservationRequestResource extends Resource
                         return UserResource::getUrl('edit', ['record' => $record->apartment->user]);
                     }),
                 Tables\Columns\TextColumn::make('user.name')->label('Гость')
-                    ->description(fn(ReservationRequest $record): string => $record->user->email)
+                    ->description(fn(ReservationRequest $record): string => $record->user?->email ?? $record->user?->phone)
                     ->url(function ($record) {
                         return UserResource::getUrl('edit', ['record' => $record->user]);
                     }),
