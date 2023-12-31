@@ -77,4 +77,28 @@
 	.dp__cell_disabled {
 		@apply line-through;
 	}
+	.dp__range_start,
+	.dp__range_end,
+	.dp__range_between {
+		@apply bg-blue-500 text-white border-none rounded-full;
+		background: var(--dp-primary-color);
+	}
+	.dp__range_start,
+	.dp__date_hover_start:hover {
+		background: linear-gradient(to right bottom, rgb(255, 255, 255) 50%, var(--dp-primary-color) 50%);
+	}
+	.dp__range_end,
+	.dp__date_hover_end:hover {
+		background: linear-gradient(to right bottom, var(--dp-primary-color) 50%, rgb(255, 255, 255) 50%);
+	}
+	.dp__date_hover_end,
+	.dp__date_hover_start,
+	.dp__date_hover {
+		@apply rounded-full border-none;
+	}
+	.dp__date_hover_end:hover,
+	.dp__date_hover_start:hover,
+	.dp__date_hover:hover {
+		@apply rounded-full border-none text-white;
+	}
 </style>
