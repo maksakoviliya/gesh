@@ -157,7 +157,7 @@
 								class="h-12 w-12 flex-none rounded-full bg-gray-50"
 							/>
 							<div class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-100">
-								{{ props.apartment.data.owner.name }}
+								{{ props.apartment.data.owner?.name ?? '-' }}
 							</div>
 						</div>
 						<div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
@@ -165,7 +165,7 @@
 							<p class="mt-1 text-xs leading-5 text-gray-500 dark:text-slate-400">
 								На сайте
 								<time datetime="2023-01-23T13:23Z">
-									{{ props.apartment.data.owner.since }}
+									{{ props.apartment.data.owner?.since ?? '-' }}
 								</time>
 							</p>
 						</div>
