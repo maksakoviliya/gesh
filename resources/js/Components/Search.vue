@@ -20,7 +20,7 @@
 	dayjs.locale('ru')
 
 	const page = usePage()
-	const locationLabel = ref(page.props.query['city'] ?? 'Везде')
+	const locationLabel = ref(page.props.query['city'] ?? 'Поиск')
 	const durationLabel = ref('Неделя')
 
 	const city = ref('')

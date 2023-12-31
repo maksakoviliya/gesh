@@ -153,7 +153,7 @@
 					<div class="flex justify-between items-start gap-x-6">
 						<div class="flex items-center min-w-0 gap-x-4">
 							<Avatar
-								:src="props.apartment.data.owner.avatar"
+								:src="props.apartment.data.owner?.avatar"
 								class="h-12 w-12 flex-none rounded-full bg-gray-50"
 							/>
 							<div class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-100">
