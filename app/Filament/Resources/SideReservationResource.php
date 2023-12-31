@@ -52,6 +52,7 @@ class SideReservationResource extends Resource
 
                         return ApartmentResource::getUrl('edit', ['record' => $record->apartment->id]);
                     }),
+                Tables\Columns\TextColumn::make('created_at')->dateTime('d.m.Y H:i')
             ])
             ->filters([
                 //
