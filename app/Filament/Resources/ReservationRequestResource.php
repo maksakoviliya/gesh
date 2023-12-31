@@ -69,7 +69,7 @@ class ReservationRequestResource extends Resource
                     })
 ,
                 Tables\Columns\TextColumn::make('apartment.user.name')->label('Владелец')
-                    ->description(fn(ReservationRequest $record): string => $record->apartment->user?->email ?? $record->apartment->user?->phone)
+                    ->description(fn(ReservationRequest $record): string => $record->apartment->user?->email ?? $record->apartment->user?->phone ?? '-')
                     ->url(function ($record) {
                         if (!$record->apartment->user) {
                             return '#';
