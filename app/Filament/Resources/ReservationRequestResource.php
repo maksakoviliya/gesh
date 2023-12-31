@@ -71,12 +71,12 @@ class ReservationRequestResource extends Resource
                 Tables\Columns\TextColumn::make('apartment.user.name')->label('Владелец')
                     ->description(fn(ReservationRequest $record): string => $record->apartment->user->email)
                     ->url(function ($record) {
-                        return UserResource::getUrl('edit', ['record' => $record->apartment->user]);
+                        return UserResource::getUrl('edit', ['record' => $record->apartment->user->id]);
                     }),
                 Tables\Columns\TextColumn::make('user.name')->label('Гость')
                     ->description(fn(ReservationRequest $record): string => $record->user?->email ?? $record->user?->phone)
                     ->url(function ($record) {
-                        return UserResource::getUrl('edit', ['record' => $record->user]);
+                        return UserResource::getUrl('edit', ['record' => $record->user->id]);
                     }),
                 Tables\Columns\TextColumn::make('start')->label('Даты')->date('d.m.Y'),
                 Tables\Columns\TextColumn::make('end')->label('')->date('d.m.Y'),
