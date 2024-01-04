@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -31,6 +32,17 @@ class ApartmentResource extends Resource
     protected static ?string $navigationGroup = 'Apartments';
 
     protected static ?string $navigationLabel = 'Объекты';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return Apartment::query()->where('status', Status::Pending)->count() ?: null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return Color::Red;
+    }
+
 
     public static function form(Form $form): Form
     {
@@ -109,28 +121,32 @@ class ApartmentResource extends Resource
                                 Forms\Components\Toggle::make('fast_reserve')->label('Моментальное бронирование'),
                             ])->collapsible()->columns(),
 
-                    ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
+                    ])->columnSpan(['lg' => fn(?Apartment $record) => $record === null ? 3 : 2]),
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make()
                             ->schema([
-                                Forms\Components\Placeholder::make('status')
-                                    ->label('Статус')
-                                    ->content(fn (Apartment $record) => __('statuses.'.$record->status->value)),
+                                Select::make('status')
+                                    ->options([
+                                        Status::Draft->value => 'Черновик',
+                                        Status::Pending->value => 'На модерации',
+                                        Status::Published->value => 'Опубликован',
+                                    ])->required()
+                                ->nullable(false),
                                 Select::make('user')->relationship('user', 'name')
                                     ->searchable()
-                                    ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->email}")
+                                    ->getOptionLabelFromRecordUsing(fn(User $record) => "{$record->name} | {$record->email}")
                                     ->preload(),
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
-                                    ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
+                                    ->content(fn(Apartment $record): ?string => $record->created_at?->diffForHumans()),
 
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Изменен')
-                                    ->content(fn (Apartment $record): ?string => $record->updated_at?->diffForHumans()),
+                                    ->content(fn(Apartment $record): ?string => $record->updated_at?->diffForHumans()),
                             ])
                             ->columnSpan(['lg' => 1])
-                            ->hidden(fn (?Apartment $record) => $record === null),
+                            ->hidden(fn(?Apartment $record) => $record === null),
 
                         Forms\Components\Section::make('Шаг 7')
                             ->schema([
@@ -159,22 +175,24 @@ class ApartmentResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
                 SpatieMediaLibraryImageColumn::make('media')
                     ->limit(1),
                 Tables\Columns\TextColumn::make('categories.title')
                     ->badge(),
                 TextColumn::make('user.name')
-                    ->description(fn (Apartment $record): string => $record->user?->email ?? '')
+                    ->description(fn(Apartment $record): string => $record->user?->email ?? '')
                     ->url(function ($record) {
-                        if (! $record->user) {
+                        if (!$record->user) {
                             return null;
                         }
 
                         return UserResource::getUrl('edit', ['record' => $record->user]);
                     }),
                 Tables\Columns\TextColumn::make('status')
+                    ->sortable()
                     ->badge()
-                    ->formatStateUsing(fn (Status $state): string => __("statuses.{$state->value}"))
+                    ->formatStateUsing(fn(Status $state): string => __("statuses.{$state->value}"))
                     ->color(function (Status $state) {
                         return match ($state) {
                             Status::Draft => 'gray',
@@ -182,13 +200,21 @@ class ApartmentResource extends Resource
                             Status::Published => 'success'
                         };
                     }),
-                Tables\Columns\TextColumn::make('weekdays_price'),
+                Tables\Columns\TextColumn::make('weekdays_price')->sortable(),
+                Tables\Columns\TextColumn::make('weekends_price')->sortable(),
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('bedrooms'),
                 Tables\Columns\TextColumn::make('guests'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+//                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->options([
+                        Status::Draft->value => 'Черновики',
+                        Status::Pending->value => 'На модерации',
+                        Status::Published->value => 'Активные',
+                    ])->label('По статусу'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

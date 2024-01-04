@@ -9,6 +9,7 @@ use App\Models\ReservationRequest;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
@@ -23,14 +24,24 @@ class ReservationRequestResource extends Resource
 
     protected static ?string $navigationLabel = 'Запросы на бронирование';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return ReservationRequest::query()->where('status', Status::Pending)->count() ?: null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return Color::Red;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('apartment')
-                ->relationship('apartment', 'id'),
+                    ->relationship('apartment', 'id'),
                 Forms\Components\Select::make('user')
-                ->relationship('user', 'id'),
+                    ->relationship('user', 'id'),
                 Forms\Components\DatePicker::make('start'),
                 Forms\Components\DatePicker::make('end'),
                 Forms\Components\TextInput::make('guests'),
@@ -44,7 +55,7 @@ class ReservationRequestResource extends Resource
                 ])->required(),
                 Forms\Components\TextInput::make('status_text'),
                 Forms\Components\Select::make('reservation')
-                ->relationship('reservation', 'id')
+                    ->relationship('reservation', 'id')
             ]);
     }
 
@@ -61,13 +72,14 @@ class ReservationRequestResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('status')
                     ->formatStateUsing(fn($state) => __('statuses.reservation_request.' . $state->value))
+                    ->sortable()
                     ->badge()
-                    ->color(fn ($state): string => match ($state) {
+                    ->color(fn($state): string => match ($state) {
                         Status::Rejected => 'danger',
                         Status::Submitted => 'success',
                         Status::Pending => 'gray',
                     })
-,
+                ,
                 Tables\Columns\TextColumn::make('apartment.user.name')->label('Владелец')
                     ->description(fn(ReservationRequest $record): string => $record->apartment->user?->email ?? $record->apartment->user?->phone ?? '-')
                     ->url(function ($record) {
@@ -84,14 +96,25 @@ class ReservationRequestResource extends Resource
                         }
                         return UserResource::getUrl('edit', ['record' => $record->user->id]);
                     }),
-                Tables\Columns\TextColumn::make('start')->label('Даты')->date('d.m.Y'),
-                Tables\Columns\TextColumn::make('end')->label('')->date('d.m.Y'),
-                Tables\Columns\TextColumn::make('guests')->label('Гости')->icon('heroicon-o-user'),
-                Tables\Columns\TextColumn::make('price')->label('Цена')
-                    ->formatStateUsing(fn ($state) => number_format($state, '0', '.', ' ') . '₽'),
+                Tables\Columns\TextColumn::make('start')->label('Заезд')->date('d.m.Y')->sortable(),
+                Tables\Columns\TextColumn::make('end')->label('Выезд')->date('d.m.Y')->sortable(),
+                Tables\Columns\TextColumn::make('guests')->label('Гости')->icon('heroicon-o-user')->sortable(),
+                Tables\Columns\TextColumn::make('price')->label('Цена')->sortable()
+                    ->formatStateUsing(fn($state) => number_format($state, '0', '.', ' ') . '₽'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('apartment')
+                    ->relationship('apartment', 'id')
+                    ->searchable()
+                    ->preload()
+                    ->label('Объект'),
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        Status::Pending->value => 'Ожидает',
+                        Status::Submitted->value => 'Одобрен',
+                        Status::Rejected->value => 'Отказано'
+                    ])
+                    ->label('По статусу'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
