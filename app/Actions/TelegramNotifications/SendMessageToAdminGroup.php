@@ -30,7 +30,7 @@ class SendMessageToAdminGroup
                             Keyboard::inlineButton(
                                 [
                                     'text' => 'К запросу',
-                                    'url' => config('app.environment') === 'production' ? $url : 'https://google.com'
+                                    'url' => config('app.env') === 'production' ? $url : 'https://google.com'
                                 ]
                             )
                         ]
