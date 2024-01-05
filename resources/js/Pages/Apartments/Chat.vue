@@ -27,15 +27,14 @@
 
 	const submit = () => {
 		form.post(
-			route('chat.messages.store', {
+			route('account.chat.messages.store', {
 				chat: props.chat.data.id,
 			}),
 			{
 				preserveScroll: true,
 				onSuccess: () => {
-                    form.reset('message')
-
-                },
+					form.reset('message')
+				},
 			}
 		)
 	}

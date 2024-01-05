@@ -38,6 +38,7 @@ class ReservationRequestResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('apartment')
+                    ->searchable()
                     ->relationship('apartment', 'id'),
                 Forms\Components\Select::make('user')
                     ->relationship('user', 'id'),
@@ -101,6 +102,8 @@ class ReservationRequestResource extends Resource
                 Tables\Columns\TextColumn::make('guests')->label('Гости')->icon('heroicon-o-user')->sortable(),
                 Tables\Columns\TextColumn::make('price')->label('Цена')->sortable()
                     ->formatStateUsing(fn ($state) => number_format($state, '0', '.', ' ').'₽'),
+                Tables\Columns\TextColumn::make('created_at')->label('Создан')->date('d.m.Y H:i')->sortable(),
+
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('apartment')

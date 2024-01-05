@@ -62,8 +62,10 @@
 	const handleSetDates = (dates) => {
 		const start = dayjs(dates.start)
 		const end = dayjs(dates.end)
-		form.start = start.set('hours', 0).set('minutes', 0).toDate()
-		form.end = end.set('hours', 0).set('minutes', 0).toDate()
+		form.start = start.set('hour', 15).set('minute', 0).toDate()
+		form.end = end.set('hour', 12).set('minute', 0).toDate()
+		console.log('start', form.start)
+		console.log('end', form.end)
 		form.range = end.diff(start, 'day')
 	}
 
@@ -104,22 +106,16 @@
 	const { errorToast } = useToasts()
 
 	const createReservationRequest = () => {
-		return form
-			.transform((data) => {
-				data.start = dayjs(data.start).add(5, 'hour').toDate()
-				data.end = dayjs(data.end).add(5, 'hour').toDate()
-				return data
-			})
-			.post(
-				route('reservation-requests.store', {
-					apartment: props.apartment.data.id,
-				}),
-				{
-					onError: (err) => {
-						errorToast(Object.values(err)[0])
-					},
-				}
-			)
+		return form.post(
+			route('reservation-requests.store', {
+				apartment: props.apartment.data.id,
+			}),
+			{
+				onError: (err) => {
+					errorToast(Object.values(err)[0])
+				},
+			}
+		)
 	}
 
 	const markers = ref([

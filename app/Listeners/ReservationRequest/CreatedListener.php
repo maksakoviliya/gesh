@@ -1,22 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Listeners\ReservationRequest;
 
+use App\Actions\TelegramNotifications\SendMessageToAdminGroup;
 use App\Events\ReservationRequest\CreatedEvent;
-use App\Models\User;
+use App\Models\Chat\Chat;
+use App\Models\Chat\Message;
 use App\Notifications\ReservationRequest\CreatedNotification;
+use Illuminate\Support\Facades\Auth;
 
-class CreatedListener
+final class CreatedListener
 {
+    protected SendMessageToAdminGroup $telegram;
+
     public function __construct()
     {
+        $this->telegram = new SendMessageToAdminGroup();
     }
 
     public function handle(CreatedEvent $event): void
     {
-        /** @var User $owner */
-        $owner = $event->reservationRequest->apartment->user;
+        $reservation_request = $event->reservationRequest;
+        $apartment = $reservation_request->apartment;
+        $chat = Chat::query()
+            ->firstOrCreate([
+                'apartment_id' => $apartment->id,
+                'user_id' => Auth::id(),
+            ]);
+        Message::query()->firstOrCreate([
+            'chat_id' => $chat->id,
+            'user_id' => Auth::id(),
+            'reservation_request_id' => $reservation_request->id,
+        ]);
 
-        $owner->notify(new CreatedNotification($event->reservationRequest));
+        $owner = $apartment->user;
+
+        $owner->notify(new CreatedNotification($reservation_request));
+
+        $this->telegram->sendNewReservationRequestMessage($reservation_request);
     }
 }

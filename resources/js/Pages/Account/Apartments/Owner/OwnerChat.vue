@@ -42,7 +42,7 @@
 
 	const submit = () => {
 		form.post(
-			route('chat.messages.store', {
+			route('account.chat.messages.store', {
 				chat: props.chat.data.id,
 			}),
 			{

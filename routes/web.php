@@ -158,4 +158,4 @@ Route::get('media/{id}', GetMediaController::class)->name('media');
 //        return Inertia::render('Dashboard');
 //    })->name('dashboard');
 //});
-//Route::get('test', \App\Http\Controllers\TestContreoller::class);
+Route::get('test', \App\Http\Controllers\TestContreoller::class);

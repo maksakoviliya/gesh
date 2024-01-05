@@ -22,7 +22,7 @@ final class CalendarController extends Controller
         $apartment = $apartment->load([
             'datePrices',
             'ICalLinks',
-            'disabledDates'
+            'disabledDates',
         ]);
         $reservationRequests = collect(ReservationRequest::query()
             ->with(['user', 'apartment'])
