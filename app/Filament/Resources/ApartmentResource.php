@@ -43,7 +43,6 @@ class ApartmentResource extends Resource
         return Color::Red;
     }
 
-
     public static function form(Form $form): Form
     {
         return $form
@@ -121,7 +120,7 @@ class ApartmentResource extends Resource
                                 Forms\Components\Toggle::make('fast_reserve')->label('Моментальное бронирование'),
                             ])->collapsible()->columns(),
 
-                    ])->columnSpan(['lg' => fn(?Apartment $record) => $record === null ? 3 : 2]),
+                    ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make()
@@ -132,21 +131,21 @@ class ApartmentResource extends Resource
                                         Status::Pending->value => 'На модерации',
                                         Status::Published->value => 'Опубликован',
                                     ])->required()
-                                ->nullable(false),
+                                    ->nullable(false),
                                 Select::make('user')->relationship('user', 'name')
                                     ->searchable()
-                                    ->getOptionLabelFromRecordUsing(fn(User $record) => "{$record->name} | {$record->email}")
+                                    ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->email}")
                                     ->preload(),
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
-                                    ->content(fn(Apartment $record): ?string => $record->created_at?->diffForHumans()),
+                                    ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
 
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Изменен')
-                                    ->content(fn(Apartment $record): ?string => $record->updated_at?->diffForHumans()),
+                                    ->content(fn (Apartment $record): ?string => $record->updated_at?->diffForHumans()),
                             ])
                             ->columnSpan(['lg' => 1])
-                            ->hidden(fn(?Apartment $record) => $record === null),
+                            ->hidden(fn (?Apartment $record) => $record === null),
 
                         Forms\Components\Section::make('Шаг 7')
                             ->schema([
@@ -163,7 +162,7 @@ class ApartmentResource extends Resource
                                     ->relationship()
                                     ->schema([
                                         TextInput::make('link')->required()->unique(ignoreRecord: true),
-                                    ])
+                                    ]),
                             ])
                             ->collapsible(),
                     ]),
@@ -181,9 +180,9 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('categories.title')
                     ->badge(),
                 TextColumn::make('user.name')
-                    ->description(fn(Apartment $record): string => $record->user?->email ?? '')
+                    ->description(fn (Apartment $record): string => $record->user?->email ?? '')
                     ->url(function ($record) {
-                        if (!$record->user) {
+                        if (! $record->user) {
                             return null;
                         }
 
@@ -192,7 +191,7 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->sortable()
                     ->badge()
-                    ->formatStateUsing(fn(Status $state): string => __("statuses.{$state->value}"))
+                    ->formatStateUsing(fn (Status $state): string => __("statuses.{$state->value}"))
                     ->color(function (Status $state) {
                         return match ($state) {
                             Status::Draft => 'gray',
@@ -207,7 +206,7 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('guests'),
             ])
             ->filters([
-//                Tables\Filters\TrashedFilter::make(),
+                //                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options([

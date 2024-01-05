@@ -19,6 +19,9 @@
 	import ReservationRequestEvent from '@/Pages/Account/Apartments/Calendar/ReservationRequestEvent.vue'
 	import SideReservationEvent from '@/Components/Reservations/SideReservationEvent.vue'
 	import Toggle from '@/Components/Inputs/Toggle.vue'
+	import customParseFormat from 'dayjs/plugin/customParseFormat'
+
+	dayjs.extend(customParseFormat)
 
 	export default {
 		props: {
@@ -89,15 +92,12 @@
 						{
 							month: 'long',
 							week: 'short',
-						}, // top level of text
+						},
 						{
 							weekday: 'narrow',
 							day: 'numeric',
-						}, // lower level of text
+						},
 					],
-					slotDuration: {
-						hours: 12,
-					},
 					dayCellContent: (day) => {
 						let price = null
 						const date = this.apartment.data.dates.find((item) => {
@@ -125,10 +125,8 @@
 					unselect: this.handleUnselect,
 					eventClick: this.handleEventClick,
 					events: this.eventsData.map((item) => {
-						item.start = dayjs(item.start).toDate()
-						item.end = dayjs(item.end).toDate()
-						console.log('start', item.start)
-						console.log('end', item.end)
+						item.start = dayjs(item.start, 'DD.MM.YYYY').toDate()
+						item.end = dayjs(item.end, 'DD.MM.YYYY').hour(23).toDate()
 						return item
 					}),
 				},
@@ -187,12 +185,7 @@
 				console.log('range', range)
 				selectedEvent.value = null
 				rangeForm.start = range.startStr
-				// rangeForm.end = range.endStr
 				rangeForm.end = dayjs(range.endStr).subtract(1, 'day').hour(23).minute(59)
-
-				// rangeForm.disabled = range.reduce((accumulator, currentValue) => {
-				// 	accumulator || currentValue.start
-				// }, false)
 			}
 			const submitRangeForm = () => {
 				rangeForm
@@ -263,7 +256,7 @@
 	<AppLayout>
 		<Container>
 			<Breadcrumbs :routes="routes" />
-			<div class="flex flex-col items-start lg:flex-row w-full mt-4 xl:mt-12 relative">
+			<div class="flex flex-col items-start md:flex-row md:gap-4 w-full mt-4 xl:mt-12 relative">
 				<div class="w-full h-auto md:w-2/3">
 					<FullCalendar
 						ref="calendar"

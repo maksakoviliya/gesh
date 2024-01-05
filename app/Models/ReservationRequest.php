@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 
 /**
@@ -33,6 +32,7 @@ use Illuminate\Support\Arr;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Reservation|null $reservation
  * @property-read \App\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest query()
@@ -51,7 +51,9 @@ use Illuminate\Support\Arr;
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereTotalGuests($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUserId($value)
+ *
  * @property-read \App\Models\Apartment|null $apartment
+ *
  * @mixin \Eloquent
  */
 final class ReservationRequest extends Model

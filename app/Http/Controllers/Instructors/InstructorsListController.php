@@ -16,8 +16,9 @@ final class InstructorsListController extends Controller
     {
         $instructors = Instructor::query()
             ->get();
+
         return Inertia::render('Instructors/List', [
-            'instructors' => new InstructorsCollection($instructors)
+            'instructors' => new InstructorsCollection($instructors),
         ]);
     }
 }

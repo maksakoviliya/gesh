@@ -94,12 +94,12 @@ namespace App\Models{
  * @property-read int|null $reservations_count
  * @property-read Collection<int, \App\Models\SideReservation> $sideReservations
  * @property-read int|null $side_reservations_count
- * @mixin Eloquent
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Apartment withoutTrashed()
+ * @method static Builder|Apartment onlyTrashed()
+ * @method static Builder|Apartment whereDeletedAt($value)
+ * @method static Builder|Apartment withTrashed()
+ * @method static Builder|Apartment withoutTrashed()
+ * @mixin Eloquent
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -208,6 +208,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	final class ContentPage extends \Eloquent {}
 }
@@ -294,19 +295,48 @@ namespace App\Models{
  * @property int $id
  * @property string $apartment_id
  * @property string $link
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|ICalLink newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ICalLink newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ICalLink query()
- * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereApartmentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereLink($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ICalLink whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|ICalLink newModelQuery()
+ * @method static Builder|ICalLink newQuery()
+ * @method static Builder|ICalLink query()
+ * @method static Builder|ICalLink whereApartmentId($value)
+ * @method static Builder|ICalLink whereCreatedAt($value)
+ * @method static Builder|ICalLink whereId($value)
+ * @method static Builder|ICalLink whereLink($value)
+ * @method static Builder|ICalLink whereUpdatedAt($value)
+ * @mixin Eloquent
+ * @property-read \App\Models\Apartment|null $apartment
  */
 	class ICalLink extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Instructor
+ *
+ * @property string $id
+ * @property string $name
+ * @property string|null $description
+ * @property string|null $user_id
+ * @property \App\Enums\Instructors\Type $type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereUserId($value)
+ */
+	final class Instructor extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
 
 namespace App\Models{
@@ -390,8 +420,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereTotalGuests($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUserId($value)
- * @mixin \Eloquent
  * @property-read \App\Models\Apartment|null $apartment
+ * @mixin \Eloquent
  */
 	final class ReservationRequest extends \Eloquent {}
 }

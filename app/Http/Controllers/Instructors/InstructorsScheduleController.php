@@ -10,7 +10,6 @@ use App\Models\Instructor;
 use App\Models\User;
 use App\Notifications\Admin\Instructors\ScheduleNotification;
 use Illuminate\Support\Facades\Notification;
-use Inertia\Inertia;
 
 final class InstructorsScheduleController extends Controller
 {
@@ -22,6 +21,7 @@ final class InstructorsScheduleController extends Controller
             $request->validated('name'),
             $request->validated('phone')
         ));
+
         return back();
     }
 }

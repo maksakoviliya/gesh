@@ -20,11 +20,11 @@ final class Instructor extends Model implements HasMedia
 
     protected $guarded = [
         'id',
-        'created_at'
+        'created_at',
     ];
 
     protected $casts = [
-        'type' => Type::class
+        'type' => Type::class,
     ];
 
     public function registerMediaCollections(): void

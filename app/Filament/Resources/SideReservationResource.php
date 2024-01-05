@@ -3,16 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SideReservationResource\Pages;
-use App\Filament\Resources\SideReservationResource\RelationManagers;
-use App\Models\Apartment;
 use App\Models\SideReservation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SideReservationResource extends Resource
 {
@@ -30,7 +26,7 @@ class SideReservationResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('id'),
                 Forms\Components\Select::make('apartment')
-                ->relationship('apartment', 'id'),
+                    ->relationship('apartment', 'id'),
                 Forms\Components\DateTimePicker::make('start'),
                 Forms\Components\DateTimePicker::make('end'),
                 Forms\Components\TextInput::make('description'),
@@ -52,7 +48,7 @@ class SideReservationResource extends Resource
 
                         return ApartmentResource::getUrl('edit', ['record' => $record->apartment->id]);
                     }),
-                Tables\Columns\TextColumn::make('created_at')->dateTime('d.m.Y H:i')
+                Tables\Columns\TextColumn::make('created_at')->dateTime('d.m.Y H:i'),
             ])
             ->filters([
                 //

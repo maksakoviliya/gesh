@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Reservations;
 
-use App\Enums\Reservation\Status;
-use App\Events\Reservation\PaidEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Services\PaymentServiceContract;
@@ -26,7 +24,7 @@ final class ReservationPayController extends Controller
             $reservation
         );
 
-        if (!$redirectUrl) {
+        if (! $redirectUrl) {
             throw new Error('PaymentService Error');
         }
 

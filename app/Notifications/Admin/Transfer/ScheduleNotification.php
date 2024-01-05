@@ -3,7 +3,6 @@
 namespace App\Notifications\Admin\Transfer;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -25,8 +24,8 @@ class ScheduleNotification extends Notification
         return (new MailMessage)
             ->theme('Трансфер')
             ->line('Пользователь хочет забронировать трансфер.')
-            ->line('Пользователь: ' . $this->name)
-            ->line('Телефон: ' . $this->phone);
+            ->line('Пользователь: '.$this->name)
+            ->line('Телефон: '.$this->phone);
     }
 
     /**

@@ -19,8 +19,9 @@ final class AccountIndexController extends Controller
             ->where('user_id', Auth::id())
             ->where('status', Status::Pending)
             ->count();
+
         return Inertia::render('Account/Index', [
-            'reservation_requests_count' => $reservation_requests_count
+            'reservation_requests_count' => $reservation_requests_count,
         ]);
     }
 }
