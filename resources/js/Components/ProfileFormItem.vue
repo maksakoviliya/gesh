@@ -38,6 +38,7 @@
 				successToast('Данные профиля успешно обновлены')
 				toggleActive()
 			},
+			preserveScroll: true,
 		})
 	}
 </script>
@@ -75,7 +76,7 @@
 					v-else
 					:label="props.label"
 					:error="form.errors[props.field]"
-					:value="form[props.field]"
+					v-model="form[props.field]"
 				/>
 				<ButtonComponent
 					label="Сохранить"
