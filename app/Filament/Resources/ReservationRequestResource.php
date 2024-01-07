@@ -105,6 +105,7 @@ class ReservationRequestResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')->label('Создан')->date('d.m.Y H:i')->sortable(),
 
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('apartment')
                     ->relationship('apartment', 'id')
