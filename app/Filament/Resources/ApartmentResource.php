@@ -176,13 +176,16 @@ class ApartmentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
                 SpatieMediaLibraryImageColumn::make('media')
+                    ->label('Объект')
                     ->square()
                     ->limit(1),
-                Tables\Columns\TextColumn::make('category.title')
-                    ->badge(),
+                Tables\Columns\TextColumn::make('category.title_single')
+                    ->label('')
+                    ->color('primary')
+                    ->description(fn(Apartment $record): string => "$record->city, $record->street, $record->housing"),
                 TextColumn::make('user.name')
+                    ->label('Владелец')
                     ->description(fn(Apartment $record): string => $record->user?->email ?? '')
                     ->url(function ($record) {
                         if (!$record->user) {
@@ -209,12 +212,14 @@ class ApartmentResource extends Resource
                         return $record->ICalLinks()->count() > 0 ? 'Синхронизированы' : null;
                     })
                     ->color(Color::Blue),
-                Tables\Columns\TextColumn::make('weekdays_price')->sortable(),
-                Tables\Columns\TextColumn::make('weekends_price')->sortable(),
+                Tables\Columns\TextColumn::make('weekdays_price')->sortable()->money('RUB'),
+                Tables\Columns\TextColumn::make('weekends_price')->sortable()->money('RUB'),
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('bedrooms'),
                 Tables\Columns\TextColumn::make('guests'),
+                TextColumn::make('created_at')->date('d.m.Y H:i')->sortable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('status')
