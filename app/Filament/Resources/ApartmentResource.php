@@ -208,7 +208,6 @@ class ApartmentResource extends Resource
                     ->state(function (Apartment $record) {
                         return $record->ICalLinks()->count() > 0 ? 'Синхронизированы' : null;
                     })
-                    ->sortable()
                     ->color(Color::Blue),
                 Tables\Columns\TextColumn::make('weekdays_price')->sortable(),
                 Tables\Columns\TextColumn::make('weekends_price')->sortable(),
