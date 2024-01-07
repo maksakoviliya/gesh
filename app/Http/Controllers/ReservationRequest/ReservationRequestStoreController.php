@@ -8,11 +8,8 @@ use App\Events\ReservationRequest\CreatedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest\StoreRequest;
 use App\Models\Apartment;
-use App\Models\Chat\Chat;
-use App\Models\Chat\Message;
 use App\Models\ReservationRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 final class ReservationRequestStoreController extends Controller
 {
