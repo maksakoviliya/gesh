@@ -36,8 +36,8 @@ class YooKassaPaymentService implements PaymentServiceContract
                 'capture' => true,
                 'description' => $reservation->getPaymentDescription(),
                 'metadata' => [
-                    'reservation_id' => $reservation->id
-                ]
+                    'reservation_id' => $reservation->id,
+                ],
             ],
             uniqid('', true)
         );

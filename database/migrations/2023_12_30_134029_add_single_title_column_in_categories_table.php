@@ -25,7 +25,7 @@ return new class extends Migration
                 default => $category->title,
             };
             $category->update([
-               'title_single' => $title
+                'title_single' => $title,
             ]);
         }
     }

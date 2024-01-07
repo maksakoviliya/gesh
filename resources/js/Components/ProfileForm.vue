@@ -1,6 +1,5 @@
 <script setup>
 	import ProfileFormItem from '@/Components/ProfileFormItem.vue'
-	import { ref } from 'vue'
 
 	defineProps({
 		user: Object,

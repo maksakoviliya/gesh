@@ -18,17 +18,7 @@ final class ReservationRequestStoreController extends Controller
 {
     public function __invoke(StoreRequest $request, Apartment $apartment): RedirectResponse
     {
-        $chat = Chat::query()
-            ->firstOrCreate([
-                'apartment_id' => $apartment->id,
-                'user_id' => Auth::id(),
-            ]);
         $reservation_request = ReservationRequest::createFromArray($request->validated(), $apartment);
-        Message::query()->firstOrCreate([
-            'chat_id' => $chat->id,
-            'user_id' => Auth::id(),
-            'reservation_request_id' => $reservation_request->id,
-        ]);
 
         CreatedEvent::dispatch($reservation_request);
 

@@ -10,7 +10,6 @@ use App\Models\Apartment;
 use App\Models\DatePrice;
 use App\Models\DisabledDate;
 use Carbon\CarbonPeriod;
-use Inertia\Inertia;
 
 final class UpdateCalendarController extends Controller
 {
@@ -35,7 +34,7 @@ final class UpdateCalendarController extends Controller
             } elseif ($request->validated('disabled') === true) {
                 DisabledDate::query()->updateOrCreate([
                     'apartment_id' => $apartment->id,
-                    'date' => $date->setTime(15,0),
+                    'date' => $date->setTime(15, 0),
                 ]);
             }
         }

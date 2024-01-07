@@ -16,7 +16,7 @@ final class InstructorsViewController extends Controller
     public function __invoke(Request $request, Instructor $instructor): Response
     {
         return Inertia::render('Instructors/View', [
-            'instructor' => new InstructorsResource($instructor)
+            'instructor' => new InstructorsResource($instructor),
         ]);
     }
 }

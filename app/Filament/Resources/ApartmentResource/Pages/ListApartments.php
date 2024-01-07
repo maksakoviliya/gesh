@@ -8,7 +8,6 @@ use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Database\Eloquent\Builder;
 
 class ListApartments extends ListRecords
 {

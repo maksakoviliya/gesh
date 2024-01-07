@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Transfer\ScheduleRequest;
 use App\Models\User;
 use App\Notifications\Admin\Transfer\ScheduleNotification;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 
 final class TransferScheduleController extends Controller
@@ -20,6 +19,7 @@ final class TransferScheduleController extends Controller
             $request->validated('name'),
             $request->validated('phone')
         ));
+
         return back();
     }
 }

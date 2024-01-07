@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\ReservationRequest\Status;
 use App\Filament\Resources\ReservationRequestResource\Pages;
-use App\Filament\Resources\ReservationRequestResource\RelationManagers;
 use App\Models\ReservationRequest;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -39,6 +38,7 @@ class ReservationRequestResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('apartment')
+                    ->searchable()
                     ->relationship('apartment', 'id'),
                 Forms\Components\Select::make('user')
                     ->relationship('user', 'id'),
@@ -55,7 +55,7 @@ class ReservationRequestResource extends Resource
                 ])->required(),
                 Forms\Components\TextInput::make('status_text'),
                 Forms\Components\Select::make('reservation')
-                    ->relationship('reservation', 'id')
+                    ->relationship('reservation', 'id'),
             ]);
     }
 
@@ -66,41 +66,44 @@ class ReservationRequestResource extends Resource
                 SpatieMediaLibraryImageColumn::make('apartment.media')->label('Объект')
                     ->limit(1),
                 Tables\Columns\TextColumn::make('apartment.category.title')->label('')
-                    ->description(fn(ReservationRequest $record): string => $record->apartment->id)
+                    ->description(fn (ReservationRequest $record): string => $record->apartment->id)
                     ->url(function (ReservationRequest $record) {
                         return ApartmentResource::getUrl('edit', ['record' => $record->apartment->id]);
                     }),
                 Tables\Columns\TextColumn::make('status')
-                    ->formatStateUsing(fn($state) => __('statuses.reservation_request.' . $state->value))
+                    ->formatStateUsing(fn ($state) => __('statuses.reservation_request.'.$state->value))
                     ->sortable()
                     ->badge()
-                    ->color(fn($state): string => match ($state) {
+                    ->color(fn ($state): string => match ($state) {
                         Status::Rejected => 'danger',
                         Status::Submitted => 'success',
                         Status::Pending => 'gray',
-                    })
-                ,
+                    }),
                 Tables\Columns\TextColumn::make('apartment.user.name')->label('Владелец')
-                    ->description(fn(ReservationRequest $record): string => $record->apartment->user?->email ?? $record->apartment->user?->phone ?? '-')
+                    ->description(fn (ReservationRequest $record): string => $record->apartment->user?->email ?? $record->apartment->user?->phone ?? '-')
                     ->url(function ($record) {
-                        if (!$record->apartment->user) {
+                        if (! $record->apartment->user) {
                             return '#';
                         }
+
                         return UserResource::getUrl('edit', ['record' => $record->apartment->user->id]);
                     }),
                 Tables\Columns\TextColumn::make('user.name')->label('Гость')
-                    ->description(fn(ReservationRequest $record): string => $record->user?->email ?? $record->user?->phone)
+                    ->description(fn (ReservationRequest $record): string => $record->user?->email ?? $record->user?->phone)
                     ->url(function ($record) {
-                        if (!$record->user) {
+                        if (! $record->user) {
                             return '#';
                         }
+
                         return UserResource::getUrl('edit', ['record' => $record->user->id]);
                     }),
                 Tables\Columns\TextColumn::make('start')->label('Заезд')->date('d.m.Y')->sortable(),
                 Tables\Columns\TextColumn::make('end')->label('Выезд')->date('d.m.Y')->sortable(),
                 Tables\Columns\TextColumn::make('guests')->label('Гости')->icon('heroicon-o-user')->sortable(),
                 Tables\Columns\TextColumn::make('price')->label('Цена')->sortable()
-                    ->formatStateUsing(fn($state) => number_format($state, '0', '.', ' ') . '₽'),
+                    ->formatStateUsing(fn ($state) => number_format($state, '0', '.', ' ').'₽'),
+                Tables\Columns\TextColumn::make('created_at')->label('Создан')->date('d.m.Y H:i')->sortable(),
+
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('apartment')
@@ -112,7 +115,7 @@ class ReservationRequestResource extends Resource
                     ->options([
                         Status::Pending->value => 'Ожидает',
                         Status::Submitted->value => 'Одобрен',
-                        Status::Rejected->value => 'Отказано'
+                        Status::Rejected->value => 'Отказано',
                     ])
                     ->label('По статусу'),
             ])
