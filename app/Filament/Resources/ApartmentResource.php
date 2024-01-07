@@ -205,7 +205,7 @@ class ApartmentResource extends Resource
                 TextColumn::make('i_cal_links_count')
                     ->badge()
                     ->state(function (Apartment $record) {
-                        return $record->ICalLinks()->count();
+                        return $record->ICalLinks()->count() > 0 ? 'Синхронизирован' : null;
                     })
                     ,
                 Tables\Columns\TextColumn::make('weekdays_price')->sortable(),
