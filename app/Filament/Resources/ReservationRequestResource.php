@@ -49,9 +49,9 @@ class ReservationRequestResource extends Resource
                 Forms\Components\TextInput::make('total_guests'),
                 Forms\Components\TextInput::make('price'),
                 Forms\Components\Select::make('status')->options([
-                    Status::Pending->value => 'Ожидает решения',
-                    Status::Rejected->value => 'Отменен',
-                    Status::Submitted->value => 'Подтвержден',
+                    Status::Pending->value => __('statuses.reservation_request.pending'),
+                    Status::Rejected->value => __('statuses.reservation_request.rejected'),
+                    Status::Submitted->value => __('statuses.reservation_request.submitted'),
                 ])->required(),
                 Forms\Components\TextInput::make('status_text'),
                 Forms\Components\Select::make('reservation')
