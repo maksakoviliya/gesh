@@ -204,7 +204,10 @@ class ApartmentResource extends Resource
                     }),
                 TextColumn::make('i_cal_links_count')
                     ->badge()
-                   ,
+                    ->state(function (Apartment $record) {
+                        return $record->ICalLinks()->count();
+                    })
+                    ,
                 Tables\Columns\TextColumn::make('weekdays_price')->sortable(),
                 Tables\Columns\TextColumn::make('weekends_price')->sortable(),
                 Tables\Columns\TextColumn::make('title'),
