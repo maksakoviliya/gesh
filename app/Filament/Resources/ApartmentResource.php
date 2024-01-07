@@ -202,6 +202,9 @@ class ApartmentResource extends Resource
                             Status::Published => 'success'
                         };
                     }),
+                TextColumn::make('i_cal_links_count')
+                    ->badge()
+                   ,
                 Tables\Columns\TextColumn::make('weekdays_price')->sortable(),
                 Tables\Columns\TextColumn::make('weekends_price')->sortable(),
                 Tables\Columns\TextColumn::make('title'),
