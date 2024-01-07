@@ -18,6 +18,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
+use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -175,10 +176,12 @@ class ApartmentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
-                SpatieMediaLibraryImageColumn::make('media')
-                    ->square()
-                    ->limit(1),
+                Split::make([
+                    TextColumn::make('id')->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
+                    SpatieMediaLibraryImageColumn::make('media')
+                        ->square()
+                        ->limit(1),
+                ])->from('lg'),
                 Tables\Columns\TextColumn::make('category.title')
                     ->badge(),
                 TextColumn::make('user.name')
