@@ -175,12 +175,10 @@ class ApartmentResource extends Resource
     {
         return $table
             ->columns([
-                Stack::make([
-                    TextColumn::make('id')->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
-                    SpatieMediaLibraryImageColumn::make('media')
-                        ->square()
-                        ->limit(1),
-                ]),
+                TextColumn::make('id')->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
+                SpatieMediaLibraryImageColumn::make('media')
+                    ->square()
+                    ->limit(1),
                 Tables\Columns\TextColumn::make('category.title')
                     ->badge(),
                 TextColumn::make('user.name')
