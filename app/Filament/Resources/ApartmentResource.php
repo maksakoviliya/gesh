@@ -206,8 +206,9 @@ class ApartmentResource extends Resource
                     ->badge()
                     ->label('Сторонние календари')
                     ->state(function (Apartment $record) {
-                        return $record->ICalLinks()->count() > 0 ? 'Синхронизирован' : null;
+                        return $record->ICalLinks()->count() > 0 ? 'Синхронизированы' : null;
                     })
+                    ->sortable()
                     ->color(Color::Blue),
                 Tables\Columns\TextColumn::make('weekdays_price')->sortable(),
                 Tables\Columns\TextColumn::make('weekends_price')->sortable(),
