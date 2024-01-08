@@ -48,6 +48,8 @@ final class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'start.required' => 'Необходимо выбрать даты',
+            'end.required' => 'Необходимо выбрать даты',
             'total_guests.max' => 'Максимальное число гостей: :max.',
         ];
     }

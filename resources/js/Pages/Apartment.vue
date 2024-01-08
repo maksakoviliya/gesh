@@ -38,8 +38,8 @@
 	}
 
 	const form = useForm({
-		start: null ?? new Date(),
-		end: null ?? new Date(new Date().setDate(new Date().getDate() + 2)),
+		start: null,
+		end: null,
 		range: 2,
 		guests: 2,
 		children: 0,
@@ -60,12 +60,15 @@
 	})
 
 	const handleSetDates = (dates) => {
+		if (!dates) {
+			form.start = null
+			form.end = null
+			return
+		}
 		const start = dayjs(dates.start)
 		const end = dayjs(dates.end)
 		form.start = start.set('hour', 15).set('minute', 0).toDate()
 		form.end = end.set('hour', 12).set('minute', 0).toDate()
-		console.log('start', form.start)
-		console.log('end', form.end)
 		form.range = end.diff(start, 'day')
 	}
 
@@ -251,6 +254,7 @@
 							:start="form.start"
 							:end="form.end"
 							:disabled-dates="props.apartment.data.all_disabled_dates ?? []"
+							:error="form.errors.start ?? form.errors.end ?? null"
 							@setDates="handleSetDates"
 						/>
 						<Counter
@@ -268,10 +272,12 @@
 					</div>
 					<div class="flex flex-col gap-3 mt-4">
 						<ButtonComponent
+							:disabled="!(form.start && form.end)"
 							v-if="props.apartment.data.fast_reserve && false"
 							label="Моментальное бронирование"
 						/>
 						<ButtonComponent
+							:disabled="!(form.start && form.end)"
 							@click="createReservationRequest"
 							label="Запрос на бронирование"
 						/>
@@ -279,7 +285,10 @@
 					<div class="font-light text-sm text-center mt-3 text-neutral-500 dark:text-slate-400">
 						Пока вы ни за что не платите, а просто свяжетесь с собственником жилья
 					</div>
-					<dl class="divide-y divide-gray-100 border-t dark:border-slate-700 mt-4">
+					<dl
+						class="divide-y divide-gray-100 border-t dark:border-slate-700 mt-4"
+						v-if="form.start && form.end"
+					>
 						<div class="py-4 flex flex-col gap-2">
 							<div class="flex w-full items-baseline justify-between">
 								<dt class="font-light leading-6 text-gray-600">
@@ -311,6 +320,20 @@
 														{{ item.price?.toLocaleString() }}₽
 													</dd>
 												</div>
+												<div class="pt-1 pb-2 px-4 flex w-full items-baseline justify-between">
+													<dt class="font-light leading-6">
+														<div
+															class="font-light text-sm leading-none dark:text-slate-400 text-gray-600 outline-none"
+														>
+															Сервисный сбор
+														</div>
+													</dt>
+													<dd
+														class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-100"
+													>
+														{{ servicePrice?.toLocaleString() }}₽
+													</dd>
+												</div>
 											</dl>
 										</template>
 									</Popover>
@@ -319,35 +342,12 @@
 									{{ basePrice?.toLocaleString() }}₽
 								</dd>
 							</div>
-							<div class="flex w-full items-baseline justify-between">
-								<dt class="font-light leading-6">
-									<Popover>
-										<template #toggle>
-											<div
-												class="font-light leading-none dark:text-slate-400 dark:border-slate-600 dark:hover:border-slate-500 text-gray-600 outline-none border-b border-gray-400 hover:border-gray-600 transition"
-											>
-												Сервисный сбор
-											</div>
-										</template>
-										<template #content>
-											<div
-												class="max-h-52 p-4 text-neutral-600 leading-tight text-sm dark:text-slate-300"
-											>
-												Благодаря этому сбору мы развиваем наш сервис и, в том числе,
-												обеспечиваем путешественников круглосуточной поддержкой.
-												<br />
-												Данный сервисный сбор удерживатеся при отмене без уважительных причин.
-											</div>
-										</template>
-									</Popover>
-								</dt>
-								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-100">
-									{{ servicePrice?.toLocaleString() }}₽
-								</dd>
-							</div>
 						</div>
 					</dl>
-					<div class="border-t pt-4 flex flex-col gap-2 dark:border-slate-700">
+					<div
+						class="border-t pt-4 flex flex-col gap-2 dark:border-slate-700"
+						v-if="form.start && form.end"
+					>
 						<div class="flex w-full items-baseline justify-between">
 							<dt class="font-bold leading-6 text-neutral-800 dark:text-slate-100">Итого:</dt>
 							<dd class="mt-1 font-bold leading-6 text-lg text-neutral-800 dark:text-slate-100">
