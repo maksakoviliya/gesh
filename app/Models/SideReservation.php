@@ -46,8 +46,8 @@ final class SideReservation extends Model
     ];
 
     protected $casts = [
-        'start' => 'datetime:c',
-        'end' => 'datetime:c',
+        'start' => 'datetime:d.m.Y',
+        'end' => 'datetime:d.m.Y',
     ];
 
     public function apartment(): BelongsTo

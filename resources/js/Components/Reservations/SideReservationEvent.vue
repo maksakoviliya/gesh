@@ -14,13 +14,10 @@
 
 <template>
 	<div>
-		<div>
-			{{ props.event }}
+		<div class="text-neutral-800 dark:text-slate-200">
+			Title: <b>{{ props.event.data.side_reservation.summary }}</b>
 		</div>
-		<div>
-			Title: <b>{{ props.event.title }}</b>
-		</div>
-		<div>Start: {{ dayjs(props.event.start).format('DD.MM.YYYY HH:mm') }}</div>
-		<div>End: {{ dayjs(props.event.end).format('DD.MM.YYYY HH:mm') }}</div>
+		<div class="text-neutral-800 dark:text-slate-200">Start: {{ props.event.data.side_reservation.start }}</div>
+		<div class="text-neutral-800 dark:text-slate-200">End: {{ props.event.data.side_reservation.end }}</div>
 	</div>
 </template>

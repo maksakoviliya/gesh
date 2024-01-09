@@ -21,7 +21,7 @@ final class UpdatePriceController extends Controller
         // TODO: Возможно есть решение красивее
         $apartment->ICalLinks()->delete();
         $links = collect($request->validated('i_cal_links'))
-            ->map(fn($item) => ['link' => $item['link']])
+            ->map(fn ($item) => ['link' => $item['link']])
             ->unique('link')
             ->values()
             ->toArray();

@@ -20,6 +20,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -47,6 +48,15 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
                 ApartmentsChart::class,
             ])
+            ->plugin(
+                FilamentFullCalendarPlugin::make()
+                    ->selectable(false)
+                    ->editable(false)
+                    ->timezone('Europe/Moscow')
+                    ->locale('ru')
+                    ->config([])
+                ->plugins([ ], false)
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

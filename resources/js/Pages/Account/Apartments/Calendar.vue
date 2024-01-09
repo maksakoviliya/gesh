@@ -20,6 +20,7 @@
 	import SideReservationEvent from '@/Components/Reservations/SideReservationEvent.vue'
 	import Toggle from '@/Components/Inputs/Toggle.vue'
 	import customParseFormat from 'dayjs/plugin/customParseFormat'
+	import ReservationEvent from '@/Pages/Account/Apartments/Calendar/ReservationEvent.vue'
 
 	dayjs.extend(customParseFormat)
 
@@ -29,6 +30,7 @@
 			eventsData: Array,
 		},
 		components: {
+			ReservationEvent,
 			Toggle,
 			SideReservationEvent,
 			ReservationRequestEvent,
@@ -126,7 +128,7 @@
 					eventClick: this.handleEventClick,
 					events: this.eventsData.map((item) => {
 						item.start = dayjs(item.start, 'DD.MM.YYYY').toDate()
-						item.end = dayjs(item.end, 'DD.MM.YYYY').hour(23).toDate()
+						item.end = dayjs(item.end, 'DD.MM.YYYY').toDate()
 						return item
 					}),
 				},
@@ -294,8 +296,12 @@
 								:event="selectedEvent.event.extendedProps"
 								v-if="selectedEvent.event.extendedProps.type === 'App\\Models\\ReservationRequest'"
 							/>
+							<ReservationEvent
+								:event="selectedEvent.event.extendedProps"
+								v-if="selectedEvent.event.extendedProps.type === 'App\\Models\\Reservation'"
+							/>
 							<SideReservationEvent
-								:event="selectedEvent.event"
+								:event="selectedEvent.event.extendedProps"
 								v-if="selectedEvent.event.extendedProps.type === 'App\\Models\\SideReservation'"
 							/>
 							<!--							<ButtonComponent-->
@@ -344,6 +350,12 @@
 </template>
 
 <style>
+	.fc-event-start {
+		margin-left: 3vw !important;
+	}
+	.fc-event-end {
+		margin-right: 3vw !important;
+	}
 	.fc-toolbar-title {
 		@apply dark:text-slate-200;
 	}
@@ -363,6 +375,18 @@
 
 	.side_reservation_event {
 		@apply bg-yellow-500 border-yellow-200 dark:bg-yellow-800 dark:border-yellow-600 px-2 opacity-80 hover:opacity-100 cursor-pointer;
+	}
+
+	.reservation_request_event {
+		@apply bg-blue-500 border-blue-200 dark:bg-blue-800 dark:border-blue-600 px-2 opacity-80 hover:opacity-100 cursor-pointer;
+	}
+
+	.reservation_event {
+		@apply bg-green-500 border-green-200 dark:bg-green-800 dark:border-green-600 px-2 opacity-80 hover:opacity-100 cursor-pointer;
+	}
+
+	.disabled_date_event {
+		margin: 0 !important;
 	}
 
 	.fc .fc-bg-event.disabled_date_event {

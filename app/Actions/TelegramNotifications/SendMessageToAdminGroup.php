@@ -18,14 +18,14 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на бронирование!* \n\n";
-            $text .= 'Объект: ' . $reservationRequest->apartment->city . ', ' . $reservationRequest->apartment->street . ', ' . $reservationRequest->apartment->housing . "\n";
-            $text .= 'Гость: ' . $reservationRequest->user->name . ', ' . '(' . $reservationRequest->user->email . ')';
+            $text .= 'Объект: '.$reservationRequest->apartment->city.', '.$reservationRequest->apartment->street.', '.$reservationRequest->apartment->building."\n";
+            $text .= 'Гость: '.$reservationRequest->user->name.', '.'('.$reservationRequest->user->email.')';
             if ($reservationRequest->user->phone) {
-                $text .= ', ' . '(' . $reservationRequest->user->phone . ')';
+                $text .= ', '.'('.$reservationRequest->user->phone.')';
             }
             $text .= "\n";
-            $text .= 'Даты: ' . $reservationRequest->start->format('d\.m\.Y') . ' - ' . $reservationRequest->end->format('d\.m\.Y') . "\n";
-            $text .= 'Гости: ' . $reservationRequest->total_guests;
+            $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
+            $text .= 'Гости: '.$reservationRequest->total_guests;
 
             $url = ReservationRequestResource::getUrl(
                 'edit',
@@ -88,13 +88,13 @@ class SendMessageToAdminGroup
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
                 'text' => $text,
                 'reply_markup' => $button,
-                'parse_mode' => 'Markdown'
+                'parse_mode' => 'Markdown',
             ]);
         } catch (\Exception $exception) {
             \Log::info($exception->getMessage());
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о новом запросе!' . "/n/n" . $exception->getMessage(),
+                'text' => 'Ошибка при отправке уведомления о новом запросе!'.'/n/n'.$exception->getMessage(),
             ]);
         }
     }
@@ -103,19 +103,19 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на трансфер!* \n\n";
-            $text .= 'Имя: ' . $name . "\n";
-            $text .= 'Телефон: ' . $phone . "\n";
+            $text .= 'Имя: '.$name."\n";
+            $text .= 'Телефон: '.$phone."\n";
 
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
                 'text' => $text,
-                'parse_mode' => 'Markdown'
+                'parse_mode' => 'Markdown',
             ]);
         } catch (\Exception $exception) {
             \Log::info($exception->getMessage());
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о трансфере!' . "/n/n" . $exception->getMessage(),
+                'text' => 'Ошибка при отправке уведомления о трансфере!'.'/n/n'.$exception->getMessage(),
             ]);
         }
     }
@@ -124,20 +124,20 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на инструктора!* \n\n";
-            $text .= 'Имя: ' . $name . "\n";
-            $text .= 'Телефон: ' . $phone . "\n";
-            $text .= 'Инструктор: ' . $instructor->name . "\n";
+            $text .= 'Имя: '.$name."\n";
+            $text .= 'Телефон: '.$phone."\n";
+            $text .= 'Инструктор: '.$instructor->name."\n";
 
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
                 'text' => $text,
-                'parse_mode' => 'Markdown'
+                'parse_mode' => 'Markdown',
             ]);
         } catch (\Exception $exception) {
             \Log::info($exception->getMessage());
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о инструкторе!' . "/n/n" . $exception->getMessage(),
+                'text' => 'Ошибка при отправке уведомления о инструкторе!'.'/n/n'.$exception->getMessage(),
             ]);
         }
     }

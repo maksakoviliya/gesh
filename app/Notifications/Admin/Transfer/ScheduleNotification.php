@@ -25,18 +25,18 @@ class ScheduleNotification extends Notification
         return (new MailMessage)
             ->subject('Трансфер')
             ->line('Пользователь хочет забронировать трансфер.')
-            ->line('Пользователь: ' . $this->name)
-            ->line('Телефон: ' . $this->phone);
+            ->line('Пользователь: '.$this->name)
+            ->line('Телефон: '.$this->phone);
     }
 
-//    public function toTelegram($notifiable)
-//    {
-//        return TelegramMessage::create()
-//            ->to(env('CHAT_ID'))
-//            ->content("Запрос на трансфер!")
-//            ->line('Пользователь: ' . $this->name)
-//            ->line('Телефон: ' . $this->phone);
-//    }
+    //    public function toTelegram($notifiable)
+    //    {
+    //        return TelegramMessage::create()
+    //            ->to(env('CHAT_ID'))
+    //            ->content("Запрос на трансфер!")
+    //            ->line('Пользователь: ' . $this->name)
+    //            ->line('Телефон: ' . $this->phone);
+    //    }
 
     public function toArray(object $notifiable): array
     {

@@ -21,7 +21,7 @@ final class TransferScheduleController extends Controller
         $this->telegram = new SendMessageToAdminGroup();
     }
 
-    public function __invoke(ScheduleRequest $request, ): RedirectResponse
+    public function __invoke(ScheduleRequest $request): RedirectResponse
     {
         $admins = User::query()->role('admin')->get();
 

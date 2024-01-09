@@ -21,7 +21,7 @@ class SyncCalendars extends Command
     public function handle()
     {
         Log::info('Start sync calendars');
-        if (!$apartment_id = $this->argument('apartment_id')) {
+        if (! $apartment_id = $this->argument('apartment_id')) {
             $links = ICalLink::has('apartment')->get();
             SideReservation::query()
                 ->delete();

@@ -62,8 +62,8 @@ final class Reservation extends Model
 
     protected $casts = [
         'status' => Status::class,
-        'start' => 'datetime',
-        'end' => 'datetime',
+        'start' => 'date:d.m.Y',
+        'end' => 'date:d.m.Y',
     ];
 
     protected $with = [
