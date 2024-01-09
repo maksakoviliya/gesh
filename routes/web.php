@@ -91,7 +91,6 @@ Route::middleware('auth:sanctum')->group(function () {
             // Apartments
             Route::prefix('apartments')
                 ->as('apartments.')
-//                ->namespace('App\\Http\\Controllers\\Account\\Apartments\\')
                 ->group(function () {
                     Route::get('/', ListController::class)->name('list');
                     Route::get('create', CreateController::class)->name('create');

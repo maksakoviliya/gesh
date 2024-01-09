@@ -1,6 +1,6 @@
 <script setup>
-	import vueFilePond from 'vue-filepond'
 	import { ref } from 'vue'
+	import vueFilePond from 'vue-filepond'
 
 	const props = defineProps({
 		modelValue: Array,
@@ -36,6 +36,7 @@
 	// Import plugins
 	import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 	import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+	import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 
 	// Import styles
 	import 'filepond/dist/filepond.min.css'
@@ -44,7 +45,11 @@
 	import { usePage } from '@inertiajs/vue3'
 
 	// Create FilePond component
-	const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
+	const FilePond = vueFilePond(
+		FilePondPluginFileValidateType,
+		FilePondPluginImagePreview,
+		FilePondPluginFileValidateSize
+	)
 	const pond = ref()
 
 	const handleUpdateFiles = async (files) => {
@@ -92,10 +97,13 @@
 			:max-files="maxFiles"
 			@processfile="handleProcessFiles"
 			@warning="handleWarning"
+			max-file-size="5MB"
 			item-insert-location="after"
 			:allow-multiple="true"
 			:allow-reorder="true"
 			:files="initialFiles"
+			label-max-file-size-exceeded="Файл слишком большой"
+			label-max-file-size="Максимальный размер {filesize}"
 			@reorderfiles="handleReorder"
 			@removefile="handleRemove"
 			:before-remove-file="beforeRemove"
@@ -128,6 +136,7 @@
 							responseType: 'blob',
 						}
 					)
+					console.log('response', response)
 					load(response.data)
 				},
 				// process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
