@@ -7,6 +7,7 @@ namespace App\Actions\TelegramNotifications;
 use App\Filament\Resources\ApartmentResource;
 use App\Filament\Resources\ReservationRequestResource;
 use App\Filament\Resources\UserResource;
+use App\Models\Instructor;
 use App\Models\ReservationRequest;
 use Telegram;
 use Telegram\Bot\Keyboard\Keyboard;
@@ -94,6 +95,49 @@ class SendMessageToAdminGroup
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
                 'text' => 'Ошибка при отправке уведомления о новом запросе!' . "/n/n" . $exception->getMessage(),
+            ]);
+        }
+    }
+
+    public function sendNewTransferRequestMessage(string $name, string $phone): void
+    {
+        try {
+            $text = "*Новый запрос на трансфер!* \n\n";
+            $text .= 'Имя: ' . $name . "\n";
+            $text .= 'Телефон: ' . $phone . "\n";
+
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => $text,
+                'parse_mode' => 'Markdown'
+            ]);
+        } catch (\Exception $exception) {
+            \Log::info($exception->getMessage());
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => 'Ошибка при отправке уведомления о трансфере!' . "/n/n" . $exception->getMessage(),
+            ]);
+        }
+    }
+
+    public function sendNewInstructorRequestMessage(Instructor $instructor, string $name, string $phone): void
+    {
+        try {
+            $text = "*Новый запрос на инструктора!* \n\n";
+            $text .= 'Имя: ' . $name . "\n";
+            $text .= 'Телефон: ' . $phone . "\n";
+            $text .= 'Инструктор: ' . $instructor->name . "\n";
+
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => $text,
+                'parse_mode' => 'Markdown'
+            ]);
+        } catch (\Exception $exception) {
+            \Log::info($exception->getMessage());
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => 'Ошибка при отправке уведомления о инструкторе!' . "/n/n" . $exception->getMessage(),
             ]);
         }
     }

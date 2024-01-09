@@ -47,4 +47,8 @@ return [
         'shop_id' => env('YOOKASSA_SHOP_ID', null),
         'secret' => env('YOOKASSA_SECRET', null),
     ],
+
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN', 'YOUR BOT TOKEN HERE')
+    ],
 ];

@@ -20,12 +20,13 @@
 			:subtitle="subtitle"
 		/>
 		<div
-			class="w-48 mt-4"
+			class="mt-4"
 			v-if="actionLabel"
 		>
 			<ButtonComponent
 				:outline="true"
 				:label="actionLabel"
+				class="px-10"
 				@click="emit('click')"
 			/>
 		</div>

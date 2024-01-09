@@ -74,7 +74,7 @@ final class StoreRequest extends FormRequest
             'features' => 'sometimes|nullable|array',
 
             // Step 7:
-            'media' => ['sometimes', 'nullable', 'array', 'max:10', 'min:1'],
+            'media' => ['sometimes', 'nullable', 'array', 'max:20', 'min:1'],
             'media.*' => 'sometimes|required',
 
             // Step 8:

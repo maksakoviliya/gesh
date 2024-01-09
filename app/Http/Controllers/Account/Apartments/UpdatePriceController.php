@@ -20,10 +20,11 @@ final class UpdatePriceController extends Controller
 
         // TODO: Возможно есть решение красивее
         $apartment->ICalLinks()->delete();
-        $links = [];
-        foreach ($request->validated('i_cal_links') as $item) {
-            $links[] = ['link' => \Arr::get($item, 'link')];
-        }
+        $links = collect($request->validated('i_cal_links'))
+            ->map(fn($item) => ['link' => $item['link']])
+            ->unique('link')
+            ->values()
+            ->toArray();
         $apartment->ICalLinks()->createMany($links);
 
         Artisan::call('sync-calendars', [

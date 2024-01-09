@@ -21,7 +21,7 @@ class SyncCalendars extends Command
     public function handle()
     {
         Log::info('Start sync calendars');
-        if (! $apartment_id = $this->argument('apartment_id')) {
+        if (!$apartment_id = $this->argument('apartment_id')) {
             $links = ICalLink::has('apartment')->get();
             SideReservation::query()
                 ->delete();
@@ -35,23 +35,23 @@ class SyncCalendars extends Command
         }
         /** @var ICalLink $link */
         foreach ($links as $link) {
-            //            try {
-            $ical = new ICal();
-            $ical->initUrl($link->link);
-            /** @var Event $event */
-            foreach ($ical->events() as $event) {
-                SideReservation::query()
-                    ->create([
-                        'apartment_id' => $link->apartment_id,
-                        'start' => Carbon::parse($event->dtstart),
-                        'end' => Carbon::parse($event->dtend),
-                        'description' => $event->description,
-                        'summary' => $event->summary,
-                    ]);
+            try {
+                $ical = new ICal();
+                $ical->initUrl($link->link);
+                /** @var Event $event */
+                foreach ($ical->events() as $event) {
+                    SideReservation::query()
+                        ->create([
+                            'apartment_id' => $link->apartment_id,
+                            'start' => Carbon::parse($event->dtstart),
+                            'end' => Carbon::parse($event->dtend),
+                            'description' => $event->description,
+                            'summary' => $event->summary,
+                        ]);
+                }
+            } catch (\Throwable $exception) {
+                Log::info($exception->getMessage());
             }
-            //            } catch (\Throwable $exception) {
-            //                Log::info($exception->getMessage());
-            //            }
         }
         Log::info('Finish sync calendars');
     }

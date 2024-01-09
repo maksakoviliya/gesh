@@ -28,7 +28,7 @@ final class ScheduleNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->theme('Инструктор')
+            ->subject('Инструктор')
             ->line('Пользователь хочет забронировать инструктора.')
             ->line('Инструктор ID: '.$this->instructor->id)
             ->line('Инструктор имя: '.$this->instructor->name)
