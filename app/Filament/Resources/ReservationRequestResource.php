@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 
@@ -66,32 +67,35 @@ class ReservationRequestResource extends Resource
                 SpatieMediaLibraryImageColumn::make('apartment.media')->label('Объект')
                     ->limit(1),
                 Tables\Columns\TextColumn::make('apartment.category.title')->label('')
-                    ->description(fn (ReservationRequest $record): string => $record->apartment->id)
+                    ->description(fn(ReservationRequest $record): string => $record->apartment->id)
                     ->url(function (ReservationRequest $record) {
-                        return ApartmentResource::getUrl('edit', ['record' => $record->apartment->id]);
-                    }),
+                        return route('apartment', [
+                            'apartment' => $record->apartment->id
+                        ]);
+                    })
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('status')
-                    ->formatStateUsing(fn ($state) => __('statuses.reservation_request.'.$state->value))
+                    ->formatStateUsing(fn($state) => __('statuses.reservation_request.' . $state->value))
                     ->sortable()
                     ->badge()
-                    ->color(fn ($state): string => match ($state) {
+                    ->color(fn($state): string => match ($state) {
                         Status::Rejected => 'danger',
                         Status::Submitted => 'success',
                         Status::Pending => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('apartment.user.name')->label('Владелец')
-                    ->description(fn (ReservationRequest $record): string => $record->apartment->user?->email ?? $record->apartment->user?->phone ?? '-')
+                    ->description(fn(ReservationRequest $record): string => $record->apartment->user?->email ?? $record->apartment->user?->phone ?? '-')
                     ->url(function ($record) {
-                        if (! $record->apartment->user) {
+                        if (!$record->apartment->user) {
                             return '#';
                         }
 
                         return UserResource::getUrl('edit', ['record' => $record->apartment->user->id]);
                     }),
                 Tables\Columns\TextColumn::make('user.name')->label('Гость')
-                    ->description(fn (ReservationRequest $record): string => $record->user?->email ?? $record->user?->phone)
+                    ->description(fn(ReservationRequest $record): string => $record->user?->email ?? $record->user?->phone)
                     ->url(function ($record) {
-                        if (! $record->user) {
+                        if (!$record->user) {
                             return '#';
                         }
 
@@ -101,7 +105,7 @@ class ReservationRequestResource extends Resource
                 Tables\Columns\TextColumn::make('end')->label('Выезд')->date('d.m.Y')->sortable(),
                 Tables\Columns\TextColumn::make('guests')->label('Гости')->icon('heroicon-o-user')->sortable(),
                 Tables\Columns\TextColumn::make('price')->label('Цена')->sortable()
-                    ->formatStateUsing(fn ($state) => number_format($state, '0', '.', ' ').'₽'),
+                    ->formatStateUsing(fn($state) => number_format($state, '0', '.', ' ') . '₽'),
                 Tables\Columns\TextColumn::make('created_at')->label('Создан')->date('d.m.Y H:i')->sortable(),
 
             ])
@@ -121,6 +125,9 @@ class ReservationRequestResource extends Resource
                     ->label('По статусу'),
             ])
             ->actions([
+                Action::make('edit')
+                    ->label('Объекту')
+                    ->url(fn(ReservationRequest $record): string => ApartmentResource::getUrl('edit', ['record' => $record->apartment->id])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
