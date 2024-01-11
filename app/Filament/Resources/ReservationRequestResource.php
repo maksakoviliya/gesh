@@ -126,7 +126,7 @@ class ReservationRequestResource extends Resource
             ])
             ->actions([
                 Action::make('edit')
-                    ->label('Объекту')
+                    ->label('Объект')
                     ->url(fn(ReservationRequest $record): string => ApartmentResource::getUrl('edit', ['record' => $record->apartment->id])),
                 Tables\Actions\EditAction::make(),
             ])
