@@ -33,8 +33,8 @@ final class CalendarController extends Controller
                 return [
                     'id' => $item->id,
                     'title' => 'Запрос',
-                    'start' => $item->start->addDay()->format('d.m.Y'),
-                    'end' => $item->end->addDays(2)->format('d.m.Y'),
+                    'start' => $item->start->format('d.m.Y'),
+                    'end' => $item->end->addDay()->format('d.m.Y'),
                     'type' => ReservationRequest::class,
                     'allDay' => true,
                     'className' => 'reservation_request_event',
@@ -50,9 +50,9 @@ final class CalendarController extends Controller
                 return [
                     'id' => $item->id,
                     'title' => 'Резерв',
-                    'start' => $item->start->addDay()->format('d.m.Y'),
+                    'start' => $item->start->format('d.m.Y'),
                     'type' => Reservation::class,
-                    'end' => $item->end->addDays(2)->format('d.m.Y'),
+                    'end' => $item->end->addDay()->format('d.m.Y'),
                     'allDay' => true,
                     'className' => 'reservation_event',
                     'data' => [
@@ -67,9 +67,9 @@ final class CalendarController extends Controller
                 return [
                     'id' => $item->id,
                     'title' => $item->summary,
-                    'start' => $item->start->addDay()->format('d.m.Y'),
+                    'start' => $item->start->format('d.m.Y'),
                     'type' => SideReservation::class,
-                    'end' => $item->end->addDays(2)->format('d.m.Y'),
+                    'end' => $item->end->addDay()->format('d.m.Y'),
                     'allDay' => true,
                     'className' => 'side_reservation_event',
                     'data' => [

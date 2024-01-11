@@ -16,6 +16,7 @@
 
 	const props = defineProps({
 		apartment: Array | Object,
+		hasICalLinks: Boolean,
 	})
 
 	const getTitle = () => {
@@ -86,7 +87,7 @@
 					: props.apartment.data.weekdays_price
 			const customPrice = props.apartment.data.dates.find((item) => {
 				const customDate = dayjs(item.date)
-				return customDate.isSame(date)
+				return customDate.isSame(date, 'day')
 			})?.price
 			const totalPrice = customPrice ?? price
 			details.value.push({
@@ -99,7 +100,8 @@
 	})
 
 	const servicePrice = computed(() => {
-		return Math.ceil(basePrice.value * 0.18)
+		const commission = basePrice.value >= 100000 ? 0.15 : 0.18
+		return Math.ceil(basePrice.value * commission)
 	})
 
 	const totalPrice = computed(() => {
@@ -150,13 +152,15 @@
 					/>
 					<hr class="my-4 dark:border-slate-600" />
 					<div class="flex justify-between items-start gap-x-6">
-						<div class="flex items-center min-w-0 gap-x-4">
-							<Avatar
-								:src="props.apartment.data.owner?.avatar"
-								class="h-12 w-12 flex-none rounded-full bg-gray-50"
-							/>
-							<div class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-100">
-								{{ props.apartment.data.owner?.name ?? '-' }}
+						<div class="flex flex-col gap-2">
+							<div class="flex items-center min-w-0 gap-x-4">
+								<Avatar
+									:src="props.apartment.data.owner?.avatar"
+									class="h-12 w-12 flex-none rounded-full bg-gray-50"
+								/>
+								<div class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-100">
+									{{ props.apartment.data.owner?.name ?? '-' }}
+								</div>
 							</div>
 						</div>
 						<div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
@@ -249,6 +253,12 @@
 						</div>
 					</div>
 					<div class="mt-4">
+						<div
+							v-if="$page.props.admin && hasICalLinks"
+							class="bg-sky-600 rounded-full w-fit lowercase py-0.5 mb-3 self-start px-4 text-white text-xs font-medium"
+						>
+							Календарь синхронизирован
+						</div>
 						<Datepicker
 							range
 							:start="form.start"

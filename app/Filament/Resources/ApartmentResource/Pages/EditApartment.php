@@ -23,7 +23,7 @@ class EditApartment extends EditRecord
             Action::make('approve')
                 ->color('success')
                 ->label('Одобрить')
-                ->disabled(fn(Apartment $record) => $record->status === Status::Published)
+                ->disabled(fn (Apartment $record) => $record->status === Status::Published)
                 ->action(function (Apartment $record) {
                     $record->approve();
                     Notification::make()
@@ -45,7 +45,7 @@ class EditApartment extends EditRecord
     protected function getFooterWidgets(): array
     {
         return [
-//            CalendarWidget::class,
+            //            CalendarWidget::class,
         ];
     }
 }

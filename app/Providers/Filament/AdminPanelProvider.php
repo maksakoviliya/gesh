@@ -55,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
                     ->timezone('Europe/Moscow')
                     ->locale('ru')
                     ->config([])
-                ->plugins([ ], false)
+                    ->plugins([], false)
             )
             ->middleware([
                 EncryptCookies::class,

@@ -84,7 +84,8 @@
 	}
 
 	const servicePrice = computed(() => {
-		return Math.ceil(request.value.price * 0.18)
+		const commission = request.value.price >= 100000 ? 0.15 : 0.18
+		return Math.ceil(request.value.price * commission)
 	})
 
 	const totalPrice = computed(() => {

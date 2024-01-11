@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\ApartmentResource\Widgets;
 
-use App\Models\Apartment;
 use App\Models\DisabledDate;
 use App\Models\Reservation;
 use App\Models\ReservationRequest;
@@ -15,6 +14,7 @@ use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 class CalendarWidget extends FullCalendarWidget
 {
     public string|int|null|Model $record = null;
+
     /**
      * FullCalendar will call this function whenever it needs new event data.
      * This is triggered when the user clicks prev/next or switches views on the calendar.
@@ -87,14 +87,15 @@ class CalendarWidget extends FullCalendarWidget
         $events = $reservationRequests->merge($reservations);
         $events = $events->merge($side_reservations);
         $events = $events->merge($disabled_dates);
-        $events = $events->map(       fn ($event) => EventData::make()
+        $events = $events->map(fn ($event) => EventData::make()
             ->id($event['id'])
             ->title($event['id'])
             ->allDay()
             ->start(Carbon::now())
             ->end(Carbon::now()->addDays(3))
         )
-        ->all();
+            ->all();
+
         return $events;
     }
 }

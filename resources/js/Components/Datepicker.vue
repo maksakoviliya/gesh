@@ -108,12 +108,12 @@
 
 	.dp__range_start,
 	.dp__date_hover_start:hover {
-		background: linear-gradient(to right bottom, rgb(255, 255, 255) 50%, var(--dp-primary-color) 50%);
+		background: linear-gradient(to right bottom, transparent 50%, var(--dp-primary-color) 50%);
 	}
 
 	.dp__range_end,
 	.dp__date_hover_end:hover {
-		background: linear-gradient(to right bottom, var(--dp-primary-color) 50%, rgb(255, 255, 255) 50%);
+		background: linear-gradient(to right bottom, var(--dp-primary-color) 50%, transparent 50%);
 	}
 
 	.dp__date_hover_end,

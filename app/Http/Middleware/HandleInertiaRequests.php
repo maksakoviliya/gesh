@@ -38,7 +38,8 @@ class HandleInertiaRequests extends Middleware
         $user = Auth::user();
 
         return array_merge(parent::share($request), [
-            'user' => $user ? new UserResource(Auth::user()) : null,
+            'user' => $user ? new UserResource($user) : null,
+            'admin' => $user?->hasRole('admin'),
             'query' => $request->query->all(),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

@@ -103,7 +103,7 @@
 					dayCellContent: (day) => {
 						let price = null
 						const date = this.apartment.data.dates.find((item) => {
-							const date = dayjs(item.date)
+							const date = dayjs(item.date).subtract(1, 'day')
 							const calendarDate = dayjs(day.date)
 							return date.isSame(calendarDate, 'day')
 						})
@@ -184,10 +184,10 @@
 			)
 
 			const handleSelect = (range) => {
-				console.log('range', range)
+				console.log('handle select range', range)
 				selectedEvent.value = null
-				rangeForm.start = range.startStr
-				rangeForm.end = dayjs(range.endStr).subtract(1, 'day').hour(23).minute(59)
+				rangeForm.start = dayjs(range.startStr).format('DD-MM-YYYY')
+				rangeForm.end = dayjs(range.endStr).subtract(1, 'day').hour(23).minute(59).format('DD-MM-YYYY')
 			}
 			const submitRangeForm = () => {
 				rangeForm
@@ -221,8 +221,8 @@
 
 			const getRangeLabel = computed(() => {
 				dayjs.locale('ru')
-				let start = dayjs(rangeForm.start)
-				let end = dayjs(rangeForm.end)
+				let start = dayjs(rangeForm.start, 'DD-MM-YYYY')
+				let end = dayjs(rangeForm.end, 'DD-MM-YYYY')
 
 				if (start.date() === end.date()) {
 					return `${start.format('DD MMM')}`

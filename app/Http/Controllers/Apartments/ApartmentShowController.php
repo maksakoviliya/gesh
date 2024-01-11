@@ -18,6 +18,7 @@ final class ApartmentShowController extends Controller
     {
         $apartment = $apartment->load([
             'user',
+            'ICalLinks',
             'datePrices' => function ($query) {
                 $query->whereDate('date', '>=', Carbon::now());
             },
@@ -27,6 +28,7 @@ final class ApartmentShowController extends Controller
 
         return Inertia::render('Apartment', [
             'apartment' => new ApartmentResource($apartment),
+            'hasICalLinks' => count($apartment->ICalLinks) > 0
         ]);
     }
 }

@@ -128,8 +128,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property string|null $title_single
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitleSingle($value)
  */
 	final class Category extends \Eloquent {}
 }
