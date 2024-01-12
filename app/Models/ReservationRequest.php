@@ -124,4 +124,12 @@ final class ReservationRequest extends Model
     {
         return $this->belongsTo(Apartment::class);
     }
+
+    public static function getCommission(int $price): int
+    {
+        if ($price >= 100000) {
+            return (int) ceil($price * 0.15);
+        }
+        return (int) ceil($price * 0.15);
+    }
 }

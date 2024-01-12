@@ -38,18 +38,6 @@
 			type: [Object, null],
 		},
 	})
-
-	const markNotificationAsRead = (id) => {
-		router.visit(
-			route('account.notifications.read', {
-				notification: id,
-			}),
-			{
-				method: 'post',
-				only: ['notifications'],
-			}
-		)
-	}
 </script>
 
 <template>
@@ -80,12 +68,9 @@
 				subtitle="Попробуйте посмотерть в другом разделе или измените параметры поиска"
 			/>
 
-			<div
-				v-else
-				class="mt-10"
-			>
+			<template v-else>
+				<div class="h-10"></div>
 				<div
-					class="relative overflow-x-auto shadow-md flex justify-between px-6 py-4 sm:rounded-lg text-sm text-left text-gray-500 dark:text-gray-400"
 					v-for="notification in props.notifications.data"
 					:key="notification.id"
 				>
@@ -97,18 +82,12 @@
 						:notification="notification"
 					/>
 					<div v-else>{{ notification.type }}</div>
-					<button
-						v-if="!notification.read_at"
-						class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-						@click="markNotificationAsRead(notification.id)"
-					>
-						Прочитать
-					</button>
 				</div>
-			</div>
+			</template>
 
 			<Pagination
 				v-if="props.notifications.meta?.last_page > 1"
+				:links="props.notifications.meta.links"
 				class="mt-8 w-full flex justify-center"
 			/>
 		</Container>

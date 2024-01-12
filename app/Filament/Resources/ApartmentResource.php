@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\Apartments\Status;
 use App\Enums\Apartments\Type;
 use App\Filament\Resources\ApartmentResource\Pages;
+use App\Filament\Resources\ApartmentResource\RelationManagers\SideReservationsRelationManager;
 use App\Models\Apartment;
 use App\Models\User;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
@@ -265,7 +266,7 @@ class ApartmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SideReservationsRelationManager::class
         ];
     }
 
