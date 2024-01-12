@@ -103,7 +103,7 @@
 					dayCellContent: (day) => {
 						let price = null
 						const date = this.apartment.data.dates.find((item) => {
-							const date = dayjs(item.date).subtract(1, 'day')
+							const date = dayjs(item.date)
 							const calendarDate = dayjs(day.date)
 							return date.isSame(calendarDate, 'day')
 						})
