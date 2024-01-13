@@ -85,7 +85,7 @@ class ReservationResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('price')->label('Цена')->sortable()
                     ->formatStateUsing(fn($state) => number_format($state, '0', '.', ' ') . '₽'),
-                Tables\Columns\TextColumn::make('created_at')->dateTime('d.m.Y H:i'),
+                Tables\Columns\TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable(),
             ])
             ->filters([
                 //
@@ -97,7 +97,8 @@ class ReservationResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array
