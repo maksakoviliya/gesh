@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Actions\TelegramNotifications;
 
+use App\Enums\Reservation\Status;
 use App\Filament\Resources\ApartmentResource;
 use App\Filament\Resources\ReservationRequestResource;
 use App\Filament\Resources\UserResource;
 use App\Models\Instructor;
+use App\Models\Reservation;
 use App\Models\ReservationRequest;
 use Telegram;
 use Telegram\Bot\Keyboard\Keyboard;
@@ -153,6 +155,106 @@ class SendMessageToAdminGroup
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
                 'text' => 'Ошибка при отправке уведомления о инструкторе!' . '/n/n' . $exception->getMessage(),
+            ]);
+        }
+    }
+
+    public function sendReservationPaid(Reservation $reservation): void
+    {
+        try {
+            $text = "*Бронирование оплачено!* \n\n";
+            $text .= 'Объект: ' . $reservation->apartment->city . ', ' . $reservation->apartment->street . ', ' . $reservation->apartment->building . "\n";
+            $text .= 'Гость: ' . $reservation->user->name;
+            if ($reservation->user->email) {
+                $text .= ', ' . '(' . $reservation->user->email . ')';
+            }
+            if ($reservation->user->phone) {
+                $text .= ', ' . '(' . $reservation->user->phone . ')';
+            }
+            $text .= "\n";
+            $text .= 'Владелец: ' . $reservation->apartment->user->name;
+            if ($reservation->apartment->user->email) {
+                $text .= ', ' . '(' . $reservation->apartment->user->email . ')';
+            }
+            if ($reservation->apartment->user->phone) {
+                $text .= ', ' . '(' . $reservation->apartment->user->phone . ')';
+            }
+            $text .= "\n";
+            $text .= 'Даты: ' . $reservation->start->format('d\.m\.Y') . ' - ' . $reservation->end->format('d\.m\.Y') . "\n";
+
+            $commission = $reservation::getCommission($reservation->price);
+            $text .= 'Цена: ' . $reservation->price . ', Комиссия: ' . $commission . ', Итого: ' . $reservation->price + $commission . "\n";
+
+            $text .= 'Гости: ' . $reservation->total_guests. "\n";
+
+            $url = ReservationRequestResource::getUrl(
+                'edit',
+                [
+                    'record' => $reservation->id,
+                ]);
+
+            $object_url = ApartmentResource::getUrl(
+                'edit',
+                [
+                    'record' => $reservation->apartment->id,
+                ]);
+            $owner_url = UserResource::getUrl(
+                'edit',
+                [
+                    'record' => $reservation->apartment->user->id,
+                ]);
+            $guest_url = UserResource::getUrl(
+                'edit',
+                [
+                    'record' => $reservation->user_id,
+                ]);
+            $button = Keyboard::make(
+                [
+                    'inline_keyboard' => [
+                        [
+                            Keyboard::inlineButton(
+                                [
+                                    'text' => 'Объект',
+                                    'url' => config('app.env') === 'production' ? $object_url : 'https://google.com',
+                                ]
+                            ),
+                        ],
+                        [
+                            Keyboard::inlineButton(
+                                [
+                                    'text' => 'Владелец',
+                                    'url' => config('app.env') === 'production' ? $owner_url : 'https://google.com',
+                                ]
+                            ),
+                            Keyboard::inlineButton(
+                                [
+                                    'text' => 'Гость',
+                                    'url' => config('app.env') === 'production' ? $guest_url : 'https://google.com',
+                                ]
+                            ),
+                        ],
+                        [
+                            Keyboard::inlineButton(
+                                [
+                                    'text' => 'К броинрованию',
+                                    'url' => config('app.env') === 'production' ? $url : 'https://google.com',
+                                ]
+                            ),
+                        ],
+                    ],
+                ]
+            );
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => $text,
+                'reply_markup' => $button,
+                'parse_mode' => 'Markdown',
+            ]);
+        } catch (\Exception $exception) {
+            \Log::info($exception->getMessage());
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => 'Ошибка при отправке уведомления о оплате бронирования!' . '/n/n' . $exception->getMessage(),
             ]);
         }
     }

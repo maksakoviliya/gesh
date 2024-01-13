@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Payments;
 
+use App\Actions\TelegramNotifications\SendMessageToAdminGroup;
 use App\Enums\Reservation\Status;
 use App\Events\Reservation\PaidEvent;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,13 @@ use YooKassa\Model\Notification\NotificationWaitingForCapture;
 
 final class PaymentCallbackController extends Controller
 {
+    protected SendMessageToAdminGroup $telegram;
+
+    public function __construct()
+    {
+        $this->telegram = new SendMessageToAdminGroup();
+    }
+
     public function __invoke(Request $request): void
     {
         Log::info('PaymentCallbackController: '.json_encode($request->all()));
@@ -38,6 +46,9 @@ final class PaymentCallbackController extends Controller
             return;
         }
         $reservation->setStatus(Status::Paid);
+
+        $this->telegram->sendReservationStatusChanged(Status::Paid);
+
         PaidEvent::dispatch($reservation);
     }
 }
