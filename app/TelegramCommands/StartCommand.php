@@ -11,6 +11,8 @@ class StartCommand extends Command
     protected array $aliases = ['join'];
     protected string $description = 'Start Command to get you started';
 
+    public bool $in_menu = false;
+
     public function handle(): void
     {
         $this->replyWithMessage([

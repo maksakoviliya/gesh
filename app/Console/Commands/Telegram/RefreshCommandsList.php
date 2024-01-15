@@ -27,10 +27,12 @@ final class RefreshCommandsList extends Command
             $data = [];
             foreach ($commands as $command) {
 //                $this->info("$command->getName(), $command->getDescription()");
-                $data[] = (object)[
-                    'command' => $command->getName(),
-                    'description' => $command->getDescription(),
-                ];
+                if ($command->in_menu) {
+                    $data[] = (object)[
+                        'command' => $command->getName(),
+                        'description' => $command->getDescription(),
+                    ];
+                }
             }
             $telegram->setMyCommands([
                 'commands' => $data
