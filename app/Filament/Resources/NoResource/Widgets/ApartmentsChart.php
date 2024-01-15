@@ -25,12 +25,15 @@ class ApartmentsChart extends ChartWidget
             )
             ->perDay()
             ->count();
-        $total = 0;
+        $total = Apartment::query()
+            ->where('created_at', '<=', now()->startOfMonth())
+        ->count();
 
         return [
             'datasets' => [
                 [
                     'label' => 'Жилье',
+                    
                     'data' => $data->map(function (TrendValue $value) use (&$total) {
                         $total += $value->aggregate;
 
