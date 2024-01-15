@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\SocialAuthProvider;
+use Arr;
 use Database\Factories\UserFactory;
 use Eloquent;
 use Filament\Models\Contracts\FilamentUser;
@@ -19,11 +20,13 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
+use Propaganistas\LaravelPhone\PhoneNumber;
 use Random\RandomException;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -34,6 +37,7 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @property string $id
  * @property string $name
+ * @property string $phone
  * @property string|null $email
  * @property string|null $avatar
  * @property |null $phone
@@ -119,6 +123,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'password',
         'social_id',
         'telegram_chat_id',
+        'email_verified_at',
         'social_provider',
     ];
 
@@ -181,5 +186,27 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function telegramAuthCodes(): HasMany
     {
         return $this->hasMany(TelegramAuthCode::class);
+    }
+
+    public function updateFromArray(array $data): bool
+    {
+        $updates = [];
+        if (($name = Arr::get($data, 'name')) !== $this->name) {
+            $updates['name'] = $name;
+        }
+        /** @var PhoneNumber $phone */
+        $phone = Arr::get($data, 'phone');
+        if ($phone?->formatE164() !== $this->phone?->formatE164()) {
+            $updates['phone'] = $phone;
+        }
+        if (($email = Arr::get($data, 'email')) !== $this->email) {
+            $updates['email'] = $email;
+            $updates['email_verified_at'] = null;
+        }
+        if (Arr::has($data, 'password')) {
+            $updates['password'] =Hash::make(Arr::get($data, 'password'));
+        }
+
+        return $this->update($updates);
     }
 }

@@ -19,7 +19,7 @@
 		class="col-span-1 cursor-pointer group"
 		@click="handleClick"
 	>
-		<div class="flex flex-col gap-2 w-full">
+		<div class="flex flex-col gap-2 w-full h-full">
 			<div class="aspect-square w-full relative overflow-hidden rounded-xl">
 				<img
 					class="object-cover h-full w-full group-hover:scale-110 transition"
@@ -28,7 +28,7 @@
 					:alt="props.apartment.title"
 				/>
 			</div>
-			<div class="font-semibold text-lg">
+			<div class="font-semibold text-lg dark:text-slate-200">
 				{{ props.apartment.title ?? props.apartment.category?.title_single }}
 				({{ props.apartment.city }})
 			</div>
@@ -38,7 +38,7 @@
 			>
 				{{ props.apartment.category?.title_single ?? 'Нет типа' }}
 			</div>
-			<div class="flex flex-row items-center gap-1">
+			<div class="flex flex-row items-center gap-1 mt-auto">
 				<!--				<div class="font-semibold">-->
 				<!--					{{ props.apartment.price.toLocaleString('ru') }}₽-->
 				<!--					<span class="text-neutral-500 font-light text-sm">ночь</span>-->

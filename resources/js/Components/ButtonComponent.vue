@@ -5,9 +5,13 @@
 		label: String,
 		onClick: Function,
 		disabled: Boolean | null,
-		outline: Boolean | null,
+		outline: {
+			type: [Boolean, null],
+		},
 		small: Boolean | null,
-		autoWidth: Boolean | null,
+		autoWidth: {
+			type: [Boolean, null],
+		},
 		fontLight: Boolean | null,
 		circle: Boolean | null,
 		bgClass: {

@@ -47,11 +47,21 @@
 <template>
 	<AppLayout>
 		<Container :sm="true">
-			<Heading
-				class="mt-12"
-				title="Аккаунт"
-				:subtitle="subtitle"
-			/>
+			<div class="flex mt-12 w-full flex-col md:flex-row justify-between">
+				<Heading
+					title="Аккаунт"
+					:subtitle="subtitle"
+				/>
+				<div class="text-right">
+					<div class="dark:text-slate-300">У нас есть телеграм бот!</div>
+					<a
+						href="https://t.me/gesh_resort_bot"
+						target="_blank"
+						class="dark:text-white hover:underline cursor-pointer text-sm font-bold"
+						>@gesh_resort_bot</a
+					>
+				</div>
+			</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-10 gap-6">
 				<Link
 					:href="route(`account.${section.key}`)"

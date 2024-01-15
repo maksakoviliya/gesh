@@ -1,5 +1,5 @@
 <script setup>
-	import { watch } from 'vue'
+	import { onMounted, watch } from 'vue'
 	import { useIMask } from 'vue-imask'
 
 	const props = defineProps({
@@ -20,6 +20,10 @@
 	const emit = defineEmits(['update:modelValue'])
 	watch(masked, (value) => {
 		emit('update:modelValue', value)
+	})
+
+	onMounted(() => {
+		masked.value = props.modelValue ?? ''
 	})
 </script>
 

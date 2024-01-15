@@ -6,20 +6,52 @@ namespace App\Http\Requests\Account\Profile;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Propaganistas\LaravelPhone\PhoneNumber;
+use \Illuminate\Validation\Rules\Password;
+
 
 final class UpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return Auth::check();
+        return Auth::id() === $this->input('account');
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $phone = new PhoneNumber($this->input('phone'), 'RU');
+        if ($phone->isValid()) {
+            $this->merge([
+                'phone' => $phone,
+            ]);
+        }
+        $this->replace(array_filter($this->all()));
     }
 
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required|max:155',
-            'email' => 'sometimes|required|email|unique:users,email|max:155',
-            'phone' => 'sometimes|required|phone:RU|unique:users,phone|max:155',
+            'name' => 'required|max:155',
+            'email' => [
+                'required',
+                'email',
+                'max:155',
+                Rule::unique('users')->ignore($this->user()->id)
+            ],
+            'phone' => [
+                'required',
+                'phone:RU',
+                'max:155',
+                Rule::unique('users')->ignore($this->user()->id)
+            ],
+
+            'old_password' => 'sometimes|max:155|current_password:web',
+            'password' => [
+                Rule::requiredIf(fn() => $this->input('old_password')),
+                new Password(6),
+                'confirmed'
+            ]
         ];
     }
 }

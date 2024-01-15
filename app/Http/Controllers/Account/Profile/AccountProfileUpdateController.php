@@ -13,7 +13,7 @@ final class AccountProfileUpdateController extends Controller
     public function __invoke(UpdateRequest $request)
     {
         $user = Auth::user();
-        $user->update($request->validated());
+        $user->updateFromArray($request->validated());
 
         return redirect()->back()->with('success', 'Данные профиля успешно обновлены!');
     }
