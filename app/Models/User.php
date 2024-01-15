@@ -157,7 +157,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function routeNotificationForTelegram()
     {
-        return $this->telegram_id ?? 381110669;
+        return $this->telegram_id;
     }
 
     public function generateTelegramCode(string $chat_id): int
