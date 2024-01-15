@@ -25,7 +25,6 @@ final class TelegramAuthCode extends Model
             ->where('chat_id', $chat_id)
             ->where('expires_at', '>', Carbon::now())
             ->first();
-        \Log::info('Auth code: ' . $auth_code->id);
         if (!$auth_code) {
             Telegram::sendMessage([
                 'chat_id' => $chat_id,
