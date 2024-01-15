@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\SocialAuthProvider;
 use Database\Factories\UserFactory;
+use Dotenv\Util\Str;
 use Eloquent;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -24,6 +25,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
+use Random\RandomException;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -108,8 +110,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array<int, string>
      */
     protected $fillable = [
@@ -119,11 +119,12 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'avatar',
         'password',
         'social_id',
+        'telegram_chat_id',
         'social_provider',
     ];
 
     protected $casts = [
-        'phone' => E164PhoneNumberCast::class.':RU',
+        'phone' => E164PhoneNumberCast::class . ':RU',
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
         'social_provider' => SocialAuthProvider::class,
@@ -153,5 +154,33 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function apartments(): HasMany
     {
         return $this->hasMany(Apartment::class);
+    }
+
+    public function routeNotificationForTelegram()
+    {
+        return $this->telegram_id ?? 381110669;
+    }
+
+
+    public function generateTelegramCode(string $chat_id): int
+    {
+        try {
+            $code = random_int(1000, 9999);
+        } catch (RandomException $e) {
+            $code = 1010;
+        }
+        TelegramAuthCode::query()
+            ->create([
+                'code' => $code,
+                'user_id' => $this->id,
+                'chat_id' => $chat_id,
+                'expires_at' => Carbon::now()->addHour()
+            ]);
+        return $code;
+    }
+
+    public function telegramAuthCodes(): HasMany
+    {
+        return $this->hasMany(TelegramAuthCode::class);
     }
 }

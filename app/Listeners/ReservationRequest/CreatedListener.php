@@ -37,7 +37,11 @@ final class CreatedListener
 
         $owner = $apartment->user;
 
-        $owner->notify(new CreatedNotification($reservation_request));
+        try {
+            $owner->notify(new CreatedNotification($reservation_request));
+        } catch (\Throwable $exception) {
+            \Log::error('Request Reservation Created Notification to owner : ' . $owner->id . ', Error: ' . $exception->getMessage());
+        };
 
         $this->telegram->sendNewReservationRequestMessage($reservation_request);
     }

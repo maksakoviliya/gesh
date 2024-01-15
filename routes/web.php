@@ -44,7 +44,10 @@ use App\Http\Controllers\Social\SocialCallbackController;
 use App\Http\Controllers\Social\SocialRedirectController;
 use App\Http\Controllers\Transfer\TransferIndexController;
 use App\Http\Controllers\Transfer\TransferScheduleController;
+use App\Http\Controllers\Telegram\TelegramWebhookController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('{token}/webhook', TelegramWebhookController::class);
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/map', HomeMapController::class)->name('home.map');

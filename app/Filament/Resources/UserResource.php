@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Support\Colors\Color;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 
@@ -44,6 +45,13 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
+                Tables\Columns\TextColumn::make('telegram_chat_id')
+                    ->badge()
+                    ->color(Color::Blue)
+                    ->sortable()
+                    ->label('Телеграм бот')
+                    ->state(fn(User $record) => $record->telegram_chat_id ? 'Подключен' : null)
+                    ->icon('heroicon-o-check-circle'),
                 Tables\Columns\TextColumn::make('created_at')->date('d.m.Y'),
             ])
             ->filters([

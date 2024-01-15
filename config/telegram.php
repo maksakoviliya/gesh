@@ -1,6 +1,6 @@
 <?php
 
-use Telegram\Bot\Commands\HelpCommand;
+use App\TelegramCommands\StartCommand;
 
 return [
     /*
@@ -37,7 +37,7 @@ return [
             'webhook_url' => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
             'chat_id' => env('CHAT_ID'),
             'commands' => [
-                //Acme\Project\Commands\MyTelegramBot\BotCommand::class
+                StartCommand::class,
             ],
         ],
 
@@ -127,7 +127,7 @@ return [
     |
     */
     'commands' => [
-        HelpCommand::class,
+//        Telegram\Bot\Commands\HelpCommand::class,
     ],
 
     /*
@@ -208,7 +208,7 @@ return [
     |
     */
     'shared_commands' => [
-        // 'start' => Acme\Project\Commands\StartCommand::class,
+//         'start' => StartCommand::class,
         // 'stop' => Acme\Project\Commands\StopCommand::class,
         // 'status' => Acme\Project\Commands\StatusCommand::class,
     ],

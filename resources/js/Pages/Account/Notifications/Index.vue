@@ -10,6 +10,7 @@
 	import EmptyState from '@/Components/EmptyState.vue'
 	import Pagination from '@/Components/Pagination.vue'
 	import NewReservationRequestNotification from '@/Pages/Account/Notifications/NewReservationRequestNotification.vue'
+	import NewTelegramAuthCodeGeneratedNotification from '@/Pages/Account/Notifications/NewTelegramAuthCodeGeneratedNotification.vue'
 
 	const page = usePage()
 	const type = computed(() => {
@@ -78,6 +79,13 @@
 						v-if="
 							notification.type === 'App\\Notifications\\ReservationRequest\\CreatedNotification' &&
 							notification.data?.reservation_request?.apartment
+						"
+						:notification="notification"
+					/>
+					<NewTelegramAuthCodeGeneratedNotification
+						v-else-if="
+							notification.type ===
+							'App\\Notifications\\Telegram\\NewTelegramAuthCodeGeneratedNotification'
 						"
 						:notification="notification"
 					/>

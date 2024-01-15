@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Notifications\ReservationRequest;
 
+use App\Http\Resources\ReservationRequestResource;
+use App\Models\Chat\Chat;
 use App\Models\ReservationRequest;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Telegram\TelegramMessage;
 
 class CreatedNotification extends Notification
 {
@@ -19,7 +23,40 @@ class CreatedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['mail', 'database', 'telegram'];
+    }
+
+    public function toTelegram(User $notifiable)
+    {
+        if (!$notifiable->telegram_chat_id) {
+            return;
+        }
+
+        $chat = Chat::query()
+            ->where('apartment_id', $this->reservationRequest?->apartment_id)
+            ->where('user_id', $this->reservationRequest?->user?->id)
+            ->first();
+
+        $url = route('account.apartments.owner.chat', [
+            'apartment' => $this->reservationRequest?->apartment_id,
+            'chat' => $chat->id,
+        ]);
+
+
+        $commission = ReservationRequest::getCommission($this->reservationRequest?->price);
+
+        return TelegramMessage::create()
+            ->content("*Новый запрос на бронирование!*\n")
+            ->line('Объект: ' . $this->reservationRequest?->apartment->city . ', ' . $this->reservationRequest?->apartment->street . ', ' . $this->reservationRequest?->apartment->building)
+            ->line('Гость: ' . $this->reservationRequest?->user->name)
+            ->line('Даты: ' . $this->reservationRequest?->start->format('d\.m\.Y') . ' - ' . $this->reservationRequest?->end->format('d\.m\.Y'))
+            ->line('Цена: ' . $this->reservationRequest?->price . ', Комиссия: ' . $commission . ', Итого: ' . $this->reservationRequest?->price + $commission)
+            ->line('Гости: ' . $this->reservationRequest?->total_guests)
+            ->button(
+                'К диалогу',
+                config('app.env') === 'production' ? $url : 'https://google.com'
+            );
+
     }
 
     public function toMail(object $notifiable): MailMessage

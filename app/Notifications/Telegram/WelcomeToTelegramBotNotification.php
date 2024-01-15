@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Notifications\Telegram;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+use NotificationChannels\Telegram\TelegramMessage;
+
+final class WelcomeToTelegramBotNotification extends Notification
+{
+    use Queueable;
+
+    public function __construct()
+    {
+        //
+    }
+
+    public function via(object $notifiable): array
+    {
+        return ['telegram'];
+    }
+
+    public function toTelegram()
+    {
+        return TelegramMessage::create()
+            ->content("Отлично! Теперь вы сможете видеть уведомления в этом боте.");
+    }
+
+
+    public function toArray(object $notifiable): array
+    {
+        return [
+            //
+        ];
+    }
+}
