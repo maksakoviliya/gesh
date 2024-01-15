@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -30,6 +31,10 @@ class CreateNewUser implements CreatesNewUsers
                 $replacement,
                 Arr::get($input, 'phone')
             );
+            if ($phone = Arr::get($input, 'phone')) {
+                $phone = new PhoneNumber($phone, 'RU');
+                $input['phone'] = $phone->formatE164();
+            }
         }
         Validator::make($input, [
             'phone' => ['sometimes', 'required', 'string', 'max:20', 'unique:users', 'phone:RU'],
