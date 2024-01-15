@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use JsonException;
 use NotificationChannels\Telegram\TelegramMessage;
 
 class CreatedNotification extends Notification
@@ -25,10 +26,15 @@ class CreatedNotification extends Notification
         return ['mail', 'database', 'telegram'];
     }
 
-    public function toTelegram(User $notifiable)
+    /**
+     * @param User $notifiable
+     * @return TelegramMessage
+     * @throws JsonException
+     */
+    public function toTelegram(User $notifiable): TelegramMessage
     {
         if (! $notifiable->telegram_chat_id) {
-            return;
+           throw new JsonException('User has no Telegram chat!');
         }
 
         $chat = Chat::query()
