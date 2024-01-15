@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Notifications\ReservationRequest;
 
-use App\Http\Resources\ReservationRequestResource;
 use App\Models\Chat\Chat;
 use App\Models\ReservationRequest;
 use App\Models\User;
@@ -28,7 +27,7 @@ class CreatedNotification extends Notification
 
     public function toTelegram(User $notifiable)
     {
-        if (!$notifiable->telegram_chat_id) {
+        if (! $notifiable->telegram_chat_id) {
             return;
         }
 
@@ -42,16 +41,15 @@ class CreatedNotification extends Notification
             'chat' => $chat->id,
         ]);
 
-
         $commission = ReservationRequest::getCommission($this->reservationRequest?->price);
 
         return TelegramMessage::create()
             ->content("*Новый запрос на бронирование!*\n")
-            ->line('Объект: ' . $this->reservationRequest?->apartment->city . ', ' . $this->reservationRequest?->apartment->street . ', ' . $this->reservationRequest?->apartment->building)
-            ->line('Гость: ' . $this->reservationRequest?->user->name)
-            ->line('Даты: ' . $this->reservationRequest?->start->format('d\.m\.Y') . ' - ' . $this->reservationRequest?->end->format('d\.m\.Y'))
-            ->line('Цена: ' . $this->reservationRequest?->price . ', Комиссия: ' . $commission . ', Итого: ' . $this->reservationRequest?->price + $commission)
-            ->line('Гости: ' . $this->reservationRequest?->total_guests)
+            ->line('Объект: '.$this->reservationRequest?->apartment->city.', '.$this->reservationRequest?->apartment->street.', '.$this->reservationRequest?->apartment->building)
+            ->line('Гость: '.$this->reservationRequest?->user->name)
+            ->line('Даты: '.$this->reservationRequest?->start->format('d\.m\.Y').' - '.$this->reservationRequest?->end->format('d\.m\.Y'))
+            ->line('Цена: '.$this->reservationRequest?->price.', Комиссия: '.$commission.', Итого: '.$this->reservationRequest?->price + $commission)
+            ->line('Гости: '.$this->reservationRequest?->total_guests)
             ->button(
                 'К диалогу',
                 config('app.env') === 'production' ? $url : 'https://google.com'

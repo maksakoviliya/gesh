@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Notifications\Telegram;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramMessage;
 
@@ -25,9 +24,10 @@ final class NewTelegramAuthCodeGeneratedNotification extends Notification
     public function toTelegram()
     {
         $url = route('account.notifications.index');
+
         return TelegramMessage::create()
-            ->content("Введите его код для авторизации.")
-            ->line("Найти его можно на сайте, в разделе уведомления.")
+            ->content('Введите его код для авторизации.')
+            ->line('Найти его можно на сайте, в разделе уведомления.')
             ->button('Все уведомления', $url);
     }
 

@@ -266,7 +266,7 @@ class ApartmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            SideReservationsRelationManager::class
+            SideReservationsRelationManager::class,
         ];
     }
 

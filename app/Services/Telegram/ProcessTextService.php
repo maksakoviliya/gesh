@@ -14,21 +14,23 @@ class ProcessTextService
     public function processPhone(string $text, string $chat_id): void
     {
         $phone = new PhoneNumber($text, 'RU');
-        if (!$phone->isValid()) {
+        if (! $phone->isValid()) {
             Telegram::sendMessage([
                 'chat_id' => $chat_id,
                 'text' => 'Ошибка при обработке номера, попробуйте еще раз...',
             ]);
+
             return;
         }
         $user = User::query()
             ->where('phone', $phone->formatE164())
             ->first();
-        if (!$user) {
+        if (! $user) {
             Telegram::sendMessage([
                 'chat_id' => $chat_id,
                 'text' => 'Пользователь с таким номером телефона не обнаружен.',
             ]);
+
             return;
         }
 
@@ -38,14 +40,14 @@ class ProcessTextService
 
     public function processText(string $text, string $chat_id)
     {
-        \Log::info('Process text: ' . $text);
+        \Log::info('Process text: '.$text);
         if (strlen($text) === 4) {
-           $user = TelegramAuthCode::processCode($text, $chat_id);
-           \Log::info('User: ' . json_encode($user));
-           if (!$user) {
-               return;
-           }
-           $user->notify(new WelcomeToTelegramBotNotification());
+            $user = TelegramAuthCode::processCode($text, $chat_id);
+            \Log::info('User: '.json_encode($user));
+            if (! $user) {
+                return;
+            }
+            $user->notify(new WelcomeToTelegramBotNotification());
         }
     }
 }

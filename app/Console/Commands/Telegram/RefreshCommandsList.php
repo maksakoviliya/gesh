@@ -26,21 +26,23 @@ final class RefreshCommandsList extends Command
 
             $data = [];
             foreach ($commands as $command) {
-//                $this->info("$command->getName(), $command->getDescription()");
+                //                $this->info("$command->getName(), $command->getDescription()");
                 if ($command->in_menu) {
-                    $data[] = (object)[
+                    $data[] = (object) [
                         'command' => $command->getName(),
                         'description' => $command->getDescription(),
                     ];
                 }
             }
             $telegram->setMyCommands([
-                'commands' => $data
+                'commands' => $data,
             ]);
             $this->info('Finished telegram commands sync');
+
             return ConsoleCommand::SUCCESS;
         } catch (TelegramSDKException $e) {
             $this->error($e->getMessage());
+
             return ConsoleCommand::INVALID;
         }
     }

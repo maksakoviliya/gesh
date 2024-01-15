@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Telegram;
 
-use App\Actions\TelegramBot\ProceessTextInput;
 use App\Enums\Telegram\EntityType;
 use App\Http\Controllers\Controller;
 use App\Services\Telegram\ProcessTextService;
@@ -17,7 +16,7 @@ class TelegramWebhookController extends Controller
 {
     public function __invoke(Request $request, ProcessTextService $service): string
     {
-        Log::info(Carbon::now()->format('d.m.Y H:i:s') . ': ' . json_encode($request->all()));
+        Log::info(Carbon::now()->format('d.m.Y H:i:s').': '.json_encode($request->all()));
         $updates = Telegram::commandsHandler(true);
 
         try {

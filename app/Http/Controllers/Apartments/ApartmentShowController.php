@@ -28,7 +28,7 @@ final class ApartmentShowController extends Controller
 
         return Inertia::render('Apartment', [
             'apartment' => new ApartmentResource($apartment),
-            'hasICalLinks' => count($apartment->ICalLinks) > 0
+            'hasICalLinks' => count($apartment->ICalLinks) > 0,
         ]);
     }
 }

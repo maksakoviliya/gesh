@@ -5,7 +5,6 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\SocialAuthProvider;
 use Database\Factories\UserFactory;
-use Dotenv\Util\Str;
 use Eloquent;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -124,7 +123,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     ];
 
     protected $casts = [
-        'phone' => E164PhoneNumberCast::class . ':RU',
+        'phone' => E164PhoneNumberCast::class.':RU',
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
         'social_provider' => SocialAuthProvider::class,
@@ -161,7 +160,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->telegram_id ?? 381110669;
     }
 
-
     public function generateTelegramCode(string $chat_id): int
     {
         try {
@@ -174,8 +172,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
                 'code' => $code,
                 'user_id' => $this->id,
                 'chat_id' => $chat_id,
-                'expires_at' => Carbon::now()->addHour()
+                'expires_at' => Carbon::now()->addHour(),
             ]);
+
         return $code;
     }
 

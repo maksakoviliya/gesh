@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\Apartments\Status;
-use App\Enums\ReservationRequest\Status as ReservationRequestStatus;
 use App\Enums\Reservation\Status as ReservationStatus;
+use App\Enums\ReservationRequest\Status as ReservationRequestStatus;
 
 return [
     Status::Draft->value => 'Черновик',

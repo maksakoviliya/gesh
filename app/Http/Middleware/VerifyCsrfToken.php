@@ -9,6 +9,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 final class VerifyCsrfToken extends Middleware
 {
     protected $except = [
-        'tg_bot_token_123/webhook'
+        'tg_bot_token_123/webhook',
     ];
 }

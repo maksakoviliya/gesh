@@ -127,7 +127,7 @@ return [
     |
     */
     'commands' => [
-//        Telegram\Bot\Commands\HelpCommand::class,
+        //        Telegram\Bot\Commands\HelpCommand::class,
     ],
 
     /*
@@ -208,7 +208,7 @@ return [
     |
     */
     'shared_commands' => [
-//         'start' => StartCommand::class,
+        //         'start' => StartCommand::class,
         // 'stop' => Acme\Project\Commands\StopCommand::class,
         // 'status' => Acme\Project\Commands\StatusCommand::class,
     ],

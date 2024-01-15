@@ -8,6 +8,6 @@ class ProcessPhone
 {
     public function handle(string $text)
     {
-        \Log::info('Phone is: ' . $text);
+        \Log::info('Phone is: '.$text);
     }
 }

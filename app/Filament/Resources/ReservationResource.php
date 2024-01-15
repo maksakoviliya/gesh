@@ -30,10 +30,10 @@ class ReservationResource extends Resource
                 TextInput::make('id')->readOnly(),
                 Select::make('status')
                     ->options([
-                        Status::Paid->value => __('statuses.reservation.' . Status::Paid->value),
-                        Status::PaymentWaiting->value => __('statuses.reservation.' . Status::PaymentWaiting->value),
-                        Status::FirstPayment->value => __('statuses.reservation.' . Status::FirstPayment->value),
-                        Status::Pending->value => __('statuses.reservation.' . Status::Pending->value),
+                        Status::Paid->value => __('statuses.reservation.'.Status::Paid->value),
+                        Status::PaymentWaiting->value => __('statuses.reservation.'.Status::PaymentWaiting->value),
+                        Status::FirstPayment->value => __('statuses.reservation.'.Status::FirstPayment->value),
+                        Status::Pending->value => __('statuses.reservation.'.Status::Pending->value),
                     ]),
                 Select::make('user')
                     ->searchable()
@@ -60,10 +60,10 @@ class ReservationResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')->hidden(),
                 Tables\Columns\TextColumn::make('status')
-                    ->formatStateUsing(fn($state) => __('statuses.reservation.' . $state->value))
+                    ->formatStateUsing(fn ($state) => __('statuses.reservation.'.$state->value))
                     ->sortable()
                     ->badge()
-                    ->color(fn($state): string => match ($state) {
+                    ->color(fn ($state): string => match ($state) {
                         Status::Pending => 'gray',
                         Status::PaymentWaiting => 'warning',
                         Status::FirstPayment => 'success',
@@ -71,20 +71,20 @@ class ReservationResource extends Resource
                 SpatieMediaLibraryImageColumn::make('apartment.media')->label('Объект')
                     ->limit(1),
                 Tables\Columns\TextColumn::make('apartment.category.title_single')->label('')
-                    ->description(fn(Reservation $record): string => $record->apartment->id)
+                    ->description(fn (Reservation $record): string => $record->apartment->id)
                     ->url(function (Reservation $record) {
                         return route('apartment', [
-                            'apartment' => $record->apartment->id
+                            'apartment' => $record->apartment->id,
                         ]);
                     })
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('user.name')->label('Гость')
-                    ->description(fn(Reservation $record): string => $record->user->phone ?? $record->user->email)
+                    ->description(fn (Reservation $record): string => $record->user->phone ?? $record->user->email)
                     ->url(function (Reservation $record) {
                         return UserResource::getUrl('edit', ['record' => $record->user->id]);
                     }),
                 Tables\Columns\TextColumn::make('price')->label('Цена')->sortable()
-                    ->formatStateUsing(fn($state) => number_format($state, '0', '.', ' ') . '₽'),
+                    ->formatStateUsing(fn ($state) => number_format($state, '0', '.', ' ').'₽'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable(),
             ])
             ->filters([

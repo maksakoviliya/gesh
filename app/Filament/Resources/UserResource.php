@@ -8,8 +8,8 @@ use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Support\Colors\Color;
+use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 
@@ -50,7 +50,7 @@ class UserResource extends Resource
                     ->color(Color::Blue)
                     ->sortable()
                     ->label('Телеграм бот')
-                    ->state(fn(User $record) => $record->telegram_chat_id ? 'Подключен' : null)
+                    ->state(fn (User $record) => $record->telegram_chat_id ? 'Подключен' : null)
                     ->icon('heroicon-o-check-circle'),
                 Tables\Columns\TextColumn::make('created_at')->date('d.m.Y'),
             ])

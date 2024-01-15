@@ -20,10 +20,7 @@ final class ClearUnpayiedReservations extends Command
     {
         $this->info('Start deleting');
         $reservations = Reservation::query()
-            ->whereIn('status', [
-                Status::Pending,
-                Status::PaymentWaiting,
-            ])
+            ->where('status', Status::Pending)
             ->where('created_at', '<', Carbon::now()->subHours(5))
             ->get();
 
@@ -31,7 +28,7 @@ final class ClearUnpayiedReservations extends Command
             ReservationRequest::query()
                 ->where('reservation_id', $reservation->id)
                 ->update([
-                    'reservation_id' => null
+                    'reservation_id' => null,
                 ]);
             $reservation->delete();
         }

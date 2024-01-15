@@ -15,37 +15,40 @@ final class TelegramAuthCode extends Model
 
     protected $guarded = [
         'id',
-        'created_at'
+        'created_at',
     ];
 
-    public static function processCode(int|string $code, string $chat_id): User|null
+    public static function processCode(int|string $code, string $chat_id): ?User
     {
         $auth_code = TelegramAuthCode::query()
             ->where('code', $code)
             ->where('chat_id', $chat_id)
             ->where('expires_at', '>', Carbon::now())
             ->first();
-        if (!$auth_code) {
+        if (! $auth_code) {
             Telegram::sendMessage([
                 'chat_id' => $chat_id,
                 'text' => 'Некорректный код. Попробуйте еще раз',
             ]);
+
             return null;
         }
         $user = User::query()
             ->where('id', $auth_code->user_id)
             ->first();
-        if (!$user) {
+        if (! $user) {
             Telegram::sendMessage([
                 'chat_id' => $chat_id,
                 'text' => 'Некорректный код. Попробуйте еще раз',
             ]);
+
             return null;
         }
         $user->telegramAuthCodes()->delete();
         $user->update([
-            'telegram_chat_id' => $chat_id
+            'telegram_chat_id' => $chat_id,
         ]);
+
         return $user;
     }
 }

@@ -130,6 +130,7 @@ final class ReservationRequest extends Model
         if ($price >= 100000) {
             return (int) ceil($price * 0.15);
         }
+
         return (int) ceil($price * 0.15);
     }
 }

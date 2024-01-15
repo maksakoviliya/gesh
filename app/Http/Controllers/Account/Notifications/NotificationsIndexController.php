@@ -25,7 +25,8 @@ final class NotificationsIndexController extends Controller
             ->latest()
             ->paginate($request->query('per_page', 20))
             ->withQueryString();
-//dd(NotificationResource::collection($notifications));
+
+        //dd(NotificationResource::collection($notifications));
         return Inertia::render('Account/Notifications/Index', [
             'notifications' => fn () => NotificationResource::collection($notifications),
         ]);

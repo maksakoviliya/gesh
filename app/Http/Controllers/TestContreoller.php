@@ -31,21 +31,21 @@ class TestContreoller extends Controller
         $commands = Telegram::getCommands();
         $telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
         $telegram->setMyCommands([
-          'commands' =>  [
-              (object) [
-                  'command' => 'help',
-                  'description' =>'Help command'
-              ],
-              (object) [
-                  'command' => 'start',
-                  'description' =>'Начать'
-              ]
-          ]
+            'commands' => [
+                (object) [
+                    'command' => 'help',
+                    'description' => 'Help command',
+                ],
+                (object) [
+                    'command' => 'start',
+                    'description' => 'Начать',
+                ],
+            ],
         ]);
-//        $res = Telegram::addCommand(StartCommand::class);
+        //        $res = Telegram::addCommand(StartCommand::class);
         dd($telegram);
-//        $response = Telegram::bot()->getMe();
-//        dd($response);
+        //        $response = Telegram::bot()->getMe();
+        //        dd($response);
         //        $url = ReservationRequestResource::getUrl(
         //            'edit',
         //            [
