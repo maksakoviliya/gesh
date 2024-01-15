@@ -200,7 +200,7 @@
 						{{ props.apartment.data.description }}
 					</div>
 					<div
-						class="mt-4 py-4 border-t dark:border-slate-600"
+						class="mt-4 md:py-4 border-t dark:border-slate-600"
 						v-if="props.apartment.data.lon && props.apartment.data.lat"
 					>
 						<Map
@@ -208,6 +208,7 @@
 							:lat="props.apartment.data.lat"
 							:is-input="false"
 							:markers="markers"
+							class="hidden md:block"
 						/>
 					</div>
 				</div>
@@ -366,6 +367,13 @@
 						</div>
 					</div>
 				</div>
+				<Map
+					:lon="props.apartment.data.lon"
+					:lat="props.apartment.data.lat"
+					:is-input="false"
+					:markers="markers"
+					class="md:hidden w-full"
+				/>
 			</div>
 		</Container>
 	</AppLayout>
