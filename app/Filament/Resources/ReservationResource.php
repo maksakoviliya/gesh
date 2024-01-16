@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Enums\Reservation\Status;
 use App\Filament\Resources\ReservationResource\Pages;
 use App\Models\Reservation;
+use Filament\Support\Colors\Color;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -93,6 +95,11 @@ class ReservationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('voucher')
+                    ->label('Ваучер')
+                    ->color(Color::Blue)
+                    ->url(fn (Reservation $record): string => route('account.reservations.voucher', $record->id))
+                    ->openUrlInNewTab()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
