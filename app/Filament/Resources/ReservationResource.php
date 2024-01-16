@@ -94,12 +94,13 @@ class ReservationResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 Action::make('voucher')
                     ->label('Ваучер')
                     ->color(Color::Blue)
+                    ->disabled(fn (Reservation $record): bool => $record->status !== Status::Paid)
                     ->url(fn (Reservation $record): string => route('account.reservations.voucher', $record->id))
-                    ->openUrlInNewTab()
+                    ->openUrlInNewTab(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
