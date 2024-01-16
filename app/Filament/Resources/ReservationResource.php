@@ -89,17 +89,16 @@ class ReservationResource extends Resource
                 Tables\Columns\TextColumn::make('price')->label('Цена')->sortable()
                     ->formatStateUsing(fn ($state) => number_format($state, '0', '.', ' ').'₽'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable(),
+                Tables\Columns\TextColumn::make('voucher')
+                    ->state(fn (Reservation $record) => $record->status !== Status::Paid ? null : 'Ваучер')
+                    ->icon('heroicon-o-newspaper')
+                    ->url(fn (Reservation $record): string => route('account.reservations.voucher', $record->id))
+                    ->openUrlInNewTab(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Action::make('voucher')
-                    ->label('Ваучер')
-                    ->color(Color::Blue)
-                    ->disabled(fn (Reservation $record): bool => $record->status !== Status::Paid)
-                    ->url(fn (Reservation $record): string => route('account.reservations.voucher', $record->id))
-                    ->openUrlInNewTab(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
