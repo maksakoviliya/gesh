@@ -12,24 +12,31 @@ use Illuminate\Console\Command;
 
 final class ClearUnpayiedReservations extends Command
 {
-    protected $signature = 'clear-unpayied-reservations';
+    protected $signature = 'clear-unpayied-reservations {--A|all}';
 
     protected $description = 'Delete all old and unpayied reservations';
 
     public function handle()
     {
         $this->info('Start deleting');
+
         $reservations = Reservation::query()
             ->where('status', Status::Pending)
-            ->where('created_at', '<', Carbon::now()->subHours(5))
+            ->when(!$this->option('all'), function ($q) {
+                $q->where('created_at', '<', Carbon::now()->subHours(5));
+            })
             ->get();
-
         foreach ($reservations as $reservation) {
-            ReservationRequest::query()
+            $reservation_requests = ReservationRequest::query()
                 ->where('reservation_id', $reservation->id)
-                ->update([
+                ->get();
+            foreach ($reservation_requests as $reservation_request) {
+                $reservation_request->update([
                     'reservation_id' => null,
+                    'status' => \App\Enums\ReservationRequest\Status::Rejected,
+                    'status_text' => 'Закончился период ожидания оплаты'
                 ]);
+            }
             $reservation->delete();
         }
         $this->info('Finished deleting');

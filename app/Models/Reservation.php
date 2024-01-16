@@ -121,4 +121,13 @@ final class Reservation extends Model
     {
         return "Бронирование #{$this->id}. C {$this->start->format('d.m.Y')} по {$this->end->format('d.m.Y')}";
     }
+
+    public static function getCommission(int $price): int
+    {
+        if ($price >= 100000) {
+            return (int) ceil($price * 0.15);
+        }
+
+        return (int) ceil($price * 0.15);
+    }
 }

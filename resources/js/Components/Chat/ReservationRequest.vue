@@ -91,6 +91,9 @@
 	const totalPrice = computed(() => {
 		return request.value.price + servicePrice.value
 	})
+	const firstPayment = computed(() => {
+		return Math.ceil(totalPrice.value * 0.3)
+	})
 </script>
 
 <template>
@@ -116,16 +119,13 @@
 			Взрослые: {{ request.guests }}
 			<span v-if="request.children > 0"> | Дети: {{ request.children }}</span>
 		</div>
-		<div class="flex items-center gap-2">
-			<div class="font-light text-neutral-800 dark:text-slate-200">
-				Цена: {{ request.price.toLocaleString() }}₽
-			</div>
+		<div class="flex items-center gap-2 flex-wrap">
+			<div class="font-light text-neutral-800 dark:text-slate-200">Цена: {{ totalPrice.toLocaleString() }}₽</div>
 			|
 			<div class="font-light text-neutral-800 dark:text-slate-200">
-				Сервисный сбор: {{ servicePrice.toLocaleString() }}₽
+				Первоначальный платеж: {{ firstPayment.toLocaleString() }}₽
 			</div>
 		</div>
-		<div class="font-light text-neutral-800 dark:text-slate-200">Итого: {{ totalPrice.toLocaleString() }}₽</div>
 
 		<template v-if="!props.compact">
 			<div class="flex justify-end gap-2 mt-3">
@@ -187,6 +187,7 @@
 					:error="form.errors.status_text"
 					label="Укажите причину отказа (можно не указывать)"
 				/>
+				<div class="text-neutral-400 text-sm mt-1">Если укажете - то гость будет видеть причину отказа.</div>
 			</template>
 		</Modal>
 
@@ -233,23 +234,15 @@
 						<dt class="font-light leading-6 text-пкфн-600">
 							<div>{{ request.range }} ночи:</div>
 						</dt>
-						<dd class="mt-1 font-medium leading-6 text-neutral-600">
-							{{ request.price.toLocaleString() }}₽
-						</dd>
+						<dd class="mt-1 font-medium leading-6 text-neutral-600">{{ totalPrice.toLocaleString() }}₽</dd>
 					</div>
 					<div class="py-2 flex w-full items-baseline justify-between">
 						<dt class="font-light leading-6 text-пкфн-600">
-							<div>Сервисный сбор:</div>
+							<div>Первоначальный платеж:</div>
 						</dt>
 						<dd class="mt-1 font-medium leading-6 text-neutral-600">
-							{{ servicePrice.toLocaleString() }}₽
+							{{ firstPayment.toLocaleString() }}₽
 						</dd>
-					</div>
-					<div class="py-2 flex w-full items-baseline justify-between">
-						<dt class="font-bold leading-6 text-neutral-800">
-							<div>Итого:</div>
-						</dt>
-						<dd class="mt-1 font-bold leading-6 text-neutral-800">{{ totalPrice.toLocaleString() }}₽</dd>
 					</div>
 				</dl>
 			</template>

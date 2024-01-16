@@ -17,14 +17,7 @@ use YooKassa\Model\Notification\NotificationWaitingForCapture;
 
 final class PaymentCallbackController extends Controller
 {
-    protected SendMessageToAdminGroup $telegram;
-
-    public function __construct()
-    {
-        $this->telegram = new SendMessageToAdminGroup();
-    }
-
-    public function __invoke(Request $request): void
+    public function __invoke(Request $request, SendMessageToAdminGroup $telegram): void
     {
         Log::info('PaymentCallbackController: '.json_encode($request->all()));
         $notification = ($request->input('event') === NotificationEventType::PAYMENT_SUCCEEDED)
@@ -47,7 +40,7 @@ final class PaymentCallbackController extends Controller
         }
         $reservation->setStatus(Status::Paid);
 
-        $this->telegram->sendReservationStatusChanged(Status::Paid);
+        $telegram->sendReservationPaid($reservation);
 
         PaidEvent::dispatch($reservation);
     }
