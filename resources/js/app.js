@@ -7,7 +7,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import { createYmaps } from 'vue-yandex-maps'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+const appName = 'gesh-resort.ru'
 
 createInertiaApp({
 	title: (title) => (!!title ? title : `${appName}`),

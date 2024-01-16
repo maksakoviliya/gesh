@@ -12,6 +12,8 @@ use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
+use Propaganistas\LaravelPhone\PhoneNumber;
+use Propaganistas\LaravelPhone\Rules\Phone;
 
 class UserResource extends Resource
 {
@@ -27,7 +29,10 @@ class UserResource extends Resource
             ->schema([
                 TextInput::make('name')->required()->columnSpan('full'),
                 TextInput::make('email')->unique(ignoreRecord: true)->nullable(),
-                TextInput::make('phone')->unique(ignoreRecord: true)->nullable(),
+                TextInput::make('phone')
+                    ->unique(ignoreRecord: true)
+                    ->rules('phone:ru')
+                    ->nullable(),
                 TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
