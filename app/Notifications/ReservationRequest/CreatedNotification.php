@@ -27,14 +27,12 @@ class CreatedNotification extends Notification
     }
 
     /**
-     * @param User $notifiable
-     * @return TelegramMessage
      * @throws JsonException
      */
     public function toTelegram(User $notifiable): TelegramMessage
     {
         if (! $notifiable->telegram_chat_id) {
-           throw new JsonException('User has no Telegram chat!');
+            throw new JsonException('User has no Telegram chat!');
         }
 
         $chat = Chat::query()

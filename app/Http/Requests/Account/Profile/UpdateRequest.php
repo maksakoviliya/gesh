@@ -7,9 +7,8 @@ namespace App\Http\Requests\Account\Profile;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Propaganistas\LaravelPhone\PhoneNumber;
-use \Illuminate\Validation\Rules\Password;
-
 
 final class UpdateRequest extends FormRequest
 {
@@ -37,21 +36,21 @@ final class UpdateRequest extends FormRequest
                 'required',
                 'email',
                 'max:155',
-                Rule::unique('users')->ignore($this->user()->id)
+                Rule::unique('users')->ignore($this->user()->id),
             ],
             'phone' => [
                 'required',
                 'phone:RU',
                 'max:155',
-                Rule::unique('users')->ignore($this->user()->id)
+                Rule::unique('users')->ignore($this->user()->id),
             ],
 
             'old_password' => 'sometimes|max:155|current_password:web',
             'password' => [
-                Rule::requiredIf(fn() => $this->input('old_password')),
+                Rule::requiredIf(fn () => $this->input('old_password')),
                 new Password(6),
-                'confirmed'
-            ]
+                'confirmed',
+            ],
         ];
     }
 }

@@ -1,7 +1,11 @@
 <script setup>
-	import { Link, router } from '@inertiajs/vue3'
+	import { router } from '@inertiajs/vue3'
 	import { computed } from 'vue'
 	import Badge from '@/Components/Badge.vue'
+
+	import { MdSave } from 'oh-vue-icons/icons'
+	import { OhVueIcon, addIcons } from 'oh-vue-icons'
+	addIcons(MdSave)
 
 	const props = defineProps({
 		reservation: Object,
@@ -41,6 +45,8 @@
 				return 'Оплачено'
 			case 'first_payment':
 				return 'Предоплата'
+			case 'payment_waiting':
+				return 'Ожидает оплаты'
 			default:
 				return 'info'
 		}
@@ -60,10 +66,7 @@
 </script>
 
 <template>
-	<div
-		class="rounded-lg border cursor-pointer hover:shadow-lg hover:bg-gray-50 transition"
-		@click="handleClickReservation"
-	>
+	<div class="rounded-lg border cursor-pointer hover:shadow-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition">
 		<div
 			class="p-4 flex items-stretch gap-2"
 			@click="handleClickApartment"
@@ -132,6 +135,24 @@
 						:label="badgeText"
 						:type="badgeType"
 					/>
+				</dd>
+			</div>
+			<div class="py-2 px-4 flex w-full items-center justify-between text-sm">
+				<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
+					<div>Ваучер:</div>
+				</dt>
+				<dd class="mt-1 font-medium leading-6 text-neutral-600 flex items-center gap-2">
+					<a
+						class="flex items-center gap-1 dark:text-slate-200 transition hover:text-blue-500 dark:hover:text-blue-500"
+						:href="
+							route('account.reservations.voucher', {
+								reservation: props.reservation.id,
+							})
+						"
+					>
+						<OhVueIcon name="md-save" />
+						Скачать
+					</a>
 				</dd>
 			</div>
 		</dl>

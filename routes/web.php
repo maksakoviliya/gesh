@@ -33,6 +33,7 @@ use App\Http\Controllers\HomeMapController;
 use App\Http\Controllers\Instructors\InstructorsListController;
 use App\Http\Controllers\Instructors\InstructorsScheduleController;
 use App\Http\Controllers\Instructors\InstructorsViewController;
+use App\Http\Controllers\Reservation\ReservationVoucherController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestRejectController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestStoreController;
 use App\Http\Controllers\ReservationRequest\ReservationRequestSubmitController;
@@ -138,6 +139,7 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::get('/', ReservationsListController::class)->name('list');
                     Route::get('{reservation}/pay', ReservationPayController::class)->name('pay');
                     Route::get('{reservation}/pay-redirect', ReservationPayRedirectController::class)->name('pay.redirect');
+                    Route::get('{reservation}/voucher', ReservationVoucherController::class)->name('voucher');
                     Route::get('{reservation}', ReservationViewController::class)->name('view');
                 });
         });

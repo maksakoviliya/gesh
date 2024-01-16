@@ -128,6 +128,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $title_single
+ * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitleSingle($value)
  */
 	final class Category extends \Eloquent {}
 }
@@ -377,6 +379,11 @@ namespace App\Models{
  * @method static Builder|Reservation whereUpdatedAt($value)
  * @method static Builder|Reservation whereUserId($value)
  * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation withoutTrashed()
  */
 	final class Reservation extends \Eloquent {}
 }
@@ -457,6 +464,31 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\TelegramAuthCode
+ *
+ * @property int $id
+ * @property string $code
+ * @property string $user_id
+ * @property string $chat_id
+ * @property string $expires_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode query()
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereChatId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereUserId($value)
+ */
+	final class TelegramAuthCode extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Transaction
  *
  * @property int $id
@@ -487,6 +519,7 @@ namespace App\Models{
  *
  * @property string $id
  * @property string $name
+ * @property string $phone
  * @property string|null $email
  * @property string|null $avatar
  * @property |null $phone
@@ -537,6 +570,10 @@ namespace App\Models{
  * @method static Builder|User withoutPermission($permissions)
  * @method static Builder|User withoutRole($roles, $guard = null)
  * @mixin Eloquent
+ * @property string|null $telegram_chat_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TelegramAuthCode> $telegramAuthCodes
+ * @property-read int|null $telegram_auth_codes_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTelegramChatId($value)
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser, \Illuminate\Contracts\Auth\MustVerifyEmail {}
 }

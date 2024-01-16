@@ -5,12 +5,12 @@ namespace App\Actions\Fortify;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class CreateNewUser implements CreatesNewUsers
 {

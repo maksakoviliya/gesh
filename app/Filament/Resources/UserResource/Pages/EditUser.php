@@ -9,7 +9,6 @@ use Arr;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Propaganistas\LaravelPhone\PhoneNumber;
-use Propaganistas\LaravelPhone\Rules\Phone;
 
 class EditUser extends EditRecord
 {
@@ -28,6 +27,7 @@ class EditUser extends EditRecord
         if ($phone->isValid()) {
             Arr::set($attributes, 'data.phone', $phone->formatE164());
         }
+
         return $attributes;
     }
 
@@ -37,6 +37,7 @@ class EditUser extends EditRecord
         if ($phone->isValid()) {
             Arr::set($data, 'phone', $phone->formatE164());
         }
+
         return $data;
     }
 }

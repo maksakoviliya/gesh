@@ -11,6 +11,8 @@
 	import Pagination from '@/Components/Pagination.vue'
 	import NewReservationRequestNotification from '@/Pages/Account/Notifications/NewReservationRequestNotification.vue'
 	import NewTelegramAuthCodeGeneratedNotification from '@/Pages/Account/Notifications/NewTelegramAuthCodeGeneratedNotification.vue'
+	import UserReservationPaidNotification from '@/Pages/Account/Notifications/UserReservationPaidNotification.vue'
+	import ReservationCreatedNotification from '@/Pages/Account/Notifications/ReservationCreatedNotification.vue'
 
 	const page = usePage()
 	const type = computed(() => {
@@ -87,6 +89,16 @@
 							notification.type ===
 							'App\\Notifications\\Telegram\\NewTelegramAuthCodeGeneratedNotification'
 						"
+						:notification="notification"
+					/>
+					<UserReservationPaidNotification
+						v-else-if="
+							notification.type === 'App\\Notifications\\Reservation\\UserReservationPaidNotification'
+						"
+						:notification="notification"
+					/>
+					<ReservationCreatedNotification
+						v-else-if="notification.type === 'App\\Notifications\\Reservation\\CreatedNotification'"
 						:notification="notification"
 					/>
 					<div v-else>{{ notification.type }}</div>

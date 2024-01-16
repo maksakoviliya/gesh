@@ -26,7 +26,7 @@
 
 <template>
 	<div
-		class="relative overflow-x-auto shadow-md cursor-pointer flex flex-col md:flex-row items-start md:items-center transition hover:bg-gray-100 justify-between px-6 py-4 sm:rounded-lg text-sm text-left text-gray-500 dark:text-gray-400"
+		class="relative overflow-x-auto shadow-md cursor-pointer flex flex-col md:flex-row items-start md:items-center transition hover:bg-gray-100 dark:hover:bg-slate-700 justify-between px-6 py-4 sm:rounded-lg text-sm text-left text-gray-500 dark:text-gray-400"
 		@click="emit('click')"
 	>
 		<div>

@@ -1,6 +1,6 @@
 <script setup>
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
-	import { HiSolidMenu, HiX } from 'oh-vue-icons/icons'
+	import { HiSolidMenu, HiX, LaUserSolid } from 'oh-vue-icons/icons'
 	import { computed, onMounted, ref } from 'vue'
 	import Avatar from '@/Components/Avatar.vue'
 	import MenuLink from '@/Components/MenuLink.vue'
@@ -9,10 +9,9 @@
 	import useToasts from '@/hooks/useToasts'
 	import Popover from '@/Components/Interactive/Popover.vue'
 	import Indicator from '@/Components/Interactive/Indicator.vue'
-	import { initFlowbite } from 'flowbite'
 	import DarkModeToggle from '@/Components/DarkModeToggle.vue'
 
-	addIcons(HiSolidMenu, HiX)
+	addIcons(HiSolidMenu, HiX, LaUserSolid)
 
 	const { successToast } = useToasts()
 
@@ -87,6 +86,15 @@
 					class="rounded-xl shadow-md dark:shadow-xl dark:border overflow-hidden dark:border-slate-700 w-full bg-white dark:bg-slate-800 text-sm"
 				>
 					<div class="flex flex-col cursor-pointer">
+						<template v-if="page.props.user">
+							<div class="p-4 text-slate-200 font-semibold text-sm flex items-center gap-1">
+								<OhVueIcon name="la-user-solid" />
+								<span>
+									{{ page.props.user.data.name }}
+								</span>
+							</div>
+							<hr class="dark:border-slate-600" />
+						</template>
 						<div class="p-4">
 							<DarkModeToggle />
 						</div>

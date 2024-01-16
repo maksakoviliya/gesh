@@ -66,7 +66,8 @@ class ReservationResource extends Resource
                     ->color(fn ($state): string => match ($state) {
                         Status::Pending => 'gray',
                         Status::PaymentWaiting => 'warning',
-                        Status::FirstPayment => 'success',
+                        Status::FirstPayment => 'info',
+                        Status::Paid => 'success',
                     }),
                 SpatieMediaLibraryImageColumn::make('apartment.media')->label('Объект')
                     ->limit(1),

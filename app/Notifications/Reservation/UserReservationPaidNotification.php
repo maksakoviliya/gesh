@@ -26,6 +26,9 @@ final class UserReservationPaidNotification extends Notification
     {
         return (new MailMessage)
             ->subject('Бронирование предоплачено')
+            ->action('Ваучер на бронирование', route('account.reservations.voucher', [
+                'reservation' => $this->reservation->id,
+            ]))
             ->line('Вы оплатили бронирование');
     }
 

@@ -30,7 +30,7 @@ class ApartmentsChart extends ChartWidget
             ->count();
         $total = Apartment::query()
             ->where('created_at', '<=', now()->startOfMonth())
-        ->count();
+            ->count();
 
         $reservation_requests_data = Trend::model(ReservationRequest::class)
             ->between(

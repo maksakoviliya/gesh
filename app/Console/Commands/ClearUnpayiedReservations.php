@@ -22,7 +22,7 @@ final class ClearUnpayiedReservations extends Command
 
         $reservations = Reservation::query()
             ->where('status', Status::Pending)
-            ->when(!$this->option('all'), function ($q) {
+            ->when(! $this->option('all'), function ($q) {
                 $q->where('created_at', '<', Carbon::now()->subHours(5));
             })
             ->get();
@@ -34,7 +34,7 @@ final class ClearUnpayiedReservations extends Command
                 $reservation_request->update([
                     'reservation_id' => null,
                     'status' => \App\Enums\ReservationRequest\Status::Rejected,
-                    'status_text' => 'Закончился период ожидания оплаты'
+                    'status_text' => 'Закончился период ожидания оплаты',
                 ]);
             }
             $reservation->delete();
