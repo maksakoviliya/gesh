@@ -1,11 +1,12 @@
 <script setup>
-	import { router } from '@inertiajs/vue3'
+	import { router, Link } from '@inertiajs/vue3'
 	import { computed } from 'vue'
 	import Badge from '@/Components/Badge.vue'
 
-	import { MdSave } from 'oh-vue-icons/icons'
+	import { MdSave, HiExternalLink } from 'oh-vue-icons/icons'
+
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
-	addIcons(MdSave)
+	addIcons(MdSave, HiExternalLink)
 
 	const props = defineProps({
 		reservation: Object,
@@ -46,7 +47,7 @@
 			case 'first_payment':
 				return 'Предоплата'
 			case 'payment_waiting':
-				return 'Ожидает оплаты'
+				return 'Ожидает подтверждения платежа'
 			default:
 				return 'info'
 		}
@@ -66,7 +67,7 @@
 </script>
 
 <template>
-	<div class="rounded-lg border cursor-pointer hover:shadow-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition">
+	<div class="rounded-lg border hover:shadow-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition">
 		<div
 			class="p-4 flex items-stretch gap-2"
 			@click="handleClickApartment"
@@ -141,8 +142,9 @@
 				<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
 					<div>Ваучер:</div>
 				</dt>
-				<dd class="mt-1 font-medium leading-6 text-neutral-600 flex items-center gap-2">
+				<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-300 flex items-center gap-2">
 					<a
+						v-if="props.reservation.status === 'paid'"
 						class="flex items-center gap-1 dark:text-slate-200 transition hover:text-blue-500 dark:hover:text-blue-500"
 						:href="
 							route('account.reservations.voucher', {
@@ -153,6 +155,21 @@
 						<OhVueIcon name="md-save" />
 						Скачать
 					</a>
+					<Link
+						v-else
+						class="hover:underline"
+						:href="
+							route('account.reservations.view', {
+								reservation: props.reservation.id,
+							})
+						"
+					>
+						<OhVueIcon
+							name="hi-external-link"
+							scale="0.8"
+						/>
+						К оплате
+					</Link>
 				</dd>
 			</div>
 		</dl>

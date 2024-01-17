@@ -115,12 +115,12 @@
 							/>
 						</Link>
 						<div class="flex flex-col justify-between">
-							<div class="text-gray-600 font-light">
-								{{ props.apartment.data.category.title }}
+							<div class="text-gray-600 font-light dark:text-slate-300">
+								{{ props.apartment.data.category.title_single }}
 							</div>
-							<div class="font-bold">
+							<div class="font-bold dark:text-slate-200">
 								{{ props.apartment.data.weekdays_price.toLocaleString() }}₽
-								<span class="font-light text-sm text-neutral-500">ночь</span>
+								<span class="font-light text-sm text-neutral-500 dark:text-slate-400">ночь</span>
 							</div>
 						</div>
 					</div>

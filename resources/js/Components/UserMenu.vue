@@ -87,7 +87,7 @@
 				>
 					<div class="flex flex-col cursor-pointer">
 						<template v-if="page.props.user">
-							<div class="p-4 text-slate-200 font-semibold text-sm flex items-center gap-1">
+							<div class="p-4 dark:text-slate-200 font-semibold text-sm flex items-center gap-1">
 								<OhVueIcon name="la-user-solid" />
 								<span>
 									{{ page.props.user.data.name }}

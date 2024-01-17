@@ -121,14 +121,35 @@
 		</div>
 		<div class="flex items-center gap-2 flex-wrap">
 			<div class="font-light text-neutral-800 dark:text-slate-200">Цена: {{ totalPrice.toLocaleString() }}₽</div>
-			|
+			<span class="dark:text-slate-300">|</span>
 			<div class="font-light text-neutral-800 dark:text-slate-200">
 				Первоначальный платеж: {{ firstPayment.toLocaleString() }}₽
 			</div>
 		</div>
+		<div
+			v-if="request.status === 'pending' && !props.isOwner && !props.compact"
+			class="text-sm font-light text-right text-gray-500 dark:text-slate-400 mt-2"
+		>
+			Ожидаем решение собственника {{ request.status }} {{ props.isOwner }}
+		</div>
+		<div
+			v-if="request.status === 'submitted' && !props.compact && !request.reservation?.id"
+			class="text-sm font-light text-right text-gray-500 dark:text-slate-400 mt-2"
+		>
+			Ожидаем оплату
+		</div>
+		<div
+			v-if="request.status === 'submitted' && request.reservation?.id"
+			class="text-sm font-light text-right text-emerald-500 dark:text-teal-400 mt-2"
+		>
+			Оплачен
+		</div>
 
 		<template v-if="!props.compact">
-			<div class="flex justify-end gap-2 mt-3">
+			<div
+				class="flex justify-end gap-2 mt-3"
+				v-if="props.isOwner || (request.status === 'submitted' && request.reservation?.id)"
+			>
 				<template v-if="props.isOwner">
 					<template v-if="request.status === 'pending'">
 						<ButtonComponent
@@ -203,19 +224,19 @@
 			<template #body>
 				<dl class="divide-y divide-gray-100">
 					<div class="py-2 flex w-full items-baseline justify-between">
-						<dt class="font-light leading-6 text-пкфн-600">
+						<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
 							<div>Даты:</div>
 						</dt>
-						<dd class="mt-1 font-medium leading-6 text-neutral-600">
+						<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
 							с {{ request.start }} по {{ request.end }} |
 							<span class="text-neutral-400 text-sm">ночи: {{ request.range }}</span>
 						</dd>
 					</div>
 					<div class="py-2 flex w-full items-baseline justify-between">
-						<dt class="font-light leading-6 text-пкфн-600">
+						<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
 							<div>Взрослые:</div>
 						</dt>
-						<dd class="mt-1 font-medium leading-6 text-neutral-600">
+						<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
 							{{ request.guests }}
 						</dd>
 					</div>
@@ -223,24 +244,26 @@
 						class="py-2 flex w-full items-baseline justify-between"
 						v-if="request.children > 0"
 					>
-						<dt class="font-light leading-6 text-пкфн-600">
+						<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
 							<div>Дети:</div>
 						</dt>
-						<dd class="mt-1 font-medium leading-6 text-neutral-600">
+						<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
 							{{ request.children }}
 						</dd>
 					</div>
 					<div class="py-2 flex w-full items-baseline justify-between">
-						<dt class="font-light leading-6 text-пкфн-600">
+						<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
 							<div>{{ request.range }} ночи:</div>
 						</dt>
-						<dd class="mt-1 font-medium leading-6 text-neutral-600">{{ totalPrice.toLocaleString() }}₽</dd>
+						<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
+							{{ totalPrice.toLocaleString() }}₽
+						</dd>
 					</div>
 					<div class="py-2 flex w-full items-baseline justify-between">
-						<dt class="font-light leading-6 text-пкфн-600">
+						<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
 							<div>Первоначальный платеж:</div>
 						</dt>
-						<dd class="mt-1 font-medium leading-6 text-neutral-600">
+						<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
 							{{ firstPayment.toLocaleString() }}₽
 						</dd>
 					</div>

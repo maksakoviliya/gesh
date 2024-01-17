@@ -145,7 +145,7 @@
 							v-for="chat in props.chats.data"
 							:key="chat.id"
 							@click="selectChat(chat)"
-							class="gap-2 px-4 py-2 cursor-pointer flex flex-col w-full hover:bg-gray-100 transition"
+							class="gap-2 px-4 py-2 cursor-pointer flex flex-col w-full hover:bg-gray-100 dark:hover:bg-slate-600 transition"
 							:class="props.chat?.data.id === chat.id ? 'bg-gray-100 dark:bg-slate-700' : ''"
 						>
 							<div class="flex items-center gap-2">
