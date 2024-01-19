@@ -182,6 +182,7 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('category.title_single')
                     ->label('')
                     ->color('primary')
+                    ->url(fn(Apartment $record) => route('apartment', $record->id), true)
                     ->description(fn (Apartment $record): string => "$record->city, $record->street, $record->building"),
                 TextColumn::make('user.name')
                     ->label('Владелец')
