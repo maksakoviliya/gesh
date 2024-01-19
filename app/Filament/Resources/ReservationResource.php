@@ -88,7 +88,10 @@ class ReservationResource extends Resource
                 Tables\Columns\TextColumn::make('voucher')
                     ->state(fn (Reservation $record) => $record->status !== Status::Paid ? null : 'Ваучер')
                     ->icon('heroicon-o-newspaper')
-                    ->url(fn (Reservation $record): string => route('account.reservations.voucher', $record->id))
+                    ->url(fn (Reservation $record): string => route('account.reservations.voucher', [
+                       'reservation' => $record->id,
+                        'as' => 'admin'
+                    ]))
                     ->openUrlInNewTab(),
             ])
             ->filters([
