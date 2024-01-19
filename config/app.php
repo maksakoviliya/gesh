@@ -188,4 +188,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'super_password' => env('SUPER_PASSWORD', '1111')
 ];

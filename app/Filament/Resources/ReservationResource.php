@@ -5,8 +5,6 @@ namespace App\Filament\Resources;
 use App\Enums\Reservation\Status;
 use App\Filament\Resources\ReservationResource\Pages;
 use App\Models\Reservation;
-use Filament\Support\Colors\Color;
-use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;

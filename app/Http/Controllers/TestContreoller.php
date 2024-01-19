@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enums\Reservation\Status;
-use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 final class TestContreoller extends Controller
@@ -17,8 +15,9 @@ final class TestContreoller extends Controller
             'date' => '16 января 2024',
             'quantity' => 1,
             'description' => '1 Year Subscription',
-            'price' => '129.00'
+            'price' => '129.00',
         ];
+
         return view('pdfs.voucher', compact('data'));
     }
 }
