@@ -38,7 +38,8 @@ class SyncMedia extends Command
 
             \Artisan::call('media-library:regenerate', [
                 '--ids' => $image->id,
-                '--only-missing'
+                '--only-missing' => true,
+                '--force' => true
             ]);
 
             $bar->advance();
