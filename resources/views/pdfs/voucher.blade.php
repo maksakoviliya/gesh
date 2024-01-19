@@ -361,8 +361,13 @@
     <!-- The two header rows are divided by an blue line, we use the HR element for this. -->
     <hr/>
     <div class="headerSection">
-        <!-- The clients details come on the left side below the logo and company name. -->
-        <div>
+        <div >
+            <h3>Жилье</h3>
+            <div>
+                <b>{{Arr::get($data, 'apartment.address')}}</b>
+            </div>
+        </div>
+        <div class="dates">
             <h3>Гость</h3>
             <p>
                 <b>{{ Arr::get($data, 'user.name') }}</b>

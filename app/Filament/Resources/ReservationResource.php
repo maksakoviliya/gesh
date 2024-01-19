@@ -32,7 +32,6 @@ class ReservationResource extends Resource
                     ->options([
                         Status::Paid->value => __('statuses.reservation.'.Status::Paid->value),
                         Status::PaymentWaiting->value => __('statuses.reservation.'.Status::PaymentWaiting->value),
-                        Status::FirstPayment->value => __('statuses.reservation.'.Status::FirstPayment->value),
                         Status::Pending->value => __('statuses.reservation.'.Status::Pending->value),
                     ]),
                 Select::make('user')
@@ -66,7 +65,6 @@ class ReservationResource extends Resource
                     ->color(fn ($state): string => match ($state) {
                         Status::Pending => 'gray',
                         Status::PaymentWaiting => 'warning',
-                        Status::FirstPayment => 'info',
                         Status::Paid => 'success',
                     }),
                 SpatieMediaLibraryImageColumn::make('apartment.media')->label('Объект')

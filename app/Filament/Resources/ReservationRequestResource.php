@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ReservationRequest\Status;
+use App\Enums\Reservation\Status as ReservationStatus;
 use App\Filament\Resources\ReservationRequestResource\Pages;
 use App\Models\ReservationRequest;
 use Filament\Forms;
@@ -26,7 +27,7 @@ class ReservationRequestResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return ReservationRequest::query()->where('status', Status::Pending)->count() ?: null;
+        return ReservationRequest::query()->where('status', ReservationStatus::Pending)->count() ?: null;
     }
 
     public static function getNavigationBadgeColor(): string|array|null
@@ -50,9 +51,9 @@ class ReservationRequestResource extends Resource
                 Forms\Components\TextInput::make('total_guests'),
                 Forms\Components\TextInput::make('price'),
                 Forms\Components\Select::make('status')->options([
-                    Status::Pending->value => __('statuses.reservation_request.pending'),
-                    Status::Rejected->value => __('statuses.reservation_request.rejected'),
-                    Status::Submitted->value => __('statuses.reservation_request.submitted'),
+                    ReservationStatus::Pending->value => __('statuses.reservation_request.pending'),
+                    ReservationStatus::Rejected->value => __('statuses.reservation_request.rejected'),
+                    ReservationStatus::Submitted->value => __('statuses.reservation_request.submitted'),
                 ])->required(),
                 Forms\Components\TextInput::make('status_text'),
                 Forms\Components\Select::make('reservation')
@@ -75,13 +76,25 @@ class ReservationRequestResource extends Resource
                     })
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('status')
-                    ->formatStateUsing(fn($state) => __('statuses.reservation_request.' . $state->value))
+                    ->state(function (ReservationRequest $record) {
+                        if ($record->reservation?->status === ReservationStatus::Paid) {
+                            return ReservationStatus::Paid;
+                        }
+                        return $record->status;
+                    })
+                    ->formatStateUsing(function ($state) {
+                        if ($state === ReservationStatus::Paid) {
+                            return __('statuses.reservation.' . ReservationStatus::Paid->value);
+                        }
+                        return  __('statuses.reservation_request.' . $state->value);
+                    })
                     ->sortable()
                     ->badge()
                     ->color(fn($state): string => match ($state) {
                         Status::Rejected => 'danger',
-                        Status::Submitted => 'success',
+                        Status::Submitted => 'info',
                         Status::Pending => 'gray',
+                        default => 'success'
                     }),
                 Tables\Columns\TextColumn::make('apartment.user.name')->label('Владелец')
                     ->description(fn(ReservationRequest $record): string => $record->apartment->user?->email ?? $record->apartment->user?->phone ?? '-')

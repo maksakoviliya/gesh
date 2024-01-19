@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Reservation;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Reservation\VoucherRequest;
 use App\Models\Reservation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 final class ReservationVoucherController extends Controller
 {
-    public function __invoke(Request $request, Reservation $reservation)
+    public function __invoke(VoucherRequest $request, Reservation $reservation)
     {
         $price = $reservation->price;
         $commission = $reservation::getCommission($price);
@@ -25,6 +26,9 @@ final class ReservationVoucherController extends Controller
                 'name' => $reservation->user->name,
                 'email' => $reservation->user->email,
                 'phone' => $reservation->user->phone,
+            ],
+            'apartment' => [
+                'address' => $reservation->apartment->full_address,
             ],
             'dates' => $reservation->start->locale('ru')->translatedFormat('d F Y').' - '.$reservation->end->locale('ru')->translatedFormat('d F Y'),
             'range' => trans_choice('nights', $reservation->range, ['count' => $reservation->range]),

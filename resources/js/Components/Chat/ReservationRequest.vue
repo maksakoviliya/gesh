@@ -83,6 +83,23 @@
 		}
 	}
 
+	const copyText = ref('Копировать ссылку на оплату')
+	const copyLink = () => {
+		copyText.value = 'Скопировано'
+		navigator.clipboard
+			.writeText(
+				route('account.reservations.pay', {
+					reservation: request.value.reservation?.id,
+				})
+			)
+			.then(() => {
+				copyText.value = 'Скопировано'
+				setTimeout(() => {
+					copyText.value = 'Копировать ссылку на оплату'
+				}, 1500)
+			})
+	}
+
 	const servicePrice = computed(() => {
 		const commission = request.value.price >= 100000 ? 0.15 : 0.15
 		return Math.ceil(request.value.price * commission)
@@ -130,16 +147,21 @@
 			v-if="request.status === 'pending' && !props.isOwner && !props.compact"
 			class="text-sm font-light text-right text-gray-500 dark:text-slate-400 mt-2"
 		>
-			Ожидаем решение собственника {{ request.status }} {{ props.isOwner }}
+			Ожидаем решение собственника
 		</div>
 		<div
-			v-if="request.status === 'submitted' && !props.compact && !request.reservation?.id"
+			v-if="
+				request.status === 'submitted' &&
+				!props.compact &&
+				(!request.reservation?.id || request.reservation?.status !== 'paid')
+			"
 			class="text-sm font-light text-right text-gray-500 dark:text-slate-400 mt-2"
 		>
-			Ожидаем оплату
+			<template v-if="request.reservation?.status === 'payment_waiting'"> Ожидаем одобрение платежа </template>
+			<template v-else> Ожидаем оплату </template>
 		</div>
 		<div
-			v-if="request.status === 'submitted' && request.reservation?.id"
+			v-if="request.status === 'submitted' && request.reservation?.id && request.reservation?.status === 'paid'"
 			class="text-sm font-light text-right text-emerald-500 dark:text-teal-400 mt-2"
 		>
 			Оплачен
@@ -173,6 +195,28 @@
 					</template>
 				</template>
 				<template v-if="request.status === 'submitted' && request.reservation?.id">
+					<ButtonComponent
+						v-if="props.isOwner && request.reservation?.status !== 'paid'"
+						label="Ссылка на оплату"
+						:small="true"
+						:outline="true"
+						:auto-width="true"
+						data-tooltip-target="copy_payment_link"
+						@click="copyLink"
+						class="px-3"
+					/>
+					<div
+						id="copy_payment_link"
+						role="tooltip"
+						class="absolute z-20 break-words whitespace-nowrap invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+					>
+						{{ copyText }}
+						<div
+							class="tooltip-arrow"
+							data-popper-arrow
+						></div>
+					</div>
+
 					<ButtonComponent
 						label="К бронированию"
 						:small="true"

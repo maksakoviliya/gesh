@@ -18,7 +18,6 @@ return [
     'reservation' => [
         ReservationStatus::Pending->value => 'Ожидает',
         ReservationStatus::PaymentWaiting->value => 'Ожидает оплаты',
-        ReservationStatus::FirstPayment->value => 'Частично оплачен',
         ReservationStatus::Paid->value => 'Оплачен',
     ],
 ];

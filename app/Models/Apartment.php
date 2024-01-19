@@ -511,4 +511,19 @@ final class Apartment extends Model implements HasMedia
             },
         );
     }
+
+    public function fullAddress(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => implode(', ', array_filter([
+                Arr::get($attributes, 'city'),
+                Arr::get($attributes, 'street') ? 'ул.' . Arr::get($attributes, 'street') : null,
+                Arr::get($attributes, 'building') ? 'д.' . Arr::get($attributes, 'building') : null,
+                Arr::get($attributes, 'housing') ? 'корп.' . Arr::get($attributes, 'housing') : null,
+                Arr::get($attributes, 'room') ? 'кв.' . Arr::get($attributes, 'room') : null,
+                Arr::get($attributes, 'floor') ? 'эт.' . Arr::get($attributes, 'floor') : null,
+                Arr::get($attributes, 'entrance') ? 'под.' . Arr::get($attributes, 'entrance') : null,
+            ]))
+        );
+    }
 }

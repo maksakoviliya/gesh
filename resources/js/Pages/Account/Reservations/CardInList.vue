@@ -44,8 +44,6 @@
 				return 'Ожидает оплаты'
 			case 'paid':
 				return 'Оплачено'
-			case 'first_payment':
-				return 'Предоплата'
 			case 'payment_waiting':
 				return 'Ожидает подтверждения платежа'
 			default:
@@ -55,11 +53,11 @@
 	const badgeType = computed(() => {
 		switch (props.reservation.status) {
 			case 'pending':
-				return 'warning'
+				return 'pending'
 			case 'paid':
 				return 'success'
-			case 'first_payment':
-				return 'pending'
+			case 'payment_waiting':
+				return 'warning'
 			default:
 				return 'info'
 		}
@@ -95,6 +93,23 @@
 			</div>
 		</div>
 		<dl class="divide-y border-t">
+			<div class="py-2 px-4 flex w-full items-baseline justify-between text-sm">
+				<dt class="font-light leading-6 text-gray-600">
+					<div>ID:</div>
+				</dt>
+				<dd class="mt-1 font-medium leading-6 text-neutral-600">
+					<Link
+						class="hover:underline text-xs"
+						:href="
+							route('account.reservations.view', {
+								reservation: props.reservation.id,
+							})
+						"
+					>
+						#{{ props.reservation.id }}
+					</Link>
+				</dd>
+			</div>
 			<div class="py-2 px-4 flex w-full items-baseline justify-between text-sm">
 				<dt class="font-light leading-6 text-gray-600">
 					<div>Даты:</div>
