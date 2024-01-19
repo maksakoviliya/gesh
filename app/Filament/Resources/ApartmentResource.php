@@ -214,7 +214,9 @@ class ApartmentResource extends Resource
                     ->color(Color::Blue),
                 Tables\Columns\TextColumn::make('weekdays_price')->sortable()->money('RUB'),
                 Tables\Columns\TextColumn::make('weekends_price')->sortable()->money('RUB'),
-                Tables\Columns\TextColumn::make('title')->searchable(),
+                Tables\Columns\TextColumn::make('title')->searchable()
+                    ->url(fn(Apartment $record) => route('apartment', $record->id), true)
+                ,
                 Tables\Columns\TextColumn::make('bedrooms'),
                 Tables\Columns\TextColumn::make('guests'),
                 TextColumn::make('created_at')->date('d.m.Y H:i')->sortable(),
