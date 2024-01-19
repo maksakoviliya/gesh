@@ -101,6 +101,12 @@
 						v-else-if="notification.type === 'App\\Notifications\\Reservation\\CreatedNotification'"
 						:notification="notification"
 					/>
+					<OwnerReservationPaidNotification
+						v-else-if="
+							notification.type === 'App\\Notifications\\Reservation\\OwnerReservationPaidNotification'
+						"
+						:notification="notification"
+					/>
 					<div v-else>{{ notification.type }}</div>
 				</div>
 			</template>
