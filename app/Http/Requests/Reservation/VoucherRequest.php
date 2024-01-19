@@ -11,7 +11,7 @@ final class VoucherRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return Auth::id() === $this->reservation?->user_id;
+        return Auth::id() === $this->reservation?->user_id || $this->query('as') === 'admin';
     }
 
     /**
