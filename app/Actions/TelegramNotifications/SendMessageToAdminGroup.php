@@ -213,7 +213,7 @@ class SendMessageToAdminGroup
         } catch (Exception $exception) {
             Log::info($text);
             Log::info(json_encode($exception));
-                $err_text = 'Ошибка при отправке уведомления об отказе в запросе на бронирование!' . "\n\n" . $exception->getMessage(),
+                $err_text = 'Ошибка при отправке уведомления об отказе в запросе на бронирование!' . "\n\n" . $exception->getMessage();
                 $err_text .= 'ID: ' . $reservationRequest->id;
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
