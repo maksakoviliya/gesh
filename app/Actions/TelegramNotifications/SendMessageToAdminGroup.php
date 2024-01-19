@@ -11,6 +11,8 @@ use App\Filament\Resources\UserResource;
 use App\Models\Instructor;
 use App\Models\Reservation;
 use App\Models\ReservationRequest;
+use Exception;
+use Log;
 use Telegram;
 use Telegram\Bot\Keyboard\Keyboard;
 
@@ -20,29 +22,29 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на бронирование!* \n\n";
-            $text .= 'Объект: '.$reservationRequest->apartment->city.', '.$reservationRequest->apartment->street.', '.$reservationRequest->apartment->building."\n";
-            $text .= 'Гость: '.$reservationRequest->user->name;
+            $text .= 'Объект: ' . $reservationRequest->apartment->city . ', ' . $reservationRequest->apartment->street . ', ' . $reservationRequest->apartment->building . "\n";
+            $text .= 'Гость: ' . $reservationRequest->user->name;
             if ($reservationRequest->user->email) {
-                $text .= ', '.'('.$reservationRequest->user->email.')';
+                $text .= ', ' . '(' . $reservationRequest->user->email . ')';
             }
             if ($reservationRequest->user->phone) {
-                $text .= ', '.'('.$reservationRequest->user->phone.')';
+                $text .= ', ' . '(' . $reservationRequest->user->phone . ')';
             }
             $text .= "\n";
-            $text .= 'Владелец: '.$reservationRequest->apartment->user->name;
+            $text .= 'Владелец: ' . $reservationRequest->apartment->user->name;
             if ($reservationRequest->apartment->user->email) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->email.')';
+                $text .= ', ' . '(' . $reservationRequest->apartment->user->email . ')';
             }
             if ($reservationRequest->apartment->user->phone) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->phone.')';
+                $text .= ', ' . '(' . $reservationRequest->apartment->user->phone . ')';
             }
             $text .= "\n";
-            $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
+            $text .= 'Даты: ' . $reservationRequest->start->format('d\.m\.Y') . ' - ' . $reservationRequest->end->format('d\.m\.Y') . "\n";
 
             $commission = ReservationRequest::getCommission($reservationRequest->price);
-            $text .= 'Цена: '.$reservationRequest->price.', Комиссия: '.$commission.', Итого: '.$reservationRequest->price + $commission."\n";
+            $text .= 'Цена: ' . $reservationRequest->price . ', Комиссия: ' . $commission . ', Итого: ' . $reservationRequest->price + $commission . "\n";
 
-            $text .= 'Гости: '.$reservationRequest->total_guests."\n";
+            $text .= 'Гости: ' . $reservationRequest->total_guests . "\n";
 
             $url = ReservationRequestResource::getUrl(
                 'edit',
@@ -107,11 +109,11 @@ class SendMessageToAdminGroup
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
-        } catch (\Exception $exception) {
-            \Log::info($exception->getMessage());
+        } catch (Exception $exception) {
+            Log::info($exception->getMessage());
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о новом запросе!'.'/n/n'.$exception->getMessage(),
+                'text' => 'Ошибка при отправке уведомления о новом запросе!' . '/n/n' . $exception->getMessage(),
             ]);
         }
     }
@@ -120,30 +122,30 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Отказ в запросе на бронирование!* \n\n";
-            $text .= 'Причина: '.$reservationRequest->status_text."\n";
-            $text .= 'Объект: '.$reservationRequest->apartment->city.', '.$reservationRequest->apartment->street.', '.$reservationRequest->apartment->building."\n";
-            $text .= 'Гость: '.$reservationRequest->user->name;
+            $text .= 'Причина: ' . $reservationRequest->status_text . "\n";
+            $text .= 'Объект: ' . $reservationRequest->apartment->city . ', ' . $reservationRequest->apartment->street . ', ' . $reservationRequest->apartment->building . "\n";
+            $text .= 'Гость: ' . $reservationRequest->user->name;
             if ($reservationRequest->user->email) {
-                $text .= ', '.'('.$reservationRequest->user->email.')';
+                $text .= ', ' . '(' . $reservationRequest->user->email . ')';
             }
             if ($reservationRequest->user->phone) {
-                $text .= ', '.'('.$reservationRequest->user->phone.')';
+                $text .= ', ' . '(' . $reservationRequest->user->phone . ')';
             }
             $text .= "\n";
-            $text .= 'Владелец: '.$reservationRequest->apartment->user->name;
+            $text .= 'Владелец: ' . $reservationRequest->apartment->user->name;
             if ($reservationRequest->apartment->user->email) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->email.')';
+                $text .= ', ' . '(' . $reservationRequest->apartment->user->email . ')';
             }
             if ($reservationRequest->apartment->user->phone) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->phone.')';
+                $text .= ', ' . '(' . $reservationRequest->apartment->user->phone . ')';
             }
             $text .= "\n";
-            $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
+            $text .= 'Даты: ' . $reservationRequest->start->format('d\.m\.Y') . ' - ' . $reservationRequest->end->format('d\.m\.Y') . "\n";
 
             $commission = ReservationRequest::getCommission($reservationRequest->price);
-            $text .= 'Цена: '.$reservationRequest->price.', Комиссия: '.$commission.', Итого: '.$reservationRequest->price + $commission."\n";
+            $text .= 'Цена: ' . $reservationRequest->price . ', Комиссия: ' . $commission . ', Итого: ' . $reservationRequest->price + $commission . "\n";
 
-            $text .= 'Гости: '.$reservationRequest->total_guests."\n";
+            $text .= 'Гости: ' . $reservationRequest->total_guests . "\n";
 
             $url = ReservationRequestResource::getUrl(
                 'edit',
@@ -208,11 +210,14 @@ class SendMessageToAdminGroup
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
-        } catch (\Exception $exception) {
-            \Log::info($exception->getMessage());
+        } catch (Exception $exception) {
+            Log::info($text);
+            Log::info(json_encode($exception));
+                $err_text = 'Ошибка при отправке уведомления об отказе в запросе на бронирование!' . "\n\n" . $exception->getMessage(),
+                $err_text .= 'ID: ' . $reservationRequest->id;
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о новом запросе!'.'/n/n'.$exception->getMessage(),
+                'text' => $err_text
             ]);
         }
     }
@@ -222,29 +227,29 @@ class SendMessageToAdminGroup
         try {
             $text = "*Запрос на бронирование подтвержден!* \n*Новое бронирование создано!* \n\n";
 
-            $text .= 'Объект: '.$reservationRequest->apartment->city.', '.$reservationRequest->apartment->street.', '.$reservationRequest->apartment->building."\n";
-            $text .= 'Гость: '.$reservationRequest->user->name;
+            $text .= 'Объект: ' . $reservationRequest->apartment->city . ', ' . $reservationRequest->apartment->street . ', ' . $reservationRequest->apartment->building . "\n";
+            $text .= 'Гость: ' . $reservationRequest->user->name;
             if ($reservationRequest->user->email) {
-                $text .= ', '.'('.$reservationRequest->user->email.')';
+                $text .= ', ' . '(' . $reservationRequest->user->email . ')';
             }
             if ($reservationRequest->user->phone) {
-                $text .= ', '.'('.$reservationRequest->user->phone.')';
+                $text .= ', ' . '(' . $reservationRequest->user->phone . ')';
             }
             $text .= "\n";
-            $text .= 'Владелец: '.$reservationRequest->apartment->user->name;
+            $text .= 'Владелец: ' . $reservationRequest->apartment->user->name;
             if ($reservationRequest->apartment->user->email) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->email.')';
+                $text .= ', ' . '(' . $reservationRequest->apartment->user->email . ')';
             }
             if ($reservationRequest->apartment->user->phone) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->phone.')';
+                $text .= ', ' . '(' . $reservationRequest->apartment->user->phone . ')';
             }
             $text .= "\n";
-            $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
+            $text .= 'Даты: ' . $reservationRequest->start->format('d\.m\.Y') . ' - ' . $reservationRequest->end->format('d\.m\.Y') . "\n";
 
             $commission = ReservationRequest::getCommission($reservationRequest->price);
-            $text .= 'Цена: '.$reservationRequest->price.', Комиссия: '.$commission.', Итого: '.$reservationRequest->price + $commission."\n";
+            $text .= 'Цена: ' . $reservationRequest->price . ', Комиссия: ' . $commission . ', Итого: ' . $reservationRequest->price + $commission . "\n";
 
-            $text .= 'Гости: '.$reservationRequest->total_guests."\n";
+            $text .= 'Гости: ' . $reservationRequest->total_guests . "\n";
 
             $url = ReservationRequestResource::getUrl(
                 'edit',
@@ -320,11 +325,11 @@ class SendMessageToAdminGroup
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
-        } catch (\Exception $exception) {
-            \Log::info($exception->getMessage());
+        } catch (Exception $exception) {
+            Log::info($exception->getMessage());
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о новом запросе!'.'/n/n'.$exception->getMessage(),
+                'text' => 'Ошибка при отправке уведомления о подтверждении запроса на брониование!' . '/n/n' . $exception->getMessage(),
             ]);
         }
     }
@@ -333,19 +338,19 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на трансфер!* \n\n";
-            $text .= 'Имя: '.$name."\n";
-            $text .= 'Телефон: '.$phone."\n";
+            $text .= 'Имя: ' . $name . "\n";
+            $text .= 'Телефон: ' . $phone . "\n";
 
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
                 'text' => $text,
                 'parse_mode' => 'Markdown',
             ]);
-        } catch (\Exception $exception) {
-            \Log::info($exception->getMessage());
+        } catch (Exception $exception) {
+            Log::info($exception->getMessage());
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о трансфере!'.'/n/n'.$exception->getMessage(),
+                'text' => 'Ошибка при отправке уведомления о трансфере!' . '/n/n' . $exception->getMessage(),
             ]);
         }
     }
@@ -354,20 +359,20 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на инструктора!* \n\n";
-            $text .= 'Имя: '.$name."\n";
-            $text .= 'Телефон: '.$phone."\n";
-            $text .= 'Инструктор: '.$instructor->name."\n";
+            $text .= 'Имя: ' . $name . "\n";
+            $text .= 'Телефон: ' . $phone . "\n";
+            $text .= 'Инструктор: ' . $instructor->name . "\n";
 
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
                 'text' => $text,
                 'parse_mode' => 'Markdown',
             ]);
-        } catch (\Exception $exception) {
-            \Log::info($exception->getMessage());
+        } catch (Exception $exception) {
+            Log::info($exception->getMessage());
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о инструкторе!'.'/n/n'.$exception->getMessage(),
+                'text' => 'Ошибка при отправке уведомления о инструкторе!' . '/n/n' . $exception->getMessage(),
             ]);
         }
     }
@@ -376,29 +381,29 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Бронирование оплачено!* \n\n";
-            $text .= 'Объект: '.$reservation->apartment->city.', '.$reservation->apartment->street.', '.$reservation->apartment->building."\n";
-            $text .= 'Гость: '.$reservation->user->name;
+            $text .= 'Объект: ' . $reservation->apartment->city . ', ' . $reservation->apartment->street . ', ' . $reservation->apartment->building . "\n";
+            $text .= 'Гость: ' . $reservation->user->name;
             if ($reservation->user->email) {
-                $text .= ', '.'('.$reservation->user->email.')';
+                $text .= ', ' . '(' . $reservation->user->email . ')';
             }
             if ($reservation->user->phone) {
-                $text .= ', '.'('.$reservation->user->phone.')';
+                $text .= ', ' . '(' . $reservation->user->phone . ')';
             }
             $text .= "\n";
-            $text .= 'Владелец: '.$reservation->apartment->user->name;
+            $text .= 'Владелец: ' . $reservation->apartment->user->name;
             if ($reservation->apartment->user->email) {
-                $text .= ', '.'('.$reservation->apartment->user->email.')';
+                $text .= ', ' . '(' . $reservation->apartment->user->email . ')';
             }
             if ($reservation->apartment->user->phone) {
-                $text .= ', '.'('.$reservation->apartment->user->phone.')';
+                $text .= ', ' . '(' . $reservation->apartment->user->phone . ')';
             }
             $text .= "\n";
-            $text .= 'Даты: '.$reservation->start->format('d\.m\.Y').' - '.$reservation->end->format('d\.m\.Y')."\n";
+            $text .= 'Даты: ' . $reservation->start->format('d\.m\.Y') . ' - ' . $reservation->end->format('d\.m\.Y') . "\n";
 
             $commission = $reservation::getCommission($reservation->price);
-            $text .= 'Цена: '.$reservation->price.', Комиссия: '.$commission.', Итого: '.$reservation->price + $commission."\n";
+            $text .= 'Цена: ' . $reservation->price . ', Комиссия: ' . $commission . ', Итого: ' . $reservation->price + $commission . "\n";
 
-            $text .= 'Гости: '.$reservation->total_guests."\n";
+            $text .= 'Гости: ' . $reservation->total_guests . "\n";
 
             $url = ReservationRequestResource::getUrl(
                 'edit',
@@ -463,11 +468,11 @@ class SendMessageToAdminGroup
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
-        } catch (\Exception $exception) {
-            \Log::info($exception->getMessage());
+        } catch (Exception $exception) {
+            Log::info($exception->getMessage());
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о оплате бронирования!'."\n\n".$exception->getMessage(),
+                'text' => 'Ошибка при отправке уведомления о оплате бронирования!' . "\n\n" . $exception->getMessage(),
             ]);
         }
     }
