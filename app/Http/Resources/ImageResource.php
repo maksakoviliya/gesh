@@ -14,7 +14,7 @@ final class ImageResource extends JsonResource
         return [
             'id' => $this->resource->uuid,
             'src' => $this->resource->getFullUrl(),
-            'srcset' => $this->resource->getSrcset(),
+            'srcset' => null,
             'order' => $this->resource->order_column,
         ];
     }
