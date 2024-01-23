@@ -13,6 +13,7 @@
 	import NewTelegramAuthCodeGeneratedNotification from '@/Pages/Account/Notifications/NewTelegramAuthCodeGeneratedNotification.vue'
 	import UserReservationPaidNotification from '@/Pages/Account/Notifications/UserReservationPaidNotification.vue'
 	import ReservationCreatedNotification from '@/Pages/Account/Notifications/ReservationCreatedNotification.vue'
+	import OwnerReservationPaidNotification from '@/Pages/Account/Notifications/OwnerReservationPaidNotification.vue'
 
 	const page = usePage()
 	const type = computed(() => {

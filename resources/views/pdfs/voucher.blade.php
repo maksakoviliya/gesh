@@ -90,7 +90,7 @@
         }
 
         .dates {
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         /*
@@ -126,16 +126,10 @@
         Additionally this header text gets the hightlight color as font color.
         */
         .headerSection h3 {
-            margin: 0 .75cm 0 0;
+            margin: 0;
             color: #3581BD;
         }
 
-        /*
-        Put some margin between the "DUE DATE" and "AMOUNT" headings.
-        */
-        .headerSection div:last-of-type h3:last-of-type {
-            margin-top: .5cm;
-        }
 
         /*
         The paragraphs within the header sections DIV elements get a small 2px margin top
@@ -361,12 +355,24 @@
     <!-- The two header rows are divided by an blue line, we use the HR element for this. -->
     <hr/>
     <div class="headerSection">
-        <div >
+        <div>
             <h3>Жилье</h3>
             <div>
                 <b>{{Arr::get($data, 'apartment.address')}}</b>
             </div>
+            <p>
+                <b>Владелец: {{ Arr::get($data, 'apartment.user.name') }}</b>
+                <br/>
+                @if($email = Arr::get($data, 'apartment.user.email'))
+                    {{$email}}
+                @endif
+                <br/>
+                @if($phone = Arr::get($data, 'apartment.user.phone'))
+                    {{$phone}}
+                @endif
+            </p>
         </div>
+        <br>
         <div class="dates">
             <h3>Гость</h3>
             <p>
@@ -380,7 +386,14 @@
                     {{$phone}}
                 @endif
             </p>
+            <br>
+            <p>
+                Гостей: {{Arr::get($data, 'guests.total_guests')}}@if($children = Arr::get($data, 'guests.children'))
+                    , Взрослые: {{Arr::get($data, 'guests.guests')}}, Дети: {{$children}}
+                @endif
+            </p>
         </div>
+        <br>
         <div class="dates">
             <h3>Даты</h3>
             <p>
@@ -440,9 +453,9 @@
 </div>
 <hr/>
 <div>
-        <div>
-            В случае возникновения каких-либо вопросов - обращайтесь к администрации сайта <b>©{{ config('app.name') }}</b>.
-        </div>
+    <div>
+        В случае возникновения каких-либо вопросов - обращайтесь к администрации сайта <b>©{{ config('app.name') }}</b>.
+    </div>
 </div>
 
 </body>

@@ -29,10 +29,20 @@ final class ReservationVoucherController extends Controller
             ],
             'apartment' => [
                 'address' => $reservation->apartment->full_address,
+                'user' => [
+                    'name' => $reservation->apartment->user->name,
+                    'email' => $reservation->apartment->user->email,
+                    'phone' => $reservation->apartment->user->phone,
+                ]
             ],
-            'dates' => $reservation->start->locale('ru')->translatedFormat('d F Y').' - '.$reservation->end->locale('ru')->translatedFormat('d F Y'),
+            'dates' => 'c ' . $reservation->start->locale('ru')->translatedFormat('d F Y').' 15:00 по '.$reservation->end->locale('ru')->translatedFormat('d F Y') . ' 12:00',
             'range' => trans_choice('nights', $reservation->range, ['count' => $reservation->range]),
             'price' => \Number::currency($total, 'RUB', 'ru'),
+            'guests' =>[
+                'total_guests' => $reservation->total_guests,
+                'guests' => $reservation->guests,
+                'children' => $reservation->children,
+            ],
             'first_payment' => \Number::currency($first_payment, 'RUB', 'ru'),
             'remainder' => \Number::currency($remainder, 'RUB', 'ru'),
         ];
