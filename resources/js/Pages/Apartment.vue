@@ -196,9 +196,8 @@
 					<div
 						class="mt-4 py-4 border-t dark:border-slate-600 dark:text-slate-400"
 						v-if="props.apartment.data.description"
-					>
-						{{ props.apartment.data.description }}
-					</div>
+						v-html="props.apartment.data.description"
+					></div>
 					<div
 						class="mt-4 md:py-4 hidden md:block border-t dark:border-slate-600"
 						v-if="props.apartment.data.lon && props.apartment.data.lat"
