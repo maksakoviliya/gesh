@@ -36,6 +36,7 @@
 							:key="image.id"
 						>
 							<img
+								loading="lazy"
 								@click="handleClick"
 								class="object-cover h-full w-full"
 								:src="image.src"
