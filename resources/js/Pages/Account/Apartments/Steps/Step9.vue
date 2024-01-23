@@ -2,7 +2,8 @@
 	import Form from '@/Pages/Account/Apartments/Form.vue'
 	import Heading from '@/Components/Heading.vue'
 	import { router, useForm } from '@inertiajs/vue3'
-	import TextareaInput from '@/Components/Inputs/TextareaInput.vue'
+	import { QuillEditor } from '@vueup/vue-quill'
+	import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 	const props = defineProps({
 		apartment: Array | Object,
@@ -48,15 +49,36 @@
 				subtitle="Это не обязательно. Вы всегда сможете добавить описание позже"
 			/>
 			<div class="mt-10">
-				<TextareaInput
+				<QuillEditor
+					theme="snow"
+					content-type="html"
+					:toolbar="['bold', 'italic', 'underline']"
 					id="description"
-					v-model="form.description"
-					textarea-class="min-h-[40vh]"
-					@onEnter="onEnter"
-					label="Описание"
-					:error="form.errors.description"
+					v-model:content="form.description"
+					placeholder="Описание"
 				/>
+				<div
+					class="text-rose-500 text-sm font-light"
+					v-if="form.errors.description"
+				>
+					{{ form.errors.description }}
+				</div>
 			</div>
 		</div>
 	</Form>
 </template>
+
+<style>
+	.ql-editor {
+		@apply min-h-[30vh];
+	}
+	.ql-toolbar.ql-snow {
+		@apply rounded-t-md border-t-2 border-x-2;
+	}
+	.ql-container {
+		@apply text-base;
+	}
+	.ql-container.ql-snow {
+		@apply border-x-2 border-b-2 rounded-b-md;
+	}
+</style>
