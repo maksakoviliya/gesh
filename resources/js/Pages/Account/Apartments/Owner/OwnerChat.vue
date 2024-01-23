@@ -4,13 +4,16 @@
 	import AppLayout from '@/Layouts/AppLayout.vue'
 	import Avatar from '@/Components/Avatar.vue'
 	import ReservationRequest from '@/Components/Chat/ReservationRequest.vue'
-	import { router, useForm } from '@inertiajs/vue3'
+	import { router, useForm, Link } from '@inertiajs/vue3'
 	import Message from '@/Components/Chat/Message.vue'
 	import TextareaInput from '@/Components/Inputs/TextareaInput.vue'
 	import EmptyState from '@/Components/EmptyState.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import { ref } from 'vue'
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
+	import { HiSolidChevronLeft } from 'oh-vue-icons/icons'
+	import { OhVueIcon, addIcons } from 'oh-vue-icons'
+	addIcons(HiSolidChevronLeft)
 
 	const props = defineProps({
 		chats: {
@@ -74,16 +77,31 @@
 <template>
 	<AppLayout>
 		<Container>
-			<Breadcrumbs :routes="routes" />
+			<Breadcrumbs
+				:routes="routes"
+				class="hidden md:flex"
+			/>
 			<Heading
-				class="mt-8"
+				class="mt-3 md:mt-8"
 				title="Чат объекта"
 			/>
-
-			<div
-				class="mt-6 flex flex-col items-start md:flex-row gap-4 md:justify-between relative md:min-h-0 min-h-[600px] h-[70vh]"
+			<Link
+				class="inline-flex items-center gap-2 mt-4 dark:text-slate-200 opacity-70 hover:opacity-100 transition"
+				v-if="props.chat"
+				:href="
+					route('account.apartments.chats', {
+						apartment: props.chat.data.apartment?.id,
+					})
+				"
 			>
-				<div class="w-full md:w-2/3 h-full relative">
+				<OhVueIcon name="hi-solid-chevron-left" />
+				Назад
+			</Link>
+			<div class="mt-4 flex flex-col items-start md:flex-row gap-4 md:justify-between relative md:min-h-0">
+				<div
+					class="w-full md:w-2/3 relative min-h-[60vh]"
+					:class="props.chat ? '' : 'hidden md:block'"
+				>
 					<div
 						v-if="props.chat && props.messages?.data?.length"
 						class="absolute inset-x-0 top-0 bottom-32 overflow-auto flex flex-col items-start gap-1.5"
@@ -139,6 +157,7 @@
 				</div>
 				<div
 					class="block divide-y divide-gray-100 w-full md:w-1/3 md:sticky md:top-24 rounded-xl overflow-hidden shadow-xl h-auto py-2 border border-gray-50"
+					:class="!props.chat ? '' : 'hidden md:block'"
 				>
 					<div class="h-full overflow-auto min-h-[300px] md:min-h-0">
 						<div

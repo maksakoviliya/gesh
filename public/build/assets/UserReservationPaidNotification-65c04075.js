@@ -1,0 +1,1 @@
+import o from"./NotificationItem-bf03f328.js";import{l as a,w as e,a as n,i as c}from"./app-fc6ef90b.js";const _={__name:"UserReservationPaidNotification",props:{notification:{type:Object}},setup(t){const i=t;return(r,s)=>(n(),a(o,{notification:i.notification},{title:e(()=>[c(" Оплата бронирования прошла успешно ")]),_:1},8,["notification"]))}};export{_ as default};

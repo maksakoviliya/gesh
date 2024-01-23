@@ -20,12 +20,12 @@
 </script>
 
 <template>
-	<div class="min-h-screen pb-44 relative">
+	<div class="min-h-screen relative flex flex-col">
 		<Head :title="title" />
 
 		<Navbar />
 
-		<main class="pt-24">
+		<main class="pt-24 pb-10">
 			<slot />
 		</main>
 

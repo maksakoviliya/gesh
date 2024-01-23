@@ -4,7 +4,7 @@
 </script>
 
 <template>
-	<footer class="fixed bottom-0 w-full z-10 bg-white dark:bg-slate-800 border-t dark:border-slate-700">
+	<footer class="w-full bg-white dark:bg-slate-800 border-t dark:border-slate-700 mt-auto">
 		<Container class="py-3 lg:py-4">
 			<div class="flex flex-col md:flex-row gap-6 sm:items-center sm:justify-between">
 				<span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"

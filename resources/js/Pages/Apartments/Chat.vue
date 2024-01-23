@@ -47,7 +47,7 @@
 				class="mt-8"
 				title="Чат с хозяином"
 			/>
-			<div class="mt-6 flex flex-col items-start md:flex-row gap-4 md:justify-between relative h-[70vh]">
+			<div class="mt-6 flex flex-col items-start md:flex-row gap-4 md:justify-between relative">
 				<div class="w-full md:w-2/3 h-full relative">
 					<div
 						v-if="props.messages.data.length"
