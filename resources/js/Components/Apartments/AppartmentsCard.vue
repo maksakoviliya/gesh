@@ -4,6 +4,11 @@
 	import Bedrooms from '@/Components/Bedrooms.vue'
 	import Beds from '@/Components/Apartments/Beds.vue'
 	import Bathrooms from '@/Components/Apartments/Bathrooms.vue'
+	import { Navigation, Pagination } from 'swiper/modules'
+	import { Swiper, SwiperSlide } from 'swiper/vue'
+	import 'swiper/css'
+	import 'swiper/css/navigation'
+	import { ref } from 'vue'
 
 	const props = defineProps({
 		apartment: Object,
@@ -12,45 +17,74 @@
 	const handleClick = () => {
 		return router.visit(route('apartment', props.apartment.id))
 	}
+
+	const modules = ref([Navigation, Pagination])
 </script>
 
 <template>
-	<div
-		class="col-span-1 cursor-pointer group"
-		@click="handleClick"
-	>
+	<div class="col-span-1 cursor-pointer group">
 		<div class="flex flex-col gap-2 w-full h-full">
-			<div class="aspect-square w-full relative overflow-hidden rounded-xl">
+			<div class="aspect-square w-full flex relative overflow-hidden rounded-xl">
+				<template v-if="props.apartment.media.length">
+					<Swiper
+						:modules="modules"
+						:navigation="true"
+						:ver
+					>
+						<SwiperSlide
+							v-for="image in props.apartment.media"
+							:key="image.id"
+						>
+							<img
+								@click="handleClick"
+								class="object-cover h-full w-full"
+								:src="image.src"
+								:srcset="image.srcset"
+								:alt="props.apartment.title"
+							/>
+						</SwiperSlide>
+					</Swiper>
+				</template>
 				<img
-					class="object-cover h-full w-full group-hover:scale-110 transition"
-					:src="props.apartment.media.length ? props.apartment.media[0]?.src : '/img/no-photo.jpeg'"
-					:srcset="props.apartment.media.length ? props.apartment.media[0]?.srcset : null"
+					v-else
+					class="object-cover h-full w-full"
+					src="/img/no-photo.jpeg"
 					:alt="props.apartment.title"
 				/>
 			</div>
-			<div class="font-semibold text-lg dark:text-slate-200">
+			<div
+				class="font-semibold text-lg dark:text-slate-200"
+				@click="handleClick"
+			>
 				{{ props.apartment.title ?? props.apartment.category?.title_single }}
 				({{ props.apartment.city }})
 			</div>
 			<div
+				@click="handleClick"
 				class="font-light text-neutral-500 dark:text-slate-300"
 				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
 				{{ props.apartment.category?.title_single ?? 'Нет типа' }}
 			</div>
-			<div class="flex flex-row items-center gap-1 mt-auto">
-				<!--				<div class="font-semibold">-->
-				<!--					{{ props.apartment.price.toLocaleString('ru') }}₽-->
-				<!--					<span class="text-neutral-500 font-light text-sm">ночь</span>-->
-				<!--				</div>-->
-			</div>
-			<div class="flex flex-row items-center justify-between gap-2">
+			<!--			<div class="flex flex-row items-center gap-1 mt-auto">-->
+			<!--				<div class="font-semibold">-->
+			<!--					{{ props.apartment.price.toLocaleString('ru') }}₽-->
+			<!--					<span class="text-neutral-500 font-light text-sm">ночь</span>-->
+			<!--				</div>-->
+			<!--			</div>-->
+			<div
+				class="flex flex-row items-center justify-between gap-2"
+				@click="handleClick"
+			>
 				<Guests :guests="props.apartment.guests" />
 				<Bedrooms :bedrooms="props.apartment.bedrooms" />
 				<Beds :beds="props.apartment.beds" />
 				<Bathrooms :bathrooms="props.apartment.bathrooms" />
 			</div>
-			<div class="text-neutral-400 dark:text-slate-400">
+			<div
+				class="text-neutral-400 dark:text-slate-400"
+				@click="handleClick"
+			>
 				<span class="font-bold text-xl text-neutral-800 dark:text-white">{{
 					props.apartment.weekdays_price
 				}}</span>
@@ -59,3 +93,18 @@
 		</div>
 	</div>
 </template>
+
+<style>
+	.swiper-button-prev.swiper-button-disabled,
+	.swiper-button-next.swiper-button-disabled {
+		@apply opacity-0 hidden;
+	}
+	.swiper-button-prev,
+	.swiper-button-next {
+		@apply aspect-square w-8 h-8 bg-white rounded-full hover:scale-110 transition cursor-pointer opacity-0 group-hover:opacity-100;
+	}
+	.swiper-button-prev:after,
+	.swiper-button-next:after {
+		@apply text-base text-blue-500;
+	}
+</style>
