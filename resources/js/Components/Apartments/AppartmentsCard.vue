@@ -36,9 +36,11 @@
 							:key="image.id"
 						>
 							<img
-								loading="lazy"
+								loading="eager"
 								@click="handleClick"
 								class="object-cover h-full w-full"
+                                content-visibility="auto"
+                                decoding="async"
 								:src="image.src"
 								:srcset="image.srcset"
 								:alt="props.apartment.title"
