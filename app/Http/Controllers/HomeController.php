@@ -20,7 +20,7 @@ final class HomeController extends Controller
             ->with('reservations')
             ->published()
             ->filter($request)
-            ->inRandomOrder()
+            ->order()
             ->paginate(24)
             ->withQueryString();
 

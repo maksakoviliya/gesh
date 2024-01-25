@@ -9,6 +9,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
+/**
+ * App\Models\TelegramAuthCode
+ *
+ * @property int $id
+ * @property string $code
+ * @property string $user_id
+ * @property string $chat_id
+ * @property string $expires_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode query()
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereChatId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereUserId($value)
+ * @mixin \Eloquent
+ */
 final class TelegramAuthCode extends Model
 {
     use HasFactory;

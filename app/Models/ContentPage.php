@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage query()
@@ -27,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ContentPage whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 final class ContentPage extends Model

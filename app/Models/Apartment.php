@@ -8,6 +8,7 @@ use App\Enums\Apartments\Status;
 use App\Enums\Apartments\Type;
 use App\Exports\ApartmentsExport;
 use App\Imports\ApartmentsImport;
+use Auth;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Database\Factories\ApartmentFactory;
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Spatie\MediaLibrary\HasMedia;
@@ -75,7 +77,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @property-read MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read User|null $user
- *
  * @method static ApartmentFactory factory($count = null, $state = [])
  * @method static Builder|Apartment filter(Request $request)
  * @method static Builder|Apartment newModelQuery()
@@ -111,22 +112,20 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static Builder|Apartment whereUserId($value)
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
- *
- * @property-read Collection<int, \App\Models\ICalLink> $ICalLinks
+ * @property-read Collection<int, ICalLink> $ICalLinks
  * @property-read int|null $i_cal_links_count
- * @property-read Collection<int, \App\Models\DisabledDate> $disabledDates
+ * @property-read Collection<int, DisabledDate> $disabledDates
  * @property-read int|null $disabled_dates_count
- * @property-read Collection<int, \App\Models\Reservation> $reservations
+ * @property-read Collection<int, Reservation> $reservations
  * @property-read int|null $reservations_count
- * @property-read Collection<int, \App\Models\SideReservation> $sideReservations
+ * @property-read Collection<int, SideReservation> $sideReservations
  * @property-read int|null $side_reservations_count
  * @property \Illuminate\Support\Carbon|null $deleted_at
- *
  * @method static Builder|Apartment onlyTrashed()
  * @method static Builder|Apartment whereDeletedAt($value)
  * @method static Builder|Apartment withTrashed()
  * @method static Builder|Apartment withoutTrashed()
- *
+ * @method static Builder|Apartment order()
  * @mixin Eloquent
  */
 final class Apartment extends Model implements HasMedia
@@ -525,5 +524,12 @@ final class Apartment extends Model implements HasMedia
                 Arr::get($attributes, 'entrance') ? 'под.' . Arr::get($attributes, 'entrance') : null,
             ]))
         );
+    }
+
+    public function scopeOrder(Builder $builder): Builder
+    {
+        $seed = '"' . Carbon::now()->hour .  Str::substr(Auth::id(), 0, 5) . '"';
+
+        return $builder->inRandomOrder($seed);
     }
 }

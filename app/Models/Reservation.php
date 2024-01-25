@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Apartment|null $apartment
  * @property-read \App\Models\User|null $user
- *
  * @method static Builder|Reservation newModelQuery()
  * @method static Builder|Reservation newQuery()
  * @method static Builder|Reservation query()
@@ -49,7 +48,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder|Reservation whereTotalGuests($value)
  * @method static Builder|Reservation whereUpdatedAt($value)
  * @method static Builder|Reservation whereUserId($value)
- *
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static Builder|Reservation onlyTrashed()
+ * @method static Builder|Reservation whereDeletedAt($value)
+ * @method static Builder|Reservation withTrashed()
+ * @method static Builder|Reservation withoutTrashed()
  * @mixin \Eloquent
  */
 final class Reservation extends Model

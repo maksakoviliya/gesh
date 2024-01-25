@@ -9,7 +9,7 @@
 	import 'swiper/css'
 	import 'swiper/css/navigation'
 	import { ref } from 'vue'
-    import 'lazysizes';
+	import 'lazysizes'
 
 	const props = defineProps({
 		apartment: Object,
@@ -30,28 +30,27 @@
 					<Swiper
 						:modules="modules"
 						:navigation="true"
-						:ver
 					>
 						<SwiperSlide
 							v-for="image in props.apartment.media"
 							:key="image.id"
 						>
-<!--							<img-->
-<!--								loading="eager"-->
-<!--								@click="handleClick"-->
-<!--								class="object-cover h-full w-full"-->
-<!--                                content-visibility="auto"-->
-<!--                                decoding="async"-->
-<!--								:src="image.src"-->
-<!--								:srcset="image.srcset"-->
-<!--								:alt="props.apartment.title"-->
+							<!--							<img-->
+							<!--								loading="eager"-->
+							<!--								@click="handleClick"-->
+							<!--								class="object-cover h-full w-full"-->
+							<!--                                content-visibility="auto"-->
+							<!--                                decoding="async"-->
+							<!--								:src="image.src"-->
+							<!--								:srcset="image.srcset"-->
+							<!--								:alt="props.apartment.title"-->
 
 							<img
 								:alt="props.apartment.title"
-                                data-sizes="auto"
-                                :data-src="image.src"
-                                :data-srcset="image.srcset"
-                                class="lazyload object-cover h-full w-full"
+								data-sizes="auto"
+								:data-src="image.src"
+								:data-srcset="image.srcset"
+								class="lazyload object-cover h-full w-full"
 							/>
 						</SwiperSlide>
 					</Swiper>
