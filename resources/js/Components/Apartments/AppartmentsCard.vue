@@ -46,6 +46,7 @@
 							<!--								:alt="props.apartment.title"-->
 
 							<img
+								@click="handleClick"
 								:alt="props.apartment.title"
 								data-sizes="auto"
 								:data-src="image.src"

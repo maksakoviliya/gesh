@@ -127,8 +127,8 @@
 					unselect: this.handleUnselect,
 					eventClick: this.handleEventClick,
 					events: this.eventsData.map((item) => {
-						item.start = dayjs(item.start, 'DD.MM.YYYY').toDate()
-						item.end = dayjs(item.end, 'DD.MM.YYYY').toDate()
+						item.start = dayjs(item.start, 'DD.MM.YYYY').set('hour', 15).toDate()
+						item.end = dayjs(item.end, 'DD.MM.YYYY').set('hour', 12).toDate()
 						return item
 					}),
 				},
