@@ -44,25 +44,68 @@
 	import axios from 'axios'
 	import { usePage } from '@inertiajs/vue3'
 
+	import FilePondPluginImageEdit from 'filepond-plugin-image-edit'
+
+	// Import the plugin styles
+	import 'filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css'
+
+	import FilePondPluginFilePoster from 'filepond-plugin-file-poster'
+	import FilePondPluginImageEditor from '@pqina/filepond-plugin-image-editor'
+
+	// Import FilePond styles
+	import 'filepond/dist/filepond.min.css'
+	import 'filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.css'
+
+	// Import Pintura styles
+	import '@pqina/pintura/pintura.css'
+
+	// Import Pintura
+	import {
+		// editor
+		createDefaultImageReader,
+		createDefaultImageWriter,
+		locale_en_gb,
+
+		// plugins
+		setPlugins,
+		plugin_crop,
+		markup_editor_defaults,
+
+		// filepond
+		openEditor,
+		processImage,
+		createDefaultImageOrienter,
+		legacyDataToImageState,
+	} from '@pqina/pintura'
+
+	import locale_ru_RU from '@pqina/pintura/locale/ru_RU'
+	import plugin_crop_locale_ru_RU from '@pqina/pintura/locale/ru_RU'
+	import markup_editor_locale_ru_RU from '@pqina/pintura/locale/ru_RU'
+	setPlugins(plugin_crop)
+
 	// Create FilePond component
 	const FilePond = vueFilePond(
 		FilePondPluginFileValidateType,
 		FilePondPluginImagePreview,
-		FilePondPluginFileValidateSize
+		FilePondPluginFileValidateSize,
+		FilePondPluginImageEditor,
+		FilePondPluginFilePoster
 	)
 	const pond = ref()
 
 	const handleUpdateFiles = async (files) => {
-		console.log('files', files)
+		console.log('handleUpdateFiles', files)
 		emit('update:modelValue', [...files.map((item) => item.serverId)])
 		emit('reset')
 	}
 
-	const handleProcessFiles = async () => {
-		const files = pond.value.getFiles()
-		emit('update:modelValue', [...files.map((item) => item.serverId)])
-		emit('reset')
-	}
+	// const handleProcessFiles = async () => {
+	// 	const files = pond.value.getFiles()
+	// 	console.log('handleProcessFiles', files)
+	// 	// console.log(URL.createObjectURL(event.detail.dest))
+	// 	emit('update:modelValue', [...files.map((item) => item.serverId)])
+	// 	emit('reset')
+	// }
 
 	const maxFiles = ref(20)
 
@@ -87,6 +130,63 @@
 	const beforeRemove = (item) => {
 		console.log('beforeRemove item', item)
 	}
+
+	const editor = {
+		// map legacy data objects to new imageState objects
+		legacyDataToImageState: legacyDataToImageState,
+
+		// used to create the editor, receives editor configuration, should return an editor instance
+		createEditor: openEditor,
+
+		// Required, used for reading the image data
+		imageReader: [createDefaultImageReader],
+
+		// optionally. can leave out when not generating a preview thumbnail and/or output image
+		imageWriter: [createDefaultImageWriter],
+
+		// used to generate poster images, runs an editor in the background
+		imageProcessor: processImage,
+
+		// editor options
+		editorOptions: {
+			utils: ['crop'],
+			imageOrienter: createDefaultImageOrienter(),
+			...markup_editor_defaults,
+			locale: {
+				...locale_ru_RU,
+				...plugin_crop_locale_ru_RU,
+				...markup_editor_locale_ru_RU,
+			},
+		},
+	}
+
+	const imageEditorAfterWriteImage = ({ src, dest, imageState }) =>
+		new Promise((resolve, reject) => {
+			console.log('src', src)
+			console.log('dest', dest)
+			console.log('imageState', imageState)
+			// use Pintura Image Editor to process the source image again
+			processImage(src, {
+				imageReader: createDefaultImageReader(),
+				imageWriter: createDefaultImageWriter({
+					targetSize: {
+						width: 128,
+						height: 128,
+						fit: 'cover',
+					},
+				}),
+				imageState,
+			})
+				// we get the thumbnail and add it to the files
+				.then((thumb) =>
+					resolve([
+						{ name: 'input_', file: src },
+						{ name: 'output_', file: dest },
+						{ name: 'thumb_', file: thumb.dest },
+					])
+				)
+				.catch(reject)
+		})
 </script>
 
 <template>
@@ -97,6 +197,7 @@
 			:max-files="maxFiles"
 			@processfile="handleProcessFiles"
 			@warning="handleWarning"
+			:imageEditor="editor"
 			max-file-size="5MB"
 			item-insert-location="after"
 			:allow-multiple="true"
@@ -106,6 +207,7 @@
 			label-max-file-size="Максимальный размер {filesize}"
 			@reorderfiles="handleReorder"
 			@removefile="handleRemove"
+			:image-editor-after-write-image="imageEditorAfterWriteImage"
 			:before-remove-file="beforeRemove"
 			:server="{
 				process: {
