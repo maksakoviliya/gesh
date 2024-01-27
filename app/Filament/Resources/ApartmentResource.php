@@ -220,6 +220,7 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('bedrooms'),
                 Tables\Columns\TextColumn::make('guests'),
                 TextColumn::make('created_at')->date('d.m.Y H:i')->sortable(),
+                TextColumn::make('id')->searchable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
