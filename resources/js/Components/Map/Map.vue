@@ -9,12 +9,12 @@
 		YandexMapClusterer,
 		YandexMapControls,
 		YandexMapDefaultFeaturesLayer,
-		YandexMapDefaultMarker,
 		YandexMapDefaultSchemeLayer,
 		YandexMapListener,
 		YandexMapMarker,
 		YandexMapZoomControl,
 	} from 'vue-yandex-maps'
+	import { router } from '@inertiajs/vue3'
 
 	const map = shallowRef<null | YMap>(null)
 
@@ -83,11 +83,18 @@
 					v-for="marker in props.markers"
 					:settings="{ coordinates: marker.center }"
 					:key="marker.img"
+					@click.prevent="
+						router.visit(
+							route('apartment', {
+								apartment: marker.id,
+							})
+						)
+					"
 				>
-					<div class="w-12 h-12 rounded-full overflow-hidden bg-white p-1 cursor-pointer">
+					<div class="w-12 h-12 rounded-full overflow-hidden bg-white p-1 cursor-pointer group">
 						<img
 							alt="marker.img"
-							class="w-full h-full object-cover rounded-full"
+							class="w-full h-full object-cover rounded-full group-hover:scale-110 transition"
 							:src="marker.img"
 							@click="map?.setLocation({ center: marker.center, zoom: 12, duration: 400 })"
 						/>
@@ -95,12 +102,9 @@
 				</yandex-map-marker>
 
 				<template #cluster="{ coordinates, length }">
-					<div
-						class="bg-white p-1 rounded-full w-12 h-12 cursor-pointer"
-						@click="map!.setLocation({ coordinates, zoom: 14 })"
-					>
+					<div class="bg-white p-1 rounded-full w-12 h-12 cursor-pointer">
 						<div
-							class="rounded-full w-full h-full flex items-center justify-center font-semibold text-sm text-neutral-800 bg-gray-300"
+							class="rounded-full w-full h-full flex items-center justify-center font-semibold text-neutral-800 bg-gray-200"
 						>
 							{{ length }}
 						</div>

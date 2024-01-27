@@ -19,6 +19,7 @@
 	const markers = ref(
 		props.apartments.data.map((item) => {
 			return {
+				id: item.id,
 				center: [item.lat, item.lon],
 				img: item.media[0]?.src,
 			}
