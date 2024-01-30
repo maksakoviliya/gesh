@@ -24,6 +24,7 @@ final class WelcomeToTelegramBotNotification extends Notification
 
     public function toTelegram()
     {
+        \Log::info('toTelegram');
         return TelegramMessage::create()
             ->content('Отлично! Теперь вы сможете видеть уведомления в этом боте.');
     }
