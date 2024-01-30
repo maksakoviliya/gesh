@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Apartments;
 
+use App\Enums\Apartments\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApartmentResource;
 use App\Models\Apartment;
@@ -16,6 +17,10 @@ final class ApartmentShowController extends Controller
 {
     public function __invoke(Request $request, Apartment $apartment): Response
     {
+        if ($apartment->status !== Status::Published) {
+            abort(404);
+        }
+
         $apartment = $apartment->load([
             'user',
             'ICalLinks',
