@@ -26,11 +26,15 @@ final class NewTelegramAuthCodeGeneratedNotification extends Notification
     /**
      * @throws JsonException
      */
-    public function toTelegram()
+    public function toTelegram($notifiable)
     {
+        if (!$notifiable->telegram_user_id) {
+            Log::info('No telegram_user_id provided');
+        }
         $url = route('account.notifications.index');
 
         $message = TelegramMessage::create()
+            ->to($notifiable->telegram_user_id)
             ->content('Введите его код для авторизации.')
             ->line('Найти его можно на сайте, в разделе уведомления.')
             ->button('Все уведомления', $url);
