@@ -174,6 +174,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         } catch (RandomException $e) {
             $code = 1010;
         }
+        
         TelegramAuthCode::query()
             ->create([
                 'code' => $code,
@@ -181,6 +182,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
                 'chat_id' => $chat_id,
                 'expires_at' => Carbon::now()->addHour(),
             ]);
+
+        $this->update([
+            'telegram_chat_id' => $chat_id,
+        ]);
 
         return $code;
     }
