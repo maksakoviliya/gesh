@@ -162,9 +162,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->hasMany(Apartment::class);
     }
 
-    public function routeNotificationForTelegram()
+    public function routeNotificationForTelegram(): ?string
     {
-        return $this->telegram_id;
+        return $this->telegram_chat_id;
     }
 
     public function generateTelegramCode(string $chat_id): int
@@ -174,7 +174,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         } catch (RandomException $e) {
             $code = 1010;
         }
-        
+
         TelegramAuthCode::query()
             ->create([
                 'code' => $code,
