@@ -31,9 +31,11 @@ final class WelcomeToTelegramBotNotification extends Notification
     {
         Log::info('toTelegram');
         if (! $notifiable->telegram_chat_id) {
+            Log::info('User has no Telegram chat!');
             throw new JsonException('User has no Telegram chat!');
         }
         return TelegramMessage::create()
+            ->to($notifiable->telegram_chat_id)
             ->content('Отлично! Теперь вы сможете видеть уведомления в этом боте.');
     }
 

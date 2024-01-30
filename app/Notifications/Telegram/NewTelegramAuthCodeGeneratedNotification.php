@@ -36,7 +36,7 @@ final class NewTelegramAuthCodeGeneratedNotification extends Notification
 
         $message = TelegramMessage::create()
             ->to($notifiable->telegram_chat_id)
-            ->content('Введите его код для авторизации.')
+            ->content('Введите код для авторизации.')
             ->line('Найти его можно на сайте, в разделе уведомления.')
             ->button('Все уведомления', $url);
 
