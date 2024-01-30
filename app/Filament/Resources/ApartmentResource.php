@@ -153,7 +153,6 @@ class ApartmentResource extends Resource
                                 SpatieMediaLibraryFileUpload::make('media')
                                     ->multiple()
                                     ->reorderable()
-                                    ->maxFiles(10),
                             ])
                             ->collapsible()->collapsed(),
 
