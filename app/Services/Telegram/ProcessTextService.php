@@ -38,7 +38,7 @@ class ProcessTextService
         $user->notify(new NewTelegramAuthCodeGeneratedNotification($code));
     }
 
-    public function processText(string $text, string $chat_id)
+    public function processText(string $text, string $chat_id): void
     {
         \Log::info('Process text: '.$text);
         if (strlen($text) === 4) {

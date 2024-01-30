@@ -29,6 +29,7 @@ class TelegramWebhookController extends Controller
                     $chat_id,
                 );
             } else {
+                Log::info('$service->processText');
                 $service->processText(
                     Arr::get($request->all(), 'message.text'),
                     $chat_id,
