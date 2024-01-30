@@ -28,6 +28,7 @@ final class NewTelegramAuthCodeGeneratedNotification extends Notification
      */
     public function toTelegram($notifiable)
     {
+        Log::info('Notifiallble: ' . json_encode($notifiable));
         if (!$notifiable->telegram_user_id) {
             Log::info('No telegram_user_id provided');
         }
