@@ -23,6 +23,8 @@ class TelegramWebhookController extends Controller
             $type = json_encode(Arr::get($request->all(), 'message.entities.0.type'));
             $chat_id = Arr::get($request->all(), 'message.chat.id');
 
+            Log::info('Type: ' . json_encode($type));
+            Log::info('$chat_id: ' . $chat_id);
             if (Str::contains($type, EntityType::PhoneNumber->value)) {
                 Log::info('$service->processPhone');
                 $service->processPhone(
