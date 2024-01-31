@@ -146,10 +146,12 @@
 			/>
 			<div class="flex flex-col items-start lg:flex-row gap-6 justify-between mt-6 relative">
 				<div class="w-full lg:w-2/3">
-					<Heading
-						:title="getTitle()"
-						:subtitle="getSubtitle()"
-					/>
+					<div class="flex">
+						<Heading
+							:title="getTitle()"
+							:subtitle="getSubtitle()"
+						/>
+					</div>
 					<hr class="my-4 dark:border-slate-600" />
 					<div class="flex justify-between items-start gap-x-6">
 						<div class="flex flex-col gap-2">

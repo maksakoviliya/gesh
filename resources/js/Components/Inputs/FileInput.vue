@@ -1,54 +1,6 @@
 <script setup>
-	import { ref } from 'vue'
+	// Import Vue FilePond
 	import vueFilePond from 'vue-filepond'
-
-	const props = defineProps({
-		modelValue: Array,
-		id: String,
-		error: String | null,
-		errors: Array | null,
-		url: String,
-		name: {
-			type: String,
-			default: 'image',
-		},
-	})
-
-	const initialFiles = props.modelValue
-		.sort((a, b) => {
-			return parseInt(a.order_column) - parseInt(b.order_column)
-		})
-		.map((item) => {
-			console.log('item', item)
-			return {
-				source: item.id,
-				options: {
-					type: 'local',
-					metadata: {
-						order: item.order_column,
-					},
-				},
-			}
-		})
-
-	const emit = defineEmits(['update:modelValue', 'error', 'reset'])
-
-	// Import plugins
-	import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
-	import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-	import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
-
-	// Import styles
-	import 'filepond/dist/filepond.min.css'
-	import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
-	import axios from 'axios'
-	import { usePage } from '@inertiajs/vue3'
-
-	import FilePondPluginImageEdit from 'filepond-plugin-image-edit'
-
-	// Import the plugin styles
-	import 'filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css'
-
 	import FilePondPluginFilePoster from 'filepond-plugin-file-poster'
 	import FilePondPluginImageEditor from '@pqina/filepond-plugin-image-editor'
 
@@ -69,7 +21,17 @@
 		// plugins
 		setPlugins,
 		plugin_crop,
+		plugin_crop_locale_en_gb,
+		plugin_filter,
+		plugin_filter_defaults,
+		plugin_filter_locale_en_gb,
+		plugin_finetune,
+		plugin_finetune_defaults,
+		plugin_finetune_locale_en_gb,
+		plugin_annotate,
+		plugin_annotate_locale_en_gb,
 		markup_editor_defaults,
+		markup_editor_locale_en_gb,
 
 		// filepond
 		openEditor,
@@ -77,61 +39,62 @@
 		createDefaultImageOrienter,
 		legacyDataToImageState,
 	} from '@pqina/pintura'
+	import { ref } from 'vue'
+	import axios from 'axios'
+	import { usePage } from '@inertiajs/vue3'
+
+	setPlugins(plugin_crop, plugin_finetune, plugin_filter)
+
+	const page = usePage()
+
+	const props = defineProps({
+		modelValue: Array,
+		id: String,
+		error: String | null,
+		errors: Array | null,
+		url: String,
+		name: {
+			type: String,
+			default: 'image',
+		},
+	})
+
+	// Create FilePond component
+	const FilePond = vueFilePond(FilePondPluginImageEditor, FilePondPluginFilePoster)
+
+	const handleLoad = (event) => {
+		console.log('load', event.detail)
+	}
+	const handleProcess = (event) => {
+		console.log('process', event.detail)
+		this.result = URL.createObjectURL(event.detail.dest)
+	}
+	const handleFilePondInit = () => {
+		console.log('init')
+	}
+
+	const initialFiles = props.modelValue
+		.sort((a, b) => {
+			return parseInt(a.order_column) - parseInt(b.order_column)
+		})
+		.map((item) => {
+			console.log('item', item)
+			return {
+				source: item.id,
+				options: {
+					type: 'local',
+					metadata: {
+						order: item.order_column,
+					},
+				},
+			}
+		})
 
 	import locale_ru_RU from '@pqina/pintura/locale/ru_RU'
 	import plugin_crop_locale_ru_RU from '@pqina/pintura/locale/ru_RU'
 	import markup_editor_locale_ru_RU from '@pqina/pintura/locale/ru_RU'
-	setPlugins(plugin_crop)
 
-	// Create FilePond component
-	const FilePond = vueFilePond(
-		FilePondPluginFileValidateType,
-		FilePondPluginImagePreview,
-		FilePondPluginFileValidateSize,
-		FilePondPluginImageEditor,
-		FilePondPluginFilePoster
-	)
-	const pond = ref()
-
-	const handleUpdateFiles = async (files) => {
-		console.log('handleUpdateFiles', files)
-		emit('update:modelValue', [...files.map((item) => item.serverId)])
-		emit('reset')
-	}
-
-	// const handleProcessFiles = async () => {
-	// 	const files = pond.value.getFiles()
-	// 	console.log('handleProcessFiles', files)
-	// 	// console.log(URL.createObjectURL(event.detail.dest))
-	// 	emit('update:modelValue', [...files.map((item) => item.serverId)])
-	// 	emit('reset')
-	// }
-
-	const maxFiles = ref(20)
-
-	const handleWarning = (error) => {
-		console.log('Warning: ', error)
-		emit('error', `Вы не можете загрузить больше ${maxFiles.value} файлов.`)
-	}
-
-	const handleReorder = (files, origin, target) => {
-		handleUpdateFiles(files)
-		// console.log('reorder')
-	}
-
-	const page = usePage()
-
-	const handleRemove = (error, file) => {
-		console.log('handleRemove error', error)
-		console.log(' handleRemove file', file)
-		// handleProcessFiles()
-	}
-
-	const beforeRemove = (item) => {
-		console.log('beforeRemove item', item)
-	}
-
-	const editor = {
+	const myEditor = ref({
 		// map legacy data objects to new imageState objects
 		legacyDataToImageState: legacyDataToImageState,
 
@@ -149,44 +112,33 @@
 
 		// editor options
 		editorOptions: {
-			utils: ['crop'],
+			utils: ['crop', 'finetune', 'filter'],
 			imageOrienter: createDefaultImageOrienter(),
+			...plugin_finetune_defaults,
+			...plugin_filter_defaults,
 			...markup_editor_defaults,
 			locale: {
+				...plugin_finetune_locale_en_gb,
+				...plugin_filter_locale_en_gb,
+				...plugin_annotate_locale_en_gb,
 				...locale_ru_RU,
 				...plugin_crop_locale_ru_RU,
 				...markup_editor_locale_ru_RU,
 			},
 		},
-	}
+	})
 
-	const imageEditorAfterWriteImage = ({ src, dest, imageState }) =>
-		new Promise((resolve, reject) => {
-			console.log('src', src)
-			console.log('dest', dest)
-			console.log('imageState', imageState)
-			// use Pintura Image Editor to process the source image again
-			processImage(src, {
-				imageReader: createDefaultImageReader(),
-				imageWriter: createDefaultImageWriter({
-					targetSize: {
-						width: 128,
-						height: 128,
-						fit: 'cover',
-					},
-				}),
-				imageState,
-			})
-				// we get the thumbnail and add it to the files
-				.then((thumb) =>
-					resolve([
-						{ name: 'input_', file: src },
-						{ name: 'output_', file: dest },
-						{ name: 'thumb_', file: thumb.dest },
-					])
-				)
-				.catch(reject)
-		})
+	const emit = defineEmits(['update:modelValue', 'error', 'reset'])
+
+	const pond = ref()
+
+	const handleProcessFiles = async () => {
+		const files = pond.value.getFiles()
+		console.log('handleProcessFiles', files)
+		// console.log(URL.createObjectURL(event.detail.dest))
+		emit('update:modelValue', [...files.map((item) => item.serverId)])
+		emit('reset')
+	}
 </script>
 
 <template>
@@ -194,21 +146,11 @@
 		<FilePond
 			ref="pond"
 			:name="props.name"
-			:max-files="maxFiles"
+			acceptedFileTypes="image/jpeg, image/png"
 			@processfile="handleProcessFiles"
-			@warning="handleWarning"
-			:imageEditor="editor"
-			max-file-size="5MB"
-			item-insert-location="after"
-			:allow-multiple="true"
-			:allow-reorder="true"
+			allow-multiple="true"
+			:imageEditor="myEditor"
 			:files="initialFiles"
-			label-max-file-size-exceeded="Файл слишком большой"
-			label-max-file-size="Максимальный размер {filesize}"
-			@reorderfiles="handleReorder"
-			@removefile="handleRemove"
-			:image-editor-after-write-image="imageEditorAfterWriteImage"
-			:before-remove-file="beforeRemove"
 			:server="{
 				process: {
 					url: props.url,
@@ -270,22 +212,31 @@
 					load()
 				},
 			}"
-			:labelIdle="`<div class='${
-				!!error ? 'text-rose-500' : ''
-			}'>Перетащите или <span class='underline font-medium cursor-pointer'>выберите</span> изображения</div>`"
 		/>
-		<div
-			v-if="!!errors"
-			class="text-rose-500 text-sm font-light flex flex-col gap-1"
-		>
-			<div v-for="key in Object.keys(errors)">
-				{{ errors[key] }}
-			</div>
-		</div>
 	</div>
 </template>
 
 <style>
+	/* bright / dark mode */
+	.pintura-editor {
+		--color-background: 255, 255, 255;
+		--color-foreground: 10, 10, 10;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		html {
+			color: #fff;
+			background: #111;
+		}
+
+		.pintura-editor {
+			--color-background: 10, 10, 10;
+			--color-foreground: 255, 255, 255;
+			box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+		}
+	}
+
 	.filepond--panel-root {
 		background-color: transparent;
 		border: 2px solid #d4d4d4;

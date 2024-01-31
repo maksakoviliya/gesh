@@ -64,9 +64,9 @@
 			/>
 			<div class="mt-10">
 				<FileInput
+					v-model="form.media"
 					class="mt-8"
 					id="media"
-					v-model="form.media"
 					:error="form.errors.media"
 					:errors="form.errors"
 					@error="handleError"
