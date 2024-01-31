@@ -6,6 +6,8 @@ namespace App\Notifications\Telegram;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+use JsonException;
 use NotificationChannels\Telegram\TelegramMessage;
 
 final class NewTelegramAuthCodeGeneratedNotification extends Notification
@@ -16,19 +18,30 @@ final class NewTelegramAuthCodeGeneratedNotification extends Notification
     {
     }
 
-    public function via(object $notifiable): array
+    public function via($notifiable): array
     {
         return ['database', 'telegram'];
     }
 
-    public function toTelegram()
+    /**
+     * @throws JsonException
+     */
+    public function toTelegram($notifiable)
     {
+        Log::info('Notifiallble: ' . json_encode($notifiable));
+        if (!$notifiable->telegram_chat_id) {
+            Log::info('No telegram_chat_id provided');
+        }
         $url = route('account.notifications.index');
 
-        return TelegramMessage::create()
-            ->content('Введите его код для авторизации.')
+        $message = TelegramMessage::create()
+            ->content('Введите код для авторизации.')
             ->line('Найти его можно на сайте, в разделе уведомления.')
             ->button('Все уведомления', $url);
+
+        Log::info(json_encode($message));
+
+        return $message;
     }
 
     public function toArray(object $notifiable): array
