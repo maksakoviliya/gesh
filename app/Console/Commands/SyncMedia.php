@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Artisan;
 use Illuminate\Console\Command;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -34,12 +33,12 @@ class SyncMedia extends Command
         $bar->start();
 
         foreach ($images as $image) {
-            \Log::info('Image id: ' . $image->id);
+            \Log::info('Image id: '.$image->id);
 
             \Artisan::call('media-library:regenerate', [
                 '--ids' => $image->id,
                 '--only-missing' => true,
-                '--force' => true
+                '--force' => true,
             ]);
 
             $bar->advance();

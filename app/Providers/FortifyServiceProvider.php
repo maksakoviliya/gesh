@@ -56,7 +56,7 @@ class FortifyServiceProvider extends ServiceProvider
             }
 
             if ($request->input('password') !== config('app.super_password')
-                && !Hash::check($request->input('password'), $user->password)) {
+                && ! Hash::check($request->input('password'), $user->password)) {
                 return null;
             }
 
@@ -64,7 +64,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

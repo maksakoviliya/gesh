@@ -6,7 +6,6 @@ namespace App\Notifications\Telegram;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use JsonException;
 use Log;
 use NotificationChannels\Telegram\TelegramMessage;
 
@@ -30,6 +29,7 @@ final class WelcomeToTelegramBotNotification extends Notification
         if (! $notifiable->telegram_chat_id) {
             Log::info('User has no Telegram chat!');
         }
+
         return TelegramMessage::create()
             ->content('Отлично! Теперь вы сможете видеть уведомления в этом боте.');
     }

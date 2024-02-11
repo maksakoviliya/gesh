@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservation\VoucherRequest;
 use App\Models\Reservation;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
 
 final class ReservationVoucherController extends Controller
 {
@@ -33,12 +32,12 @@ final class ReservationVoucherController extends Controller
                     'name' => $reservation->apartment->user->name,
                     'email' => $reservation->apartment->user->email,
                     'phone' => $reservation->apartment->user->phone,
-                ]
+                ],
             ],
-            'dates' => 'c ' . $reservation->start->locale('ru')->translatedFormat('d F Y').' 15:00 по '.$reservation->end->locale('ru')->translatedFormat('d F Y') . ' 12:00',
+            'dates' => 'c '.$reservation->start->locale('ru')->translatedFormat('d F Y').' 15:00 по '.$reservation->end->locale('ru')->translatedFormat('d F Y').' 12:00',
             'range' => trans_choice('nights', $reservation->range, ['count' => $reservation->range]),
             'price' => \Number::currency($total, 'RUB', 'ru'),
-            'guests' =>[
+            'guests' => [
                 'total_guests' => $reservation->total_guests,
                 'guests' => $reservation->guests,
                 'children' => $reservation->children,

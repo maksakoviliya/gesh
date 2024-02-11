@@ -122,7 +122,7 @@ class ApartmentResource extends Resource
                                 Forms\Components\Toggle::make('fast_reserve')->label('Моментальное бронирование'),
                             ])->collapsible()->columns(),
 
-                    ])->columnSpan(['lg' => fn(?Apartment $record) => $record === null ? 3 : 2]),
+                    ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make()
@@ -136,24 +136,24 @@ class ApartmentResource extends Resource
                                     ->nullable(false),
                                 Select::make('user')->relationship('user', 'name')
                                     ->searchable()
-                                    ->getOptionLabelFromRecordUsing(fn(User $record) => "{$record->name} | {$record->email}")
+                                    ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->email}")
                                     ->preload(),
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
-                                    ->content(fn(Apartment $record): ?string => $record->created_at?->diffForHumans()),
+                                    ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
 
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Изменен')
-                                    ->content(fn(Apartment $record): ?string => $record->updated_at?->diffForHumans()),
+                                    ->content(fn (Apartment $record): ?string => $record->updated_at?->diffForHumans()),
                             ])
                             ->columnSpan(['lg' => 1])
-                            ->hidden(fn(?Apartment $record) => $record === null),
+                            ->hidden(fn (?Apartment $record) => $record === null),
 
                         Forms\Components\Section::make('Шаг 7')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('media')
                                     ->multiple()
-                                    ->reorderable()
+                                    ->reorderable(),
                             ])
                             ->collapsible()->collapsed(),
 
@@ -185,13 +185,13 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('category.title_single')
                     ->label('')
                     ->color('primary')
-                    ->url(fn(Apartment $record) => route('apartment', $record->id), true)
-                    ->description(fn(Apartment $record): string => "$record->city, $record->street, $record->building"),
+                    ->url(fn (Apartment $record) => route('apartment', $record->id), true)
+                    ->description(fn (Apartment $record): string => "$record->city, $record->street, $record->building"),
                 TextColumn::make('user.name')
                     ->label('Владелец')
-                    ->description(fn(Apartment $record): string => $record->user?->email ?? '')
+                    ->description(fn (Apartment $record): string => $record->user?->email ?? '')
                     ->url(function ($record) {
-                        if (!$record->user) {
+                        if (! $record->user) {
                             return null;
                         }
 
@@ -200,7 +200,7 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->sortable()
                     ->badge()
-                    ->formatStateUsing(fn(Status $state): string => __("statuses.{$state->value}"))
+                    ->formatStateUsing(fn (Status $state): string => __("statuses.{$state->value}"))
                     ->color(function (Status $state) {
                         return match ($state) {
                             Status::Draft => 'gray',
@@ -218,8 +218,7 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('weekdays_price')->sortable()->money('RUB'),
                 Tables\Columns\TextColumn::make('weekends_price')->sortable()->money('RUB'),
                 Tables\Columns\TextColumn::make('title')->searchable()
-                    ->url(fn(Apartment $record) => route('apartment', $record->id), true)
-                ,
+                    ->url(fn (Apartment $record) => route('apartment', $record->id), true),
                 Tables\Columns\TextColumn::make('bedrooms'),
                 Tables\Columns\TextColumn::make('guests'),
                 TextColumn::make('created_at')->date('d.m.Y H:i')->sortable(),

@@ -15,7 +15,7 @@ class ProcessTextService
     public function processPhone(string $text, string $chat_id): void
     {
         $phone = new PhoneNumber($text, 'RU');
-        Log::info('Phone: ' . $phone->formatE164());
+        Log::info('Phone: '.$phone->formatE164());
         if (! $phone->isValid()) {
             Telegram::sendMessage([
                 'chat_id' => $chat_id,
@@ -27,7 +27,7 @@ class ProcessTextService
         $user = User::query()
             ->where('phone', $phone->formatE164())
             ->first();
-        Log::info('user: ' .json_encode($user));
+        Log::info('user: '.json_encode($user));
         if (! $user) {
             Telegram::sendMessage([
                 'chat_id' => $chat_id,
@@ -40,7 +40,7 @@ class ProcessTextService
         $code = $user->generateTelegramCode($chat_id);
         $user = User::query()
             ->find($user->id);
-        Log::info('Tg chat ID: ' . $user->telegram_chat_id);
+        Log::info('Tg chat ID: '.$user->telegram_chat_id);
         $user->notify(new NewTelegramAuthCodeGeneratedNotification($code));
     }
 
