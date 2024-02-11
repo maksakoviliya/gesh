@@ -17,9 +17,10 @@ final class SetWebhook extends Command
     public function handle(): int
     {
         $url = 'https://gesh-resort.ru/tg_bot_token_123/webhook';
-        Log::info('Setting webhook: ' . $url);
+        Log::info('Setting webhook: '.$url);
         $response = Telegram::setWebhook(['url' => $url]);
-        Log::info('Response: ' . json_encode($response));
+        Log::info('Response: '.json_encode($response));
+
         return parent::SUCCESS;
     }
 }

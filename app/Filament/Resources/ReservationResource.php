@@ -89,8 +89,8 @@ class ReservationResource extends Resource
                     ->state(fn (Reservation $record) => $record->status !== Status::Paid ? null : 'Ваучер')
                     ->icon('heroicon-o-newspaper')
                     ->url(fn (Reservation $record): string => route('account.reservations.voucher', [
-                       'reservation' => $record->id,
-                        'as' => 'admin'
+                        'reservation' => $record->id,
+                        'as' => 'admin',
                     ]))
                     ->openUrlInNewTab(),
             ])

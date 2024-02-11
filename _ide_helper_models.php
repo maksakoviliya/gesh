@@ -86,19 +86,20 @@ namespace App\Models{
  * @method static Builder|Apartment whereUserId($value)
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
- * @property-read Collection<int, \App\Models\ICalLink> $ICalLinks
+ * @property-read Collection<int, ICalLink> $ICalLinks
  * @property-read int|null $i_cal_links_count
- * @property-read Collection<int, \App\Models\DisabledDate> $disabledDates
+ * @property-read Collection<int, DisabledDate> $disabledDates
  * @property-read int|null $disabled_dates_count
- * @property-read Collection<int, \App\Models\Reservation> $reservations
+ * @property-read Collection<int, Reservation> $reservations
  * @property-read int|null $reservations_count
- * @property-read Collection<int, \App\Models\SideReservation> $sideReservations
+ * @property-read Collection<int, SideReservation> $sideReservations
  * @property-read int|null $side_reservations_count
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @method static Builder|Apartment onlyTrashed()
  * @method static Builder|Apartment whereDeletedAt($value)
  * @method static Builder|Apartment withTrashed()
  * @method static Builder|Apartment withoutTrashed()
+ * @method static Builder|Apartment order()
  * @mixin Eloquent
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
@@ -127,9 +128,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
- * @mixin \Eloquent
  * @property string|null $title_single
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitleSingle($value)
+ * @mixin \Eloquent
  */
 	final class Category extends \Eloquent {}
 }
@@ -307,8 +308,8 @@ namespace App\Models{
  * @method static Builder|ICalLink whereId($value)
  * @method static Builder|ICalLink whereLink($value)
  * @method static Builder|ICalLink whereUpdatedAt($value)
- * @mixin Eloquent
  * @property-read \App\Models\Apartment|null $apartment
+ * @mixin Eloquent
  */
 	class ICalLink extends \Eloquent {}
 }
@@ -321,7 +322,7 @@ namespace App\Models{
  * @property string $name
  * @property string|null $description
  * @property string|null $user_id
- * @property \App\Enums\Instructors\Type $type
+ * @property Type $type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
@@ -337,6 +338,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereUserId($value)
+ * @mixin \Eloquent
  */
 	final class Instructor extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -378,12 +380,12 @@ namespace App\Models{
  * @method static Builder|Reservation whereTotalGuests($value)
  * @method static Builder|Reservation whereUpdatedAt($value)
  * @method static Builder|Reservation whereUserId($value)
- * @mixin \Eloquent
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation withoutTrashed()
+ * @method static Builder|Reservation onlyTrashed()
+ * @method static Builder|Reservation whereDeletedAt($value)
+ * @method static Builder|Reservation withTrashed()
+ * @method static Builder|Reservation withoutTrashed()
+ * @mixin \Eloquent
  */
 	final class Reservation extends \Eloquent {}
 }
@@ -483,6 +485,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereUserId($value)
+ * @mixin \Eloquent
  */
 	final class TelegramAuthCode extends \Eloquent {}
 }
@@ -569,11 +572,11 @@ namespace App\Models{
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User withoutPermission($permissions)
  * @method static Builder|User withoutRole($roles, $guard = null)
- * @mixin Eloquent
  * @property string|null $telegram_chat_id
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TelegramAuthCode> $telegramAuthCodes
+ * @property-read Collection<int, \App\Models\TelegramAuthCode> $telegramAuthCodes
  * @property-read int|null $telegram_auth_codes_count
- * @method static \Illuminate\Database\Eloquent\Builder|User whereTelegramChatId($value)
+ * @method static Builder|User whereTelegramChatId($value)
+ * @mixin Eloquent
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser, \Illuminate\Contracts\Auth\MustVerifyEmail {}
 }
