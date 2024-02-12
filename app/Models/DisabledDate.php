@@ -35,6 +35,7 @@ final class DisabledDate extends Model
     ];
 
     protected $casts = [
+        'date' => 'datetime:d.m.Y H:i',
         'start' => 'datetime:d.m.Y H:i',
         'end' => 'datetime:d.m.Y H:i',
     ];

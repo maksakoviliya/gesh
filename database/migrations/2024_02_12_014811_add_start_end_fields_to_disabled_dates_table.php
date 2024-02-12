@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('disabled_dates', function (Blueprint $table) {
-            $table->timestamp('start')->nullable();
-            $table->timestamp('end')->nullable();
-            $table->dateTime('date')->nullable()->change();
-        });
+//        Schema::table('disabled_dates', function (Blueprint $table) {
+//            $table->timestamp('start')->nullable();
+//            $table->timestamp('end')->nullable();
+//            $table->dateTime('date')->nullable()->change();
+//        });
 
         $apartments = Apartment::query()
             ->whereHas('disabledDates')
