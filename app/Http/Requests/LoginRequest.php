@@ -10,7 +10,7 @@ class LoginRequest extends FortifyLoginRequest
 {
     protected function prepareForValidation()
     {
-        if ($this->has('phone')) {
+        if ($this->input('phone')) {
             $patterns = [
                 '(', ')', ' ', '-', '+',
             ];

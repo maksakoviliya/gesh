@@ -17,4 +17,5 @@ return [
         'array' => 'Максимум :max :attribute',
         'file' => 'Слишком большой файл',
     ],
+    'required_without' => 'Обязательное поле',
 ];
