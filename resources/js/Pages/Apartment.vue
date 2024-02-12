@@ -61,6 +61,7 @@
 	})
 
 	const handleSetDates = (dates) => {
+		console.log('dates', dates)
 		if (!dates) {
 			form.start = null
 			form.end = null
@@ -68,9 +69,10 @@
 		}
 		const start = dayjs(dates.start)
 		const end = dayjs(dates.end)
+		form.range = end.diff(start, 'day')
 		form.start = start.set('hour', 15).set('minute', 0).toDate()
 		form.end = end.set('hour', 12).set('minute', 0).toDate()
-		form.range = end.diff(start, 'day')
+		console.log('form', form)
 	}
 
 	const details = ref([])

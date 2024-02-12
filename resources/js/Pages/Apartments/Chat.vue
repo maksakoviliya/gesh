@@ -48,7 +48,7 @@
 				title="Чат с хозяином"
 			/>
 			<div class="mt-6 flex flex-col items-start md:flex-row gap-4 md:justify-between relative">
-				<div class="w-full md:w-2/3 h-full relative">
+				<div class="w-full md:w-2/3 h-full relative min-h-[420px]">
 					<div
 						v-if="props.messages.data.length"
 						class="absolute inset-x-0 top-0 bottom-32 overflow-auto flex flex-col items-start gap-1.5"
