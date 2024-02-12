@@ -21,6 +21,7 @@
 	import Toggle from '@/Components/Inputs/Toggle.vue'
 	import customParseFormat from 'dayjs/plugin/customParseFormat'
 	import ReservationEvent from '@/Pages/Account/Apartments/Calendar/ReservationEvent.vue'
+	import DisabledDatesEvent from '@/Pages/Account/Apartments/Calendar/DisabledDatesEvent.vue'
 
 	dayjs.extend(customParseFormat)
 
@@ -30,6 +31,7 @@
 			eventsData: Array,
 		},
 		components: {
+			DisabledDatesEvent,
 			ReservationEvent,
 			Toggle,
 			SideReservationEvent,
@@ -73,7 +75,6 @@
 					},
 				],
 				calendarOptions: {
-					timeZone: 'Europe/Moscow',
 					plugins: [dayGridPlugin, interactionPlugin, multiMonthPlugin],
 					multiMonthMaxColumns: 1,
 					// headerToolbar: false,
@@ -117,7 +118,7 @@
 							price = date.price
 						}
 						return {
-							html: `<div class="flex flex-col w-full h-full justify-between disabled">
+							html: `<div class="flex flex-col w-full h-full justify-between">
 		                       <div class="font-semibold text-right text-neutral-800 dark:text-slate-100">${day.dayNumberText}</div>
 		                       <div class="font-light text-neutral-500 dark:text-slate-300 text-sm">${price}₽</div>
 		                   </div>`,
@@ -179,15 +180,12 @@
 			}
 
 			const calendar = ref(null)
-			const disabledDates = computed(() =>
-				props.events.filter((item) => item.type === 'App\\Models\\DisabledDate')
-			)
 
 			const handleSelect = (range) => {
 				console.log('handle select range', range)
 				selectedEvent.value = null
 				rangeForm.start = dayjs(range.startStr).format('DD-MM-YYYY')
-				rangeForm.end = dayjs(range.endStr).subtract(1, 'day').hour(23).minute(59).format('DD-MM-YYYY')
+				rangeForm.end = dayjs(range.endStr).format('DD-MM-YYYY')
 			}
 			const submitRangeForm = () => {
 				rangeForm
@@ -248,7 +246,6 @@
 				calendar,
 				handleEventClick,
 				selectedEvent,
-				disabledDates,
 			}
 		},
 	}
@@ -303,6 +300,10 @@
 							<SideReservationEvent
 								:event="selectedEvent.event.extendedProps"
 								v-if="selectedEvent.event.extendedProps.type === 'App\\Models\\SideReservation'"
+							/>
+							<DisabledDatesEvent
+								:event="selectedEvent.event.extendedProps"
+								v-if="selectedEvent.event.extendedProps.type === 'App\\Models\\DisabledDate'"
 							/>
 							<!--							<ButtonComponent-->
 							<!--								class="mt-6"-->
@@ -386,10 +387,6 @@
 	}
 
 	.disabled_date_event {
-		margin: 0 !important;
-	}
-
-	.fc .fc-bg-event.disabled_date_event {
-		@apply bg-red-400;
+		@apply bg-rose-500 border-rose-200 dark:bg-rose-800 dark:border-rose-600 px-2 opacity-80 hover:opacity-100 cursor-pointer;
 	}
 </style>

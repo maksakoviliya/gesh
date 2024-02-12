@@ -483,30 +483,49 @@ final class Apartment extends Model implements HasMedia
     {
         return Attribute::make(
             get: function () {
+                $result = [];
                 $disabledDays = $this->disabledDates()
-                    ->whereDate('date', '>=', now())
-                    ->pluck('date')
-                    ->values();
+                    ->whereDate('start', '>=', now())
+                    ->orderBy('start')
+                    ->select('start', 'end')
+                    ->get();
+                foreach ($disabledDays as $item) {
+                    $period = CarbonPeriod::create(
+                        $item->start->setTime(15, 00),
+                        $item->end->setTime(12, 00),
+                    );
+                    foreach ($period as $day) {
+                        $result[] = $day;
+                    }
+                }
                 $reservations = $this->reservations()
                     ->whereDate('end', '>=', now())
                     ->select('start', 'end', 'apartment_id', 'id')
                     ->get();
+                foreach ($reservations as $item) {
+                    $period = CarbonPeriod::create(
+                        $item->start->setTime(15, 00),
+                        $item->end->setTime(12, 00),
+                    );
+                    foreach ($period as $day) {
+                        $result[] = $day;
+                    }
+                }
 
                 $side_reservations = $this->sideReservations()
                     ->whereDate('end', '>=', now())
                     ->select('start', 'end', 'apartment_id', 'id')
                     ->get();
-                foreach ($reservations->merge($side_reservations) as $reservation) {
+                foreach ($side_reservations as $item) {
                     $period = CarbonPeriod::create(
-                        $reservation->start->setTime(15, 00),
-                        $reservation->end->setTime(12, 00),
+                        $item->start->setTime(15, 00),
+                        $item->end->setTime(12, 00),
                     );
                     foreach ($period as $day) {
-                        $disabledDays[] = $day;
+                        $result[] = $day;
                     }
                 }
-
-                return $disabledDays;
+                return $result;
             },
         );
     }

@@ -83,18 +83,20 @@ final class CalendarController extends Controller
             ->transform(function ($item) {
                 return [
                     'id' => $item->id,
-                    'start' => $item->date->format('d.m.Y'),
-                    'end' => $item->date->format('d.m.Y'),
+                    'title' => 'Недоступно',
+                    'start' => $item->start->format('d.m.Y'),
+                    'end' => $item->end->addDay()->format('d.m.Y'),
                     'type' => DisabledDate::class,
                     'allDay' => true,
-                    'display' => 'background',
                     'className' => 'disabled_date_event',
+                    'data' => [
+                        'disabled_date' => $item,
+                    ],
                 ];
             }));
-        $events = $reservationRequests->merge($reservations);
-        $events = $events->merge($side_reservations);
-        $events = $events->merge($disabled_dates);
-
+        $events = $reservationRequests->merge($reservations)
+            ->merge($side_reservations)
+            ->merge($disabled_dates);
         return Inertia::render('Account/Apartments/Calendar', [
             'apartment' => new ApartmentResource($apartment),
             'eventsData' => $events,

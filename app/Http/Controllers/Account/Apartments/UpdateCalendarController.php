@@ -9,11 +9,13 @@ use App\Http\Requests\Account\Apartments\UpdateCalendarRequest;
 use App\Models\Apartment;
 use App\Models\DatePrice;
 use App\Models\DisabledDate;
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Http\RedirectResponse;
 
 final class UpdateCalendarController extends Controller
 {
-    public function __invoke(UpdateCalendarRequest $request, Apartment $apartment)
+    public function __invoke(UpdateCalendarRequest $request, Apartment $apartment): RedirectResponse
     {
         $period = CarbonPeriod::create(
             $request->validated('start'),
@@ -29,13 +31,15 @@ final class UpdateCalendarController extends Controller
                     'price' => $request->validated('price'),
                 ]);
             }
-            if ($request->validated('disabled') === false) {
-                DisabledDate::query()->whereDate('date', $date)->delete();
-            } elseif ($request->validated('disabled') === true) {
-                DisabledDate::query()->updateOrCreate([
-                    'apartment_id' => $apartment->id,
-                    'date' => $date->setTime(15, 0),
-                ]);
+            if ($request->validated('disabled') === true) {
+                DisabledDate::query()
+                    ->updateOrCreate([
+                        'apartment_id' => $apartment->id,
+                        'start' => Carbon::parse($request->validated('start'))
+                            ->setTime(15, 0),
+                        'end' => Carbon::parse($request->validated('end'))
+                            ->setTime(12, 0),
+                    ]);
             }
         }
 
