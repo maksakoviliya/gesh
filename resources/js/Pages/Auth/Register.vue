@@ -3,7 +3,6 @@
 	import ModalLayout from '@/Layouts/ModalLayout.vue'
 	import Heading from '@/Components/Heading.vue'
 	import Input from '@/Components/Input.vue'
-	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import { ref } from 'vue'
 	import PhoneInput from '@/Components/PhoneInput.vue'
 
@@ -17,14 +16,7 @@
 	})
 
 	const submit = () => {
-		form.transform((data) => {
-			if (type.value === 'email') {
-				delete data.phone
-			} else {
-				delete data.email
-			}
-			return data
-		}).post(route('register'), {
+		form.post(route('register'), {
 			onFinish: () => form.reset('password'),
 		})
 	}
@@ -46,23 +38,8 @@
 					title="Добро пожаловать"
 					subtitle="Создать аккаунт"
 				/>
-				<div class="flex items-center gap-4">
-					<ButtonComponent
-						:small="true"
-						@click="type = 'phone'"
-						:outline="type !== 'phone'"
-						label="Телефон"
-					/>
-					<ButtonComponent
-						:small="true"
-						@click="type = 'email'"
-						:outline="type !== 'email'"
-						label="Почта"
-					/>
-				</div>
 				<Input
 					id="email"
-					v-if="type === 'email'"
 					v-model="form.email"
 					label="Email"
 					:error="form.errors.email"
@@ -70,7 +47,6 @@
 				/>
 				<PhoneInput
 					id="phone"
-					v-if="type === 'phone'"
 					v-model="form.phone"
 					label="Телефон"
 					:error="form.errors.phone"

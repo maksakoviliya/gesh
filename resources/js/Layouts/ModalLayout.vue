@@ -18,7 +18,7 @@
 			<div class="relative w-full md:w-3/6 lg:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto">
 				<div class="translate duration-300 h-full">
 					<div
-						class="translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-2xl relative flex flex-col w-full bg-white dark:bg-slate-800 dark:shadow-gray-700 dark:shadow-xl overflow-auto outline-none focus:outline-none"
+						class="translate h-full max-h-[92vh] lg:h-auto md:h-auto border-0 rounded-lg shadow-2xl relative flex flex-col w-full bg-white dark:bg-slate-800 dark:shadow-gray-700 dark:shadow-xl overflow-auto outline-none focus:outline-none"
 					>
 						<div
 							class="flex items-center p-6 rounded-t justify-center relative border-b dark:border-slate-600"

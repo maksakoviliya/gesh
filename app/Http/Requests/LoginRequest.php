@@ -29,8 +29,8 @@ class LoginRequest extends FortifyLoginRequest
     public function rules(): array
     {
         return [
-            'email' => 'sometimes|required|string',
-            'phone' => 'sometimes|required|string|phone:RU',
+            'email' => 'required_without:phone|string',
+            'phone' => 'required_without:email|string|phone:RU',
             'password' => 'required|string',
         ];
     }
