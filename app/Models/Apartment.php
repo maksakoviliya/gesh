@@ -208,8 +208,26 @@ final class Apartment extends Model implements HasMedia
 
             $query
                 ->whereDoesntHave('disabledDates', function (Builder $q) use ($start, $end) {
-                    $q->whereDate('date', '>', $start)
-                        ->whereDate('date', '<', $end);
+                    $q->where(function ($subQuery) use ($start, $end) {
+                        $subQuery->whereDate('start', '>=', $start)
+                            ->whereDate('end', '<=', $end);
+                    })
+                        ->orWhere(function ($subQuery) use ($start, $end) {
+                            $subQuery
+                                ->whereDate('start', '>=', $start)
+                                ->whereDate('start', '<', $end)
+                                ->whereDate('end', '>', $end);
+                        })
+                        ->orWhere(function ($subQuery) use ($start, $end) {
+                            $subQuery
+                                ->whereDate('start', '<', $start)
+                                ->whereDate('end', '>', $start)
+                                ->whereDate('end', '<=', $end);
+                        })
+                        ->orWhere(function ($subQuery) use ($start, $end) {
+                            $subQuery->whereDate('start', '<=', $start)
+                                ->whereDate('end', '>=', $end);
+                        });
                 })
                 ->whereDoesntHave('reservations', function (Builder $q) use ($start, $end) {
                     $q->where(function ($subQuery) use ($start, $end) {
