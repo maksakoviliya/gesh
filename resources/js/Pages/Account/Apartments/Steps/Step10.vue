@@ -10,8 +10,8 @@
 	})
 
 	const form = useForm({
-		weekdays_price: props.apartment.data.weekdays_price ?? 2599,
-		weekends_price: props.apartment.data.weekends_price ?? 2599,
+		base_weekdays_price: props.apartment.data.base_weekdays_price ?? 2599,
+		base_weekends_price: props.apartment.data.base_weekends_price ?? 2599,
 	})
 
 	const submit = () => {
@@ -26,8 +26,8 @@
 	}
 
 	const handleUpdate = (value) => {
-		if (!props.apartment.data.weekdays_price) {
-			form.weekends_price = value
+		if (!props.apartment.data.base_weekdays_price) {
+			form.base_weekends_price = value
 		}
 	}
 </script>
@@ -49,24 +49,24 @@
 		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
 			<Heading
 				title="Цена"
-				subtitle="Ее можно изменить в любое время."
+				subtitle="Не забудьте что комиссия сервиса 15%. Цена для гостя будет отличаться."
 			/>
 			<div class="mt-10 grid grid-cols-1 md:grid-cols-2">
 				<div class="border-b md:border-b-0 md:border-r text-center md:pr-4">
 					<PriceInput
 						id="weekdays_price"
-						v-model="form.weekdays_price"
+						v-model="form.base_weekdays_price"
 						@update:modelValue="handleUpdate"
 						label="в будни"
-						:error="form.errors.weekdays_price"
+						:error="form.errors.base_weekdays_price"
 					/>
 				</div>
 				<div class="text-center md:pl-4">
 					<PriceInput
 						id="weekends_price"
-						v-model="form.weekends_price"
+						v-model="form.base_weekends_price"
 						label="в выходные"
-						:error="form.errors.weekends_price"
+						:error="form.errors.base_weekends_price"
 					/>
 				</div>
 			</div>

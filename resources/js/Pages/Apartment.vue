@@ -101,15 +101,6 @@
 		return sum
 	})
 
-	const servicePrice = computed(() => {
-		const commission = basePrice.value >= 100000 ? 0.15 : 0.15
-		return Math.ceil(basePrice.value * commission)
-	})
-
-	const totalPrice = computed(() => {
-		return basePrice.value + servicePrice.value
-	})
-
 	const { errorToast } = useToasts()
 
 	const createReservationRequest = () => {
@@ -333,20 +324,6 @@
 														{{ item.price?.toLocaleString() }}₽
 													</dd>
 												</div>
-												<div class="pt-1 pb-2 px-4 flex w-full items-baseline justify-between">
-													<dt class="font-light leading-6">
-														<div
-															class="font-light text-sm leading-none dark:text-slate-400 text-gray-600 outline-none"
-														>
-															Сервисный сбор
-														</div>
-													</dt>
-													<dd
-														class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-100"
-													>
-														{{ servicePrice?.toLocaleString() }}₽
-													</dd>
-												</div>
 											</dl>
 										</template>
 									</Popover>
@@ -364,7 +341,7 @@
 						<div class="flex w-full items-baseline justify-between">
 							<dt class="font-bold leading-6 text-neutral-800 dark:text-slate-100">Итого:</dt>
 							<dd class="mt-1 font-bold leading-6 text-lg text-neutral-800 dark:text-slate-100">
-								{{ totalPrice?.toLocaleString() }}₽
+								{{ basePrice?.toLocaleString() }}₽
 							</dd>
 						</div>
 					</div>

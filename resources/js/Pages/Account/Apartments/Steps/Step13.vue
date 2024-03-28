@@ -45,8 +45,8 @@
 		"
 	>
 		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
-			<div class="font-bold text-5xl">Жилье добавлено</div>
-			<div class="text-xl mt-4">Объявление отправлено на модерацию.</div>
+			<div class="font-bold text-5xl dark:text-slate-200">Жилье добавлено</div>
+			<div class="text-xl mt-4 dark:text-slate-400">Объявление отправлено на модерацию.</div>
 			<div class="flex gap-4">
 				<ButtonComponent
 					class="mt-8 px-12"

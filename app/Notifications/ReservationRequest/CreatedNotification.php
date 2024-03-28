@@ -45,14 +45,12 @@ class CreatedNotification extends Notification
             'chat' => $chat->id,
         ]);
 
-        $commission = ReservationRequest::getCommission($this->reservationRequest?->price);
-
         return TelegramMessage::create()
             ->content("*Новый запрос на бронирование!*\n")
             ->line('Объект: '.$this->reservationRequest?->apartment->city.', '.$this->reservationRequest?->apartment->street.', '.$this->reservationRequest?->apartment->building)
             ->line('Гость: '.$this->reservationRequest?->user->name)
             ->line('Даты: '.$this->reservationRequest?->start->format('d\.m\.Y').' - '.$this->reservationRequest?->end->format('d\.m\.Y'))
-            ->line('Цена: '.$this->reservationRequest?->price.', Комиссия: '.$commission.', Итого: '.$this->reservationRequest?->price + $commission)
+            ->line('Цена для клиента: '.$this->reservationRequest?->price.', Первоначальный платеж: '.$this->reservationRequest?->first_payment)
             ->line('Гости: '.$this->reservationRequest?->total_guests)
             ->button(
                 'К диалогу',

@@ -17,7 +17,7 @@ final class ReservationPayController extends Controller
     public function __invoke(Request $request, Reservation $reservation, PaymentServiceContract $paymentService): Response
     {
         $redirectUrl = $paymentService->createPayment(
-            $reservation->getFirstPaymentAmount(),
+            $reservation->first_payment,
             route('account.reservations.pay.redirect', [
                 'reservation' => $reservation->id,
             ]),

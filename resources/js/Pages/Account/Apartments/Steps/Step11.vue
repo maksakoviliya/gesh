@@ -52,10 +52,10 @@
 						/>
 					</Switch>
 					<SwitchLabel class="cursor-pointer flex flex-col">
-						<div class="text-xl font-semibold leading-tight text-neutral-800">
+						<div class="text-xl font-semibold leading-tight text-neutral-800 dark:text-slate-300">
 							Быстрое бронирование {{ form.fast_reserve ? 'включено' : 'выключено' }}
 						</div>
-						<div class="text-gray-600 leading-tight">Быстрое бронирование</div>
+						<div class="text-gray-600 leading-tight dark:text-slate-400">Быстрое бронирование</div>
 					</SwitchLabel>
 				</SwitchGroup>
 			</div>

@@ -41,8 +41,7 @@ class SendMessageToAdminGroup
             $text .= "\n";
             $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
 
-            $commission = ReservationRequest::getCommission($reservationRequest->price);
-            $text .= 'Цена: '.$reservationRequest->price.', Комиссия: '.$commission.', Итого: '.$reservationRequest->price + $commission."\n";
+            $text .= 'Цена: '.$reservationRequest->price.', Первоначальный платеж: '.$reservationRequest->first_payment."\n";
 
             $text .= 'Гости: '.$reservationRequest->total_guests."\n";
 
@@ -142,8 +141,7 @@ class SendMessageToAdminGroup
             $text .= "\n";
             $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
 
-            $commission = ReservationRequest::getCommission($reservationRequest->price);
-            $text .= 'Цена: '.$reservationRequest->price.', Комиссия: '.$commission.', Итого: '.$reservationRequest->price + $commission."\n";
+            $text .= 'Цена: '.$reservationRequest->price.', Первоначальный платеж: '.$reservationRequest->first_payment."\n";
 
             $text .= 'Гости: '.$reservationRequest->total_guests."\n";
 
@@ -246,8 +244,7 @@ class SendMessageToAdminGroup
             $text .= "\n";
             $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
 
-            $commission = ReservationRequest::getCommission($reservationRequest->price);
-            $text .= 'Цена: '.$reservationRequest->price.', Комиссия: '.$commission.', Итого: '.$reservationRequest->price + $commission."\n";
+            $text .= 'Цена: '.$reservationRequest->price.', Первоначальный платеж: '.$reservationRequest->first_payment."\n";
 
             $text .= 'Гости: '.$reservationRequest->total_guests."\n";
 
@@ -400,8 +397,7 @@ class SendMessageToAdminGroup
             $text .= "\n";
             $text .= 'Даты: '.$reservation->start->format('d\.m\.Y').' - '.$reservation->end->format('d\.m\.Y')."\n";
 
-            $commission = $reservation::getCommission($reservation->price);
-            $text .= 'Цена: '.$reservation->price.', Комиссия: '.$commission.', Итого: '.$reservation->price + $commission."\n";
+            $text .= 'Цена: '.$reservation->price.', Первоначальный платеж: '.$reservation->first_payment."\n";
 
             $text .= 'Гости: '.$reservation->total_guests."\n";
 

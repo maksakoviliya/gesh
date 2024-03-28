@@ -68,6 +68,11 @@ final class ReservationRequest extends Model
         'status' => Status::class,
     ];
 
+    public static function calculateFirstPayment(int $price): int
+    {
+        return intval(ceil($price * 0.3));
+    }
+
     public static function createFromArray(array $data, Apartment $apartment): Model
     {
         $start = Carbon::parse(Arr::get($data, 'start'))->startOfDay();
@@ -76,6 +81,7 @@ final class ReservationRequest extends Model
             $end = $end->addDay();
         }
         $price = $apartment->getPriceForRange($start, $end);
+        $first_payment = ReservationRequest::calculateFirstPayment($price);
 
         return self::query()->firstOrCreate([
             'start' => $start,
@@ -87,6 +93,7 @@ final class ReservationRequest extends Model
             'total_guests' => Arr::get($data, 'total_guests'),
             'range' => Arr::get($data, 'range'),
             'price' => $price,
+            'first_payment' => $first_payment,
             'status' => Status::Pending,
         ]);
     }
@@ -120,14 +127,5 @@ final class ReservationRequest extends Model
     public function apartment(): BelongsTo
     {
         return $this->belongsTo(Apartment::class);
-    }
-
-    public static function getCommission(int $price): int
-    {
-        if ($price >= 100000) {
-            return (int) ceil($price * 0.15);
-        }
-
-        return (int) ceil($price * 0.15);
     }
 }

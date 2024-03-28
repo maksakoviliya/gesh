@@ -36,8 +36,8 @@
 		"
 	>
 		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
-			<div class="font-bold text-5xl">Почти готово</div>
-			<div class="text-xl mt-4">
+			<div class="font-bold text-5xl dark:text-slate-200">Почти готово</div>
+			<div class="text-xl mt-4 dark:text-slate-400">
 				<template v-if="props.apartment.data.status === 'draft'">
 					Осталось отправить объявление отправлено на модерацию.
 				</template>

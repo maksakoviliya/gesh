@@ -113,24 +113,8 @@ final class Reservation extends Model
         return $this->save();
     }
 
-    public function getFirstPaymentAmount(): int
-    {
-        $totalPrice = ceil($this->price * 1.15);
-
-        return (int) ceil($totalPrice * 0.3);
-    }
-
     public function getPaymentDescription(): string
     {
         return "Бронирование #{$this->id}. C {$this->start->format('d.m.Y')} по {$this->end->format('d.m.Y')}";
-    }
-
-    public static function getCommission(int $price): int
-    {
-        if ($price >= 100000) {
-            return (int) ceil($price * 0.15);
-        }
-
-        return (int) ceil($price * 0.15);
     }
 }

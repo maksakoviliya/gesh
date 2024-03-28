@@ -48,15 +48,15 @@
 					class="border-2 shadow-lg p-6 rounded-lg cursor-pointer hover:shadow-xl transition"
 					:class="
 						form.category_id === category.id
-							? 'border-neutral-800 hover:border-neutral-800 bg-neutral-100'
-							: 'border-neutral-50 hover:border-neutral-500'
+							? 'border-neutral-800 hover:border-neutral-800 bg-neutral-100 dark:bg-slate-700 dark:border-slate-500'
+							: 'border-neutral-50 hover:border-neutral-500 dark:border-slate-400 dark:hover:border-slate-500'
 					"
 				>
 					<div
 						v-html="category.icon"
-						class="text-neutral-800 w-10"
+						class="text-neutral-800 dark:text-zinc-400 w-10"
 					></div>
-					<div class="mt-4 font-semibold text-lg">{{ category.title }}</div>
+					<div class="mt-4 font-semibold text-lg dark:text-slate-300">{{ category.title }}</div>
 				</div>
 			</div>
 			<transition name="fade">

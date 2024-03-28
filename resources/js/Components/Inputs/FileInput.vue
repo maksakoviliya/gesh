@@ -149,7 +149,6 @@
 			acceptedFileTypes="image/jpeg, image/png"
 			@processfile="handleProcessFiles"
 			allow-multiple="true"
-			:imageEditor="myEditor"
 			:files="initialFiles"
 			:server="{
 				process: {

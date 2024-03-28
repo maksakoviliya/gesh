@@ -54,12 +54,12 @@
 					class="border-2 shadow-lg p-6 rounded-lg cursor-pointer hover:shadow-xl transition"
 					:class="
 						form.type === type.id
-							? 'border-neutral-800 hover:border-neutral-800 bg-neutral-100'
-							: 'border-neutral-50 hover:border-neutral-500'
+							? 'border-neutral-800 hover:border-neutral-800 bg-neutral-100 dark:bg-slate-700 dark:border-slate-500'
+							: 'border-neutral-50 hover:border-neutral-500 dark:border-slate-400 dark:hover:border-slate-500'
 					"
 				>
-					<div class="font-semibold text-lg">{{ type.title }}</div>
-					<div class="font-light text-neutral-500 mt-1">{{ type.subtitle }}</div>
+					<div class="font-semibold text-lg dark:text-slate-200">{{ type.title }}</div>
+					<div class="font-light text-neutral-500 mt-1 dark:text-slate-400">{{ type.subtitle }}</div>
 				</div>
 			</div>
 			<transition name="fade">

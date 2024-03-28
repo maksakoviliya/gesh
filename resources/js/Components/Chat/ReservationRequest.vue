@@ -99,18 +99,6 @@
 				}, 1500)
 			})
 	}
-
-	const servicePrice = computed(() => {
-		const commission = request.value.price >= 100000 ? 0.15 : 0.15
-		return Math.ceil(request.value.price * commission)
-	})
-
-	const totalPrice = computed(() => {
-		return request.value.price + servicePrice.value
-	})
-	const firstPayment = computed(() => {
-		return Math.ceil(totalPrice.value * 0.3)
-	})
 </script>
 
 <template>
@@ -137,10 +125,12 @@
 			<span v-if="request.children > 0"> | Дети: {{ request.children }}</span>
 		</div>
 		<div class="flex items-center gap-2 flex-wrap">
-			<div class="font-light text-neutral-800 dark:text-slate-200">Цена: {{ totalPrice.toLocaleString() }}₽</div>
+			<div class="font-light text-neutral-800 dark:text-slate-200">
+				Цена: {{ request.price.toLocaleString() }}₽
+			</div>
 			<span class="dark:text-slate-300">|</span>
 			<div class="font-light text-neutral-800 dark:text-slate-200">
-				Первоначальный платеж: {{ firstPayment.toLocaleString() }}₽
+				Первоначальный платеж: {{ request.first_payment?.toLocaleString() }}₽
 			</div>
 		</div>
 		<div
@@ -300,7 +290,7 @@
 							<div>{{ request.range }} ночи:</div>
 						</dt>
 						<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
-							{{ totalPrice.toLocaleString() }}₽
+							{{ request.price.toLocaleString() }}₽
 						</dd>
 					</div>
 					<div class="py-2 flex w-full items-baseline justify-between">
@@ -308,7 +298,7 @@
 							<div>Первоначальный платеж:</div>
 						</dt>
 						<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
-							{{ firstPayment.toLocaleString() }}₽
+							{{ request.first_payment.toLocaleString() }}₽
 						</dd>
 					</div>
 				</dl>

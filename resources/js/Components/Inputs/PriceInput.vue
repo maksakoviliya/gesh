@@ -1,13 +1,18 @@
 <script setup>
 	import Input from '@/Components/Input.vue'
+	import { computed } from 'vue'
 
-	defineProps({
+	const props = defineProps({
 		id: String,
 		label: String,
 		error: String | null,
 		disabled: Boolean | null,
 		required: Boolean | null,
 		modelValue: String | null,
+	})
+
+	const priceWithCommission = computed(() => {
+		return Math.ceil(props.modelValue * 1.15)
 	})
 </script>
 
@@ -24,7 +29,7 @@
 			@input="$emit('update:modelValue', $event.target.value)"
 			type="number"
 			autocomplete="new-password"
-			class="w-full p-4 pt-6 text-center text-[80px] font-bold bg-white border-0 shadow-none outline-none transition disabled:opacity-70 focus:ring-0 disabled:cursor-not-allowed"
+			class="w-full p-4 pt-6 text-center text-[80px] font-bold bg-white dark:bg-slate-800 dark:text-slate-200 border-0 shadow-none outline-none transition disabled:opacity-70 focus:ring-0 disabled:cursor-not-allowed"
 			:class="`
                     ${error ? 'border-rose-500' : ''}
                 ${error ? 'focus:border-rose-500' : ''}
@@ -33,22 +38,23 @@
 
 		<label
 			class="block w-full text-m font-semibold"
-			:class="error ? 'text-rose-500' : 'text-neutral-800'"
+			:class="error ? 'text-rose-500' : 'text-neutral-800 dark:text-slate-400'"
 		>
 			₽ / ночь
-		</label>
-
-		<label
-			class="block w-full text-md"
-			:class="error ? 'text-rose-500' : 'text-zinc-400'"
-		>
-			{{ label
-			}}<sup
-				v-if="required"
-				class="text-sm text-rose-400"
-				>*</sup
+			<span
+				class="font-light"
+				:class="error ? 'text-rose-500' : 'text-zinc-400 dark:text-zinc-300'"
+				>{{ label
+				}}<sup
+					v-if="required"
+					class="text-sm text-rose-400"
+					>*</sup
+				></span
 			>
 		</label>
+		<span class="text-sm text-zinc-500 dark:text-zinc-300"
+			>Для гостя: <span class="text-lg font-medium">{{ priceWithCommission }}₽</span>
+		</span>
 		<div
 			v-if="!!error"
 			class="text-rose-500 text-sm font-light"

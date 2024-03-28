@@ -14,10 +14,8 @@ final class ReservationVoucherController extends Controller
     public function __invoke(VoucherRequest $request, Reservation $reservation)
     {
         $price = $reservation->price;
-        $commission = $reservation::getCommission($price);
-        $total = $price + $commission;
-        $first_payment = ceil(($total) * 0.3);
-        $remainder = $total - $first_payment;
+        $first_payment = $reservation->first_payment;
+        $remainder = $price - $first_payment;
         $data = [
             'id' => $reservation->id,
             'date' => $reservation->created_at->locale('ru')->translatedFormat('d F Y'),
@@ -36,7 +34,7 @@ final class ReservationVoucherController extends Controller
             ],
             'dates' => 'c '.$reservation->start->locale('ru')->translatedFormat('d F Y').' 15:00 по '.$reservation->end->locale('ru')->translatedFormat('d F Y').' 12:00',
             'range' => trans_choice('nights', $reservation->range, ['count' => $reservation->range]),
-            'price' => \Number::currency($total, 'RUB', 'ru'),
+            'price' => \Number::currency($price, 'RUB', 'ru'),
             'guests' => [
                 'total_guests' => $reservation->total_guests,
                 'guests' => $reservation->guests,

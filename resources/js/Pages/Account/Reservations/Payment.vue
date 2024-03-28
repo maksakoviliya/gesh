@@ -109,19 +109,6 @@
 		},
 	])
 
-	const servicePrice = computed(() => {
-		const commission = basePrice.value >= 100000 ? 0.15 : 0.15
-		return Math.ceil(basePrice.value * commission)
-	})
-
-	const totalPrice = computed(() => {
-		return basePrice.value + servicePrice.value
-	})
-
-	const firstPayment = computed(() => {
-		return Math.ceil(totalPrice.value * 0.3)
-	})
-
 	const remaining = ref(0)
 	onMounted(() => {
 		// const createdAt = new Date(props.reservation.data.created_at)
@@ -177,7 +164,7 @@
 							<ButtonComponent
 								class="mt-3 px-16"
 								:auto-width="true"
-								:label="`Перейти к оплате: ${firstPayment.toLocaleString()}₽`"
+								:label="`Перейти к оплате: ${props.reservation.data.first_payment?.toLocaleString()}₽`"
 								@click="redirectToPayPage"
 							/>
 							<VueCountdown
@@ -286,33 +273,7 @@
 									</Popover>
 								</dt>
 								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
-									{{ basePrice?.toLocaleString() }}₽
-								</dd>
-							</div>
-							<div class="flex w-full items-baseline justify-between">
-								<dt class="font-light leading-6">
-									<Popover>
-										<template #toggle>
-											<div
-												class="font-light leading-none text-gray-600 dark:text-slate-300 outline-none border-b border-gray-400 dark:border-slate-300 hover:border-gray-600 transition"
-											>
-												Сервисный сбор
-											</div>
-										</template>
-										<template #content>
-											<div
-												class="max-h-52 p-4 text-neutral-600 leading-tight text-sm dark:text-slate-400"
-											>
-												Благодаря этому сбору мы развиваем наш сервис и, в том числе,
-												обеспечиваем путешественников круглосуточной поддержкой.
-												<br />
-												Данный сервисный сбор удерживатеся при отмене без уважительных причин.
-											</div>
-										</template>
-									</Popover>
-								</dt>
-								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
-									{{ servicePrice?.toLocaleString() }}₽
+									{{ props.reservation.data.price?.toLocaleString() }}₽
 								</dd>
 							</div>
 						</div>
@@ -321,7 +282,7 @@
 								<div>Итого:</div>
 							</dt>
 							<dd class="mt-1 font-bold leading-6 text-neutral-800 dark:text-slate-200">
-								{{ totalPrice.toLocaleString() }}₽
+								{{ props.reservation.data.price?.toLocaleString() }}₽
 							</dd>
 						</div>
 					</dl>

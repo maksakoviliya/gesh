@@ -308,10 +308,6 @@ final class Apartment extends Model implements HasMedia
             ]);
     }
 
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
     public function updateFromArray(array $data): Model|Builder
     {
         $fields = [
@@ -353,16 +349,15 @@ final class Apartment extends Model implements HasMedia
             'description',
 
             // Step 10:
-            'weekdays_price',
-            'weekends_price',
+            'base_weekdays_price',
+            'base_weekends_price',
 
             // Step 11:
             'fast_reserve',
         ];
         foreach ($fields as $field) {
             if (Arr::has($data, $field)) {
-                $value = Arr::get($data, $field);
-                $this[$field] = $value;
+                $this[$field] = Arr::get($data, $field);
             }
         }
 
@@ -385,6 +380,16 @@ final class Apartment extends Model implements HasMedia
                 $medias[] = $image->getKey();
             }
             Media::setNewOrder($medias);
+        }
+
+        // Step 10
+        if (Arr::has($data, 'base_weekdays_price')) {
+            $this['weekdays_price'] = ceil(Arr::get($data, 'base_weekdays_price') * 1.15);
+            $this['base_weekdays_price'] = intval(Arr::get($data, 'base_weekdays_price'));
+        }
+        if (Arr::has($data, 'base_weekends_price')) {
+            $this['weekends_price'] = ceil(Arr::get($data, 'base_weekends_price') * 1.15);
+            $this['base_weekends_price'] = intval(Arr::get($data, 'base_weekends_price'));
         }
 
         $this->step = Arr::get($data, 'step') + 1;

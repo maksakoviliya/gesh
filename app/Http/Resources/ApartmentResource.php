@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,7 +17,7 @@ class ApartmentResource extends JsonResource
             'step' => $this->resource->step,
             'title' => $this->resource->title,
             'status' => $this->resource->status,
-            'status_text' => __('statuses.'.$this->resource->status->value),
+            'status_text' => __('statuses.' . $this->resource->status->value),
             'description' => $this->resource->description,
             'address' => $this->resource->address,
             'bedrooms' => $this->resource->bedrooms,
@@ -38,6 +39,14 @@ class ApartmentResource extends JsonResource
             'media' => ImageResource::collection($this->resource->getMedia()),
             'weekdays_price' => $this->resource->weekdays_price,
             'weekends_price' => $this->resource->weekends_price,
+            'base_weekdays_price' => $this->when(
+                $this->resource->user_id === Auth::id(),
+                $this->resource->base_weekdays_price
+            ),
+            'base_weekends_price' => $this->when(
+                $this->resource->user_id === Auth::id(),
+                $this->resource->base_weekends_price
+            ),
             'category' => new CategoryResource($this->resource->category),
             'type' => $this->resource->type,
             'features' => FeatureResource::collection($this->resource->features),

@@ -63,16 +63,16 @@
 					v-for="feature in features.data"
 					:class="
 						form.features.includes(feature.id)
-							? 'border-neutral-800 hover:border-neutral-800 bg-neutral-100'
-							: 'border-neutral-50 hover:border-neutral-500'
+							? 'border-neutral-800 hover:border-neutral-800 bg-neutral-100 dark:bg-slate-700 dark:border-slate-500'
+							: 'border-neutral-50 hover:border-neutral-500 dark:border-slate-400 dark:hover:border-slate-500'
 					"
 					:key="feature.id"
 				>
 					<div
 						v-html="feature.icon"
-						class="w-8"
+						class="w-8 dark:text-zinc-500"
 					></div>
-					<div class="font-semibold mt-2">{{ feature.title }}</div>
+					<div class="font-semibold mt-2 dark:text-slate-200">{{ feature.title }}</div>
 				</div>
 			</div>
 		</div>

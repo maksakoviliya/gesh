@@ -84,8 +84,8 @@ final class StoreRequest extends FormRequest
             'description' => 'sometimes|nullable|max:3000',
 
             // Step 10:
-            'weekdays_price' => 'sometimes|required|integer|max:9999999',
-            'weekends_price' => 'sometimes|required|integer|max:9999999',
+            'base_weekdays_price' => 'sometimes|required|integer|max:9999999',
+            'base_weekends_price' => 'sometimes|required|integer|max:9999999',
 
             // Step 11:
             'fast_reserve' => 'sometimes|required|boolean',
