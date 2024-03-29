@@ -101,6 +101,7 @@ final class Reservation extends Model
                 'total_guests' => $reservationRequest->total_guests,
                 'range' => $reservationRequest->range,
                 'price' => $reservationRequest->price,
+                'first_payment' => $reservationRequest->first_payment,
             ]);
 
         return $reservation;
