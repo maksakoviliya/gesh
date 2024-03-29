@@ -24,7 +24,6 @@ final class ReservationsListController extends Controller
             ->get();
         $reservation_requests = ReservationRequest::query()
             ->where('user_id', Auth::id())
-            ->where('status', Status::Pending)
             ->get();
 
         return Inertia::render('Account/Reservations/List', [
