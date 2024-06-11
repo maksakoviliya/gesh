@@ -63,8 +63,8 @@ final class ReservationRequest extends Model
     ];
 
     protected $casts = [
-        'start' => 'date:d.m.Y',
-        'end' => 'date:d.m.Y',
+        'start' => 'datetime',
+        'end' => 'datetime',
         'status' => Status::class,
     ];
 
@@ -75,17 +75,17 @@ final class ReservationRequest extends Model
 
     public static function createFromArray(array $data, Apartment $apartment): Model
     {
-        $start = Carbon::parse(Arr::get($data, 'start'))->startOfDay();
-        $end = Carbon::parse(Arr::get($data, 'end'))->subDay()->startOfDay();
-        if ($end < $start) {
-            $end = $end->addDay();
-        }
+        $start = Carbon::parse(Arr::get($data, 'start'))
+            ->setTime(15, 0);
+        $end = Carbon::parse(Arr::get($data, 'end'))->subDay()
+            ->setTime(12, 0);
+
         $price = $apartment->getPriceForRange($start, $end);
         $first_payment = ReservationRequest::calculateFirstPayment($price);
 
         return self::query()->firstOrCreate([
             'start' => $start,
-            'end' => Carbon::parse(Arr::get($data, 'end'))->startOfDay(),
+            'end' => $end,
             'apartment_id' => Arr::get($data, 'apartment_id'),
             'user_id' => Arr::get($data, 'user_id'),
             'guests' => Arr::get($data, 'guests'),

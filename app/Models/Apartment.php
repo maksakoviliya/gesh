@@ -10,6 +10,7 @@ use App\Exports\ApartmentsExport;
 use App\Imports\ApartmentsImport;
 use Auth;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Database\Factories\ApartmentFactory;
 use Eloquent;
@@ -176,36 +177,6 @@ final class Apartment extends Model implements HasMedia
         if ($request->has('start') && $request->has('end')) {
             $start = Carbon::createFromFormat('d_m_Y', $request->get('start'), 'Europe/Moscow')->setTime(15, 00);
             $end = Carbon::createFromFormat('d_m_Y', $request->get('end'), 'Europe/Moscow')->setTime(12, 00);
-
-            //            $apart = Apartment::find('01hhes40frzneyjrdr8jvyrne9');
-            //
-            //            $sr = SideReservation::query()
-            //                ->where('apartment_id', $apart->id)
-            //                            ->where(function ($subQuery) use ($start, $end) {
-            //                $subQuery->whereDate('start', '<=', $start)
-            //                    ->whereDate('end', '>=', $end)
-            ////                    ->whereDate('end', '>=', $start)
-            //                ;
-            //            })
-
-            //            $query->where(function ($subQuery) use ($start, $end) {
-            //                $subQuery->whereDate('start', '>=', $start)
-            //                    ->whereDate('end', '<=', $end);
-            //            })
-            //                ->orWhere(function ($subQuery) use ($start, $end) {
-            //                    $subQuery
-            //                        ->whereDate('start', '>=', $start)
-            //                        ->whereDate('start', '<', $end)
-            //                        ->whereDate('end', '>', $end);
-            //                })
-            //                ->orWhere(function ($subQuery) use ($start, $end) {
-            //                    $subQuery
-            //                        ->whereDate('start', '<', $start)
-            //                        ->whereDate('end', '>', $start)
-            //                        ->whereDate('end', '<=', $end);
-            //                })
-            //            ->get();
-
             $query
                 ->whereDoesntHave('disabledDates', function (Builder $q) use ($start, $end) {
                     $q->where(function ($subQuery) use ($start, $end) {
@@ -430,7 +401,7 @@ final class Apartment extends Model implements HasMedia
         return $this->hasMany(DatePrice::class);
     }
 
-    public function getPriceForDay(Carbon $day): int
+    public function getPriceForDay(CarbonInterface $day): int
     {
         $dayPrice = $this->datePrices()->whereDate('date', $day)->first();
         if (! $dayPrice) {
@@ -447,15 +418,20 @@ final class Apartment extends Model implements HasMedia
         return $dayPrice->price;
     }
 
-    public function getPriceForRange(Carbon $start, Carbon $end): int
+    public function getPriceForRange(CarbonInterface $start, CarbonInterface $end): int
     {
+        $end = $end->copy()->setTime(15, 0);
         $price = 0;
         $period = CarbonPeriod::create(
             $start,
             $end,
         );
-        foreach ($period as $date) {
-            $price += $this->getPriceForDay($date);
+        if ($period->count()) {
+            foreach ($period as $date) {
+                $price += $this->getPriceForDay($date);
+            }
+        } else {
+            $price = $this->getPriceForDay($start);
         }
 
         return $price;
@@ -527,8 +503,8 @@ final class Apartment extends Model implements HasMedia
                     ->get();
                 foreach ($reservations as $item) {
                     $period = CarbonPeriod::create(
-                        $item->start->setTime(15, 00),
-                        $item->end->setTime(12, 00),
+                        $item->start->addDay()->setTime(15, 0),
+                        $item->end->setTime(12, 0),
                     );
                     foreach ($period as $day) {
                         $result[] = $day;
@@ -541,7 +517,7 @@ final class Apartment extends Model implements HasMedia
                     ->get();
                 foreach ($side_reservations as $item) {
                     $period = CarbonPeriod::create(
-                        $item->start->setTime(15, 00),
+                        $item->start->addDay()->setTime(15, 00),
                         $item->end->setTime(12, 00),
                     );
                     foreach ($period as $day) {

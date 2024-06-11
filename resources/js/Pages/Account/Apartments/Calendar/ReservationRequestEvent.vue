@@ -10,7 +10,7 @@
 	const goToChat = () => {
 		router.visit(
 			route('account.apartments.chats', {
-				apartment: props.event.data.reservation_request.apartment_id,
+				apartment: props.event.data.reservation_request.apartment?.id,
 			})
 		)
 	}
@@ -33,9 +33,12 @@
 			</div>
 		</div>
 		<div class="text-neutral-800 dark:text-slate-200 mt-2">
-			c {{ props.event.data.reservation_request.start }} по {{ props.event.data.reservation_request.end }} |
-			{{ props.event.data.reservation_request.range }} ночей |
-			{{ props.event.data.reservation_request.guests }} гостей
+			<p>
+				c <i>{{ props.event.data.reservation_request.start }}</i> по
+				<i>{{ props.event.data.reservation_request.end }}</i>
+			</p>
+			<p>ночей: {{ props.event.data.reservation_request.range }}</p>
+			<p>гостей: {{ props.event.data.reservation_request.guests }}</p>
 		</div>
 		<div class="text-neutral-800 dark:text-white font-semibold mt-4">
 			Итого: {{ event.data.reservation_request.price.toLocaleString() }}₽

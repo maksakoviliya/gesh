@@ -112,7 +112,7 @@
 	const remaining = ref(0)
 	onMounted(() => {
 		// const createdAt = new Date(props.reservation.data.created_at)
-		const createdAt = dayjs(props.reservation.data.created_at, 'DD.MM.YYYY HH:mm').toDate()
+		const createdAt = dayjs(props.reservation.data.updated_at, 'DD.MM.YYYY HH:mm').toDate()
 		const now = new Date()
 		createdAt.setTime(createdAt.getTime() + 5 * 60 * 60 * 1000)
 		remaining.value = createdAt.getTime() - now.getTime()

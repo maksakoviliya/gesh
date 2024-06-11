@@ -44,12 +44,13 @@ class ReservationRequestResource extends Resource
                     ->relationship('apartment', 'id'),
                 Forms\Components\Select::make('user')
                     ->relationship('user', 'id'),
-                Forms\Components\DatePicker::make('start'),
-                Forms\Components\DatePicker::make('end'),
+                Forms\Components\DatePicker::make('start')->format('d.m.Y H:i'),
+                Forms\Components\DatePicker::make('end')->format('d.m.Y H:i'),
                 Forms\Components\TextInput::make('guests'),
                 Forms\Components\TextInput::make('children'),
                 Forms\Components\TextInput::make('total_guests'),
                 Forms\Components\TextInput::make('price'),
+                Forms\Components\TextInput::make('first_payment'),
                 Forms\Components\Select::make('status')->options([
                     Status::Pending->value => __('statuses.reservation_request.pending'),
                     Status::Rejected->value => __('statuses.reservation_request.rejected'),

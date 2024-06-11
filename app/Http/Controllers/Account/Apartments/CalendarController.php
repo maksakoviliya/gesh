@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Account\Apartments;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApartmentResource;
+use App\Http\Resources\ReservationRequestResource;
 use App\Models\Apartment;
 use App\Models\DisabledDate;
 use App\Models\Reservation;
@@ -39,7 +40,21 @@ final class CalendarController extends Controller
                     'allDay' => true,
                     'className' => 'reservation_request_event',
                     'data' => [
-                        'reservation_request' => $item,
+                        'reservation_request' => [
+                            'id' => $item->id,
+                            'apartment' => $item->apartment,
+                            'user' => $item->user,
+                            'start' => $item->start->format('d.m.Y H:i'),
+                            'end' => $item->end->format('d.m.Y H:i'),
+                            'guests' => $item->guests,
+                            'children' => $item->children,
+                            'range' => $item->range,
+                            'price' => $item->price,
+                            'first_payment' => $item->first_payment,
+                            'status' => $item->status,
+                            'status_text' => $item->status_text,
+                            'created_at' => $item->created_at,
+                        ],
                     ],
                 ];
             }));
