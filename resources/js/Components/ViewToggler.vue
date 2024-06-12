@@ -8,7 +8,7 @@
 <template>
 	<Link
 		:href="to"
-		class="fixed left-1/2 -translate-x-1/2 bg-white dark:bg-slate-700 dark:text-slate-200 rounded-full px-4 py-2 bottom-10 shadow-lg hover:scale-110 transition z-20"
+		class="fixed left-1/2 -translate-x-1/2 bg-white dark:bg-slate-700 dark:text-slate-200 rounded-full px-4 py-2 bottom-16 shadow-lg hover:scale-110 transition z-20"
 	>
 		<slot></slot>
 	</Link>
