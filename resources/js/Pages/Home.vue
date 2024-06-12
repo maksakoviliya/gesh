@@ -8,6 +8,7 @@
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
 	import { HiMap } from 'oh-vue-icons/icons'
 	import ServicesBanner from '@/Components/ServiceBanner/ServicesBanner.vue'
+	import MobileBottomMenu from '@/Components/Interactive/MobileBottomMenu.vue'
 
 	addIcons(HiMap)
 
@@ -33,5 +34,6 @@
 				</div>
 			</ViewToggler>
 		</Container>
+		<MobileBottomMenu />
 	</AppLayout>
 </template>
