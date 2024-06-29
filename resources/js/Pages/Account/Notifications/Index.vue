@@ -75,6 +75,7 @@
 			<template v-else>
 				<div class="h-10"></div>
 				<div
+					class="mt-3"
 					v-for="notification in props.notifications.data"
 					:key="notification.id"
 				>
@@ -108,7 +109,7 @@
 						"
 						:notification="notification"
 					/>
-					<div v-else>{{ notification.type }}</div>
+					<!--					<div v-else>{{ notification }}</div>-->
 				</div>
 			</template>
 

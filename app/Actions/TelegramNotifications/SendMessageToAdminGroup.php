@@ -15,6 +15,7 @@ use Exception;
 use Log;
 use Telegram;
 use Telegram\Bot\Keyboard\Keyboard;
+use Throwable;
 
 class SendMessageToAdminGroup
 {
@@ -109,11 +110,7 @@ class SendMessageToAdminGroup
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
-            Log::info($exception->getMessage());
-            Telegram::sendMessage([
-                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о новом запросе!'.'/n/n'.$exception->getMessage(),
-            ]);
+            $this->processException($exception);
         }
     }
 
@@ -209,14 +206,7 @@ class SendMessageToAdminGroup
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
-            Log::info($text);
-            Log::info(json_encode($exception));
-            $err_text = 'Ошибка при отправке уведомления об отказе в запросе на бронирование!'."\n\n".$exception->getMessage();
-            $err_text .= 'ID: '.$reservationRequest->id;
-            Telegram::sendMessage([
-                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $err_text,
-            ]);
+            $this->processException($exception, 'ID: '.$reservationRequest->id);
         }
     }
 
@@ -323,11 +313,7 @@ class SendMessageToAdminGroup
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
-            Log::info($exception->getMessage());
-            Telegram::sendMessage([
-                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о подтверждении запроса на брониование!'.'/n/n'.$exception->getMessage(),
-            ]);
+            $this->processException($exception);
         }
     }
 
@@ -344,11 +330,7 @@ class SendMessageToAdminGroup
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
-            Log::info($exception->getMessage());
-            Telegram::sendMessage([
-                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о трансфере!'.'/n/n'.$exception->getMessage(),
-            ]);
+            $this->processException($exception);
         }
     }
 
@@ -366,11 +348,7 @@ class SendMessageToAdminGroup
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
-            Log::info($exception->getMessage());
-            Telegram::sendMessage([
-                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о инструкторе!'.'/n/n'.$exception->getMessage(),
-            ]);
+            $this->processException($exception);
         }
     }
 
@@ -465,11 +443,18 @@ class SendMessageToAdminGroup
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
-            Log::info($exception->getMessage());
-            Telegram::sendMessage([
-                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => 'Ошибка при отправке уведомления о оплате бронирования!'."\n\n".$exception->getMessage(),
-            ]);
+            $this->processException($exception);
         }
+    }
+
+    protected function processException(Throwable $exception, string $additionalText = ''): void
+    {
+        Log::info($exception->getMessage());
+        Log::info($exception->getFile());
+        Log::info($exception->getLine());
+        Telegram::sendMessage([
+            'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+            'text' => 'Ошибка при отправке уведомления!'."\n\n".$exception->getMessage() . $additionalText,
+        ]);
     }
 }
