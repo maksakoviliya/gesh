@@ -17,11 +17,12 @@ final class UpdateCalendarController extends Controller
 {
     public function __invoke(UpdateCalendarRequest $request, Apartment $apartment): RedirectResponse
     {
+        $start = Carbon::parse($request->validated('start'))->setTime(15, 0);
+        $end = Carbon::parse($request->validated('end'))->setTime(12, 0);
         $period = CarbonPeriod::create(
-            $request->validated('start'),
-            $request->validated('end'),
+            $start,
+            $end,
         );
-
         foreach ($period as $date) {
             if ($request->validated('price')) {
                 DatePrice::query()->updateOrCreate([

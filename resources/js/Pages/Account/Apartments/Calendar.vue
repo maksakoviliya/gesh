@@ -152,6 +152,10 @@
 				disabled: null,
 			})
 
+			const dayPriceForClient = computed(() => {
+				return rangeForm.price ? Math.ceil(rangeForm.price * 1.15) : 0
+			})
+
 			const selectedEvent = ref()
 
 			const submitPriceForm = () => {
@@ -190,7 +194,7 @@
 			const submitRangeForm = () => {
 				rangeForm
 					.transform((data) => {
-						data.price = parseInt(data.price)
+						data.price = dayPriceForClient.value
 						return data
 					})
 					.post(
@@ -246,6 +250,7 @@
 				calendar,
 				handleEventClick,
 				selectedEvent,
+				dayPriceForClient,
 			}
 		},
 	}
@@ -272,6 +277,11 @@
 								:error="rangeForm.errors.price"
 								label="Цена, ₽"
 							/>
+							<span
+								class="text-sm text-zinc-500 dark:text-zinc-300"
+								v-if="dayPriceForClient"
+								>Для гостя: <span class="text-lg font-medium">{{ dayPriceForClient }}₽</span>
+							</span>
 							<Toggle
 								v-model="rangeForm.disabled"
 								:label="
