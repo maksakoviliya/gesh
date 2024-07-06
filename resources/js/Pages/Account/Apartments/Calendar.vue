@@ -22,6 +22,7 @@
 	import customParseFormat from 'dayjs/plugin/customParseFormat'
 	import ReservationEvent from '@/Pages/Account/Apartments/Calendar/ReservationEvent.vue'
 	import DisabledDatesEvent from '@/Pages/Account/Apartments/Calendar/DisabledDatesEvent.vue'
+	import DynamicPriceInput from '@/Pages/Account/Apartments/Calendar/DynamicPriceInput.vue'
 
 	dayjs.extend(customParseFormat)
 
@@ -31,6 +32,7 @@
 			eventsData: Array,
 		},
 		components: {
+			DynamicPriceInput,
 			DisabledDatesEvent,
 			ReservationEvent,
 			Toggle,
@@ -324,19 +326,17 @@
 					<template v-else>
 						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200">Базовая цена</div>
 						<div class="mt-3 flex flex-col gap-3">
-							<Input
+							<DynamicPriceInput
 								v-model="priceForm.weekdays_price"
-								type="number"
-								id="weekdays_price"
-								:error="priceForm.errors.weekdays_price"
 								label="Цена в будни, ₽"
+								:error="priceForm.errors.weekdays_price"
+								id="weekdays_price"
 							/>
-							<Input
+							<DynamicPriceInput
 								v-model="priceForm.weekends_price"
-								type="number"
-								id="weekends_price"
-								:error="priceForm.errors.weekends_price"
 								label="Цена в выходные, ₽"
+								:error="priceForm.errors.weekends_price"
+								id="weekends_price"
 							/>
 						</div>
 						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">Синхронизация</div>
