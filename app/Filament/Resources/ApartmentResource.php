@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\Apartments\Status;
 use App\Enums\Apartments\Type;
 use App\Filament\Resources\ApartmentResource\Pages;
+use App\Filament\Resources\ApartmentResource\RelationManagers\DatePricesRelationManager;
 use App\Filament\Resources\ApartmentResource\RelationManagers\SideReservationsRelationManager;
 use App\Models\Apartment;
 use App\Models\User;
-use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Exception;
 use Filament\Forms;
 use Filament\Forms\Components\Repeater;
@@ -273,6 +275,7 @@ class ApartmentResource extends Resource
     {
         return [
             SideReservationsRelationManager::class,
+            DatePricesRelationManager::class,
         ];
     }
 
