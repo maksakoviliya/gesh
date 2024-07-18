@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Str;
+use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramWebhookController extends Controller
@@ -31,6 +32,8 @@ class TelegramWebhookController extends Controller
                     Arr::get($request->all(), 'message.text'),
                     $chat_id,
                 );
+            } elseif (Str::contains($type, EntityType::BotCommand->value)) {
+                Log::info('work with command handler');
             } else {
                 Log::info('$service->processText');
                 $service->processText(
@@ -38,10 +41,12 @@ class TelegramWebhookController extends Controller
                     $chat_id,
                 );
             }
+            $reply_markup = Keyboard::remove(['selective' => false]);
         } catch (\Throwable $exception) {
             Log::error($exception->getMessage());
+        } finally {
+            return 'ok';
         }
 
-        return 'ok';
     }
 }

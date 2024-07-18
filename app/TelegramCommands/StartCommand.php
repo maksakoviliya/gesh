@@ -2,6 +2,7 @@
 
 namespace App\TelegramCommands;
 
+use App\Models\User;
 use Telegram\Bot\Commands\Command;
 
 class StartCommand extends Command
@@ -16,14 +17,26 @@ class StartCommand extends Command
 
     public function handle(): void
     {
-        $this->replyWithMessage([
-            'text' => 'Добрый день!',
-        ]);
+        $chat_id = $this->getUpdate()->getChat()->id;
+
+        $user = User::query()
+            ->where('telegram_chat_id', $chat_id)
+            ->first();
+
+        if (! $user) {
+            $this->replyWithMessage([
+                'text' => 'Добрый день!',
+            ]);
+
+            $this->replyWithMessage([
+                'text' => 'Чтобы начать пользоваться ботом введите ваш номер телефона в формате +7##########, который привязан к вашему аккаунту на сайте.',
+            ]);
+
+            \Log::info(json_encode($this->update));
+        }
 
         $this->replyWithMessage([
-            'text' => 'Чтобы начать пользоваться ботом введите ваш номер телефона в формате +7##########, который привязан к вашему аккаунту на сайте.',
+            'text' => "{$user->name}, добрый день!",
         ]);
-
-        \Log::info(json_encode($this->update));
     }
 }

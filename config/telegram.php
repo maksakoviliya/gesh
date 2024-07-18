@@ -1,5 +1,6 @@
 <?php
 
+use App\TelegramCommands\SetDisabledDatesCommand;
 use App\TelegramCommands\StartCommand;
 
 return [
@@ -38,6 +39,7 @@ return [
             'chat_id' => env('CHAT_ID'),
             'commands' => [
                 StartCommand::class,
+                SetDisabledDatesCommand::class,
             ],
         ],
 

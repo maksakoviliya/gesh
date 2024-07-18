@@ -18,32 +18,33 @@ final class RefreshCommandsList extends Command
 
     public function handle()
     {
-        try {
-            $this->info('Started telegram commands sync');
-            $commands = Telegram::getCommands();
+        //        try {
+        $this->info('Started telegram commands sync');
+        $commands = Telegram::getCommands();
 
-            $telegram = new Api(config('services.telegram-bot-api.token'));
+        $telegram = new Api(config('services.telegram-bot-api.token'));
 
-            $data = [];
-            foreach ($commands as $command) {
-                //                $this->info("$command->getName(), $command->getDescription()");
-                if ($command->in_menu) {
-                    $data[] = (object) [
-                        'command' => $command->getName(),
-                        'description' => $command->getDescription(),
-                    ];
-                }
+        $data = [];
+        foreach ($commands as $command) {
+            //                                $this->info(json_encode($command));
+            if ($command->in_menu) {
+                $data[] = (object) [
+                    'command' => $command->getName(),
+                    'description' => strtolower($command->getDescription()),
+                ];
             }
-            $telegram->setMyCommands([
-                'commands' => $data,
-            ]);
-            $this->info('Finished telegram commands sync');
-
-            return ConsoleCommand::SUCCESS;
-        } catch (TelegramSDKException $e) {
-            $this->error($e->getMessage());
-
-            return ConsoleCommand::INVALID;
         }
+//        dd($data);
+        $telegram->setMyCommands([
+            'commands' => $data,
+        ]);
+        $this->info('Finished telegram commands sync');
+
+        return ConsoleCommand::SUCCESS;
+        //        } catch (TelegramSDKException $e) {
+        //            $this->error($e->getMessage());
+        //
+        //            return ConsoleCommand::INVALID;
+        //        }
     }
 }
