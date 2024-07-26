@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\TelegramCommands;
 
+use App\Enums\Telegram\CallbackDataKeyEnum;
 use App\Models\Apartment;
 use App\Models\User;
 use Telegram\Bot\Commands\Command;
@@ -39,21 +40,24 @@ final class SetDisabledDatesCommand extends Command
             ->get();
 
         $reply_markup = Keyboard::make()
-            ->setResizeKeyboard(true)
-            ->setOneTimeKeyboard(true);
+            ->inline();
 
         foreach ($apartments as $apartment) {
             $reply_markup = $reply_markup->row([
                 Keyboard::inlineButton([
                     'text' => $apartment->full_address,
-                    'callback_data' => $apartment->id
+                    'callback_data' => sprintf(
+                        '%s:%s',
+                        CallbackDataKeyEnum::SetApartmentForDisablingDate->value,
+                        $apartment->id
+                    ),
                 ]),
             ]);
         }
 
         Telegram::sendMessage([
             'chat_id' => $chat_id,
-            'text' => 'Hello World',
+            'text' => 'Выберите объект, для которого хотите указать недоступные даты',
             'reply_markup' => $reply_markup,
         ]);
     }

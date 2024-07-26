@@ -16,10 +16,11 @@ final class SetWebhook extends Command
 
     public function handle(): int
     {
-        $url = 'https://3f23-46-138-184-71.ngrok-free.app/tg_bot_token_123/webhook';
+        $url = sprintf('%s/%s/webhook', env('NGROK_URL'), env('TG_WEBHOOK_TOKEN', 'tg_bot_token_123'));
         Log::info('Setting webhook: '.$url);
         $response = Telegram::setWebhook(['url' => $url]);
         Log::info('Response: '.json_encode($response));
+        $this->info(json_encode($response));
 
         return parent::SUCCESS;
     }
