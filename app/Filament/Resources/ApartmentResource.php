@@ -39,7 +39,7 @@ class ApartmentResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return Apartment::query()->where('status', Status::Pending)->count() ?: null;
+        return strval(Apartment::query()->where('status', Status::Pending)->count()) ?: null;
     }
 
     public static function getNavigationBadgeColor(): string|array|null
