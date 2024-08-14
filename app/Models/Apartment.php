@@ -420,8 +420,8 @@ final class Apartment extends Model implements HasMedia
 
     public function getPriceForRange(CarbonInterface $start, CarbonInterface $end): int
     {
-        $start = $start->copy()->setTime(9, 0);
-        $end = $end->copy()->setTime(15, 0);
+        $start = $start->copy()->setTime(15, 0);
+        $end = $end->copy()->setTime(12, 0);
         $price = 0;
         $period = CarbonPeriod::create(
             $start,
