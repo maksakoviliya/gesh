@@ -20,13 +20,14 @@ class SocialCallbackController extends Controller
     public function __invoke(Request $request, SocialAuthProvider $provider): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $socialUser = Socialite::driver($provider->value)->user();
+
         /** @var User $user */
         $user = User::query()
             ->firstOrCreate([
-                'social_id' => $socialUser->id,
-                'social_provider' => $provider,
                 'email' => $socialUser->email,
             ], [
+                'social_id' => $socialUser->id,
+                'social_provider' => $provider,
                 'name' => $socialUser->name,
                 'avatar' => $socialUser->avatar,
                 'email_verified_at' => Carbon::now(),
