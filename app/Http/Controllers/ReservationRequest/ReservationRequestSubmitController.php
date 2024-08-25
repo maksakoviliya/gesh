@@ -16,6 +16,7 @@ final class ReservationRequestSubmitController extends Controller
 {
     public function __invoke(SubmitRequest $request, ReservationRequest $reservationRequest, SendMessageToAdminGroup $telegram): JsonResponse
     {
+        // TODO: Проверка на владельца
         /** @var Reservation $reservation */
         $reservation = Reservation::createFromReservationRequest($reservationRequest);
 

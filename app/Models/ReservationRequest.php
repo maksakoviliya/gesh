@@ -81,7 +81,7 @@ final class ReservationRequest extends Model
     {
         $start = Carbon::parse(Arr::get($data, 'start'))
             ->setTime(15, 0);
-        $end = Carbon::parse(Arr::get($data, 'end'))->subDay()
+        $end = Carbon::parse(Arr::get($data, 'end'))
             ->setTime(12, 0);
 
         $price = $apartment->getPriceForRange($start, $end);
@@ -95,7 +95,9 @@ final class ReservationRequest extends Model
             'guests' => Arr::get($data, 'guests'),
             'children' => Arr::get($data, 'children'),
             'total_guests' => Arr::get($data, 'total_guests'),
-            'range' => Arr::get($data, 'range'),
+            'range' => $start->copy()->setTime(0, 0)->diffInDays(
+                $end->copy()->setTime(0, 0)
+            ),
             'price' => $price,
             'first_payment' => $first_payment,
             'status' => Status::Pending,

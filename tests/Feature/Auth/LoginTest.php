@@ -40,13 +40,10 @@ final class LoginTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('login', [
+        $response = $this->postJson('login', [
             'phone' => $user->phone->formatE164(),
             'password' => 'password'
-        ],
-            headers: [
-                'accept' => 'application/json'
-            ]);
+        ]);
 
         $response->assertStatus(200);
     }

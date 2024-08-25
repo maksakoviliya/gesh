@@ -23,7 +23,7 @@ final class ClearUnpayiedReservations extends Command
         $reservations = Reservation::query()
             ->where('status', Status::Pending)
             ->when(! $this->option('all'), function ($q) {
-                $q->where('created_at', '<', Carbon::now()->subHours(5));
+                $q->where('first_payment_until', '<', Carbon::now());
             })
             ->get();
         foreach ($reservations as $reservation) {

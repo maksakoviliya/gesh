@@ -33,7 +33,6 @@ final class StoreRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
             'start' => 'required|date',
             'end' => 'required|date',
-            'range' => 'required',
             'guests' => 'required',
             'children' => 'required',
             'total_guests' => [

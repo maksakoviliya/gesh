@@ -44,8 +44,8 @@ class ReservationRequestResource extends Resource
                     ->relationship('apartment', 'id'),
                 Forms\Components\Select::make('user')
                     ->relationship('user', 'id'),
-                Forms\Components\DatePicker::make('start')->format('d.m.Y H:i'),
-                Forms\Components\DatePicker::make('end')->format('d.m.Y H:i'),
+                Forms\Components\DatePicker::make('start')->native(false)->displayFormat('d.m.Y H:i'),
+                Forms\Components\DatePicker::make('end')->native(false)->displayFormat('d.m.Y H:i'),
                 Forms\Components\TextInput::make('guests'),
                 Forms\Components\TextInput::make('children'),
                 Forms\Components\TextInput::make('total_guests'),

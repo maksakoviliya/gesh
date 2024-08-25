@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Enums\Reservation\Status;
 use App\Filament\Resources\ReservationResource\Pages;
 use App\Models\Reservation;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -43,13 +45,15 @@ class ReservationResource extends Resource
                     ->preload()
                     ->relationship('apartment', 'id'),
                 TextInput::make('reservation_request_id'),
-                TextInput::make('start'),
-                TextInput::make('end'),
+                DatePicker::make('start')->native(false)->displayFormat('d.m.Y H:i'),
+                DatePicker::make('end')->native(false)->displayFormat('d.m.Y H:i'),
                 TextInput::make('guests'),
                 TextInput::make('children'),
                 TextInput::make('total_guests'),
                 TextInput::make('range'),
                 TextInput::make('price'),
+                TextInput::make('first_payment'),
+                DateTimePicker::make('first_payment_until')->native(false)->displayFormat('d.m.Y H:i'),
             ]);
     }
 

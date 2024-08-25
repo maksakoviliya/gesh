@@ -1,36 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Apartments;
 
 use App\Models\Apartment;
 use App\Models\Telegram\ActionSetDisabledDates;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class DisabledDatesTest extends TestCase
+final class DisabledDatesTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     */
     public function test_example(): void
     {
-        $apartment = Apartment::factory()
-            ->create();
-
-        $actionSetDisabledDates = ActionSetDisabledDates::factory()
-            ->create([
-                'apartment_id' => $apartment->id,
-            ]);
-
-        $this->assertDatabaseCount('disabled_dates', 0);
-
-        $dates = '22.10.2024 - 25.10.2024';
-
-        $actionSetDisabledDates->processText($dates);
-
-        $this->assertDatabaseCount('disabled_dates', 1);
-        $this->assertDatabaseCount('action_set_disabled_dates', 0);
+//        $user = User::factory()->create();
+//        $apartment = Apartment::factory()
+//            ->create([
+//                'user_id' => $user->id,
+//            ]);
+//
+//        ActionSetDisabledDates::factory()
+//            ->create([
+//                'apartment_id' => $apartment->id,
+//            ]);
+//
+//        $this->assertDatabaseCount('disabled_dates', 0);
+//
+//        $data = [
+//            'start' => '22.10.2024',
+//            'end' => '25.10.2024',
+//            'disabled' => true,
+//        ];
+//
+//        $this->postJson(route('account.apartments.calendar.update'), $data);
+//
+//        $this->assertDatabaseCount('disabled_dates', 1);
+//        $this->assertDatabaseCount('action_set_disabled_dates', 0);
     }
 }

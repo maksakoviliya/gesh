@@ -3,8 +3,7 @@
 	import Container from '@/Components/Container.vue'
 	import Heading from '@/Components/Heading.vue'
 	import { Link, router } from '@inertiajs/vue3'
-	import { computed, onMounted, ref } from 'vue'
-	import dayjs from 'dayjs'
+	import { computed, ref } from 'vue'
 	import customParseFormat from 'dayjs/plugin/customParseFormat'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
@@ -108,15 +107,6 @@
 			label: 'Оплата',
 		},
 	])
-
-	const remaining = ref(0)
-	onMounted(() => {
-		// const createdAt = new Date(props.reservation.data.created_at)
-		const createdAt = dayjs(props.reservation.data.updated_at, 'DD.MM.YYYY HH:mm').toDate()
-		const now = new Date()
-		createdAt.setTime(createdAt.getTime() + 5 * 60 * 60 * 1000)
-		remaining.value = createdAt.getTime() - now.getTime()
-	})
 </script>
 
 <template>
@@ -168,9 +158,8 @@
 								@click="redirectToPayPage"
 							/>
 							<VueCountdown
-								v-if="remaining"
 								class="text-neutral-800 dark:text-slate-400 font-medium text-lg"
-								:time="remaining"
+								:time="props.reservation.data.remaining"
 								v-slot="{ hours, minutes }"
 							>
 								Осталось {{ hours }} ч. {{ minutes }} мин.

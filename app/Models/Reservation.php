@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Reservation
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Apartment|null $apartment
  * @property-read \App\Models\User|null $user
+ *
  * @method static Builder|Reservation newModelQuery()
  * @method static Builder|Reservation newQuery()
  * @method static Builder|Reservation query()
@@ -48,11 +50,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder|Reservation whereTotalGuests($value)
  * @method static Builder|Reservation whereUpdatedAt($value)
  * @method static Builder|Reservation whereUserId($value)
+ *
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ *
  * @method static Builder|Reservation onlyTrashed()
  * @method static Builder|Reservation whereDeletedAt($value)
  * @method static Builder|Reservation withTrashed()
  * @method static Builder|Reservation withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 final class Reservation extends Model
@@ -70,6 +75,7 @@ final class Reservation extends Model
         'status' => Status::class,
         'start' => 'date:d.m.Y',
         'end' => 'date:d.m.Y',
+        'first_payment_until' => 'datetime',
     ];
 
     protected $with = [
@@ -102,6 +108,7 @@ final class Reservation extends Model
                 'range' => $reservationRequest->range,
                 'price' => $reservationRequest->price,
                 'first_payment' => $reservationRequest->first_payment,
+                'first_payment_until' => Carbon::now()->addHours(5),
             ]);
 
         return $reservation;
