@@ -63,7 +63,7 @@
 			label="Город"
 		/>
 		<div
-			class="mt-2"
+			class="mt-2 dark:text-slate-400"
 			v-if="!loading"
 		>
 			<div
@@ -79,7 +79,7 @@
 				<div
 					@click="onSelect(city)"
 					v-for="city in cities"
-					class="cursor-pointer flex items-center gap-2 text-neutral-600 hover:text-neutral-800 transition"
+					class="cursor-pointer flex items-center gap-2 text-neutral-600 dark:text-slate-300 dark:hover:text-slate-100 hover:text-neutral-800 transition"
 				>
 					{{ city }}
 				</div>

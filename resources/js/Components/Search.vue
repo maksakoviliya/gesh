@@ -14,6 +14,8 @@
 	import { router } from '@inertiajs/vue3'
 	import { usePage } from '@inertiajs/vue3'
 	import customParseFormat from 'dayjs/plugin/customParseFormat'
+	import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
+	import Input from '@/Components/Input.vue'
 
 	addIcons(BiSearch)
 
@@ -54,6 +56,10 @@
 		durationLabel.value = `${start.format('DD MMM')} - ${end.format('DD MMM')}`
 	}
 
+	const priceForPeriod = ref(page.props.query['priceForPeriod'])
+	const priceMin = ref(page.props.query['priceMin'])
+	const priceMax = ref(page.props.query['priceMax'])
+
 	onMounted(() => {
 		if (page.props.query['start'] && page.props.query['end']) {
 			dayjs.extend(customParseFormat)
@@ -83,6 +89,9 @@
 		params['start'] = !!isDateInitial.value ? null : dayjs(date.value[0]).format('DD_MM_YYYY')
 		params['end'] = !!isDateInitial.value ? null : dayjs(date.value[1]).format('DD_MM_YYYY')
 		params['guests'] = guests.value
+		params['priceForPeriod'] = priceForPeriod.value
+		params['priceMin'] = priceMin.value
+		params['priceMax'] = priceMax.value
 
 		const url = qs.stringifyUrl(
 			{
@@ -94,6 +103,10 @@
 
 		router.visit(url)
 	}
+
+	const isDark = computed(
+		() => localStorage.getItem('color-theme') === 'dark' || document.documentElement.classList.contains('dark')
+	)
 </script>
 
 <template>
@@ -142,6 +155,8 @@
 							:inline="{ input: false }"
 							text-input
 							auto-apply
+							:key="isDark"
+							:dark="isDark"
 							:month-change-on-scroll="false"
 							min-range="1"
 							max-range="30"
@@ -170,11 +185,57 @@
 						/>
 					</div>
 				</div>
+				<div class="border-t mt-4 pt-4 border-gray-300 dark:border-slate-500">
+					<h4 class="font-semibold text-neutral-200 dark:text-slate-200">Цена:</h4>
+					<div class="flex flex-col md:flex-row items-center justify-between w-full gap-4 mt-4">
+						<!--						<SwitchGroup-->
+						<!--							as="div"-->
+						<!--							class="flex items-center gap-3 text-neutral-500 mt-4 min-w-max"-->
+						<!--						>-->
+						<!--							<SwitchLabel-->
+						<!--								class="cursor-pointer text-sm flex flex-col"-->
+						<!--								:class="!priceForPeriod ? 'text-neutral-800 dark:text-slate-300' : ''"-->
+						<!--							>-->
+						<!--								За ночь-->
+						<!--							</SwitchLabel>-->
+						<!--							<Switch-->
+						<!--								v-model="priceForPeriod"-->
+						<!--								:class="priceForPeriod ? 'bg-sky-600' : 'bg-gray-200 dark:bg-slate-600'"-->
+						<!--								class="relative inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"-->
+						<!--							>-->
+						<!--								<span-->
+						<!--									aria-hidden="true"-->
+						<!--									:class="priceForPeriod ? 'translate-x-4' : 'translate-x-0'"-->
+						<!--									class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"-->
+						<!--								/>-->
+						<!--							</Switch>-->
+						<!--							<SwitchLabel-->
+						<!--								class="cursor-pointer text-sm flex items-center gap-1"-->
+						<!--								:class="priceForPeriod ? 'text-neutral-800 dark:text-slate-200' : ''"-->
+						<!--							>-->
+						<!--								За всё время-->
+						<!--							</SwitchLabel>-->
+						<!--						</SwitchGroup>-->
+						<Input
+							id="priceMin"
+							type="number"
+							v-model="priceMin"
+							label="От"
+						/>
+						<span class="text-neutral-400 dark:text-slate-200 hidden md:inline">-</span>
+						<Input
+							id="priceMax"
+							type="number"
+							v-model="priceMax"
+							label="До"
+						/>
+					</div>
+				</div>
 				<div class="flex gap-4 justify-end">
 					<ButtonComponent
 						label="Поиск"
 						:auto-width="true"
-						class="px-8"
+						class="px-8 w-full md:w-auto"
 						@click.prevent="onSubmit"
 					/>
 				</div>

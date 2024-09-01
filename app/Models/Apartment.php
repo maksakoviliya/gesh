@@ -32,8 +32,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -78,6 +76,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @property-read MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read User|null $user
+ *
  * @method static ApartmentFactory factory($count = null, $state = [])
  * @method static Builder|Apartment filter(Request $request)
  * @method static Builder|Apartment newModelQuery()
@@ -113,6 +112,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static Builder|Apartment whereUserId($value)
  * @method static Builder|Apartment whereWeekdaysPrice($value)
  * @method static Builder|Apartment whereWeekendsPrice($value)
+ *
  * @property-read Collection<int, ICalLink> $ICalLinks
  * @property-read int|null $i_cal_links_count
  * @property-read Collection<int, DisabledDate> $disabledDates
@@ -122,11 +122,13 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @property-read Collection<int, SideReservation> $sideReservations
  * @property-read int|null $side_reservations_count
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ *
  * @method static Builder|Apartment onlyTrashed()
  * @method static Builder|Apartment whereDeletedAt($value)
  * @method static Builder|Apartment withTrashed()
  * @method static Builder|Apartment withoutTrashed()
  * @method static Builder|Apartment order()
+ *
  * @mixin Eloquent
  */
 final class Apartment extends Model implements HasMedia
@@ -244,6 +246,21 @@ final class Apartment extends Model implements HasMedia
                                 ->whereDate('end', '>=', $end);
                         });
                 });
+        }
+
+        $forPeriod = filter_var($request->query('priceForPeriod'), FILTER_VALIDATE_BOOL);
+        if ($request->has('priceMin')) {
+            if (! $forPeriod) {
+                $query->where('weekdays_price', '>=', $request->query('priceMin'));
+            }
+        }
+        if ($request->has('priceMax')) {
+            if (! $forPeriod) {
+                $query->where(function (Builder $q) use ($request) {
+                    $q->where('weekdays_price', '<=', $request->query('priceMax'))
+                        ->orWhere('weekends_price', '<=', $request->query('priceMax'));
+                });
+            }
         }
 
         return $query;
@@ -525,6 +542,7 @@ final class Apartment extends Model implements HasMedia
                         $result[] = $day;
                     }
                 }
+
                 return $result;
             },
         );
