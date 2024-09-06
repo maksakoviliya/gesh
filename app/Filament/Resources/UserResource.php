@@ -46,7 +46,9 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
-                Tables\Columns\TextColumn::make('email')->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->description(fn (User $record): string => $record->roles->pluck('name')->join(', '))
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('telegram_chat_id')
                     ->badge()
