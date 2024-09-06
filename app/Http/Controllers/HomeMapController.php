@@ -20,7 +20,7 @@ final class HomeMapController extends Controller
             ->published()
             ->filter($request)
             ->orderBy('updated_at')
-            ->paginate(20);
+            ->get();
 
         return Inertia::render('MapList', [
             'categories' => CategoryResource::collection($categories),
