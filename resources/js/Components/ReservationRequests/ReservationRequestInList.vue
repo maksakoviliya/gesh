@@ -9,10 +9,10 @@
 
 	const subtitle = computed(() => {
 		const result = [
-			`${props.reservation_request.apartment.guests}&nbsp;гостей`,
-			`${props.reservation_request.apartment.bedrooms}&nbsp;спальня`,
-			`${props.reservation_request.apartment.beds}&nbsp;кровать`,
-			`${props.reservation_request.apartment.bathrooms}&nbsp;ванная`,
+			`${props.reservation_request.apartment?.guests}&nbsp;гостей`,
+			`${props.reservation_request.apartment?.bedrooms}&nbsp;спальня`,
+			`${props.reservation_request.apartment?.beds}&nbsp;кровать`,
+			`${props.reservation_request.apartment?.bathrooms}&nbsp;ванная`,
 		]
 		return result.filter((item) => !!item).join(' · ')
 	})

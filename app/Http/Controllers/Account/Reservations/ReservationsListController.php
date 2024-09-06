@@ -21,9 +21,11 @@ final class ReservationsListController extends Controller
     {
         $reservations = Reservation::query()
             ->where('user_id', Auth::id())
+            ->latest()
             ->get();
         $reservation_requests = ReservationRequest::query()
             ->where('user_id', Auth::id())
+            ->latest()
             ->get();
 
         return Inertia::render('Account/Reservations/List', [

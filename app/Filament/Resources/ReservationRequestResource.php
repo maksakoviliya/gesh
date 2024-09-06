@@ -121,13 +121,6 @@ class ReservationRequestResource extends Resource
                 Tables\Columns\TextColumn::make('end')->label('Выезд')->date('d.m.Y')->sortable(),
                 Tables\Columns\TextColumn::make('guests')->label('Гости')->icon('heroicon-o-user')->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->state(function (ReservationRequest $record) {
-                        return $record->price * 1.15;
-                    })
-                    ->label('Цена')->sortable()
-                    ->tooltip(function (ReservationRequest $record) {
-                        return 'Цена: '.number_format($record->price, '0', '.', ' ').'₽'.' | Комиссия: '.number_format($record->price * 0.15, '0', '.', ' ').'₽';
-                    })
                     ->formatStateUsing(fn ($state) => number_format($state, '0', '.', ' ').'₽'),
                 Tables\Columns\TextColumn::make('created_at')->label('Создан')->date('d.m.Y H:i')->sortable(),
 
