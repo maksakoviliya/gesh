@@ -263,12 +263,14 @@ class ApartmentResource extends Resource
                     Tables\Actions\BulkAction::make('export')
                         ->label('Экспортировать в .xlsx')
                         ->icon('heroicon-o-document-arrow-down')
+                        ->authorize(auth()->user()->hasRole('admin'))
                         ->action(function (Collection $records) {
                             return Apartment::export($records);
                         }),
                     Tables\Actions\BulkAction::make('approve')
                         ->label('Одобрить')
                         ->icon('heroicon-o-check-circle')
+                        ->authorize(auth()->user()->hasRole('admin'))
                         ->action(function (Collection $records) {
                             foreach ($records as $apartment) {
                                 $apartment->approve();
@@ -280,7 +282,7 @@ class ApartmentResource extends Resource
                                 ->body('Выбранные объекты одобрены и опубликованы')
                                 ->send();
                         }),
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->authorize(auth()->user()->hasRole('admin')),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');

@@ -27,6 +27,7 @@ class ListApartments extends ListRecords
                         ->label('Файл')
                         ->required(),
                 ])
+                ->authorize(auth()->user()->hasRole('admin'))
                 ->modalSubmitActionLabel('Импортировать')
                 ->action(function (array $data): void {
                     Apartment::import($data['filename']);
