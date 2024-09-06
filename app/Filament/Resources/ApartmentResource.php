@@ -8,6 +8,7 @@ use App\Enums\Apartments\Status;
 use App\Enums\Apartments\Type;
 use App\Filament\Resources\ApartmentResource\Pages;
 use App\Filament\Resources\ApartmentResource\RelationManagers\DatePricesRelationManager;
+use App\Filament\Resources\ApartmentResource\RelationManagers\DisabledDatesRelationManager;
 use App\Filament\Resources\ApartmentResource\RelationManagers\SideReservationsRelationManager;
 use App\Models\Apartment;
 use App\Models\User;
@@ -293,6 +294,7 @@ class ApartmentResource extends Resource
         return [
             SideReservationsRelationManager::class,
             DatePricesRelationManager::class,
+            DisabledDatesRelationManager::class
         ];
     }
 
