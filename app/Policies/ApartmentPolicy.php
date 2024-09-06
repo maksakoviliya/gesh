@@ -19,7 +19,7 @@ class ApartmentPolicy
     //
     public function view(User $user, Apartment $apartment): bool
     {
-        return $user->id === $apartment->user_id || $user->hasRole('admin');
+        return $user->id === $apartment->user_id || $user->hasRole(['admin', 'moderator']);
     }
     //
     //    /**
