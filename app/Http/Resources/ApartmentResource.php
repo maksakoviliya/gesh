@@ -7,6 +7,7 @@ namespace App\Http\Resources;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class ApartmentResource extends JsonResource
 {
@@ -18,7 +19,7 @@ class ApartmentResource extends JsonResource
             'title' => $this->resource->title,
             'status' => $this->resource->status,
             'status_text' => __('statuses.' . $this->resource->status->value),
-            'description' => $this->resource->description,
+            'description' => Str::replace('&nbsp;', ' ', $this->resource->description),
             'address' => $this->resource->address,
             'bedrooms' => $this->resource->bedrooms,
             'lat' => $this->resource->lat,
