@@ -31,12 +31,10 @@ class StartCommand extends Command
             $this->replyWithMessage([
                 'text' => 'Чтобы начать пользоваться ботом введите ваш номер телефона в формате +7##########, который привязан к вашему аккаунту на сайте.',
             ]);
-
-            \Log::info(json_encode($this->update));
+        } else {
+            $this->replyWithMessage([
+                'text' => "{$user->name}, добрый день!",
+            ]);
         }
-
-        $this->replyWithMessage([
-            'text' => "{$user->name}, добрый день!",
-        ]);
     }
 }
