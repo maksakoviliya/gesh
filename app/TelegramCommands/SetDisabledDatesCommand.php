@@ -19,7 +19,7 @@ final class SetDisabledDatesCommand extends Command
 
     public bool $in_menu = true;
 
-    public function handle()
+    public function handle(): void
     {
         $chat_id = $this->getUpdate()->getChat()->id;
 
@@ -31,6 +31,8 @@ final class SetDisabledDatesCommand extends Command
             $this->replyWithMessage([
                 'text' => 'Пользователь не найден. Попробуйте зарегистрироваться через бота.',
             ]);
+
+            return;
         }
 
         $apartments = Apartment::query()
