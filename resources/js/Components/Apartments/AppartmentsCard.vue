@@ -71,20 +71,14 @@
 				{{ props.apartment.title ?? props.apartment.category?.title_single }}
 				({{ props.apartment.city }})
 			</div>
-			<!--			<div-->
-			<!--				@click="handleClick"-->
-			<!--				class="font-light text-neutral-500 dark:text-slate-300"-->
-			<!--				:class="props.apartment.category ? '' : 'opacity-30'"-->
-			<!--			>-->
-			<!--				{{ props.apartment.category?.title_single ?? 'Нет типа' }}-->
-			<!--			</div>-->
 			<div
 				@click="handleClick"
-				class="font-light text-sm leading-none text-neutral-500 dark:text-slate-300"
-				:class="props.apartment.address ? '' : 'opacity-30'"
+				class="font-light text-neutral-500 dark:text-slate-300"
+				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
-				{{ props.apartment?.address ?? 'Нет адреса' }}
+				{{ props.apartment.category?.title_single ?? 'Нет типа' }}
 			</div>
+
 			<!--			<div class="flex flex-row items-center gap-1 mt-auto">-->
 			<!--				<div class="font-semibold">-->
 			<!--					{{ props.apartment.price.toLocaleString('ru') }}₽-->
