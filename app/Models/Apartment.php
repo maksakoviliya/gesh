@@ -567,6 +567,6 @@ final class Apartment extends Model implements HasMedia
     {
         $seed = '"'.Carbon::now()->hour.Str::substr(Auth::id(), 0, 5).'"';
 
-        return $builder->inRandomOrder($seed);
+        return $builder->orderByDesc('is_verified')->inRandomOrder($seed);
     }
 }

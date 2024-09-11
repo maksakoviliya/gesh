@@ -10,6 +10,7 @@
 	import 'swiper/css/navigation'
 	import { ref } from 'vue'
 	import 'lazysizes'
+	import IsVerified from '@/Components/Apartments/IsVerified.vue'
 
 	const props = defineProps({
 		apartment: Object,
@@ -23,7 +24,8 @@
 </script>
 
 <template>
-	<div class="col-span-1 cursor-pointer group">
+	<div class="col-span-1 cursor-pointer group relative">
+		<IsVerified v-if="props.apartment.is_verified" />
 		<div class="flex flex-col gap-2 w-full h-full">
 			<div class="aspect-square w-full flex relative overflow-hidden rounded-xl">
 				<template v-if="props.apartment.media.length">
@@ -44,7 +46,6 @@
 							<!--								:src="image.src"-->
 							<!--								:srcset="image.srcset"-->
 							<!--								:alt="props.apartment.title"-->
-
 							<img
 								@click="handleClick"
 								:alt="props.apartment.title"
@@ -70,12 +71,19 @@
 				{{ props.apartment.title ?? props.apartment.category?.title_single }}
 				({{ props.apartment.city }})
 			</div>
+			<!--			<div-->
+			<!--				@click="handleClick"-->
+			<!--				class="font-light text-neutral-500 dark:text-slate-300"-->
+			<!--				:class="props.apartment.category ? '' : 'opacity-30'"-->
+			<!--			>-->
+			<!--				{{ props.apartment.category?.title_single ?? 'Нет типа' }}-->
+			<!--			</div>-->
 			<div
 				@click="handleClick"
-				class="font-light text-neutral-500 dark:text-slate-300"
-				:class="props.apartment.category ? '' : 'opacity-30'"
+				class="font-light text-sm leading-none text-neutral-500 dark:text-slate-300"
+				:class="props.apartment.address ? '' : 'opacity-30'"
 			>
-				{{ props.apartment.category?.title_single ?? 'Нет типа' }}
+				{{ props.apartment?.address ?? 'Нет адреса' }}
 			</div>
 			<!--			<div class="flex flex-row items-center gap-1 mt-auto">-->
 			<!--				<div class="font-semibold">-->

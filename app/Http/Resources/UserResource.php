@@ -35,7 +35,7 @@ class UserResource extends JsonResource
             ),
             'email' => $this->when($this->showContacts, $this->resource->email),
             'phone' => $this->when($this->showContacts, $this->resource->phone),
-            'is_admin' => $this->resource->hasRole('admin'),
+            'can_view_dashboard' => $this->resource->hasRole(['admin', 'moderator']),
         ];
     }
 }

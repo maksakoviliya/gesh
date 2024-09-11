@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ApartmentCollection;
+use App\Http\Resources\ApartmentResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Apartment;
 use App\Models\Category;
@@ -27,7 +28,7 @@ final class HomeController extends Controller
 
         return Inertia::render('Home', [
             'categories' => CategoryResource::collection($categories),
-            'apartments' => new ApartmentCollection($apartments),
+            'apartments' => ApartmentResource::collection($apartments),
         ]);
     }
 }

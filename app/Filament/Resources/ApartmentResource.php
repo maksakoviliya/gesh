@@ -138,6 +138,7 @@ class ApartmentResource extends Resource
                                         Status::Published->value => 'Опубликован',
                                     ])->required()
                                     ->nullable(false),
+                                Forms\Components\Toggle::make('is_verified')->label('Подтвержден'),
                                 Select::make('user')->relationship('user', 'name')
                                     ->searchable()
                                     ->getOptionLabelFromRecordUsing(fn(User $record) => "{$record->name} | {$record->email}")
@@ -186,6 +187,10 @@ class ApartmentResource extends Resource
                     ->label('Объект')
                     ->square()
                     ->limit(1),
+               Tables\Columns\IconColumn::make('is_verified')
+                   ->boolean()
+                    ->icon('heroicon-o-check-badge')
+                    ->falseColor('gray'),
                 Tables\Columns\TextColumn::make('category.title_single')
                     ->label('')
                     ->color('primary')
