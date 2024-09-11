@@ -127,12 +127,6 @@
 <template>
 	<AppLayout>
 		<Container sm>
-			<div
-				v-if="props.apartment.data.address"
-				class="text-3xl font-semibold"
-			>
-				{{ props.apartment.data.address }}
-			</div>
 			<Gallery
 				class="mt-6"
 				:images="apartment.data.media"
