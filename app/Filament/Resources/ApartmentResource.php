@@ -241,6 +241,7 @@ class ApartmentResource extends Resource
                 TextColumn::make('created_at')->date('d.m.Y H:i')->sortable()->toggleable(),
                 TextColumn::make('updated_at')->date('d.m.Y H:i')->sortable()->toggleable(),
                 TextColumn::make('id')
+                    ->color('primary')
                     ->url(fn (Apartment $record) => route('apartment', $record->id), true)
                     ->searchable()->toggleable(),
             ])
