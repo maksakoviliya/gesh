@@ -11,6 +11,7 @@
 	import { onMounted, ref } from 'vue'
 	import { initFlowbite } from 'flowbite'
 	import ModalConfirmDeleting from '@/Components/Modals/ModalConfirmDeleting.vue'
+	import Indicator from '@/Components/Interactive/Indicator.vue'
 
 	onMounted(() => {
 		initFlowbite()
@@ -151,9 +152,6 @@
 					</div>
 				</div>
 			</div>
-			<!--            <div class="font-semibold text-lg">-->
-			<!--                {location?.region}, {location?.label}-->
-			<!--            </div>-->
 			<div
 				class="font-light text-neutral-500 dark:text-slate-400"
 				:class="props.apartment.category ? '' : 'opacity-30'"
@@ -161,10 +159,9 @@
 				{{ props.apartment.category?.title ?? 'Нет типа' }}
 			</div>
 			<div class="flex flex-row items-center gap-1">
-				<!--				<div class="font-semibold">-->
-				<!--					{{ props.apartment.price.toLocaleString('ru') }}₽-->
-				<!--					<span class="text-neutral-500 font-light text-sm">ночь</span>-->
-				<!--				</div>-->
+				<span class="text-neutral-500 dark:text-slate-500 leading-none font-light text-sm">
+					{{ props.apartment.address }}
+				</span>
 			</div>
 			<div class="flex flex-row items-center justify-between gap-2">
 				<Guests :guests="props.apartment.guests" />
@@ -183,13 +180,16 @@
 				:small="true"
 				label="Календарь"
 			/>
-			<ButtonComponent
-				v-if="props.apartment.status === 'published'"
-				@click="goToChat(props.apartment.id)"
-				:small="true"
-				:outline="true"
-				label="Чат"
-			/>
+			<div class="relative">
+				<ButtonComponent
+					v-if="props.apartment.status === 'published'"
+					@click="goToChat(props.apartment.id)"
+					:small="true"
+					:outline="true"
+					label="Чат"
+				/>
+				<Indicator :count="props.apartment.reservation_requests_count" />
+			</div>
 		</div>
 
 		<ModalConfirmDeleting

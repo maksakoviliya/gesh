@@ -14,7 +14,7 @@ final class ListController extends Controller
 {
     public function __invoke(Request $request): Response
     {
-        $apartments = $request->user()->apartments;
+        $apartments = $request->user()->apartments()->withCount('reservationRequests')->get();
 
         return Inertia::render('Account/Apartments/List', [
             'apartments' => ApartmentResource::collection($apartments),

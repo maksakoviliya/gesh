@@ -460,6 +460,11 @@ final class Apartment extends Model implements HasMedia
         return $this->hasMany(DisabledDate::class);
     }
 
+    public function reservationRequests(): HasMany
+    {
+        return $this->hasMany(ReservationRequest::class);
+    }
+
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);

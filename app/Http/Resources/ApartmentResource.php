@@ -55,6 +55,7 @@ class ApartmentResource extends JsonResource
             'dates' => DatePriceResource::collection($this->whenLoaded('datePrices')),
             'owner' => new UserResource($this->whenLoaded('user')),
             'fast_reserve' => $this->resource->fast_reserve,
+            'reservation_requests_count' => $this->whenCounted('reservationRequests'),
             'all_disabled_dates' => $this->whenAppended('allDisabledDays'),
             'i_cal_links' => ICalLinkResource::collection($this->whenLoaded('ICalLinks')),
         ];
