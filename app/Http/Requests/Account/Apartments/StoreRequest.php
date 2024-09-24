@@ -65,10 +65,10 @@ final class StoreRequest extends FormRequest
             'lat' => 'sometimes|required',
 
             // Step 5:
-            'guests' => 'sometimes|required|numeric|min:1|max:20',
-            'bedrooms' => 'sometimes|required|numeric|min:0|max:10',
-            'beds' => 'sometimes|required|numeric|min:0|max:10',
-            'bathrooms' => 'sometimes|required|numeric|min:0|max:10',
+            'guests' => 'sometimes|required|numeric|min:1|max:40',
+            'bedrooms' => 'sometimes|required|numeric|min:0|max:40',
+            'beds' => 'sometimes|required|numeric|min:0|max:40',
+            'bathrooms' => 'sometimes|required|numeric|min:0|max:40',
 
             // Step 6:
             'features' => 'sometimes|nullable|array',
@@ -97,7 +97,7 @@ final class StoreRequest extends FormRequest
         return [
             'category_id.required' => 'Необходимо укзать категорию жилья.',
             'type.required' => 'Необходимо укзать тип жилья.',
-            'total_media' => 'Необходимо загрузить изображение',
+            'total_media' => 'Необходимо загрузить изображение.',
         ];
     }
 

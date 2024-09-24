@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\ReservationRequest\Status;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,7 +19,7 @@ class ApartmentResource extends JsonResource
             'step' => $this->resource->step,
             'title' => $this->resource->title,
             'status' => $this->resource->status,
-            'status_text' => __('statuses.' . $this->resource->status->value),
+            'status_text' => __('statuses.'.$this->resource->status->value),
             'description' => Str::replace('&nbsp;', ' ', $this->resource->description),
             'address' => $this->resource->fullAddress,
             'bedrooms' => $this->resource->bedrooms,
@@ -55,7 +56,10 @@ class ApartmentResource extends JsonResource
             'dates' => DatePriceResource::collection($this->whenLoaded('datePrices')),
             'owner' => new UserResource($this->whenLoaded('user')),
             'fast_reserve' => $this->resource->fast_reserve,
-            'reservation_requests_count' => $this->whenCounted('reservationRequests'),
+            'reservation_requests_count' => $this->whenCounted(
+                'reservationRequests',
+                $this->reservationRequests()->where('status', Status::Pending)->count()
+            ),
             'all_disabled_dates' => $this->whenAppended('allDisabledDays'),
             'i_cal_links' => ICalLinkResource::collection($this->whenLoaded('ICalLinks')),
         ];
