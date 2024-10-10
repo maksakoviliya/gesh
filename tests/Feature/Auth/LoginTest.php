@@ -27,10 +27,10 @@ final class LoginTest extends TestCase
 
         $response = $this->post('login', [
             'email' => $user->email,
-            'password' => 'password'
+            'password' => 'password',
         ],
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(200);
@@ -42,7 +42,7 @@ final class LoginTest extends TestCase
 
         $response = $this->postJson('login', [
             'phone' => $user->phone->formatE164(),
-            'password' => 'password'
+            'password' => 'password',
         ]);
 
         $response->assertStatus(200);
@@ -52,15 +52,15 @@ final class LoginTest extends TestCase
     {
         $response = $this->post('login', [
             'phone' => '6543',
-            'password' => 'password'
+            'password' => 'password',
         ],
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
-            'phone'
+            'phone',
         ]);
     }
 
@@ -68,14 +68,14 @@ final class LoginTest extends TestCase
     {
         $response = $this->post('login',
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
             'phone',
             'email',
-            'password'
+            'password',
         ]);
     }
 }

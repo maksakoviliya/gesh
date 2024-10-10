@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Account\Apartments;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApartmentResource;
-use App\Http\Resources\ReservationRequestResource;
 use App\Models\Apartment;
 use App\Models\DisabledDate;
 use App\Models\Reservation;
@@ -112,6 +111,7 @@ final class CalendarController extends Controller
         $events = $reservationRequests->merge($reservations)
             ->merge($side_reservations)
             ->merge($disabled_dates);
+
         return Inertia::render('Account/Apartments/Calendar', [
             'apartment' => new ApartmentResource($apartment),
             'eventsData' => $events,

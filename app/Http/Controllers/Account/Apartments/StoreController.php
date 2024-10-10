@@ -8,8 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\Apartments\StoreRequest;
 use App\Models\Apartment;
 use Illuminate\Http\RedirectResponse;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 final class StoreController extends Controller
 {

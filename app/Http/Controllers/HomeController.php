@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ApartmentCollection;
 use App\Http\Resources\ApartmentResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Apartment;

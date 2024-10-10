@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string $link
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|ICalLink newModelQuery()
  * @method static Builder|ICalLink newQuery()
  * @method static Builder|ICalLink query()
@@ -27,7 +28,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ICalLink whereId($value)
  * @method static Builder|ICalLink whereLink($value)
  * @method static Builder|ICalLink whereUpdatedAt($value)
+ *
  * @property-read \App\Models\Apartment|null $apartment
+ *
  * @mixin Eloquent
  */
 class ICalLink extends Model

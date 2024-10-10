@@ -15,7 +15,6 @@ class DatePricesRelationManager extends RelationManager
 
     protected static ?string $title = 'Цены по отдельным датам';
 
-
     public function form(Form $form): Form
     {
         return $form

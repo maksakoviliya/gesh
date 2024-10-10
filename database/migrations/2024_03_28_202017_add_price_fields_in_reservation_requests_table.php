@@ -18,7 +18,7 @@ return new class extends Migration
         $reservationRequests = ReservationRequest::all();
         foreach ($reservationRequests as $reservationRequest) {
             $reservationRequest->update([
-                'first_payment' => intval(ceil($reservationRequest->price * 0.3))
+                'first_payment' => intval(ceil($reservationRequest->price * 0.3)),
             ]);
         }
     }

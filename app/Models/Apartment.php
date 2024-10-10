@@ -540,8 +540,8 @@ final class Apartment extends Model implements HasMedia
                     ->get();
                 foreach ($side_reservations as $item) {
                     $period = CarbonPeriod::create(
-                        $item->start->addDay()->setTime(15, 00),
-                        $item->end->setTime(12, 00),
+                        $item->start,
+                        $item->end,
                     );
                     foreach ($period as $day) {
                         $result[] = $day;

@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Apartment|null $apartment
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation query()
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereStart($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereSummary($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SideReservation whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 final class SideReservation extends Model

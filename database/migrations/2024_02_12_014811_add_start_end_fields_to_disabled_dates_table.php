@@ -8,7 +8,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::table('disabled_dates', function (Blueprint $table) {
@@ -33,7 +34,7 @@ return new class extends Migration {
                 } elseif ($end->diff($date->date->startOfDay())->days > 1) {
                     $segments[] = [
                         $start,
-                        $end->addDay()
+                        $end->addDay(),
                     ];
                     $start = $date->date->startOfDay()->hours(15);
                 }

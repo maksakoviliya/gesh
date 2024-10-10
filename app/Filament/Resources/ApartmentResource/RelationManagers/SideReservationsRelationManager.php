@@ -6,7 +6,9 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class SideReservationsRelationManager extends RelationManager
 {
@@ -29,14 +31,19 @@ class SideReservationsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('summary')
             ->columns([
-                Tables\Columns\TextColumn::make('start')->sortable(),
-                Tables\Columns\TextColumn::make('end')->sortable(),
+                Tables\Columns\TextColumn::make('start')->date('d.m.Y H:i')->sortable(),
+                Tables\Columns\TextColumn::make('end')->date('d.m.Y H:i')->sortable(),
                 Tables\Columns\TextColumn::make('summary')->searchable(),
                 Tables\Columns\TextColumn::make('description')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->date('d.m.Y H:i')->sortable(),
             ])
+            ->defaultSort('start')
             ->filters([
-                //
+                Filter::make('only_new')
+                    ->label('Только предстоящие')
+                    ->toggle()
+                    ->query(fn (Builder $query): Builder => $query->where('start', '>', now()->startOfDay()))
+                    ->default(),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

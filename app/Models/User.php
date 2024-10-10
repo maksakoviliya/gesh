@@ -63,6 +63,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $roles_count
  * @property-read Collection<int, PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static UserFactory factory($count = null, $state = [])
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -87,10 +88,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User withoutPermission($permissions)
  * @method static Builder|User withoutRole($roles, $guard = null)
+ *
  * @property string|null $telegram_chat_id
  * @property-read Collection<int, \App\Models\TelegramAuthCode> $telegramAuthCodes
  * @property-read int|null $telegram_auth_codes_count
+ *
  * @method static Builder|User whereTelegramChatId($value)
+ *
  * @mixin Eloquent
  */
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail

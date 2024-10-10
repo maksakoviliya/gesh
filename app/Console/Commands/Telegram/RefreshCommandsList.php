@@ -34,7 +34,7 @@ final class RefreshCommandsList extends Command
                 ];
             }
         }
-//        dd($data);
+        //        dd($data);
         $telegram->setMyCommands([
             'commands' => $data,
         ]);

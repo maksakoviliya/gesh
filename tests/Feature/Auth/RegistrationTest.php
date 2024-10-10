@@ -7,14 +7,12 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 final class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
-
 
     public function test_can_show_register_page(): void
     {
@@ -34,10 +32,10 @@ final class RegistrationTest extends TestCase
         ];
         $response = $this->post('/register',
             data: array_merge($data, [
-                'password' => '123123123'
+                'password' => '123123123',
             ]),
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(201);
@@ -56,10 +54,10 @@ final class RegistrationTest extends TestCase
         ];
         $response = $this->post('/register',
             data: array_merge($data, [
-                'password' => '123123123'
+                'password' => '123123123',
             ]),
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(422);
@@ -76,10 +74,10 @@ final class RegistrationTest extends TestCase
         ];
         $response = $this->post('/register',
             data: array_merge($data, [
-                'password' => '123123123'
+                'password' => '123123123',
             ]),
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(422);
@@ -92,7 +90,7 @@ final class RegistrationTest extends TestCase
 
         $response = $this->post('/register',
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(422);
@@ -108,7 +106,7 @@ final class RegistrationTest extends TestCase
     public function test_cant_register_on_duplicated_email()
     {
         User::factory(1)->create([
-            'email' => 'test@mail.com'
+            'email' => 'test@mail.com',
         ]);
         $this->assertDatabaseCount('users', 1);
 
@@ -119,10 +117,10 @@ final class RegistrationTest extends TestCase
         ];
         $response = $this->post('/register',
             data: array_merge($data, [
-                'password' => '123123123'
+                'password' => '123123123',
             ]),
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(422);
@@ -136,7 +134,7 @@ final class RegistrationTest extends TestCase
     public function test_cant_register_on_duplicated_phone()
     {
         User::factory(1)->create([
-            'phone' => '+7(987) 222 11-11'
+            'phone' => '+7(987) 222 11-11',
         ]);
         $this->assertDatabaseCount('users', 1);
 
@@ -147,10 +145,10 @@ final class RegistrationTest extends TestCase
         ];
         $response = $this->post('/register',
             data: array_merge($data, [
-                'password' => '123123123'
+                'password' => '123123123',
             ]),
             headers: [
-                'accept' => 'application/json'
+                'accept' => 'application/json',
             ]);
 
         $response->assertStatus(422);

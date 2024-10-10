@@ -25,6 +25,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  * @property-read int|null $media_count
  * @property-read \App\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor query()
@@ -35,6 +36,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Instructor whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 final class Instructor extends Model implements HasMedia

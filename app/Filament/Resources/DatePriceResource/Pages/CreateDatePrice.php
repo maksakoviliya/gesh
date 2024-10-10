@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\DatePriceResource\Pages;
 
 use App\Filament\Resources\DatePriceResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateDatePrice extends CreateRecord

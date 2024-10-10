@@ -6,17 +6,21 @@ namespace App\Console\Commands;
 
 use App\Models\ICalLink;
 use App\Models\SideReservation;
-use Carbon\Carbon;
-use ICal\Event;
-use ICal\ICal;
+use App\Services\ICalService;
 use Illuminate\Console\Command;
 use Log;
 
-class SyncCalendars extends Command
+final class SyncCalendars extends Command
 {
     protected $signature = 'sync-calendars {apartment_id?}';
 
     protected $description = 'Sync calendars by ical links';
+
+    public function __construct(
+        protected ICalService $iCalService
+    ) {
+        parent::__construct();
+    }
 
     public function handle()
     {
@@ -35,23 +39,7 @@ class SyncCalendars extends Command
         }
         /** @var ICalLink $link */
         foreach ($links as $link) {
-            try {
-                $ical = new ICal();
-                $ical->initUrl($link->link);
-                /** @var Event $event */
-                foreach ($ical->events() as $event) {
-                    SideReservation::query()
-                        ->create([
-                            'apartment_id' => $link->apartment_id,
-                            'start' => Carbon::parse($event->dtstart),
-                            'end' => Carbon::parse($event->dtend),
-                            'description' => $event->description,
-                            'summary' => $event->summary,
-                        ]);
-                }
-            } catch (\Throwable $exception) {
-                Log::info($exception->getMessage());
-            }
+            $this->iCalService->process($link->link, $link->apartment);
         }
         Log::info('Finish sync calendars');
     }

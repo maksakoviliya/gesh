@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
  * @property Status $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|Transaction newModelQuery()
  * @method static Builder|Transaction newQuery()
  * @method static Builder|Transaction query()
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Transaction whereStatus($value)
  * @method static Builder|Transaction whereUpdatedAt($value)
  * @method static Builder|Transaction whereUserId($value)
+ *
  * @mixin Eloquent
  */
 final class Transaction extends Model

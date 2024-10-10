@@ -15,8 +15,8 @@ class DatesTest extends TestCase
 
     public function test_apartment_right_dates(): void
     {
-//        $response = $this->get('/');
-//
-//        $response->assertStatus(200);
+        //        $response = $this->get('/');
+        //
+        //        $response->assertStatus(200);
     }
 }

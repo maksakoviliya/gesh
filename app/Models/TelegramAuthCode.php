@@ -19,6 +19,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @property string $expires_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode query()
@@ -29,6 +30,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TelegramAuthCode whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 final class TelegramAuthCode extends Model

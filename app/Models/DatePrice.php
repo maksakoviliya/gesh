@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice query()
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class DatePrice extends Model

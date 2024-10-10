@@ -454,7 +454,7 @@ class SendMessageToAdminGroup
         Log::info($exception->getLine());
         Telegram::sendMessage([
             'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-            'text' => 'Ошибка при отправке уведомления!'."\n\n".$exception->getMessage() . $additionalText,
+            'text' => 'Ошибка при отправке уведомления!'."\n\n".$exception->getMessage().$additionalText,
         ]);
     }
 }

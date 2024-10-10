@@ -42,7 +42,7 @@ class TestCommand extends Command
                 } elseif ($end->diff($date->date->startOfDay())->days > 1) {
                     $segments[] = [
                         $start->format('d.m.Y H:i:s'),
-                        $end->addDay()->format('d.m.Y H:i:s')
+                        $end->addDay()->format('d.m.Y H:i:s'),
                     ];
                     $start = $date->date->startOfDay()->hours(15);
                 }
