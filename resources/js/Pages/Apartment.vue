@@ -17,6 +17,7 @@
 	const props = defineProps({
 		apartment: Array | Object,
 		hasICalLinks: Boolean,
+		flash: Object,
 	})
 
 	const getTitle = () => {
@@ -109,9 +110,17 @@
 				apartment: props.apartment.data.id,
 			}),
 			{
+				onSuccess: () => {
+					if (props.flash.error) {
+						errorToast(props.flash.error)
+					}
+				},
 				onError: (err) => {
+					console.log('err', err)
 					errorToast(Object.values(err)[0])
 				},
+				preserveState: true,
+				preserveScroll: true,
 			}
 		)
 	}

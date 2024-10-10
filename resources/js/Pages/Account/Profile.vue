@@ -2,14 +2,18 @@
 	import Container from '@/Components/Container.vue'
 	import AppLayout from '@/Layouts/AppLayout.vue'
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
-	import { ref } from 'vue'
+	import { onMounted, ref } from 'vue'
 	import Heading from '@/Components/Heading.vue'
 	import AvatarUploader from '@/Components/AvatarUploader.vue'
 	import ProfileForm from '@/Components/ProfileForm.vue'
+	import useToasts from '@/hooks/useToasts'
 
-	defineProps({
+	const props = defineProps({
 		user: Object,
+		flash: Object,
 	})
+
+	const { errorToast } = useToasts()
 
 	const routes = ref([
 		{
@@ -23,6 +27,12 @@
 			label: 'Профиль',
 		},
 	])
+
+	onMounted(() => {
+		if (props.flash.error) {
+			errorToast(props.flash.error)
+		}
+	})
 </script>
 
 <template>

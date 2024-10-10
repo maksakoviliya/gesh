@@ -144,7 +144,9 @@ Route::middleware('auth:sanctum')->group(function () {
                 });
         });
 
-    Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)->name('reservation-requests.store');
+    Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)
+        ->middleware('HasPhoneMiddleware')
+        ->name('reservation-requests.store');
 
     // Profile
     Route::get('has-unread-notifications', HasUnreadNotificationsController::class)->name('has_unread_notifications');
