@@ -105,7 +105,7 @@ class SendMessageToAdminGroup
             );
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $text,
+                'text' => $this->processText($text),
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
@@ -201,7 +201,7 @@ class SendMessageToAdminGroup
             );
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $text,
+                'text' => $this->processText($text),
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
@@ -308,7 +308,7 @@ class SendMessageToAdminGroup
             );
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $text,
+                'text' => $this->processText($text),
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
@@ -326,7 +326,7 @@ class SendMessageToAdminGroup
 
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $text,
+                'text' => $this->processText($text),
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
@@ -344,7 +344,7 @@ class SendMessageToAdminGroup
 
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $text,
+                'text' => $this->processText($text),
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
@@ -436,9 +436,11 @@ class SendMessageToAdminGroup
                     ],
                 ]
             );
+
+
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $text,
+                'text' => $this->processText($text),
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
@@ -452,9 +454,15 @@ class SendMessageToAdminGroup
         Log::info($exception->getMessage());
         Log::info($exception->getFile());
         Log::info($exception->getLine());
+        
         Telegram::sendMessage([
             'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
             'text' => 'Ошибка при отправке уведомления!'."\n\n".$exception->getMessage().$additionalText,
         ]);
+    }
+
+    protected function processText(string $text): string
+    {
+        return str_replace(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'], ['\_', '\*', '\[', '\]', '\(', '\)', '\~', '\`', '\>', '\#', '\+', '\-', '\=', '\|', '\{', '\}', '\.', '\!'], $text);
     }
 }
