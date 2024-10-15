@@ -26,6 +26,7 @@ use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
 use App\Http\Controllers\Content\PolicyPageController;
 use App\Http\Controllers\Content\RulesPageController;
+use App\Http\Controllers\DisabledDates\DeleteDisabledDateController;
 use App\Http\Controllers\GetMediaController;
 use App\Http\Controllers\HasUnreadNotificationsController;
 use App\Http\Controllers\HomeController;
@@ -142,6 +143,9 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::get('{reservation}/voucher', ReservationVoucherController::class)->name('voucher');
                     Route::get('{reservation}', ReservationViewController::class)->name('view');
                 });
+
+            Route::delete('disabled-dates/{disabledDate}', DeleteDisabledDateController::class)->name('disabled-dates.delete');
+
         });
 
     Route::post('{apartment}/reservation-requests', ReservationRequestStoreController::class)

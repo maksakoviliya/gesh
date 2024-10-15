@@ -8,7 +8,7 @@
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
 	import ruLocale from '@fullcalendar/core/locales/ru'
 	import Input from '@/Components/Input.vue'
-	import { useForm } from '@inertiajs/vue3'
+    import {router, useForm} from '@inertiajs/vue3'
 	import Heading from '@/Components/Heading.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import useToasts from '@/hooks/useToasts'
@@ -209,10 +209,9 @@
 						),
 						{
 							onSuccess: () => {
-								let calendarApi = calendar.value.getApi()
-								calendarApi.render()
 								successToast('Данные обновлены!')
-							},
+                                router.visit(window.location.href, { only: [] });
+                            },
 						}
 					)
 			}
