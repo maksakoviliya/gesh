@@ -20,20 +20,27 @@ final class ICalService
             $ical = new ICal();
             $ical->initUrl($url);
 
+            $processed = [];
+
             /** @var Event $event */
             foreach ($ical->events() as $event) {
                 if (Carbon::parse($event->dtstart) < now()->subMonth()) {
                     continue;
                 }
 
-                SideReservation::query()->create([
+                $sideReservation = SideReservation::query()->firstOrCreate([
                     'apartment_id' => $apartment->id,
                     'start' => Carbon::parse($event->dtstart)->setTime(15, 0),
                     'end' => Carbon::parse($event->dtend)->setTime(12, 0),
                     'description' => $event->description,
                     'summary' => $event->summary,
                 ]);
+                $processed[] = $sideReservation->id;
             }
+
+            SideReservation::query()
+                ->whereNotIn('id', $processed)
+                ->delete();
         } catch (Throwable $exception) {
             Log::error($exception->getMessage());
         }

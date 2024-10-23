@@ -27,15 +27,10 @@ final class SyncCalendars extends Command
         Log::info('Start sync calendars');
         if (! $apartment_id = $this->argument('apartment_id')) {
             $links = ICalLink::has('apartment')->get();
-            SideReservation::query()
-                ->delete();
         } else {
             $links = ICalLink::query()
                 ->where('apartment_id', $apartment_id)
                 ->get();
-            SideReservation::query()
-                ->where('apartment_id', $apartment_id)
-                ->delete();
         }
         /** @var ICalLink $link */
         foreach ($links as $link) {
