@@ -28,7 +28,7 @@ final class ICalService
                     continue;
                 }
                 Log::info("Process for apartment: $apartment->id.");
-                $sideReservation = SideReservation::query()->firstOrCreate([
+                $sideReservation = SideReservation::query()->updateOrCreate([
                     'apartment_id' => $apartment->id,
                     'start' => Carbon::parse($event->dtstart)->setTime(15, 0),
                     'end' => Carbon::parse($event->dtend)->setTime(12, 0),
