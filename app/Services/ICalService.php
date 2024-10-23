@@ -27,7 +27,6 @@ final class ICalService
                 if (Carbon::parse($event->dtstart) < now()->subMonth()) {
                     continue;
                 }
-                Log::info("Process for apartment: $apartment->id.");
                 $sideReservation = SideReservation::query()->updateOrCreate([
                     'apartment_id' => $apartment->id,
                     'start' => Carbon::parse($event->dtstart)->setTime(15, 0),
@@ -38,9 +37,8 @@ final class ICalService
                 $processed[] = $sideReservation->id;
             }
 
-            Log::info("Processed: " . json_encode($processed));
-
             SideReservation::query()
+                ->where('apartment_id', $apartment->id)
                 ->whereNotIn('id', $processed)
                 ->delete();
         } catch (Throwable $exception) {

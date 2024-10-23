@@ -37,7 +37,6 @@ final class SyncCalendars extends Command
 
         /** @var ICalLink $link */
         foreach ($links as $link) {
-            Log::info("Sync for apartment: {$link->apartment->id}, link: {$link->link}");
             $this->iCalService->process($link->link, $link->apartment);
             $progressBar->advance();
         }
