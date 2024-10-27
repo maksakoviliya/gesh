@@ -8,7 +8,7 @@
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
 	import ruLocale from '@fullcalendar/core/locales/ru'
 	import Input from '@/Components/Input.vue'
-    import {router, useForm} from '@inertiajs/vue3'
+	import { router, useForm } from '@inertiajs/vue3'
 	import Heading from '@/Components/Heading.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import useToasts from '@/hooks/useToasts'
@@ -200,20 +200,15 @@
 						return data
 					})
 					.post(
-						route(
-							'account.apartments.calendar.update',
-							{
-								apartment: props.apartment.data.id,
-							},
-							{ preserveScroll: true }
-						),
+						route('account.apartments.calendar.update', {
+							apartment: props.apartment.data.id,
+						}),
 						{
 							preserveState: true,
 							preserveScroll: true,
 							onSuccess: () => {
 								successToast('Данные обновлены!')
-                                router.visit(window.location.href, { only: [] });
-                            },
+							},
 						}
 					)
 			}
