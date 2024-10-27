@@ -122,7 +122,7 @@
 						return {
 							html: `<div class="flex flex-col w-full h-full justify-between">
 		                       <div class="font-semibold text-right text-neutral-800 dark:text-slate-100">${day.dayNumberText}</div>
-		                       <div class="font-light text-neutral-500 dark:text-slate-300 text-sm">${price}₽</div>
+		                       <div class="font-light text-neutral-500 dark:text-slate-300 text-[10px] sm:text-sm">${price}₽</div>
 		                   </div>`,
 						}
 					},
@@ -208,6 +208,8 @@
 							{ preserveScroll: true }
 						),
 						{
+							preserveState: true,
+							preserveScroll: true,
 							onSuccess: () => {
 								successToast('Данные обновлены!')
                                 router.visit(window.location.href, { only: [] });
@@ -359,7 +361,15 @@
 	</AppLayout>
 </template>
 
-<style>
+<style lang="scss">
+	.fc {
+		.fc-toolbar {
+			display: grid;
+		}
+		.fc-view-harness {
+			min-height: 354px;
+		}
+	}
 	.fc-event-start {
 		margin-left: 3vw !important;
 	}
