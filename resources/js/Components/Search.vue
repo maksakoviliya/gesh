@@ -232,7 +232,7 @@
 						/>
 					</div>
 				</div>
-				<div class="flex gap-4 justify-end pb-16 md:pb-0">
+				<div class="flex gap-4 justify-end pb-32 md:pb-0">
 					<ButtonComponent
 						label="Поиск"
 						:auto-width="true"
