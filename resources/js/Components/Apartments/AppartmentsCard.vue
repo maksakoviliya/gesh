@@ -44,7 +44,7 @@
 							<!--								:src="image.src"-->
 							<!--								:srcset="image.srcset"-->
 							<!--								:alt="props.apartment.title"-->
-							<Link :to="route('apartment', props.apartment.id)">
+							<Link :href="route('apartment', props.apartment.id)">
 								<img
 									@click="handleClick"
 									:alt="props.apartment.title"
@@ -58,7 +58,7 @@
 					</Swiper>
 				</template>
 				<Link
-					:to="route('apartment', props.apartment.id)"
+					:href="route('apartment', props.apartment.id)"
 					v-else
 				>
 					<img
@@ -69,14 +69,14 @@
 				</Link>
 			</div>
 			<Link
-				:to="route('apartment', props.apartment.id)"
+				:href="route('apartment', props.apartment.id)"
 				class="font-semibold text-lg dark:text-slate-200"
 			>
 				{{ props.apartment.title ?? props.apartment.category?.title_single }}
 				({{ props.apartment.city }})
 			</Link>
 			<Link
-				:to="route('apartment', props.apartment.id)"
+				:href="route('apartment', props.apartment.id)"
 				class="font-light text-neutral-500 dark:text-slate-300"
 				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
@@ -90,7 +90,7 @@
 			<!--				</div>-->
 			<!--			</div>-->
 			<Link
-				:to="route('apartment', props.apartment.id)"
+				:href="route('apartment', props.apartment.id)"
 				class="flex flex-row items-center justify-between gap-2"
 			>
 				<Guests :guests="props.apartment.guests" />
