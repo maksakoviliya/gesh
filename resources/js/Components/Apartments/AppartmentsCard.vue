@@ -1,5 +1,5 @@
 <script setup>
-	import { Link } from '@inertiajs/vue3'
+	import { Link, usePage } from '@inertiajs/vue3'
 	import Guests from '@/Components/Guests.vue'
 	import Bedrooms from '@/Components/Bedrooms.vue'
 	import Beds from '@/Components/Apartments/Beds.vue'
@@ -8,7 +8,7 @@
 	import { Swiper, SwiperSlide } from 'swiper/vue'
 	import 'swiper/css'
 	import 'swiper/css/navigation'
-	import { ref } from 'vue'
+	import { computed, ref } from 'vue'
 	import 'lazysizes'
 	import IsVerified from '@/Components/Apartments/IsVerified.vue'
 	import Price from '@/Components/Apartments/Price.vue'
@@ -18,7 +18,20 @@
 		apartment: Object,
 	})
 
+	const page = usePage()
+
 	const modules = ref([Navigation, Pagination])
+
+	const url = computed(() =>
+		route('apartment', {
+			apartment: props.apartment.id,
+			start: page.props.query['start'],
+			end: page.props.query['end'],
+			range: page.props.query['range'],
+			guests: page.props.query['guests'],
+			children: page.props.query['children'],
+		})
+	)
 </script>
 
 <template>
@@ -44,7 +57,7 @@
 							<!--								:src="image.src"-->
 							<!--								:srcset="image.srcset"-->
 							<!--								:alt="props.apartment.title"-->
-							<Link :href="route('apartment', props.apartment.id)">
+							<Link :href="url">
 								<img
 									@click="handleClick"
 									:alt="props.apartment.title"
@@ -58,7 +71,7 @@
 					</Swiper>
 				</template>
 				<Link
-					:href="route('apartment', props.apartment.id)"
+					:href="url"
 					v-else
 				>
 					<img
@@ -69,14 +82,14 @@
 				</Link>
 			</div>
 			<Link
-				:href="route('apartment', props.apartment.id)"
+				:href="url"
 				class="font-semibold text-lg dark:text-slate-200"
 			>
 				{{ props.apartment.title ?? props.apartment.category?.title_single }}
 				({{ props.apartment.city }})
 			</Link>
 			<Link
-				:href="route('apartment', props.apartment.id)"
+				:href="url"
 				class="font-light text-neutral-500 dark:text-slate-300"
 				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
@@ -90,7 +103,7 @@
 			<!--				</div>-->
 			<!--			</div>-->
 			<Link
-				:href="route('apartment', props.apartment.id)"
+				:href="url"
 				class="flex flex-row items-center justify-between gap-2"
 			>
 				<Guests :guests="props.apartment.guests" />
@@ -98,11 +111,13 @@
 				<Beds :beds="props.apartment.beds" />
 				<Bathrooms :bathrooms="props.apartment.bathrooms" />
 			</Link>
-			<TotalPrice
-				v-if="props.apartment.total_price"
-				:price="props.apartment.total_price"
-			/>
-			<Price :price="props.apartment.weekdays_price" />
+			<Link :href="url">
+				<TotalPrice
+					v-if="props.apartment.total_price"
+					:price="props.apartment.total_price"
+				/>
+				<Price :price="props.apartment.weekdays_price" />
+			</Link>
 		</div>
 	</div>
 </template>
@@ -112,10 +127,12 @@
 	.swiper-button-next.swiper-button-disabled {
 		@apply opacity-0 hidden;
 	}
+
 	.swiper-button-prev,
 	.swiper-button-next {
 		@apply aspect-square w-8 h-8 bg-white rounded-full hover:scale-110 transition cursor-pointer opacity-0 group-hover:opacity-100;
 	}
+
 	.swiper-button-prev:after,
 	.swiper-button-next:after {
 		@apply text-base text-blue-500;

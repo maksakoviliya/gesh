@@ -3,11 +3,11 @@
 	import Container from '@/Components/Container.vue'
 	import Gallery from '@/Components/Gallery.vue'
 	import Heading from '@/Components/Heading.vue'
-	import { computed, ref } from 'vue'
+	import { computed, onMounted, ref } from 'vue'
 	import Counter from '@/Components/Counter.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import Avatar from '@/Components/Avatar.vue'
-	import { useForm } from '@inertiajs/vue3'
+	import { useForm, usePage } from '@inertiajs/vue3'
 	import dayjs from 'dayjs'
 	import useToasts from '@/hooks/useToasts'
 	import Datepicker from '@/Components/Datepicker.vue'
@@ -39,12 +39,14 @@
 		return result.filter((item) => !!item).join(' · ')
 	}
 
+	const page = usePage()
+
 	const form = useForm({
 		start: null,
 		end: null,
 		range: 2,
-		guests: 2,
-		children: 0,
+		guests: page.props.query['guests'] ?? 2,
+		children: page.props.query['children'] ?? 0,
 	})
 
 	const detalizationText = computed(() => {
@@ -75,6 +77,20 @@
 		form.end = end.set('hour', 12).set('minute', 0).toDate()
 		console.log('form', form)
 	}
+
+	onMounted(() => {
+		const startDate = page.props.query['start'] ?? null
+		const endDate = page.props.query['end'] ?? null
+		if (!startDate && !endDate) {
+			return
+		}
+
+		const start = dayjs(startDate, 'DD_MM_YYYY')
+		const end = dayjs(endDate, 'DD_MM_YYYY')
+		form.range = end.diff(start, 'day')
+		form.start = start.set('hour', 15).set('minute', 0).toDate()
+		form.end = end.set('hour', 12).set('minute', 0).toDate()
+	})
 
 	const details = ref([])
 

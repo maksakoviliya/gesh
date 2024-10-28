@@ -5,11 +5,11 @@
 </script>
 
 <template>
-	<Link class="text-neutral-400 dark:text-slate-400">
+	<div class="text-neutral-400 dark:text-slate-400">
 		от
 		<span class="font-bold text-xl text-neutral-800 dark:text-white">
 			{{ new Intl.NumberFormat().format(price) }}</span
 		>
 		₽ / ночь
-	</Link>
+	</div>
 </template>
