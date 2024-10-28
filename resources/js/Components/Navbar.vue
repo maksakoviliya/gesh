@@ -23,7 +23,7 @@
 
 <template>
 	<div
-		class="fixed w-full bg-white z-20 shadow-sm dark:bg-slate-800 transition"
+		class="fixed w-full bg-white z-30 shadow-sm dark:bg-slate-800 transition"
 		:class="isHidden ? '-translate-y-full' : ''"
 	>
 		<div class="py-4 border-b dark:border-slate-700">

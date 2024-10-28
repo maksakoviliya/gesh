@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use App\Enums\ReservationRequest\Status;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
@@ -62,6 +63,18 @@ class ApartmentResource extends JsonResource
             ),
             'all_disabled_dates' => $this->whenAppended('allDisabledDays'),
             'i_cal_links' => ICalLinkResource::collection($this->whenLoaded('ICalLinks')),
+            'total_price' => $this->getTotalPriceForPeriod($request)
         ];
+    }
+
+    public function getTotalPriceForPeriod(Request $request)
+    {
+        if(!$request->input('start') && !$request->input('end')) {
+            return null;
+        }
+        $start = Carbon::createFromFormat('d_m_Y', $request->input('start'));
+        $end = Carbon::createFromFormat('d_m_Y', $request->input('end'));
+
+        return $this->resource->getPriceForRange($start, $end);
     }
 }

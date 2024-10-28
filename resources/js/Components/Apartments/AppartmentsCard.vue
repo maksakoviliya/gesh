@@ -1,5 +1,5 @@
 <script setup>
-	import { router } from '@inertiajs/vue3'
+	import { Link } from '@inertiajs/vue3'
 	import Guests from '@/Components/Guests.vue'
 	import Bedrooms from '@/Components/Bedrooms.vue'
 	import Beds from '@/Components/Apartments/Beds.vue'
@@ -11,14 +11,12 @@
 	import { ref } from 'vue'
 	import 'lazysizes'
 	import IsVerified from '@/Components/Apartments/IsVerified.vue'
+	import Price from '@/Components/Apartments/Price.vue'
+	import TotalPrice from '@/Components/Apartments/TotalPrice.vue'
 
 	const props = defineProps({
 		apartment: Object,
 	})
-
-	const handleClick = () => {
-		return router.visit(route('apartment', props.apartment.id))
-	}
 
 	const modules = ref([Navigation, Pagination])
 </script>
@@ -46,38 +44,44 @@
 							<!--								:src="image.src"-->
 							<!--								:srcset="image.srcset"-->
 							<!--								:alt="props.apartment.title"-->
-							<img
-								@click="handleClick"
-								:alt="props.apartment.title"
-								data-sizes="auto"
-								:data-src="image.src"
-								:data-srcset="image.srcset"
-								class="lazyload object-cover h-full w-full"
-							/>
+							<Link :to="route('apartment', props.apartment.id)">
+								<img
+									@click="handleClick"
+									:alt="props.apartment.title"
+									data-sizes="auto"
+									:data-src="image.src"
+									:data-srcset="image.srcset"
+									class="lazyload object-cover h-full w-full"
+								/>
+							</Link>
 						</SwiperSlide>
 					</Swiper>
 				</template>
-				<img
+				<Link
+					:to="route('apartment', props.apartment.id)"
 					v-else
-					class="object-cover h-full w-full"
-					src="/img/no-photo.jpeg"
-					:alt="props.apartment.title"
-				/>
+				>
+					<img
+						class="object-cover h-full w-full"
+						src="/img/no-photo.jpeg"
+						:alt="props.apartment.title"
+					/>
+				</Link>
 			</div>
-			<div
+			<Link
+				:to="route('apartment', props.apartment.id)"
 				class="font-semibold text-lg dark:text-slate-200"
-				@click="handleClick"
 			>
 				{{ props.apartment.title ?? props.apartment.category?.title_single }}
 				({{ props.apartment.city }})
-			</div>
-			<div
-				@click="handleClick"
+			</Link>
+			<Link
+				:to="route('apartment', props.apartment.id)"
 				class="font-light text-neutral-500 dark:text-slate-300"
 				:class="props.apartment.category ? '' : 'opacity-30'"
 			>
 				{{ props.apartment.category?.title_single ?? 'Нет типа' }}
-			</div>
+			</Link>
 
 			<!--			<div class="flex flex-row items-center gap-1 mt-auto">-->
 			<!--				<div class="font-semibold">-->
@@ -85,25 +89,20 @@
 			<!--					<span class="text-neutral-500 font-light text-sm">ночь</span>-->
 			<!--				</div>-->
 			<!--			</div>-->
-			<div
+			<Link
+				:to="route('apartment', props.apartment.id)"
 				class="flex flex-row items-center justify-between gap-2"
-				@click="handleClick"
 			>
 				<Guests :guests="props.apartment.guests" />
 				<Bedrooms :bedrooms="props.apartment.bedrooms" />
 				<Beds :beds="props.apartment.beds" />
 				<Bathrooms :bathrooms="props.apartment.bathrooms" />
-			</div>
-			<div
-				class="text-neutral-400 dark:text-slate-400"
-				@click="handleClick"
-			>
-				от
-				<span class="font-bold text-xl text-neutral-800 dark:text-white">{{
-					props.apartment.weekdays_price
-				}}</span>
-				₽ / ночь
-			</div>
+			</Link>
+			<TotalPrice
+				v-if="props.apartment.total_price"
+				:price="props.apartment.total_price"
+			/>
+			<Price :price="props.apartment.weekdays_price" />
 		</div>
 	</div>
 </template>

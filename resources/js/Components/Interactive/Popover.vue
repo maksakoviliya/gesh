@@ -31,7 +31,7 @@
 <template>
 	<Popover
 		class="relative"
-		v-slot="{ open }"
+		v-slot="{ open, close }"
 	>
 		<PopoverButton class="outline-none">
 			<slot
@@ -52,7 +52,10 @@
 				<div
 					class="h-full overflow-auto rounded-lg bg-white dark:bg-slate-800 shadow-lg dark:shadow-xl ring-1 ring-black/5"
 				>
-					<slot name="content" />
+					<slot
+						name="content"
+						:close="close"
+					/>
 				</div>
 			</PopoverPanel>
 		</transition>

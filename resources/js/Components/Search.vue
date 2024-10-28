@@ -1,6 +1,6 @@
 <script setup>
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
-	import { BiSearch } from 'oh-vue-icons/icons'
+	import { BiSearch, IoCloseOutline } from 'oh-vue-icons/icons'
 	import { computed, onMounted, ref } from 'vue'
 	import Popover from '@/Components/Interactive/Popover.vue'
 	import Counter from '@/Components/Counter.vue'
@@ -9,15 +9,13 @@
 	import dayjs from 'dayjs'
 	import 'dayjs/locale/ru'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
-	import CitySearch from '@/Components/CitySearch.vue'
 	import qs from 'query-string'
 	import { router } from '@inertiajs/vue3'
 	import { usePage } from '@inertiajs/vue3'
 	import customParseFormat from 'dayjs/plugin/customParseFormat'
-	import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
 	import Input from '@/Components/Input.vue'
 
-	addIcons(BiSearch)
+	addIcons(BiSearch, IoCloseOutline)
 
 	dayjs.locale('ru')
 
@@ -27,8 +25,8 @@
 
 	const city = ref('')
 
-	const guests = ref(2)
-	const children = ref(0)
+	const guests = ref(page.props.query['guests'] ?? 2)
+	const children = ref(page.props.query['children'] ?? 0)
 	const guestLabel = computed(() => {
 		const queryGuests = page.props.query['guests']
 		return `${queryGuests ?? guests.value + children.value} чел.`
@@ -85,10 +83,10 @@
 
 	const onSubmit = () => {
 		const params = page.props.query
-		params['city'] = !!city.value ? city.value : null
 		params['start'] = !!isDateInitial.value ? null : dayjs(date.value[0]).format('DD_MM_YYYY')
 		params['end'] = !!isDateInitial.value ? null : dayjs(date.value[1]).format('DD_MM_YYYY')
 		params['guests'] = guests.value
+		params['children'] = children.value
 		params['priceForPeriod'] = priceForPeriod.value
 		params['priceMin'] = priceMin.value
 		params['priceMax'] = priceMax.value
@@ -101,7 +99,9 @@
 			{ skipNull: true }
 		)
 
-		router.visit(url)
+		router.visit(url, {
+			only: ['apartments'],
+		})
 	}
 
 	const isDark = computed(
@@ -136,15 +136,16 @@
 				</div>
 			</div>
 		</template>
-		<template #content>
+		<template #content="contentProps">
 			<div class="p-4 flex flex-col gap-4 bg-white dark:bg-slate-800">
+				<button
+					@click="contentProps.close"
+					class="w-10 h-10 rounded-full md:hidden border-[1px] border-neutral-400 dark:border-slate-400 flex items-center justify-center cursor-pointer dark:text-slate-400 dark:hover:opacity-100 dark:hover:text-slate-100 dark:hover:border-slate-100 hover:opacity-80 transition"
+				>
+					<OhVueIcon name="io-close-outline" />
+				</button>
+
 				<div class="flex items-stretch flex-col md:flex-row gap-2 md:gap-4 w-full justify-between">
-					<div class="h-full overflow-auto w-full">
-						<CitySearch
-							@select="handleSelectCity"
-							:query="city.value"
-						/>
-					</div>
 					<div class="h-full w-full">
 						<VueDatePicker
 							:model-value="date"
