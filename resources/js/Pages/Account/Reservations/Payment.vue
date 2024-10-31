@@ -9,6 +9,8 @@
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
 	import Popover from '@/Components/Interactive/Popover.vue'
 	import VueCountdown from '@chenfengyuan/vue-countdown'
+	import SmallInfoBlock from '@/Components/Blocks/SmallInfoBlock.vue'
+	import dayjs from 'dayjs'
 
 	const props = defineProps({
 		reservation: {
@@ -107,6 +109,16 @@
 			label: 'Оплата',
 		},
 	])
+
+	const reservationCancelText = computed(() => {
+		// const date = props.reservation.data.start
+		dayjs.extend(customParseFormat)
+		const date = dayjs(props.reservation.data.start, 'DD.MM.YYYY').subtract(14, 'days').hour(0)
+
+		return dayjs().isAfter(date)
+			? 'Отмена бронирования недоступна.'
+			: `Бесплатно до ${date.format('D MMMM')}. После - предоплату получит арендодатель.`
+	})
 </script>
 
 <template>
@@ -173,108 +185,123 @@
 						</div>
 					</div>
 				</div>
-				<div
-					class="md:sticky w-full md:w-1/2 lg:w-1/3 rounded-lg shadow-lg border border-neutral-100 top-28 p-6"
-				>
-					<div class="flex items-stretch justify-start gap-4">
-						<Link
-							:href="
-								route('apartment', {
-									apartment: props.reservation.data.apartment?.id,
-								})
-							"
-							class="h-24 w-32 rounded-lg overflow-hidden"
-						>
-							<img
-								:src="props.reservation.data.apartment?.media[0]?.src"
-								class="h-full w-full object-cover"
-								alt=""
-							/>
-						</Link>
-						<div class="flex flex-col justify-between">
-							<div class="text-gray-600 font-light dark:text-slate-300">
-								{{ props.reservation.data?.apartment?.category?.title }}
+				<div class="md:sticky w-full md:w-1/2 lg:w-1/3 top-14">
+					<div class="rounded-lg shadow-lg mt-6 border border-neutral-100 dark:border-slate-600 p-6">
+						<div class="flex items-stretch justify-start gap-4">
+							<Link
+								:href="
+									route('apartment', {
+										apartment: props.reservation.data.apartment?.id,
+									})
+								"
+								class="h-24 w-32 rounded-lg overflow-hidden"
+							>
+								<img
+									:src="props.reservation.data.apartment?.media[0]?.src"
+									class="h-full w-full object-cover"
+									alt=""
+								/>
+							</Link>
+							<div class="flex flex-col justify-between">
+								<div class="text-gray-600 font-light dark:text-slate-300">
+									{{ props.reservation.data?.apartment?.category?.title }}
+								</div>
+								<div
+									class="font-light text-xs text-gray-600 mt-1 dark:text-slate-300"
+									v-html="subtitle"
+								></div>
 							</div>
-							<div
-								class="font-light text-xs text-gray-600 mt-1 dark:text-slate-300"
-								v-html="subtitle"
-							></div>
-						</div>
-					</div>
-					<div
-						class="font-semibold text-xl mt-4 pt-2 border-t border-gray-100 dark:border-slate-600 dark:text-slate-200"
-					>
-						Детализация цены:
-					</div>
-					<dl class="divide-y divide-gray-100 dark:divide-slate-600">
-						<div class="py-2 flex w-full items-baseline justify-between">
-							<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
-								<div>Гости:</div>
-							</dt>
-							<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
-								{{ props.reservation.data.guests }}
-							</dd>
 						</div>
 						<div
-							class="py-2 flex w-full items-baseline justify-between"
-							v-if="props.reservation.data.children > 0"
+							class="font-semibold text-xl mt-4 pt-2 border-t border-gray-100 dark:border-slate-600 dark:text-slate-200"
 						>
-							<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
-								<div>Дети:</div>
-							</dt>
-							<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
-								{{ props.reservation.data.children }}
-							</dd>
+							Детализация цены:
 						</div>
-						<div class="py-4 flex flex-col gap-2">
-							<div class="flex w-full items-baseline justify-between">
-								<dt class="font-light leading-6 text-gray-600">
-									<Popover>
-										<template #toggle>
-											<div
-												class="font-light leading-none text-gray-600 dark:text-slate-300 outline-none border-b border-gray-400 dark:border-slate-300 hover:border-gray-600 transition"
-											>
-												{{ detalizationText }}
-											</div>
-										</template>
-										<template #content>
-											<dl
-												class="divide-y divide-gray-100 dark:divide-slate-600 max-h-52 overflow-auto"
-											>
-												<div
-													class="py-1 px-4 flex w-full items-baseline justify-between"
-													v-for="item in details"
-													:key="item.date"
-												>
-													<dt
-														class="font-light text-sm leading-6 text-gray-600 dark:text-slate-300"
-													>
-														{{ item.date }}
-													</dt>
-													<dd
-														class="mt-1 text-sm font-medium leading-6 text-neutral-600 dark:text-slate-200"
-													>
-														{{ item.price?.toLocaleString() }}₽
-													</dd>
-												</div>
-											</dl>
-										</template>
-									</Popover>
+						<dl class="divide-y divide-gray-100 dark:divide-slate-600">
+							<div class="py-2 flex w-full items-baseline justify-between">
+								<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
+									<div>Гости:</div>
 								</dt>
 								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
+									{{ props.reservation.data.guests }}
+								</dd>
+							</div>
+							<div
+								class="py-2 flex w-full items-baseline justify-between"
+								v-if="props.reservation.data.children > 0"
+							>
+								<dt class="font-light leading-6 text-gray-600 dark:text-slate-300">
+									<div>Дети:</div>
+								</dt>
+								<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
+									{{ props.reservation.data.children }}
+								</dd>
+							</div>
+							<div class="py-4 flex flex-col gap-2">
+								<div class="flex w-full items-baseline justify-between">
+									<dt class="font-light leading-6 text-gray-600">
+										<Popover>
+											<template #toggle>
+												<div
+													class="font-light leading-none text-gray-600 dark:text-slate-300 outline-none border-b border-gray-400 dark:border-slate-300 hover:border-gray-600 transition"
+												>
+													{{ detalizationText }}
+												</div>
+											</template>
+											<template #content>
+												<dl
+													class="divide-y divide-gray-100 dark:divide-slate-600 max-h-52 overflow-auto"
+												>
+													<div
+														class="py-1 px-4 flex w-full items-baseline justify-between"
+														v-for="item in details"
+														:key="item.date"
+													>
+														<dt
+															class="font-light text-sm leading-6 text-gray-600 dark:text-slate-300"
+														>
+															{{ item.date }}
+														</dt>
+														<dd
+															class="mt-1 text-sm font-medium leading-6 text-neutral-600 dark:text-slate-200"
+														>
+															{{ item.price?.toLocaleString() }}₽
+														</dd>
+													</div>
+												</dl>
+											</template>
+										</Popover>
+									</dt>
+									<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-200">
+										{{ props.reservation.data.price?.toLocaleString() }}₽
+									</dd>
+								</div>
+							</div>
+							<div class="pt-4 flex w-full items-baseline justify-between">
+								<dt class="font-bold leading-6 text-neutral-800 dark:text-slate-200">
+									<div>Итого:</div>
+								</dt>
+								<dd class="mt-1 font-bold leading-6 text-neutral-800 dark:text-slate-200">
 									{{ props.reservation.data.price?.toLocaleString() }}₽
 								</dd>
 							</div>
-						</div>
-						<div class="pt-4 flex w-full items-baseline justify-between">
-							<dt class="font-bold leading-6 text-neutral-800 dark:text-slate-200">
-								<div>Итого:</div>
-							</dt>
-							<dd class="mt-1 font-bold leading-6 text-neutral-800 dark:text-slate-200">
-								{{ props.reservation.data.price?.toLocaleString() }}₽
-							</dd>
-						</div>
-					</dl>
+						</dl>
+					</div>
+					<SmallInfoBlock class="mt-4">
+						<template #title>Отмена брони:</template>
+						<template #content>
+							{{ reservationCancelText }}
+						</template>
+					</SmallInfoBlock>
+					<p class="text-sm leading-normal text-gray-600 dark:text-slate-400 mt-2">
+						При переходе к оплате вы соглашаетесь на
+						<a
+							class="underline hover:text-gray-500 dark:hover:text-slate-300"
+							:href="route('policy')"
+							>обработку персональных данных</a
+						>
+						и передачу персональных данных прендодателю
+					</p>
 				</div>
 			</div>
 		</Container>
