@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\ICalLink;
-use App\Models\SideReservation;
 use App\Services\ICalService;
 use Illuminate\Console\Command;
 use Log;
