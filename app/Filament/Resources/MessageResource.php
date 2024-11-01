@@ -40,7 +40,7 @@ class MessageResource extends Resource
                     ->view('filament.columns.user-column')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('created_at')->date('d.m.Y H:i'),
+                TextColumn::make('created_at')->date('d.m.Y H:i')->sortable(),
             ])
             ->filters([
                 //
