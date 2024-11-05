@@ -8,7 +8,7 @@
 	import Breadcrumbs from '@/Components/Breadcrumbs.vue'
 	import ruLocale from '@fullcalendar/core/locales/ru'
 	import Input from '@/Components/Input.vue'
-	import { router, useForm } from '@inertiajs/vue3'
+	import { useForm, usePage } from '@inertiajs/vue3'
 	import Heading from '@/Components/Heading.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import useToasts from '@/hooks/useToasts'
@@ -23,6 +23,11 @@
 	import ReservationEvent from '@/Pages/Account/Apartments/Calendar/ReservationEvent.vue'
 	import DisabledDatesEvent from '@/Pages/Account/Apartments/Calendar/DisabledDatesEvent.vue'
 	import DynamicPriceInput from '@/Pages/Account/Apartments/Calendar/DynamicPriceInput.vue'
+	import GetAuthorizeLink from '@/Components/AvitoLink/GetAuthorizeLink.vue'
+	import { OhVueIcon, addIcons } from 'oh-vue-icons'
+	import { MdVerifiedOutlined } from 'oh-vue-icons/icons'
+
+	addIcons(MdVerifiedOutlined)
 
 	dayjs.extend(customParseFormat)
 
@@ -32,6 +37,8 @@
 			eventsData: Array,
 		},
 		components: {
+			OhVueIcon,
+			GetAuthorizeLink,
 			DynamicPriceInput,
 			DisabledDatesEvent,
 			ReservationEvent,
@@ -145,6 +152,7 @@
 				weekdays_price: props.apartment.data.weekdays_price,
 				weekends_price: props.apartment.data.weekends_price,
 				i_cal_links: props.apartment.data.i_cal_links ?? [],
+				avito_id: props.apartment.data.avito_id,
 			})
 
 			const rangeForm = useForm({
@@ -168,19 +176,16 @@
 						return data
 					})
 					.post(
-						route(
-							'account.apartments.price.update',
-							{
-								apartment: props.apartment.data.id,
-							},
-							{ preserveScroll: true }
-						),
+						route('account.apartments.price.update', {
+							apartment: props.apartment.data.id,
+						}),
 						{
 							onSuccess: () => {
 								let calendarApi = calendar.value.getApi()
 								calendarApi.render()
 								successToast('Данные обновлены!')
 							},
+							preserveScroll: true,
 						}
 					)
 			}
@@ -237,6 +242,12 @@
 				selectedEvent.value = val
 			}
 
+			const page = usePage()
+
+			const hasAvitoAccessToken = computed(() => {
+				return !!page.props?.auth?.user?.avito_access_token
+			})
+
 			return {
 				priceForm,
 				submitPriceForm,
@@ -249,6 +260,7 @@
 				handleEventClick,
 				selectedEvent,
 				dayPriceForClient,
+				hasAvitoAccessToken,
 			}
 		},
 	}
@@ -335,7 +347,27 @@
 								id="weekends_price"
 							/>
 						</div>
-						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">Синхронизация</div>
+						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">
+							Синхронизация с авито
+							<span v-if="apartment.data.avito_synced_at">
+								<OhVueIcon
+									class="text-green-500"
+									name="md-verified-outlined"
+								/>
+							</span>
+						</div>
+						<div class="mt-3 flex flex-col gap-3">
+							<GetAuthorizeLink v-if="!hasAvitoAccessToken" />
+							<Input
+								v-else
+								id="avitoId"
+								v-model="priceForm.avito_id"
+								label="ID объявления на авито"
+							/>
+						</div>
+						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">
+							Синхронизация ical
+						</div>
 						<div class="mt-3 flex flex-col gap-3">
 							<ICalLinks
 								v-model="priceForm.i_cal_links"
@@ -361,16 +393,20 @@
 		.fc-toolbar {
 			display: grid;
 		}
+
 		.fc-view-harness {
 			min-height: 354px;
 		}
 	}
+
 	.fc-event-start {
 		margin-left: 3vw !important;
 	}
+
 	.fc-event-end {
 		margin-right: 3vw !important;
 	}
+
 	.fc-toolbar-title {
 		@apply dark:text-slate-200;
 	}

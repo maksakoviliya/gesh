@@ -16,6 +16,7 @@ final class UpdatePriceController extends Controller
         $apartment->update([
             'weekdays_price' => $request->validated('weekdays_price'),
             'weekends_price' => $request->validated('weekends_price'),
+            'avito_id' => $request->validated('avito_id'),
         ]);
 
         // TODO: Возможно есть решение красивее

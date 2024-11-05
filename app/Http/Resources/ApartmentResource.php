@@ -64,6 +64,8 @@ class ApartmentResource extends JsonResource
             'all_disabled_dates' => $this->whenAppended('allDisabledDays'),
             'i_cal_links' => ICalLinkResource::collection($this->whenLoaded('ICalLinks')),
             'total_price' => $this->getTotalPriceForPeriod($request),
+            'avito_id' => $this->resource->avito_id,
+            'avito_synced_at' => $this->resource?->avito_synced_at?->format('d.m.Y H:i'),
         ];
     }
 

@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sync-calendars')->everyFifteenMinutes();
         $schedule->command('clear-unpayied-reservations')->everyFifteenMinutes();
+        $schedule->command('app:sync-avito-command')->everyFifteenMinutes();
     }
 
     protected function commands(): void

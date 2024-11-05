@@ -18,6 +18,10 @@
 			type: [String, null],
 			default: 'bg-sky-600 dark:bg-sky-800',
 		},
+		href: {
+			type: String,
+			default: null,
+		},
 		borderClass: {
 			type: [String, null],
 			default: 'border-sky-600 dark:border-sky-800',
@@ -48,7 +52,9 @@
 </script>
 
 <template>
-	<button
+	<component
+		:is="href ? 'a' : 'button'"
+		:href="href"
 		:disabled="disabled"
 		@click="onClick"
 		:class="className"
@@ -58,5 +64,5 @@
 			v-if="$slots.icon"
 		/>
 		{{ label }}
-	</button>
+	</component>
 </template>

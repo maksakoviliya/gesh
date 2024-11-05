@@ -8,14 +8,19 @@ use App\Http\Resources\ApartmentResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Apartment;
 use App\Models\Category;
+use App\Services\AvitoService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 final class HomeController extends Controller
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, AvitoService $avitoService): Response
     {
+        if ($code = $request->query('code')) {
+            $avitoService->authorizeCallbackCode($code);
+        }
+
         $categories = Category::all();
         $apartments = Apartment::query()
             ->with('reservations')

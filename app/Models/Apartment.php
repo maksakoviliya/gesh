@@ -148,6 +148,7 @@ final class Apartment extends Model implements HasMedia
         'status' => Status::class,
         'type' => Type::class,
         'fast_reserve' => 'boolean',
+        'avito_synced_at' => 'datetime',
     ];
 
     public function registerMediaConversions(?Media $media = null): void
