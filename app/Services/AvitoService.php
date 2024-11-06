@@ -74,16 +74,17 @@ final class AvitoService
 
     protected function updateUserTokens(User $user, array $data): bool
     {
+        $accessToken = Arr::get($data, 'access_token');
         return $user->update([
-            'avito_access_token' => Arr::get($data, 'access_token'),
+            'avito_access_token' => $accessToken,
             'avito_refresh_token' => Arr::get($data, 'refresh_token'),
-            'avito_user_id' => $this->getAvitoUserId($user)
+            'avito_user_id' => $this->getAvitoUserId($accessToken)
         ]);
     }
 
-    public function getAvitoUserId(User $user): ?int
+    public function getAvitoUserId(string $accessToken): ?int
     {
-        if (!$accessToken = $user->avito_access_token) {
+        if (!$accessToken) {
             Log::error('Get avito user id: Empty access token.');
             return null;
         }
