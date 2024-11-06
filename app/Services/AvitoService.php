@@ -158,6 +158,7 @@ final class AvitoService
     {
         Log::info(json_encode($data));
         $bookings = Arr::get($data, 'bookings');
+        Log::info(json_encode($bookings));
         if (!count($bookings)) {
             Log::info('Empty bookings data for apartment: ' . $apartment->id);
             return;
