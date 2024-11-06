@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Enums\Apartments\Status;
 use App\Models\Apartment;
 use App\Services\AvitoService;
 use Illuminate\Console\Command;
@@ -28,6 +29,7 @@ final class SyncAvitoCommand extends Command
         Log::info('Start sync avito');
         if (!$apartment_id = $this->argument('apartment_id')) {
             $apartments = Apartment::query()
+                ->where('status', Status::Published->value)
                 ->select(['id', 'user_id', 'avito_id'])
                 ->with('user')
                 ->without('media')
@@ -35,6 +37,7 @@ final class SyncAvitoCommand extends Command
                 ->get();
         } else {
             $apartments = Apartment::query()
+                ->where('status', Status::Published->value)
                 ->select(['id', 'user_id', 'avito_id'])
                 ->with('user')
                 ->without('media')
