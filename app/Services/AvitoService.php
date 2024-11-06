@@ -156,9 +156,7 @@ final class AvitoService
 
     public function processAvitoDatesResponse(Apartment $apartment, array $data)
     {
-        Log::info(json_encode($data));
         $bookings = Arr::get($data, 'bookings');
-        Log::info(json_encode($bookings));
         if (!count($bookings)) {
             Log::info('Empty bookings data for apartment: ' . $apartment->id);
             return;
@@ -166,6 +164,13 @@ final class AvitoService
 
         $processed = [];
         foreach ($bookings as $booking) {
+            Log::info("Booked: " . json_encode([
+                    'apartment_id' => $apartment->id,
+                    'start' => Carbon::parse($booking->check_in)->setTime(15, 0),
+                    'end' => Carbon::parse($booking->check_out)->setTime(12, 0),
+                    'description' => '',
+                    'summary' => $booking->avito_booking_id,
+                ]));
             $sideReservation = SideReservation::query()->updateOrCreate([
                 'apartment_id' => $apartment->id,
                 'start' => Carbon::parse($booking->check_in)->setTime(15, 0),
