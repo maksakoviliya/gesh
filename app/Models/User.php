@@ -133,6 +133,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'social_provider',
         'avito_access_token',
         'avito_refresh_token',
+        'avito_user_id',
     ];
 
     protected $casts = [
