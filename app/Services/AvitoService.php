@@ -171,6 +171,7 @@ final class AvitoService
                 'description' => '',
                 'summary' => $booking['avito_booking_id'],
             ]);
+            Log::info('Proceed: ' . $sideReservation->id);
             $processed[] = $sideReservation->id;
         }
 
