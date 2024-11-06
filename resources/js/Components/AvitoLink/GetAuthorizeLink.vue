@@ -5,7 +5,7 @@
 	const url = computed(() => {
 		return `https://avito.ru/oauth?response_type=code&client_id=${
 			import.meta.env.VITE_AVITO_CLIENT_ID
-		}&scope=short_term_rent:read,short_term_rent:write,user:read`
+		}&scope=short_term_rent:read,short_term_rent:write,user:read,items:info`
 	})
 </script>
 
