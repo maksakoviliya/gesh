@@ -169,7 +169,7 @@ final class AvitoService
                 'start' => Carbon::parse($booking['check_in'])->setTime(15, 0),
                 'end' => Carbon::parse($booking['check_out'])->setTime(12, 0),
                 'description' => '',
-                'summary' => $booking->avito_booking_id,
+                'summary' => $booking['avito_booking_id'],
             ]);
             $processed[] = $sideReservation->id;
         }
