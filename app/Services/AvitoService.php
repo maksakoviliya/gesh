@@ -156,6 +156,7 @@ final class AvitoService
 
     public function processAvitoDatesResponse(Apartment $apartment, array $data)
     {
+        Log::info(json_encode($data));
         $bookings = Arr::get($data, 'bookings');
         if (!count($bookings)) {
             Log::info('Empty bookings data for apartment: ' . $apartment->id);
