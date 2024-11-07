@@ -9,12 +9,12 @@ use App\Models\SideReservation;
 use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Promise\PromiseInterface;
-use http\Exception\RuntimeException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 
 final class AvitoService
 {
@@ -75,6 +75,7 @@ final class AvitoService
     protected function updateUserTokens(User $user, array $data): bool
     {
         $accessToken = Arr::get($data, 'access_token');
+
         return $user->update([
             'avito_access_token' => $accessToken,
             'avito_refresh_token' => Arr::get($data, 'refresh_token'),
@@ -127,6 +128,34 @@ final class AvitoService
         throw new RuntimeException('Max attempts reached. Unable to sync dates.');
     }
 
+    public function getInfo(Apartment $apartment): void
+    {
+        $user = $apartment->user;
+        $this->validateUser($user);
+
+        $attempt = 0;
+        while ($attempt < 3) {
+            $response = $this->fetchInfo($user, $apartment);
+dd($response->json());
+            if ($response->successful()) {
+                $data = $response->json();
+                dd($data);
+//                $this->processAvitoDatesResponse($apartment, $data);
+                return;
+            }
+
+            if ($response->status() === 403) {
+                $this->refreshToken($user);
+                $user->refresh();
+                $attempt++;
+            } else {
+                throw new RuntimeException('Failed to fetch bookings: ' . $response->body());
+            }
+        }
+
+        throw new RuntimeException('Max attempts reached. Unable to sync dates.');
+    }
+
     private function validateUser($user): void
     {
         if (!$user) {
@@ -154,7 +183,18 @@ final class AvitoService
             );
     }
 
-    public function processAvitoDatesResponse(Apartment $apartment, array $data)
+    private function fetchInfo(User $user, Apartment $apartment): PromiseInterface|Response
+    {
+        return Http::withToken($user->avito_access_token)
+            ->get(
+                "https://api.avito.ru/core/v1/items",
+                [
+                    'status' => 'active',
+                ]
+            );
+    }
+
+    public function processAvitoDatesResponse(Apartment $apartment, array $data): void
     {
         $bookings = Arr::get($data, 'bookings');
         if (!count($bookings)) {
