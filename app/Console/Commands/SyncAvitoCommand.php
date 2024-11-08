@@ -52,11 +52,11 @@ final class SyncAvitoCommand extends Command
         }
 
         Log::info('----------------------');
-        Log::info(json_encode($apartments->pluck('id')->toArray()));
-
         foreach ($apartments as $apartment) {
             try {
+                Log::info($apartment->id);
                 $this->avitoService->syncDates($apartment);
+                Log::info('----------------------');
             } catch (Throwable $exception) {
                 Log::error($exception->getMessage());
             }
