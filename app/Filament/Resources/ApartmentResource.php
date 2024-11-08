@@ -231,6 +231,9 @@ class ApartmentResource extends Resource
                         };
                     })
                     ->toggleable(),
+                TextColumn::make('avito_id')
+                    ->label('ID на авито')
+                    ->sortable(),
                 TextColumn::make('i_cal_links_count')
                     ->badge()
                     ->label('Сторонние календари')
