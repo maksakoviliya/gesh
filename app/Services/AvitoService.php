@@ -103,12 +103,15 @@ final class AvitoService
 
     public function syncDates(Apartment $apartment): void
     {
+        Log::info("Syncing dates for: $apartment->id");
         $user = $apartment->user;
         $this->validateUser($user);
 
         $attempt = 0;
         while ($attempt < 3) {
             $response = $this->fetchBookings($user, $apartment);
+
+            Log::info("Response: " . json_encode($response->json()));
 
             if ($response->successful()) {
                 $data = $response->json();

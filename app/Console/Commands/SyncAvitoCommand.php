@@ -54,7 +54,6 @@ final class SyncAvitoCommand extends Command
         foreach ($apartments as $apartment) {
             try {
                 $this->avitoService->syncDates($apartment);
-//                $this->avitoService->getInfo($apartment);
             } catch (Throwable $exception) {
                 Log::error($exception->getMessage());
             }
