@@ -51,6 +51,9 @@ final class SyncAvitoCommand extends Command
             return parent::SUCCESS;
         }
 
+        Log::info('----------------------');
+        Log::info(json_encode($apartments->pluck('id')->toArray()));
+
         foreach ($apartments as $apartment) {
             try {
                 $this->avitoService->syncDates($apartment);
