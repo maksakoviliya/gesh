@@ -128,46 +128,14 @@ final class AvitoService
         throw new RuntimeException('Max attempts reached. Unable to sync dates.');
     }
 
-    public function getInfo(Apartment $apartment): void
-    {
-        $user = $apartment->user;
-        $this->validateUser($user);
-
-        $attempt = 0;
-        while ($attempt < 3) {
-            $response = $this->fetchInfo($user, $apartment);
-dd($response->json());
-            if ($response->successful()) {
-                $data = $response->json();
-                dd($data);
-//                $this->processAvitoDatesResponse($apartment, $data);
-                return;
-            }
-
-            if ($response->status() === 403) {
-                $this->refreshToken($user);
-                $user->refresh();
-                $attempt++;
-            } else {
-                throw new RuntimeException('Failed to fetch bookings: ' . $response->body());
-            }
-        }
-
-        throw new RuntimeException('Max attempts reached. Unable to sync dates.');
-    }
-
     private function validateUser($user): void
     {
-        if (!$user) {
-            throw new RuntimeException('User not found.');
-        }
-
         if (!$user->avito_access_token) {
-            throw new RuntimeException('User avito access token not found.');
+            throw new RuntimeException("User: $user->id avito access token not found.");
         }
 
         if (!$user->avito_user_id) {
-            throw new RuntimeException('User avito user id not found.');
+            throw new RuntimeException("User: $user->id avito user id not found.");
         }
     }
 
