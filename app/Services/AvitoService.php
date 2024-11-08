@@ -109,8 +109,8 @@ final class AvitoService
 
         $attempt = 0;
         while ($attempt < 3) {
+            Log::info("Attempt: $attempt");
             $response = $this->fetchBookings($user, $apartment);
-
             Log::info("Response: " . json_encode($response->json()));
 
             if ($response->successful()) {
