@@ -20,11 +20,11 @@ final class AvitoService
 {
     public function authorizeCallbackCode(string $code): void
     {
-        if (!$code) {
+        if (! $code) {
             return;
         }
 
-        if (!$user = Auth::user()) {
+        if (! $user = Auth::user()) {
             return;
         }
 
@@ -39,7 +39,7 @@ final class AvitoService
             'code' => $code,
         ]);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::error("Authorize avito error: {$response->body()}");
 
             return;
@@ -50,7 +50,7 @@ final class AvitoService
 
     public function refreshToken(User $user): void
     {
-        if (!$refresh_token = $user->avito_refresh_token) {
+        if (! $refresh_token = $user->avito_refresh_token) {
             Log::error('Refresh token error: refresh token not found.');
 
             return;
@@ -63,7 +63,7 @@ final class AvitoService
             'refresh_token' => $refresh_token,
         ]);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::error("Refresh token error: {$response->body()}");
 
             return;
@@ -79,20 +79,22 @@ final class AvitoService
         return $user->update([
             'avito_access_token' => $accessToken,
             'avito_refresh_token' => Arr::get($data, 'refresh_token'),
-            'avito_user_id' => $this->getAvitoUserId($accessToken)
+            'avito_user_id' => $this->getAvitoUserId($accessToken),
         ]);
     }
 
     public function getAvitoUserId(string $accessToken): ?int
     {
-        if (!$accessToken) {
+        if (! $accessToken) {
             Log::error('Get avito user id: Empty access token.');
+
             return null;
         }
         $response = Http::withToken($accessToken)->get('https://api.avito.ru/core/v1/accounts/self');
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::error("Get avito user id: {$response->body()}");
+
             return null;
         }
 
@@ -111,11 +113,12 @@ final class AvitoService
         while ($attempt < 3) {
             Log::info("Attempt: $attempt");
             $response = $this->fetchBookings($user, $apartment);
-            Log::info("Response: " . json_encode($response->json()));
+            Log::info('Response: '.json_encode($response->json()));
 
             if ($response->successful()) {
                 $data = $response->json();
                 $this->processAvitoDatesResponse($apartment, $data);
+
                 return;
             }
 
@@ -124,7 +127,7 @@ final class AvitoService
                 $user->refresh();
                 $attempt++;
             } else {
-                throw new RuntimeException('Failed to fetch bookings: ' . $response->body());
+                throw new RuntimeException('Failed to fetch bookings: '.$response->body());
             }
         }
 
@@ -133,11 +136,11 @@ final class AvitoService
 
     private function validateUser($user): void
     {
-        if (!$user->avito_access_token) {
+        if (! $user->avito_access_token) {
             throw new RuntimeException("User: $user->id avito access token not found.");
         }
 
-        if (!$user->avito_user_id) {
+        if (! $user->avito_user_id) {
             throw new RuntimeException("User: $user->id avito user id not found.");
         }
     }
@@ -158,7 +161,7 @@ final class AvitoService
     {
         return Http::withToken($user->avito_access_token)
             ->get(
-                "https://api.avito.ru/core/v1/items",
+                'https://api.avito.ru/core/v1/items',
                 [
                     'status' => 'active',
                 ]
@@ -168,8 +171,9 @@ final class AvitoService
     public function processAvitoDatesResponse(Apartment $apartment, array $data): void
     {
         $bookings = Arr::get($data, 'bookings');
-        if (!count($bookings)) {
-            Log::info('Empty bookings data for apartment: ' . $apartment->id);
+        if (! count($bookings)) {
+            Log::info('Empty bookings data for apartment: '.$apartment->id);
+
             return;
         }
 
@@ -182,7 +186,7 @@ final class AvitoService
                 'description' => '',
                 'summary' => $booking['avito_booking_id'],
             ]);
-            Log::info('Proceed: ' . $sideReservation->id);
+            Log::info('Proceed: '.$sideReservation->id);
             $processed[] = $sideReservation->id;
         }
 

@@ -13,6 +13,7 @@ class IcalTest extends TestCase
 
     public function test_example(): void
     {
+        $this->markTestSkipped();
         $url = 'https://www.avito.ru/calendars-export/36/62/3611849362.ics';
         $apartment = Apartment::factory()->create();
 

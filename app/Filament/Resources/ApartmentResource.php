@@ -108,6 +108,16 @@ class ApartmentResource extends Resource
                                     ->preload()
                                     ->columnSpan('full'),
                             ])->collapsible(),
+                        Forms\Components\Section::make('Шаг 7')
+                            ->schema([
+                                SpatieMediaLibraryFileUpload::make('media')
+                                    ->multiple()
+                                    ->reorderable()
+                                    ->imageEditor()
+                                    ->imageEditorMode(2)
+                                    ->appendFiles(),
+                            ])
+                            ->collapsible()->collapsed(),
                         Forms\Components\Section::make('Шаг 8')
                             ->schema([
                                 Forms\Components\TextInput::make('title'),
@@ -154,13 +164,13 @@ class ApartmentResource extends Resource
                             ->columnSpan(['lg' => 1])
                             ->hidden(fn (?Apartment $record) => $record === null),
 
-                        Forms\Components\Section::make('Шаг 7')
+                        Forms\Components\Section::make('Авито')
                             ->schema([
-                                SpatieMediaLibraryFileUpload::make('media')
-                                    ->multiple()
-                                    ->reorderable(),
+                                TextInput::make('avito_id')
+                                    ->label('ID объявления')
+                                    ->nullable(),
                             ])
-                            ->collapsible()->collapsed(),
+                            ->collapsible(),
 
                         Forms\Components\Section::make('Сслки ICAL')
                             ->schema([

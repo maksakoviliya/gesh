@@ -101,6 +101,18 @@ namespace App\Models{
  * @method static Builder|Apartment withoutTrashed()
  * @method static Builder|Apartment order()
  * @mixin Eloquent
+ * @property int|null $base_weekdays_price
+ * @property int|null $base_weekends_price
+ * @property int $is_verified
+ * @property string|null $avito_id
+ * @property \Illuminate\Support\Carbon|null $avito_synced_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationRequest> $reservationRequests
+ * @property-read int|null $reservation_requests_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereAvitoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereAvitoSyncedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBaseWeekdaysPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBaseWeekendsPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereIsVerified($value)
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -258,6 +270,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|DisabledDate whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DisabledDate whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $start
+ * @property \Illuminate\Support\Carbon|null $end
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabledDate whereEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabledDate whereStart($value)
  */
 	final class DisabledDate extends \Eloquent {}
 }
@@ -386,6 +402,10 @@ namespace App\Models{
  * @method static Builder|Reservation withTrashed()
  * @method static Builder|Reservation withoutTrashed()
  * @mixin \Eloquent
+ * @property int $first_payment
+ * @property \Illuminate\Support\Carbon|null $first_payment_until
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereFirstPayment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereFirstPaymentUntil($value)
  */
 	final class Reservation extends \Eloquent {}
 }
@@ -431,6 +451,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereUserId($value)
  * @property-read \App\Models\Apartment|null $apartment
  * @mixin \Eloquent
+ * @property int $first_payment
+ * @method static \Database\Factories\ReservationRequestFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|ReservationRequest whereFirstPayment($value)
  */
 	final class ReservationRequest extends \Eloquent {}
 }
@@ -488,6 +511,28 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	final class TelegramAuthCode extends \Eloquent {}
+}
+
+namespace App\Models\Telegram{
+/**
+ * App\Models\Telegram\ActionSetDisabledDates
+ *
+ * @property int $id
+ * @property string $user_id
+ * @property string $apartment_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\Telegram\ActionSetDisabledDatesFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionSetDisabledDates newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionSetDisabledDates newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionSetDisabledDates query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionSetDisabledDates whereApartmentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionSetDisabledDates whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionSetDisabledDates whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionSetDisabledDates whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionSetDisabledDates whereUserId($value)
+ */
+	class ActionSetDisabledDates extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -577,6 +622,12 @@ namespace App\Models{
  * @property-read int|null $telegram_auth_codes_count
  * @method static Builder|User whereTelegramChatId($value)
  * @mixin Eloquent
+ * @property string|null $avito_access_token
+ * @property string|null $avito_refresh_token
+ * @property int|null $avito_user_id
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoAccessToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoRefreshToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoUserId($value)
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser, \Illuminate\Contracts\Auth\MustVerifyEmail {}
 }

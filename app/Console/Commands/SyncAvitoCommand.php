@@ -19,15 +19,14 @@ final class SyncAvitoCommand extends Command
 
     public function __construct(
         protected AvitoService $avitoService
-    )
-    {
+    ) {
         parent::__construct();
     }
 
     public function handle()
     {
         Log::info('Start sync avito');
-        if (!$apartment_id = $this->argument('apartment_id')) {
+        if (! $apartment_id = $this->argument('apartment_id')) {
             $apartments = Apartment::query()
                 ->where('status', Status::Published->value)
                 ->select(['id', 'user_id', 'avito_id'])
@@ -46,8 +45,9 @@ final class SyncAvitoCommand extends Command
                 ->get();
         }
 
-        if (!count($apartments)) {
+        if (! count($apartments)) {
             Log::info('No avito ids provided');
+
             return parent::SUCCESS;
         }
 
