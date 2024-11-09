@@ -6,6 +6,7 @@
 	import { MdSave, HiExternalLink } from 'oh-vue-icons/icons'
 
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
+	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	addIcons(MdSave, HiExternalLink)
 
 	const props = defineProps({
@@ -170,21 +171,33 @@
 						<OhVueIcon name="md-save" />
 						Скачать
 					</a>
-					<Link
-						v-else
-						class="hover:underline"
+					<ButtonComponent
+						small
 						:href="
 							route('account.reservations.view', {
 								reservation: props.reservation.id,
 							})
 						"
 					>
-						<OhVueIcon
-							name="hi-external-link"
-							scale="0.8"
-						/>
-						К оплате
-					</Link>
+						<span class="px-5">
+							<OhVueIcon
+								name="hi-external-link"
+								scale="0.8"
+							/>
+							К оплате
+						</span>
+					</ButtonComponent>
+					<!--					<Link-->
+					<!--						v-else-->
+					<!--						class="hover:underline"-->
+					<!--						:href="-->
+					<!--							route('account.reservations.view', {-->
+					<!--								reservation: props.reservation.id,-->
+					<!--							})-->
+					<!--						"-->
+					<!--					>-->
+					<!--						-->
+					<!--					</Link>-->
 				</dd>
 			</div>
 		</dl>

@@ -63,6 +63,8 @@
 			name="icon"
 			v-if="$slots.icon"
 		/>
-		{{ label }}
+		<slot>
+			{{ label }}
+		</slot>
 	</component>
 </template>
