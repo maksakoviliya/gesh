@@ -40,7 +40,7 @@ final class SyncAvitoCommand extends Command
                 ->select(['id', 'user_id', 'avito_id'])
                 ->with('user')
                 ->without('media')
-                ->where('apartment_id', $apartment_id)
+                ->where('id', $apartment_id)
                 ->whereNotNull('avito_id')
                 ->get();
         }
@@ -51,14 +51,15 @@ final class SyncAvitoCommand extends Command
             return parent::SUCCESS;
         }
 
-        Log::info('----------------------');
+        Log::info('---------- Start sync dates ------------');
         foreach ($apartments as $apartment) {
             try {
                 Log::info($apartment->id);
                 $this->avitoService->syncDates($apartment);
-                Log::info('----------------------');
             } catch (Throwable $exception) {
                 Log::error($exception->getMessage());
+            } finally {
+                Log::info('------------ Finish sync dates ------------');
             }
         }
     }
