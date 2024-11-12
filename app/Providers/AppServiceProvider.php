@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Http\Resources\Transfer\RegularDrive\ShortRegularDriveResource;
 use App\Services\PaymentServiceContract;
 use App\Services\YooKassaPaymentService;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        ShortRegularDriveResource::withoutWrapping();
     }
 }

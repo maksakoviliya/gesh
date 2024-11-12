@@ -10,6 +10,7 @@
 	import Input from '@/Components/Input.vue'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
 	import EmptyState from '@/Components/EmptyState.vue'
+	import TransferGrid from '@/Components/Transfer/TransferGrid.vue'
 
 	const routes = ref([
 		{
@@ -63,24 +64,24 @@
 			/>
 		</Container>
 
+		<TransferGrid class="mt-6" />
+
 		<Container
 			class="mt-6"
 			:xs="true"
 		>
 			<EmptyState
 				v-if="done"
-				title="Заявка на оформление трансфера принята"
+				title="Запрос отправлен"
 				subtitle="Ожидайте, скоро наш специалист свяжется с вами и уточнит все детали по трансферу и ответит на все ваши вопросы"
 				action-label="Забронировать жилье"
 				@click="router.visit('/')"
 			/>
 			<div
-				class="flex flex-col gap-3 mt-10 h-[40vh] justify-center"
+				class="flex flex-col gap-3 mt-10 justify-center"
 				v-else
 			>
-				<div class="text-2xl md:text-4xl font-semibold text-neutral-800 dark:text-white">
-					Забронировать трансфер
-				</div>
+				<div class="text-2xl md:text-4xl font-semibold text-neutral-800 dark:text-white">Узнать подробнее</div>
 				<Input
 					class="mt-10"
 					v-model="form.name"

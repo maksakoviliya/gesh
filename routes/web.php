@@ -45,7 +45,9 @@ use App\Http\Controllers\Search\SearchCityController;
 use App\Http\Controllers\Social\SocialCallbackController;
 use App\Http\Controllers\Social\SocialRedirectController;
 use App\Http\Controllers\Telegram\TelegramWebhookController;
+use App\Http\Controllers\TestContreoller;
 use App\Http\Controllers\Transfer\TransferIndexController;
+use App\Http\Controllers\Transfer\TransferRegularRideViewController;
 use App\Http\Controllers\Transfer\TransferScheduleController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +71,7 @@ Route::prefix('transfer')
     ->as('transfer.')
     ->group(function () {
         Route::get('/', TransferIndexController::class)->name('index');
+        Route::get('regular-drive/{drive}', TransferRegularRideViewController::class)->name('regular-ride.view');
         Route::post('/', TransferScheduleController::class)->name('schedule');
     });
 
@@ -168,4 +171,4 @@ Route::get('media/{id}', GetMediaController::class)->name('media');
 //        return Inertia::render('Dashboard');
 //    })->name('dashboard');
 //});
-Route::get('test', \App\Http\Controllers\TestContreoller::class);
+Route::get('test', TestContreoller::class);

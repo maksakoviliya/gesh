@@ -7,23 +7,20 @@
 	const props = defineProps({
 		title: String,
 		subtitle: String,
-		modelValue: Number,
+		modelValue: {
+			type: Number,
+			default: 1,
+		},
 		error: String | null,
 	})
 
 	const emit = defineEmits(['update:modelValue'])
 
 	const onReduce = () => {
-		if (props.modelValue < 1) {
-			return
-		}
-		emit('update:modelValue', props.modelValue - 1)
+		emit('update:modelValue', Math.max(1, props.modelValue - 1))
 	}
 	const onAdd = () => {
-		if (props.modelValue > 39) {
-			return
-		}
-		emit('update:modelValue', props.modelValue + 1)
+		emit('update:modelValue', Math.min(40, props.modelValue + 1))
 	}
 </script>
 

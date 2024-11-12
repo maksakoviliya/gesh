@@ -147,7 +147,8 @@ final class AvitoService
 
     private function fetchBookings(User $user, Apartment $apartment): PromiseInterface|Response
     {
-        Log::info("Api endpoint: " . "https://api.avito.ru/realty/v1/accounts/{$user->avito_user_id}/items/{$apartment->avito_id}/bookings");
+        Log::info('Api endpoint: '."https://api.avito.ru/realty/v1/accounts/{$user->avito_user_id}/items/{$apartment->avito_id}/bookings");
+
         return Http::withToken($user->avito_access_token)
             ->get(
                 "https://api.avito.ru/realty/v1/accounts/{$user->avito_user_id}/items/{$apartment->avito_id}/bookings",
