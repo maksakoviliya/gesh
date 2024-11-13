@@ -34,9 +34,9 @@
 			<PageBanner
 				class="mt-6"
 				alt="transfer"
-				:src="drive.img"
-				:title="drive.name"
-				:subtitle="drive.description"
+				:src="drive.data.img"
+				:title="drive.data.name"
+				:subtitle="drive.data.description"
 			/>
 
 			<div class="flex flex-col md:flex-row gap-4 mt-6">

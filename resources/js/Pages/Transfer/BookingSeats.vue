@@ -29,15 +29,15 @@
 	}
 
 	const price = computed(() => {
-		console.log(props.drive?.price, form.passengers)
-		return props.drive?.price * (form?.passengers ?? 1)
+		console.log(props.drive?.data?.price, form.passengers)
+		return props.drive?.data?.price * (form?.passengers ?? 1)
 	})
 
 	const availableSeatsText = computed(() => {
-		let available = props.drive.passengers_limit
+		let available = props.drive?.data.passengers_limit
 		if (form.date) {
-			const selected = props.drive.dates[form.date]
-			available = selected?.available_seats
+			const selected = props.drive?.data.dates[form.date]
+			available = selected?.data?.available_seats
 		}
 		return `Осталось свободных мест: ${available - form.passengers}`
 	})
@@ -47,7 +47,7 @@
 	<div class="w-full">
 		<div class="p-2 border dark:border-slate-600 rounded-2xl flex gap-2 overflow-x-scroll no-scrollbar">
 			<button
-				v-for="date in Object.keys(props.drive.dates)"
+				v-for="date in Object.keys(props.drive?.data.dates)"
 				:key="date"
 				@click.prevent="setDate(date)"
 				:disabled="loading"
@@ -80,7 +80,7 @@
 				</ButtonComponent>
 			</div>
 			<div
-				class="absolute inset-0 dark:bg-slate-800 flex flex-col items-center justify-center dark:text-neutral-400"
+				class="absolute inset-0 bg-white dark:bg-slate-800 flex flex-col items-center justify-center dark:text-neutral-400"
 				v-if="!form.date"
 			>
 				Выберите желаемую дату поездки

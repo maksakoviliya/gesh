@@ -6,7 +6,7 @@
 	const page = usePage()
 
 	const regularDrives = computed(() => {
-		return page.props.regularDrives ?? []
+		return page.props.regularDrives?.data ?? []
 	})
 </script>
 

@@ -23,7 +23,7 @@
 <template>
 	<div class="relative h-36 md:h-48 overflow-hidden rounded-2xl">
 		<img
-			class="absolute top-1/2 -translate-y-1/2"
+			class="absolute top-1/2 -translate-y-1/2 w-full h-full object-cover"
 			:srcset="props.srcset"
 			:src="props.src"
 			:alt="props.alt"
