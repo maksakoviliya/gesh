@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Http\Resources\Transfer\RegularDrive\ShortRegularDriveResource;
 use App\Services\PaymentServiceContract;
 use App\Services\YooKassaPaymentService;
 use Illuminate\Support\ServiceProvider;

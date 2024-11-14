@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services\Transfer;
 
+use App\Enums\Transfer\DriveUserStatus;
+use App\Events\Transfer\RegularDriveBookedEvent;
 use App\Models\Transfer\DriveUser;
 use App\Models\Transfer\RegularDrive;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 final class RegularDriveService
 {
@@ -26,12 +31,12 @@ final class RegularDriveService
         return $result;
     }
 
-    protected function getAvailableSeatsForDay(RegularDrive $drive, CarbonInterface $date): int
+    public function getAvailableSeatsForDay(RegularDrive $drive, CarbonInterface $date): int
     {
         $passengers = DriveUser::query()
             ->where('drive_id', $drive->id)
             ->whereDate('start_at', $date)
-            ->count();
+            ->sum('seats_count');
 
         return $drive->passengers_limit - $passengers;
     }
@@ -39,5 +44,21 @@ final class RegularDriveService
     protected function getPriceForDay(RegularDrive $drive, CarbonInterface $date): int
     {
         return $drive->regular_price;
+    }
+
+    public function bookDrive(RegularDrive $drive, array $params): Model|Builder
+    {
+        $driveUser = DriveUser::query()
+            ->create([
+                'drive_id' => $drive->id,
+                'user_id' => Auth::id(),
+                'status' => DriveUserStatus::Pending,
+                'start_at' => $params['start_at'],
+                'seats_count' => $params['seats_count'],
+            ]);
+
+        RegularDriveBookedEvent::dispatch($driveUser);
+
+        return $driveUser;
     }
 }

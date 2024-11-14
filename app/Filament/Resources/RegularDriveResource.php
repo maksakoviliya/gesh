@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Enums\Transfer\RegularDriveStatus;
 use App\Filament\Resources\RegularDriveResource\Pages;
 use App\Models\Transfer\RegularDrive;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -47,14 +46,14 @@ class RegularDriveResource extends Resource
                     TextInput::make('finish_lon'),
                     TextInput::make('finish_lat'),
                 ])->columns()->columnSpan([
-                    'lg' => '2'
+                    'lg' => '2',
                 ]),
                 Section::make([
                     Select::make('status')->options(RegularDriveStatus::options()),
-                    SpatieMediaLibraryFileUpload::make('image')->collection('banner')
+                    SpatieMediaLibraryFileUpload::make('image')->collection('banner'),
                 ])->columnSpan([
-                    'lg' => '1'
-                ])
+                    'lg' => '1',
+                ]),
             ])->columns(3);
     }
 

@@ -11,7 +11,7 @@
 </script>
 
 <template>
-	<div class="flex items-center gap-3 mt-10">
+	<div class="flex items-center gap-3 mt-10 whitespace-nowrap w-full overflow-auto no-scrollbar">
 		<component
 			:is="i < routes.length - 1 ? Link : 'div'"
 			:href="route.route"

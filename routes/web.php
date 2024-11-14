@@ -47,7 +47,9 @@ use App\Http\Controllers\Social\SocialRedirectController;
 use App\Http\Controllers\Telegram\TelegramWebhookController;
 use App\Http\Controllers\TestContreoller;
 use App\Http\Controllers\Transfer\TransferIndexController;
-use App\Http\Controllers\Transfer\TransferRegularRideViewController;
+use App\Http\Controllers\Transfer\TransferRegularDriveBookedController;
+use App\Http\Controllers\Transfer\TransferRegularDriveBookingController;
+use App\Http\Controllers\Transfer\TransferRegularDriveViewController;
 use App\Http\Controllers\Transfer\TransferScheduleController;
 use Illuminate\Support\Facades\Route;
 
@@ -71,7 +73,13 @@ Route::prefix('transfer')
     ->as('transfer.')
     ->group(function () {
         Route::get('/', TransferIndexController::class)->name('index');
-        Route::get('regular-drive/{drive}', TransferRegularRideViewController::class)->name('regular-ride.view');
+        Route::get('regular-drive/{drive}', TransferRegularDriveViewController::class)->name('regular-ride.view');
+        Route::post('regular-drive/{drive}', TransferRegularDriveBookingController::class)
+            ->middleware('auth:sanctum')
+            ->name('regular-ride.booking');
+        Route::get('regular-drive/booking/{booking}', TransferRegularDriveBookedController::class)
+            ->middleware('auth:sanctum')
+            ->name('regular-ride.booked');
         Route::post('/', TransferScheduleController::class)->name('schedule');
     });
 

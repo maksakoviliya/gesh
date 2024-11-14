@@ -5,6 +5,7 @@
 	import Container from '@/Components/Container.vue'
 	import { ref } from 'vue'
 	import BookingSeats from '@/Pages/Transfer/BookingSeats.vue'
+	import TransferForm from '@/Pages/Transfer/TransferForm.vue'
 
 	const props = defineProps(['drive'])
 
@@ -22,7 +23,7 @@
 		{
 			id: 'drive',
 			route: '#',
-			label: props.drive.name,
+			label: props.drive.data.name,
 		},
 	])
 </script>
@@ -32,14 +33,14 @@
 		<Container :sm="true">
 			<Breadcrumbs :routes="routes" />
 			<PageBanner
-				class="mt-6"
+				class="mt-6 md:mt-10"
 				alt="transfer"
 				:src="drive.data.img"
 				:title="drive.data.name"
 				:subtitle="drive.data.description"
 			/>
 
-			<div class="flex flex-col md:flex-row gap-4 mt-6">
+			<div class="flex flex-col md:flex-row gap-4 mt-6 md:mt-12">
 				<BookingSeats
 					class="w-full md:w-7/12"
 					:drive="drive"
@@ -52,7 +53,7 @@
 						<div>
 							Цена за место:
 							<span class="text-neutral-900 font-bold dark:text-neutral-200">{{
-								drive.price_formatted
+								drive.data.price_formatted
 							}}</span>
 						</div>
 						<h2>
@@ -60,26 +61,30 @@
 							<span class="text-neutral-900 font-bold dark:text-neutral-200">ежедневно</span> из:
 						</h2>
 						<div>
-							{{ drive.start_point }} в
-							<span class="text-neutral-900 font-bold dark:text-neutral-200">{{ drive.start_at }}</span
+							{{ drive.data.start_point }} в
+							<span class="text-neutral-900 font-bold dark:text-neutral-200">{{
+								drive.data.start_at
+							}}</span
 							>.
 						</div>
 						<h2>
 							Прибытие в
 							<span class="text-neutral-900 font-bold dark:text-neutral-200">{{
-								drive.finish_point
+								drive.data.finish_point
 							}}</span
 							>.
 						</h2>
 						<div>
 							Время в пути примерно
 							<span class="text-neutral-900 font-bold dark:text-neutral-200"
-								>{{ drive.duration }} час</span
+								>{{ drive.data.duration }} час</span
 							>.
 						</div>
 					</div>
 				</aside>
 			</div>
 		</Container>
+
+		<TransferForm />
 	</AppLayout>
 </template>

@@ -11,6 +11,8 @@ use App\Filament\Resources\UserResource;
 use App\Models\Instructor;
 use App\Models\Reservation;
 use App\Models\ReservationRequest;
+use App\Models\Transfer\DriveUser;
+use App\Services\Transfer\RegularDriveService;
 use Exception;
 use Log;
 use Telegram;
@@ -334,6 +336,33 @@ class SendMessageToAdminGroup
         }
     }
 
+    public function sendNewDriveUserBooking(DriveUser $driveUser): void
+    {
+        try {
+            $user = $driveUser->user;
+            $regularDriveService = new RegularDriveService();
+
+            $text = "*Новое бронирование трансфера!* \n\n";
+            $text .= 'Маршрут: '.$this->processText($driveUser->regularDrive->name)."\n\n";
+            $text .= 'Откуда: '.$this->processText($driveUser->regularDrive->start_point)."\n";
+            $text .= 'Куда: '.$this->processText($driveUser->regularDrive->finish_point)."\n\n";
+            $text .= 'Дата: '.$driveUser->start_at->format('d.m.Y')."\n";
+            $text .= 'Время: '.$this->processText($driveUser->regularDrive->start_at->format('h:i'))."\n\n";
+            $text .= 'Мест: '.$driveUser->seats_count."\n";
+            $text .= 'Осталось мест: '.$regularDriveService->getAvailableSeatsForDay($driveUser->regularDrive, $driveUser->start_at)."\n\n";
+            $text .= 'Имя: '.$this->processText($user->name)."\n";
+            $text .= 'Телефон: '.$user->phone?->formatE164()."\n";
+
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => $text,
+                'parse_mode' => 'Markdown',
+            ]);
+        } catch (Exception $exception) {
+            $this->processException($exception);
+        }
+    }
+
     public function sendNewInstructorRequestMessage(Instructor $instructor, string $name, string $phone): void
     {
         try {
@@ -456,12 +485,17 @@ class SendMessageToAdminGroup
 
         Telegram::sendMessage([
             'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-            'text' => 'Ошибка при отправке уведомления!'."\n\n".$exception->getMessage().$additionalText,
+            'text' => 'Ошибка при отправке уведомления!'."\n\n".$exception->getMessage().$additionalText."\n\n".__METHOD__,
         ]);
     }
 
-    protected function processText(string $text): string
+    protected function processText(string $text = null): string
     {
+        Log::info('Process text: ' . $text);
+        if (!$text) {
+            return '';
+        }
+
         return str_replace(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'], ['\_', '\*', '\[', '\]', '\(', '\)', '\~', '\`', '\>', '\#', '\+', '\-', '\=', '\|', '\{', '\}', '\.', '\!'], $text);
     }
 }

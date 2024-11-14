@@ -10,7 +10,7 @@ enum RegularDriveStatus: string
 
     case DRAFT = 'draft';
 
-    public static  function options(): array
+    public static function options(): array
     {
         return [
             self::ACTIVE->value,
