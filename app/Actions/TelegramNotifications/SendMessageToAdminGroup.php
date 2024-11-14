@@ -347,7 +347,7 @@ class SendMessageToAdminGroup
             $text .= 'Откуда: '.$this->processText($driveUser->regularDrive->start_point)."\n";
             $text .= 'Куда: '.$this->processText($driveUser->regularDrive->finish_point)."\n\n";
             $text .= 'Дата: '.$driveUser->start_at->format('d.m.Y')."\n";
-            $text .= 'Время: '.$this->processText($driveUser->regularDrive->start_at->format('h:i'))."\n\n";
+            $text .= 'Время: '.$this->processText($driveUser->regularDrive->start_at->format('H:i'))."\n\n";
             $text .= 'Мест: '.$driveUser->seats_count."\n";
             $text .= 'Осталось мест: '.$regularDriveService->getAvailableSeatsForDay($driveUser->regularDrive, $driveUser->start_at)."\n\n";
             $text .= 'Имя: '.$this->processText($user->name)."\n";
