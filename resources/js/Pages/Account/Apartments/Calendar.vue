@@ -23,7 +23,7 @@
 	import ReservationEvent from '@/Pages/Account/Apartments/Calendar/ReservationEvent.vue'
 	import DisabledDatesEvent from '@/Pages/Account/Apartments/Calendar/DisabledDatesEvent.vue'
 	import DynamicPriceInput from '@/Pages/Account/Apartments/Calendar/DynamicPriceInput.vue'
-	import GetAuthorizeLink from '@/Components/AvitoLink/GetAuthorizeLink.vue'
+	// import GetAuthorizeLink from '@/Components/AvitoLink/GetAuthorizeLink.vue'
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
 	import { MdVerifiedOutlined } from 'oh-vue-icons/icons'
 
@@ -38,7 +38,7 @@
 		},
 		components: {
 			OhVueIcon,
-			GetAuthorizeLink,
+			// GetAuthorizeLink,
 			DynamicPriceInput,
 			DisabledDatesEvent,
 			ReservationEvent,
@@ -152,7 +152,7 @@
 				weekdays_price: props.apartment.data.weekdays_price,
 				weekends_price: props.apartment.data.weekends_price,
 				i_cal_links: props.apartment.data.i_cal_links ?? [],
-				avito_id: props.apartment.data.avito_id,
+				// avito_id: props.apartment.data.avito_id,
 			})
 
 			const rangeForm = useForm({
@@ -244,9 +244,9 @@
 
 			const page = usePage()
 
-			const hasAvitoAccessToken = computed(() => {
-				return !!page.props?.auth?.user?.avito_access_token
-			})
+			// const hasAvitoAccessToken = computed(() => {
+			// 	return !!page.props?.auth?.user?.avito_access_token
+			// })
 
 			return {
 				priceForm,
@@ -260,7 +260,7 @@
 				handleEventClick,
 				selectedEvent,
 				dayPriceForClient,
-				hasAvitoAccessToken,
+				// hasAvitoAccessToken,
 			}
 		},
 	}
@@ -347,24 +347,24 @@
 								id="weekends_price"
 							/>
 						</div>
-						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">
-							Синхронизация с авито
-							<span v-if="apartment.data.avito_synced_at">
-								<OhVueIcon
-									class="text-green-500"
-									name="md-verified-outlined"
-								/>
-							</span>
-						</div>
-						<div class="mt-3 flex flex-col gap-3">
-							<GetAuthorizeLink v-if="!hasAvitoAccessToken" />
-							<Input
-								v-else
-								id="avitoId"
-								v-model="priceForm.avito_id"
-								label="ID объявления на авито"
-							/>
-						</div>
+						<!--	<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">-->
+						<!--		Синхронизация с авито-->
+						<!--		<span v-if="apartment.data.avito_synced_at">-->
+						<!--			<OhVueIcon-->
+						<!--				class="text-green-500"-->
+						<!--				name="md-verified-outlined"-->
+						<!--			/>-->
+						<!--		</span>-->
+						<!--	</div>-->
+						<!--	<div class="mt-3 flex flex-col gap-3">-->
+						<!--		<GetAuthorizeLink v-if="!hasAvitoAccessToken" />-->
+						<!--		<Input-->
+						<!--			v-else-->
+						<!--			id="avitoId"-->
+						<!--			v-model="priceForm.avito_id"-->
+						<!--			label="ID объявления на авито"-->
+						<!--		/>-->
+						<!--	</div>-->
 						<div class="text-lg font-medium text-neutral-800 dark:text-slate-200 mt-6">
 							Синхронизация ical
 						</div>

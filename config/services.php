@@ -42,6 +42,7 @@ return [
     ],
 
     'avito' => [
+        'enabled' => env('AVITO_ENABLED', false),
         'client_id' => env('AVITO_CLIENT_ID'),
         'secret' => env('AVITO_SECRET'),
     ],

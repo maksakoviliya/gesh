@@ -164,7 +164,10 @@ class ApartmentResource extends Resource
                             ->columnSpan(['lg' => 1])
                             ->hidden(fn (?Apartment $record) => $record === null),
 
+                        // Hidden for now
                         Forms\Components\Section::make('Авито')
+                            ->disabled(!config('services.avito.enabled'))
+                            ->hidden(!config('services.avito.enabled'))
                             ->schema([
                                 TextInput::make('avito_id')
                                     ->label('ID объявления')
