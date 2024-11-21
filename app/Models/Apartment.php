@@ -363,7 +363,7 @@ final class Apartment extends Model implements HasMedia
                 if (! $image) {
                     continue;
                 }
-                if ($image?->collection_name !== 'default') {
+                if ($image->collection_name !== 'default') {
                     $image = $image->move($this);
                 }
                 $medias[] = $image->getKey();

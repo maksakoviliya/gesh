@@ -4,6 +4,10 @@
 
 	defineProps({
 		isOpen: Boolean,
+		title: {
+			type: String,
+			default: 'Удалить объект',
+		},
 	})
 
 	const emit = defineEmits(['onClose', 'onSubmit'])
@@ -23,16 +27,18 @@
 		@onSecondaryAction="handleClose"
 		@onClose="handleClose"
 		@onSubmit="handleSubmit"
-		title="Удалить объект"
+		:title="title"
 		action-label="Удалить"
 		secondary-action-label="Отменить"
 		action-color="danger"
 	>
 		<template #body>
-			<Heading
-				title="Вы уверены что хотите удалить объект?"
-				subtitle="Пока его еще можно будет восстановить, обратившись к администратору сайта."
-			/>
+			<slot>
+				<Heading
+					title="Вы уверены что хотите удалить объект?"
+					subtitle="Пока его еще можно будет восстановить, обратившись к администратору сайта."
+				/>
+			</slot>
 		</template>
 	</Modal>
 </template>
