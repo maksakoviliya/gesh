@@ -489,10 +489,10 @@ class SendMessageToAdminGroup
         ]);
     }
 
-    protected function processText(string $text = null): string
+    protected function processText(?string $text = null): string
     {
-        Log::info('Process text: ' . $text);
-        if (!$text) {
+        Log::info('Process text: '.$text);
+        if (! $text) {
             return '';
         }
 

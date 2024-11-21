@@ -51,7 +51,7 @@ class RegularDriveResource extends Resource
                 Section::make([
                     Select::make('status')->options([
                         RegularDriveStatus::ACTIVE->value => RegularDriveStatus::ACTIVE->value,
-                        RegularDriveStatus::DRAFT->value => RegularDriveStatus::DRAFT->value
+                        RegularDriveStatus::DRAFT->value => RegularDriveStatus::DRAFT->value,
                     ]),
                     SpatieMediaLibraryFileUpload::make('image')->collection('banner'),
                 ])->columnSpan([

@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sync-calendars')->everyFifteenMinutes();
         $schedule->command('clear-unpayied-reservations')->everyFifteenMinutes();
-//        $schedule->command('app:clear-old-pending-drive-user-entities')->everyFiveMinutes();
+        //        $schedule->command('app:clear-old-pending-drive-user-entities')->everyFiveMinutes();
     }
 
     protected function commands(): void

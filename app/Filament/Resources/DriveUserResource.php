@@ -4,16 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Enums\Transfer\DriveUserStatus;
 use App\Filament\Resources\DriveUserResource\Pages;
-use App\Filament\Resources\DriveUserResource\RelationManagers;
 use App\Models\Transfer\DriveUser;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DriveUserResource extends Resource
 {
@@ -34,9 +30,9 @@ class DriveUserResource extends Resource
                 Forms\Components\Select::make('status')->required()->options([
                     DriveUserStatus::Pending->value => DriveUserStatus::Pending->value,
                     DriveUserStatus::Paid->value => DriveUserStatus::Paid->value,
-                    DriveUserStatus::Cancelled->value => DriveUserStatus::Cancelled->value
+                    DriveUserStatus::Cancelled->value => DriveUserStatus::Cancelled->value,
                 ]),
-                Forms\Components\DatePicker::make('start_at')
+                Forms\Components\DatePicker::make('start_at'),
             ]);
     }
 
@@ -51,7 +47,7 @@ class DriveUserResource extends Resource
                     DriveUserStatus::Paid => 'success',
                     DriveUserStatus::Cancelled => 'danger'
                 }),
-                Tables\Columns\TextColumn::make('start_at')->date('d.m.Y')->sortable()
+                Tables\Columns\TextColumn::make('start_at')->date('d.m.Y')->sortable(),
             ])
             ->filters([
                 //

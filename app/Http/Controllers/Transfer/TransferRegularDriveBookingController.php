@@ -23,7 +23,7 @@ final class TransferRegularDriveBookingController extends Controller
             return back()->withErrors(['booking' => 'Ошибка при бронировании мест']);
         }
 
-                return back()->with('info', 'Трансфер успешно забронирован.');
-//        return to_route('transfer.regular-ride.booked', $booking->id);
+        return back()->with('info', 'Трансфер успешно забронирован.');
+        //        return to_route('transfer.regular-ride.booked', $booking->id);
     }
 }

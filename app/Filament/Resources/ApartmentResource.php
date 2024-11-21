@@ -166,8 +166,8 @@ class ApartmentResource extends Resource
 
                         // Hidden for now
                         Forms\Components\Section::make('Авито')
-                            ->disabled(!config('services.avito.enabled'))
-                            ->hidden(!config('services.avito.enabled'))
+                            ->disabled(! config('services.avito.enabled'))
+                            ->hidden(! config('services.avito.enabled'))
                             ->schema([
                                 TextInput::make('avito_id')
                                     ->label('ID объявления')
