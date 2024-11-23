@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Account\Apartments;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Account\Apartments\Media\StoreRequest as StoreMediaRequest;
 use App\Models\Apartment;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\FileAdder;
@@ -18,7 +20,7 @@ final class StoreApartmentMediaController extends Controller
      * @throws FileDoesNotExist
      * @throws FileIsTooBig
      */
-    public function __invoke(Request $request, Apartment $apartment): RedirectResponse
+    public function __invoke(StoreMediaRequest $request, Apartment $apartment): RedirectResponse
     {
         $images = [];
         $apartment->addMultipleMediaFromRequest(['files'])
