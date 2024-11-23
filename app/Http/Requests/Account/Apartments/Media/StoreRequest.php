@@ -24,7 +24,7 @@ final class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'files.required' => 'Необходимо выбрать хотя бы один файл.'
+            'files.required' => 'Необходимо выбрать хотя бы один файл.',
         ];
     }
 }

@@ -373,11 +373,11 @@ final class Apartment extends Model implements HasMedia
 
         // Step 10
         if (Arr::has($data, 'base_weekdays_price')) {
-            $this['weekdays_price'] = ceil(Arr::get($data, 'base_weekdays_price') * 1.15);
+            $this['weekdays_price'] = ceil(Arr::get($data, 'base_weekdays_price') * 1.176);
             $this['base_weekdays_price'] = intval(Arr::get($data, 'base_weekdays_price'));
         }
         if (Arr::has($data, 'base_weekends_price')) {
-            $this['weekends_price'] = ceil(Arr::get($data, 'base_weekends_price') * 1.15);
+            $this['weekends_price'] = ceil(Arr::get($data, 'base_weekends_price') * 1.176);
             $this['base_weekends_price'] = intval(Arr::get($data, 'base_weekends_price'));
         }
 

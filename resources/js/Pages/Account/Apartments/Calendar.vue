@@ -163,7 +163,7 @@
 			})
 
 			const dayPriceForClient = computed(() => {
-				return rangeForm.price ? Math.ceil(rangeForm.price * 1.15) : 0
+				return rangeForm.price ? Math.ceil(rangeForm.price * 1.176) : 0
 			})
 
 			const selectedEvent = ref()

@@ -23,7 +23,7 @@
 		class="block h-32 md:h-44 relative overflow-hidden rounded-lg group"
 	>
 		<img
-			class="absolute inset-0 object-cover object-center w-full top-1/2 -translate-y-1/2 group-hover:scale-110 transition"
+			class="absolute inset-0 object-cover object-center w-full h-full top-1/2 -translate-y-1/2 group-hover:scale-110 transition"
 			sizes="(max-width: 960px) 100vw, 960px"
 			:srcset="props.srcset"
 			:src="props.src"

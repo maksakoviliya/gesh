@@ -12,7 +12,7 @@
 	})
 
 	const priceWithCommission = computed(() => {
-		return Math.ceil(props.modelValue * 1.15)
+		return Math.ceil(props.modelValue * 1.176)
 	})
 </script>
 

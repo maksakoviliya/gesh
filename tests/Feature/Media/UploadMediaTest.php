@@ -30,7 +30,7 @@ final class UploadMediaTest extends TestCase
             'files' => [
                 UploadedFile::fake()->image('apartment_1.jpg'),
                 UploadedFile::fake()->image('apartment_2.jpg'),
-            ]
+            ],
         ]);
         $response->assertStatus(302);
 

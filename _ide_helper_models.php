@@ -561,6 +561,84 @@ namespace App\Models{
 	final class Transaction extends \Eloquent {}
 }
 
+namespace App\Models\Transfer{
+/**
+ * App\Models\Transfer\DriveUser
+ *
+ * @property int $id
+ * @property string $drive_id
+ * @property string $user_id
+ * @property \App\Enums\Transfer\DriveUserStatus $status
+ * @property \Illuminate\Support\Carbon|null $start_at
+ * @property string|null $place
+ * @property int|null $seats_count
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Transfer\RegularDrive|null $regularDrive
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser query()
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser whereDriveId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser wherePlace($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser whereSeatsCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser whereStartAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriveUser whereUserId($value)
+ */
+	final class DriveUser extends \Eloquent {}
+}
+
+namespace App\Models\Transfer{
+/**
+ * App\Models\Transfer\RegularDrive
+ *
+ * @property string $id
+ * @property \App\Enums\Transfer\RegularDriveStatus $status
+ * @property string $name
+ * @property \Illuminate\Support\Carbon $start_at
+ * @property string|null $description
+ * @property int $passengers_limit
+ * @property int $duration
+ * @property int $regular_price
+ * @property string $start_point
+ * @property string|null $start_lat
+ * @property string|null $start_lon
+ * @property string $finish_point
+ * @property string|null $finish_lat
+ * @property string|null $finish_lon
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive active()
+ * @method static \Database\Factories\Transfer\RegularDriveFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereFinishLat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereFinishLon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereFinishPoint($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive wherePassengersLimit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereRegularPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereStartAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereStartLat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereStartLon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereStartPoint($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegularDrive whereUpdatedAt($value)
+ */
+	final class RegularDrive extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+
 namespace App\Models{
 /**
  * App\Models\User

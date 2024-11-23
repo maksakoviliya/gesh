@@ -49,7 +49,7 @@
 		<div class="mt-0 md:mt-32 max-w-2xl mx-auto w-full pb-32">
 			<Heading
 				title="Цена"
-				subtitle="Не забудьте что комиссия сервиса 15%. Цена для гостя будет отличаться."
+				subtitle="Не забудьте что комиссия сервиса ~15%. Цена для гостя будет отличаться."
 			/>
 			<div class="mt-10 grid grid-cols-1 md:grid-cols-2">
 				<div class="border-b md:border-b-0 md:border-r text-center md:pr-4">

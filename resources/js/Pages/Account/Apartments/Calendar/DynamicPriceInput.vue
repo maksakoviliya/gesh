@@ -39,7 +39,7 @@
 	const emit = defineEmits(['update:modelValue'])
 
 	const handleUpdate = (val) => {
-		priceForGuest.value = Math.ceil(val * 1.15)
+		priceForGuest.value = Math.ceil(val * 1.176)
 		emit('update:modelValue', priceForGuest.value)
 	}
 </script>
