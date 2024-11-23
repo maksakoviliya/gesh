@@ -83,6 +83,10 @@
 						</div>
 						<div class="relative p-6 flex-auto">
 							<slot name="body" />
+							<div
+								class="absolute inset-0 bg-white/30 dark:bg-slate-800/80"
+								v-if="disabled"
+							></div>
 						</div>
 						<div class="flex flex-col gap-2 p-6 border-t">
 							<div class="flex flex-row items-center gap-4 w-full">

@@ -27,6 +27,8 @@
 		files: [],
 	})
 
+	const isLoading = ref(false)
+
 	const handleClose = () => {
 		emit('onClose')
 		hasFiles.value = false
@@ -40,12 +42,18 @@
 
 	const saveFiles = () => {
 		form.post(props.url, {
+			onStart: () => {
+				isLoading.value = true
+			},
 			onSuccess: (res) => {
 				emit('onSubmit')
 				emit('onClose')
 				hasFiles.value = false
 				form.files = []
 				previewUrls.value = []
+			},
+			onFinish: () => {
+				isLoading.value = false
 			},
 			preserveScroll: true,
 		})
@@ -108,6 +116,7 @@
 		:title="props.title"
 		action-label="Загрузить"
 		secondary-action-label="Отменить"
+		:disabled="isLoading"
 	>
 		<template #body>
 			<div
@@ -146,7 +155,7 @@
 				<p>или</p>
 				<button
 					@click="open"
-					class="underline cursor-pointer"
+					class="underline cursor-pointer disabled:pointer-events-none"
 				>
 					Выберите вручную
 				</button>
