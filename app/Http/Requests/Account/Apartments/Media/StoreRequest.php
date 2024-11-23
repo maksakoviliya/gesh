@@ -20,4 +20,11 @@ final class StoreRequest extends FormRequest
             'files.*' => 'required|image',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'files.required' => 'Необходимо выбрать хотя бы один файл.'
+        ];
+    }
 }

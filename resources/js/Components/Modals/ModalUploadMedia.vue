@@ -5,6 +5,7 @@
 	import { useForm } from '@inertiajs/vue3'
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
 	import { HiTrash } from 'oh-vue-icons/icons'
+	import useToasts from '@/hooks/useToasts'
 
 	addIcons(HiTrash)
 
@@ -40,17 +41,23 @@
 		saveFiles()
 	}
 
+	const { errorToast } = useToasts()
+
 	const saveFiles = () => {
 		form.post(props.url, {
 			onStart: () => {
 				isLoading.value = true
 			},
 			onSuccess: (res) => {
+				console.log('res', res)
 				emit('onSubmit')
 				emit('onClose')
 				hasFiles.value = false
 				form.files = []
 				previewUrls.value = []
+			},
+			onError: (err) => {
+				errorToast(err?.files)
 			},
 			onFinish: () => {
 				isLoading.value = false
