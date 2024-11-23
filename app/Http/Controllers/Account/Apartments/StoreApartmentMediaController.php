@@ -8,8 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\Apartments\Media\StoreRequest as StoreMediaRequest;
 use App\Models\Apartment;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\FileAdder;

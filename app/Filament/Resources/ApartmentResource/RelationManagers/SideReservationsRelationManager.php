@@ -45,11 +45,7 @@ class SideReservationsRelationManager extends RelationManager
                     ->query(fn (Builder $query): Builder => $query->where('start', '>', now()->startOfDay()))
                     ->default(),
             ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

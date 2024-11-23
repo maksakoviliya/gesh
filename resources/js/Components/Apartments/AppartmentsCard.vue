@@ -13,6 +13,7 @@
 	import IsVerified from '@/Components/Apartments/IsVerified.vue'
 	import Price from '@/Components/Apartments/Price.vue'
 	import TotalPrice from '@/Components/Apartments/TotalPrice.vue'
+	import AdminEditLink from '@/Components/Apartments/AdminEditLink.vue'
 
 	const props = defineProps({
 		apartment: Object,
@@ -36,7 +37,13 @@
 
 <template>
 	<div class="col-span-1 cursor-pointer group relative">
-		<IsVerified v-if="props.apartment.is_verified" />
+		<div class="absolute top-2 right-2 z-20">
+			<IsVerified v-if="props.apartment.is_verified" />
+			<AdminEditLink
+				v-if="$page.props.user.data.can_view_dashboard"
+				:id="props.apartment.id"
+			/>
+		</div>
 		<div class="flex flex-col gap-2 w-full h-full">
 			<div class="aspect-square w-full flex relative overflow-hidden rounded-xl">
 				<template v-if="props.apartment.media.length">

@@ -319,7 +319,8 @@ class ApartmentResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()->authorize(auth()->user()->hasRole('admin')),
                 ]),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('created_at', 'desc')
+            ;
     }
 
     public static function getRelations(): array
