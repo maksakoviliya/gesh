@@ -40,7 +40,7 @@
 		<div class="absolute top-2 right-2 z-20">
 			<IsVerified v-if="props.apartment.is_verified" />
 			<AdminEditLink
-				v-if="$page.props.user.data.can_view_dashboard"
+				v-if="$page.props?.user?.data?.can_view_dashboard"
 				:id="props.apartment.id"
 			/>
 		</div>

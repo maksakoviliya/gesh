@@ -1,0 +1,1 @@
+import{a as r,c as a,n as t}from"./app-4635b553.js";const o=["src"],p={__name:"Avatar",props:{src:{type:String},square:{type:Boolean,default:!1}},setup(e){const s=e;return(n,c)=>(r(),a("img",{class:t(["w-[30px] h-[30px]",s.square?"rounded":"rounded-full"]),alt:"Avatar",src:s.src??"/img/no-user.svg"},null,10,o))}};export{p as _};
