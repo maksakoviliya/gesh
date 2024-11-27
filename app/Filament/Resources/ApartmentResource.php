@@ -15,6 +15,7 @@ use App\Models\User;
 use Auth;
 use Exception;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -187,6 +188,29 @@ class ApartmentResource extends Resource
                                     ->schema([
                                         TextInput::make('link')->required()->unique(ignoreRecord: true),
                                     ]),
+                            ])
+                            ->collapsible(),
+
+                        Forms\Components\Section::make('Avito')
+                            ->schema([
+                                TextInput::make('avito_id')->nullable()
+                                    ->suffixAction(fn (?string $state): Action =>
+                                    Action::make('visit')
+                                        ->icon('heroicon-o-link')
+                                        ->url(
+                                            filled($state) ? "https://avito.ru/$state" : null,
+                                            shouldOpenInNewTab: true,
+                                        ),
+                                    ),
+                                TextInput::make('avito_link')->nullable()
+                                    ->suffixAction(fn (?string $state): Action =>
+                                    Action::make('visit')
+                                        ->icon('heroicon-o-link')
+                                        ->url(
+                                            filled($state) ? "https://{$state}" : null,
+                                            shouldOpenInNewTab: true,
+                                        ),
+                                    ),
                             ])
                             ->collapsible(),
                     ]),
