@@ -22,6 +22,7 @@ class DatePricesRelationManager extends RelationManager
                 DatePicker::make('date')
                     ->required(),
                 TextInput::make('price')
+                    ->helperText('Цену нужно указывать уже с нашей комиссией.')
                     ->required(),
             ]);
     }

@@ -29,7 +29,7 @@ final class ChangePriceActionTest extends TestCase
         $action->run($apartment, 15, 17.6);
 
         $apartment = $apartment->fresh([
-            'datePrices'
+            'datePrices',
         ]);
 
         $this->assertEquals(1176, $apartment->weekdays_price);
@@ -44,8 +44,8 @@ final class ChangePriceActionTest extends TestCase
             ]);
 
         $this->artisan('app:update-prices-command')
-        ->expectsQuestion('Current percents: ', 15)
-        ->expectsQuestion('New percents: ', 17.6);
+            ->expectsQuestion('Current percents: ', 15)
+            ->expectsQuestion('New percents: ', 17.6);
 
         foreach (Apartment::query()->get() as $apartment) {
             $this->assertEquals(1176, $apartment->weekdays_price);

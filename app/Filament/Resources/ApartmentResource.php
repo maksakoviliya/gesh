@@ -60,6 +60,7 @@ class ApartmentResource extends Resource
                                 Select::make('category')
                                     ->relationship('category', 'title')
                                     ->preload()
+                                    ->disabled(! Auth::user()->hasRole(['admin']))
                                     ->columnSpan('full'),
                             ])
                             ->columns(3),
@@ -71,6 +72,7 @@ class ApartmentResource extends Resource
                                         Type::ROOM->value => 'Комната',
                                         Type::HOSTEL->value => 'Общая комната',
                                     ])
+                                    ->disabled(! Auth::user()->hasRole(['admin']))
                                     ->columnSpan('full'),
                             ])
                             ->columns(3),
@@ -86,20 +88,20 @@ class ApartmentResource extends Resource
                                 Forms\Components\TextInput::make('floor'),
                                 Forms\Components\TextInput::make('entrance'),
                                 //                                Forms\Components\TextInput::make('index'),
-                            ])->collapsible()->columns()->collapsed(),
+                            ])->collapsible()->disabled(! Auth::user()->hasRole(['admin']))->columns()->collapsed(),
                         Forms\Components\Section::make('Шаг 4')
                             ->schema([
                                 //                                        Map::make('location')->label('Гугл карта не рабоатет. Нужен ключ.')->columnSpan('full'),
                                 Forms\Components\TextInput::make('lat'),
                                 Forms\Components\TextInput::make('lon'),
-                            ])->collapsible()->collapsed()->columns(),
+                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible()->collapsed()->columns(),
                         Forms\Components\Section::make('Шаг 5')
                             ->schema([
                                 Forms\Components\TextInput::make('guests'),
                                 Forms\Components\TextInput::make('bedrooms'),
                                 Forms\Components\TextInput::make('beds'),
                                 Forms\Components\TextInput::make('bathrooms'),
-                            ])->collapsible()->columns(4),
+                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible()->columns(4),
                         Forms\Components\Section::make('Шаг 6')
                             ->schema([
                                 Select::make('features')
@@ -107,7 +109,7 @@ class ApartmentResource extends Resource
                                     ->multiple()
                                     ->preload()
                                     ->columnSpan('full'),
-                            ])->collapsible(),
+                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible(),
                         Forms\Components\Section::make('Шаг 7')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('media')
@@ -117,24 +119,25 @@ class ApartmentResource extends Resource
                                     ->imageEditorMode(2)
                                     ->appendFiles(),
                             ])
+                            ->disabled(! Auth::user()->hasRole(['admin']))
                             ->collapsible()->collapsed(),
                         Forms\Components\Section::make('Шаг 8')
                             ->schema([
                                 Forms\Components\TextInput::make('title'),
-                            ])->collapsible(),
+                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible(),
                         Forms\Components\Section::make('Шаг 9')
                             ->schema([
                                 Forms\Components\Textarea::make('description'),
-                            ])->collapsible(),
+                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible(),
                         Forms\Components\Section::make('Шаг 10')
                             ->schema([
                                 Forms\Components\TextInput::make('weekdays_price')->label('Цена в будни'),
                                 Forms\Components\TextInput::make('weekends_price')->label('Цена в выходные'),
-                            ])->collapsible()->columns(),
+                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible()->columns(),
                         Forms\Components\Section::make('Шаг 11')
                             ->schema([
                                 Forms\Components\Toggle::make('fast_reserve')->label('Моментальное бронирование'),
-                            ])->collapsible()->columns(),
+                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible()->columns(),
 
                     ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
                 Forms\Components\Group::make()
@@ -147,10 +150,12 @@ class ApartmentResource extends Resource
                                         Status::Pending->value => 'На модерации',
                                         Status::Published->value => 'Опубликован',
                                     ])->required()
+                                    ->disabled(! Auth::user()->hasRole(['admin', 'moderator']))
                                     ->nullable(false),
-                                Forms\Components\Toggle::make('is_verified')->label('Подтвержден'),
+                                Forms\Components\Toggle::make('is_verified')->label('Подтвержден')->disabled(! Auth::user()->hasRole(['admin', 'moderator'])),
                                 Select::make('user')->relationship('user', 'name')
                                     ->searchable()
+                                    ->disabled(! Auth::user()->hasRole(['admin']))
                                     ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->email}")
                                     ->preload(),
                                 Forms\Components\Placeholder::make('created_at')
@@ -215,8 +220,12 @@ class ApartmentResource extends Resource
                     ->label('Владелец')
                     ->description(fn (Apartment $record): string => $record->user?->email ?? '')
                     ->url(function ($record) {
+                        if (! Auth::user()->hasRole(['admin'])) {
+                            return false;
+                        }
+
                         if (! $record->user) {
-                            return null;
+                            return false;
                         }
 
                         return UserResource::getUrl('edit', ['record' => $record->user]);
@@ -277,7 +286,6 @@ class ApartmentResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-                Tables\Actions\ViewAction::make()->visible(fn () => Auth::user()->hasRole('moderator')),
                 Tables\Actions\Action::make('approve')
                     ->label('Одобрить')
                     ->visible(fn (Apartment $record) => $record->status === Status::Pending)

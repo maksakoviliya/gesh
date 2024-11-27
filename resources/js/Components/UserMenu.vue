@@ -126,7 +126,7 @@
 							</MenuLink>
 							<hr class="dark:border-slate-600" />
 							<MenuLink
-								v-if="$page.props.user.data.can_view_dashboard"
+								v-if="$page.props.user?.data?.can_view_dashboard"
 								@click="redirectToDashboard"
 								label="Дашборд"
 							/>

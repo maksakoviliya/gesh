@@ -8,13 +8,22 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class SideReservationsRelationManager extends RelationManager
 {
     protected static string $relationship = 'sideReservations';
 
     protected static ?string $title = 'Синхронизировано со сторонними ресурсами';
+
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return Auth::user()->hasRole(['admin', 'manager', 'moderator']);
+    }
 
     public function form(Form $form): Form
     {
