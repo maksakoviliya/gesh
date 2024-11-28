@@ -312,7 +312,7 @@ class ApartmentResource extends Resource
                     }),
                 Filter::make('under_management')
                     ->visible(Auth::user()->hasRole('manager'))
-                    ->query(fn (Builder $query): Builder => $query->where('manager_id', Auth::id()))
+                    ->query(fn (Builder $query): Builder => $query->where('manager_id', Auth::id())),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

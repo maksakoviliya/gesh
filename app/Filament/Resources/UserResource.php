@@ -98,7 +98,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-                        ApartmentsUnderManagementRelationManager::class,
+            ApartmentsUnderManagementRelationManager::class,
         ];
     }
 
