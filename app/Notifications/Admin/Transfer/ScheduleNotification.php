@@ -11,9 +11,7 @@ class ScheduleNotification extends Notification
 {
     use Queueable;
 
-    public function __construct(public string $name, public string $phone)
-    {
-    }
+    public function __construct(public string $name, public string $phone) {}
 
     public function via(object $notifiable): array
     {

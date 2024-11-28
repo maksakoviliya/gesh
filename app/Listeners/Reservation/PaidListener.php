@@ -10,9 +10,7 @@ use App\Notifications\Reservation\UserReservationPaidNotification;
 
 final class PaidListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(PaidEvent $event): void
     {

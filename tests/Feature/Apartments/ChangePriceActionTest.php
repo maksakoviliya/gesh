@@ -25,7 +25,7 @@ final class ChangePriceActionTest extends TestCase
             'apartment_id' => $apartment->id,
         ]);
 
-        $action = new UpdatePricesPercentsAction();
+        $action = new UpdatePricesPercentsAction;
         $action->run($apartment, 15, 17.6);
 
         $apartment = $apartment->fresh([

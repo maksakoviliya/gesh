@@ -18,7 +18,7 @@ final class TransferScheduleController extends Controller
 
     public function __construct()
     {
-        $this->telegram = new SendMessageToAdminGroup();
+        $this->telegram = new SendMessageToAdminGroup;
     }
 
     public function __invoke(ScheduleRequest $request): RedirectResponse

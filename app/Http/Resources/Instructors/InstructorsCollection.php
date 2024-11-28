@@ -6,6 +6,4 @@ namespace App\Http\Resources\Instructors;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-final class InstructorsCollection extends ResourceCollection
-{
-}
+final class InstructorsCollection extends ResourceCollection {}

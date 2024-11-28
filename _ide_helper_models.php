@@ -1,6 +1,7 @@
 <?php
 
 // @formatter:off
+// phpcs:ignoreFile
 /**
  * A helper file for your Eloquent Models
  * Copy the phpDocs from this file to the correct Model,
@@ -106,13 +107,20 @@ namespace App\Models{
  * @property int $is_verified
  * @property string|null $avito_id
  * @property \Illuminate\Support\Carbon|null $avito_synced_at
+ * @property string|null $avito_link
+ * @property string|null $manager_id
+ * @property-read mixed $all_disabled_days
+ * @property-read mixed $full_address
+ * @property-read \App\Models\User|null $manager
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationRequest> $reservationRequests
  * @property-read int|null $reservation_requests_count
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereAvitoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereAvitoLink($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereAvitoSyncedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBaseWeekdaysPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBaseWeekendsPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereIsVerified($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereManagerId($value)
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -248,6 +256,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DatePrice whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Database\Factories\DatePriceFactory factory($count = null, $state = [])
  */
 	class DatePrice extends \Eloquent {}
 }
@@ -515,7 +524,7 @@ namespace App\Models{
 
 namespace App\Models\Telegram{
 /**
- * App\Models\Telegram\ActionSetDisabledDates
+ * 
  *
  * @property int $id
  * @property string $user_id
@@ -563,7 +572,7 @@ namespace App\Models{
 
 namespace App\Models\Transfer{
 /**
- * App\Models\Transfer\DriveUser
+ * 
  *
  * @property int $id
  * @property string $drive_id
@@ -594,7 +603,7 @@ namespace App\Models\Transfer{
 
 namespace App\Models\Transfer{
 /**
- * App\Models\Transfer\RegularDrive
+ * 
  *
  * @property string $id
  * @property \App\Enums\Transfer\RegularDriveStatus $status
@@ -703,6 +712,8 @@ namespace App\Models{
  * @property string|null $avito_access_token
  * @property string|null $avito_refresh_token
  * @property int|null $avito_user_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Apartment> $apartmentsUnderManagement
+ * @property-read int|null $apartments_under_management_count
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoAccessToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoRefreshToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoUserId($value)

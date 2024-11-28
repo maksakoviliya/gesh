@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers\ApartmentsUnderManagementRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
@@ -47,21 +48,6 @@ class UserResource extends Resource
                         Forms\Components\Select::make('roles')->multiple()
                             ->relationship('roles', 'name')->preload(),
                     ]),
-                Section::make('Авито')
-                    ->description('Настройки токенов доступа и номера профиля на авито')
-                    ->schema([
-                        TextInput::make('avito_access_token')
-                            ->label('Access token')
-                            ->nullable(),
-                        TextInput::make('avito_refresh_token')
-                            ->label('Refresh token')
-                            ->nullable(),
-                        TextInput::make('avito_user_id')
-                            ->name('avito_user_id')
-                            ->autocomplete(false)
-                            ->label('User ID')
-                            ->nullable(),
-                    ]),
             ]);
     }
 
@@ -74,6 +60,12 @@ class UserResource extends Resource
                     ->description(fn (User $record): string => $record->roles->pluck('name')->join(', '))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
+                Tables\Columns\TextColumn::make('roles')
+                    ->badge()
+                    ->state(function (User $record) {
+                        return $record->roles()->first()?->name;
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('telegram_chat_id')
                     ->badge()
                     ->color(Color::Blue)
@@ -106,7 +98,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+                        ApartmentsUnderManagementRelationManager::class,
         ];
     }
 

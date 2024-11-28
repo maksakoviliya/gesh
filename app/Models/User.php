@@ -223,4 +223,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
         return $this->update($updates);
     }
+
+    public function apartmentsUnderManagement(): HasMany
+    {
+        return $this->hasMany(Apartment::class, 'manager_id');
+    }
 }

@@ -15,6 +15,5 @@ final class RegularDriveBookedEvent
 
     public function __construct(
         public DriveUser $driveUser
-    ) {
-    }
+    ) {}
 }

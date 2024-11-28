@@ -17,7 +17,7 @@ final class ICalService
     public function process(string $url, Apartment $apartment): void
     {
         try {
-            $ical = new ICal();
+            $ical = new ICal;
             $ical->initUrl($url);
 
             $processed = [];

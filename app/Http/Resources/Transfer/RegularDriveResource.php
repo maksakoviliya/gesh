@@ -13,7 +13,7 @@ class RegularDriveResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $regularDriveService = new RegularDriveService();
+        $regularDriveService = new RegularDriveService;
 
         return [
             'id' => $this->resource->id,

@@ -17,9 +17,7 @@ class CreatedNotification extends Notification
 {
     use Queueable;
 
-    public function __construct(public ReservationRequest $reservationRequest)
-    {
-    }
+    public function __construct(public ReservationRequest $reservationRequest) {}
 
     public function via(object $notifiable): array
     {

@@ -13,9 +13,7 @@ final class ScheduleNotification extends Notification
 {
     use Queueable;
 
-    public function __construct(public Instructor $instructor, public string $name, public string $phone)
-    {
-    }
+    public function __construct(public Instructor $instructor, public string $name, public string $phone) {}
 
     /**
      * @return array<int, string>

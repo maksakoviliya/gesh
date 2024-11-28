@@ -19,7 +19,7 @@ final class BookRequest extends FormRequest
 
     public function rules(): array
     {
-        $regularDriveService = new RegularDriveService();
+        $regularDriveService = new RegularDriveService;
         $max = $regularDriveService->getAvailableSeatsForDay($this->drive, $this->start_at);
 
         return [

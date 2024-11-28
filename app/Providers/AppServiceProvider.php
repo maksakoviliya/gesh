@@ -13,11 +13,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(PaymentServiceContract::class, function ($app) {
-            return new YooKassaPaymentService();
+            return new YooKassaPaymentService;
         });
     }
 
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }

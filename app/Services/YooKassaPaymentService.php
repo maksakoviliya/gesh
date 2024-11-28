@@ -13,7 +13,7 @@ class YooKassaPaymentService implements PaymentServiceContract
 {
     public function getClient(): Client
     {
-        $client = new Client();
+        $client = new Client;
         $client->setAuth(config('services.yookassa.shop_id'), config('services.yookassa.secret'));
 
         return $client;

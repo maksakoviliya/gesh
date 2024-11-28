@@ -19,7 +19,7 @@ class IcalTest extends TestCase
 
         $this->assertDatabaseCount('side_reservations', 0);
 
-        $iCalService = new IcalService();
+        $iCalService = new IcalService;
         $iCalService->process($url, $apartment);
 
         $this->assertDatabaseHas('side_reservations', [

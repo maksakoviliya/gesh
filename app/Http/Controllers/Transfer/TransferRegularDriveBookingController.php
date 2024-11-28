@@ -14,8 +14,7 @@ final class TransferRegularDriveBookingController extends Controller
 {
     public function __construct(
         protected RegularDriveService $regularDriveService
-    ) {
-    }
+    ) {}
 
     public function __invoke(BookRequest $request, RegularDrive $drive): RedirectResponse
     {

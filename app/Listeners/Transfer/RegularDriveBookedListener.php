@@ -13,7 +13,7 @@ final class RegularDriveBookedListener
 
     public function __construct()
     {
-        $this->telegram = new SendMessageToAdminGroup();
+        $this->telegram = new SendMessageToAdminGroup;
     }
 
     public function handle(RegularDriveBookedEvent $event): void

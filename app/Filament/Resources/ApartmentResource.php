@@ -27,7 +27,9 @@ use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class ApartmentResource extends Resource
@@ -194,8 +196,7 @@ class ApartmentResource extends Resource
                         Forms\Components\Section::make('Avito')
                             ->schema([
                                 TextInput::make('avito_id')->nullable()
-                                    ->suffixAction(fn (?string $state): Action =>
-                                    Action::make('visit')
+                                    ->suffixAction(fn (?string $state): Action => Action::make('visit')
                                         ->icon('heroicon-o-link')
                                         ->url(
                                             filled($state) ? "https://avito.ru/$state" : null,
@@ -203,11 +204,10 @@ class ApartmentResource extends Resource
                                         ),
                                     ),
                                 TextInput::make('avito_link')->nullable()
-                                    ->suffixAction(fn (?string $state): Action =>
-                                    Action::make('visit')
+                                    ->suffixAction(fn (?string $state): Action => Action::make('visit')
                                         ->icon('heroicon-o-link')
                                         ->url(
-                                            filled($state) ? "https://{$state}" : null,
+                                            $state ?? null,
                                             shouldOpenInNewTab: true,
                                         ),
                                     ),
@@ -304,6 +304,15 @@ class ApartmentResource extends Resource
                         Status::Pending->value => 'На модерации',
                         Status::Published->value => 'Активные',
                     ])->label('По статусу'),
+                Tables\Filters\SelectFilter::make('manager_id')
+                    ->visible(Auth::user()->hasRole('admin'))
+                    ->options(function () {
+                        // Получаем пользователей с ролью 'manager'
+                        return User::role('manager')->pluck('name', 'id');
+                    }),
+                Filter::make('under_management')
+                    ->visible(Auth::user()->hasRole('manager'))
+                    ->query(fn (Builder $query): Builder => $query->where('manager_id', Auth::id()))
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

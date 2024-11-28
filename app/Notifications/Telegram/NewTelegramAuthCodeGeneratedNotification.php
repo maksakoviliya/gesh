@@ -14,9 +14,7 @@ final class NewTelegramAuthCodeGeneratedNotification extends Notification
 {
     use Queueable;
 
-    public function __construct(public int $code)
-    {
-    }
+    public function __construct(public int $code) {}
 
     public function via($notifiable): array
     {

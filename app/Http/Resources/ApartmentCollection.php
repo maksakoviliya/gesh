@@ -6,6 +6,4 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-final class ApartmentCollection extends ResourceCollection
-{
-}
+final class ApartmentCollection extends ResourceCollection {}

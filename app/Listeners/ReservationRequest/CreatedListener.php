@@ -17,7 +17,7 @@ final class CreatedListener
 
     public function __construct()
     {
-        $this->telegram = new SendMessageToAdminGroup();
+        $this->telegram = new SendMessageToAdminGroup;
     }
 
     public function handle(CreatedEvent $event): void

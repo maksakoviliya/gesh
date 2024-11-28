@@ -25,7 +25,7 @@ class UpdatePricesCommand extends Command
 
         $from = $this->ask('Current percents: ', 15);
         $to = $this->ask('New percents: ', 17.6);
-        $action = new UpdatePricesPercentsAction();
+        $action = new UpdatePricesPercentsAction;
 
         foreach ($apartments as $apartment) {
             $action->run($apartment, $from, $to);

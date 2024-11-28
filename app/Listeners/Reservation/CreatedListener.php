@@ -9,9 +9,7 @@ use App\Notifications\Reservation\CreatedNotification;
 
 final class CreatedListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(CreatedEvent $event): void
     {

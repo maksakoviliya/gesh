@@ -13,9 +13,7 @@ class OwnerReservationPaidNotification extends Notification
 {
     use Queueable;
 
-    public function __construct(public Reservation $reservation)
-    {
-    }
+    public function __construct(public Reservation $reservation) {}
 
     public function via(object $notifiable): array
     {

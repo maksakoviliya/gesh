@@ -13,7 +13,5 @@ final class CreatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public Reservation $reservation)
-    {
-    }
+    public function __construct(public Reservation $reservation) {}
 }

@@ -77,7 +77,7 @@ final class ProcessTextService
             if (! $user) {
                 return;
             }
-            $user->notify(new WelcomeToTelegramBotNotification());
+            $user->notify(new WelcomeToTelegramBotNotification);
         }
     }
 }

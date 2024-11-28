@@ -340,7 +340,7 @@ class SendMessageToAdminGroup
     {
         try {
             $user = $driveUser->user;
-            $regularDriveService = new RegularDriveService();
+            $regularDriveService = new RegularDriveService;
 
             $text = "*Новое бронирование трансфера!* \n\n";
             $text .= 'Маршрут: '.$this->processText($driveUser->regularDrive->name)."\n\n";

@@ -13,9 +13,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 final class ApartmentsExport implements FromCollection, WithHeadings, WithMapping
 {
-    public function __construct(public Collection $collection)
-    {
-    }
+    public function __construct(public Collection $collection) {}
 
     public function collection(): Collection
     {

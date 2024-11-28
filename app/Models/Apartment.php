@@ -489,7 +489,7 @@ final class Apartment extends Model implements HasMedia
     public static function import(string $filename): void
     {
         // TODO: Добавить try catch и обработку ошибок
-        Excel::import(new ApartmentsImport(), $filename, 'imports');
+        Excel::import(new ApartmentsImport, $filename, 'imports');
     }
 
     public function ICalLinks(): HasMany
@@ -574,5 +574,10 @@ final class Apartment extends Model implements HasMedia
         $seed = '"'.Carbon::now()->hour.Str::substr(Auth::id(), 0, 5).'"';
 
         return $builder->orderByDesc('is_verified')->inRandomOrder($seed);
+    }
+
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'manager_id');
     }
 }
