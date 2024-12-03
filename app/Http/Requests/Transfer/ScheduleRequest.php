@@ -3,19 +3,25 @@
 namespace App\Http\Requests\Transfer;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class ScheduleRequest extends FormRequest
 {
-    public function authorize(): bool
+    protected function prepareForValidation(): void
     {
-        return true;
+        $phone = new PhoneNumber($this->input('phone'), 'RU');
+        if ($phone->isValid()) {
+            $this->merge([
+                'phone' => $phone,
+            ]);
+        }
     }
 
     public function rules(): array
     {
         return [
             'name' => 'required',
-            'phone' => 'required|string|phone:RU',
+            'phone' => 'required|phone:RU',
         ];
     }
 }

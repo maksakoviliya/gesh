@@ -323,12 +323,12 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на трансфер!* \n\n";
-            $text .= 'Имя: '.$name."\n";
-            $text .= 'Телефон: '.$phone."\n";
+            $text .= 'Имя: '.$this->processText($name)."\n";
+            $text .= 'Телефон: '.$this->processText($phone)."\n";
 
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $this->processText($text),
+                'text' => $text,
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {
@@ -496,6 +496,6 @@ class SendMessageToAdminGroup
             return '';
         }
 
-        return str_replace(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'], ['\_', '\*', '\[', '\]', '\(', '\)', '\~', '\`', '\>', '\#', '\+', '\-', '\=', '\|', '\{', '\}', '\.', '\!'], $text);
+        return str_replace(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '-', '=', '|', '{', '}', '.', '!'], ['\_', '\*', '\[', '\]', '\(', '\)', '\~', '\`', '\>', '\#', '\+', '\-', '\=', '\|', '\{', '\}', '\.', '\!'], $text);
     }
 }

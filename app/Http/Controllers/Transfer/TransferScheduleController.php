@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Notifications\Admin\Transfer\ScheduleNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Notification;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 final class TransferScheduleController extends Controller
 {
@@ -23,14 +24,19 @@ final class TransferScheduleController extends Controller
 
     public function __invoke(ScheduleRequest $request): RedirectResponse
     {
-        $admins = User::query()->role('admin')->get();
+        $admins = User::query()->get();
+        /** @var PhoneNumber $phone */
+        $phone = $request->validated('phone');
 
         Notification::send($admins, new ScheduleNotification(
             $request->validated('name'),
-            $request->validated('phone')
+            $phone->formatE164()
         ));
 
-        $this->telegram->sendNewTransferRequestMessage($request->validated('name'), $request->validated('phone'));
+        $this->telegram->sendNewTransferRequestMessage(
+            $request->validated('name'),
+            $phone->formatE164()
+        );
 
         return back();
     }
