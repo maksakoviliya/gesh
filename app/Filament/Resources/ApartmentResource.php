@@ -164,10 +164,12 @@ class ApartmentResource extends Resource
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
                                     ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
-
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Изменен')
                                     ->content(fn (Apartment $record): ?string => $record->updated_at?->diffForHumans()),
+                                Forms\Components\Placeholder::make('last_review_at')
+                                    ->label('Последний review')
+                                    ->content(fn (Apartment $record): ?string => $record->last_review_at?->format('d.m.Y H:i')),
                             ])
                             ->columnSpan(['lg' => 1])
                             ->hidden(fn (?Apartment $record) => $record === null),
@@ -293,6 +295,9 @@ class ApartmentResource extends Resource
                     ->color('primary')
                     ->url(fn (Apartment $record) => route('apartment', $record->id), true)
                     ->searchable()->toggleable(),
+                TextColumn::make('last_review_at')
+                    ->date('d.m.y H:i')
+                    ->sortable()
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

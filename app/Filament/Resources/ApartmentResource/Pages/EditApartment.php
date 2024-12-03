@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ApartmentResource\Pages;
 
+use App\Actions\Apartments\SetLastReviewAtAction;
 use App\Enums\Apartments\Status;
 use App\Filament\Resources\ApartmentResource;
 use App\Filament\Resources\ApartmentResource\Widgets\CalendarWidget;
@@ -12,6 +13,7 @@ use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Auth;
 
 class EditApartment extends EditRecord
 {
@@ -40,6 +42,21 @@ class EditApartment extends EditRecord
     public function getFooterWidgetsColumns(): int|string|array
     {
         return 1;
+    }
+
+    protected function getFormActions(): array
+    {
+        return array_merge(parent::getFormActions(), [
+            Action::make('set_reviewed')
+                ->label('Синхронизировано')
+                ->action(function (Apartment $record) {
+                    app(SetLastReviewAtAction::class)->call($record);
+                    Notification::make()
+                        ->success()
+                        ->title('Данные обновлены')
+                        ->send();
+                })
+        ]);
     }
 
     protected function getFooterWidgets(): array

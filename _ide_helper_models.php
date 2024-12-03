@@ -109,6 +109,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $avito_synced_at
  * @property string|null $avito_link
  * @property string|null $manager_id
+ * @property string|null $last_review_at
  * @property-read mixed $all_disabled_days
  * @property-read mixed $full_address
  * @property-read \App\Models\User|null $manager
@@ -120,6 +121,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBaseWeekdaysPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBaseWeekendsPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereIsVerified($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereLastReviewAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereManagerId($value)
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
@@ -366,6 +368,36 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	final class Instructor extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $user_id
+ * @property string $name
+ * @property string|null $data_before
+ * @property string|null $data_after
+ * @property string $eventable_type
+ * @property int $eventable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\LogEventFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent query()
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereDataAfter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereDataBefore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereEventableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereEventableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LogEvent whereUserId($value)
+ */
+	final class LogEvent extends \Eloquent {}
 }
 
 namespace App\Models{
