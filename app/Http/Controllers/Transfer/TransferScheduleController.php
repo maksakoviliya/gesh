@@ -24,7 +24,7 @@ final class TransferScheduleController extends Controller
 
     public function __invoke(ScheduleRequest $request): RedirectResponse
     {
-        $admins = User::query()->get();
+        $admins = User::query()->role('admin')->get();
         /** @var PhoneNumber $phone */
         $phone = $request->validated('phone');
 
