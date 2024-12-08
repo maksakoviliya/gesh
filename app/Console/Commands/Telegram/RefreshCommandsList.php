@@ -32,7 +32,7 @@ final class RefreshCommandsList extends Command
             foreach ($commands as $command) {
                 //                                $this->info(json_encode($command));
                 if ($command->in_menu) {
-                    $data[] = (object)[
+                    $data[] = (object) [
                         'command' => $command->getName(),
                         'description' => strtolower($command->getDescription()),
                     ];
@@ -48,7 +48,7 @@ final class RefreshCommandsList extends Command
             $data = [];
             foreach ($commands as $command) {
                 if ($command->in_menu) {
-                    $data[] = (object)[
+                    $data[] = (object) [
                         'command' => $command->getName(),
                         'description' => strtolower($command->getDescription()),
                     ];

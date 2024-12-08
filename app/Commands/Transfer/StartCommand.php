@@ -16,7 +16,7 @@ final class StartCommand extends Command
     protected string $name = 'start';
 
     protected array $aliases = [
-        'new'
+        'new',
     ];
 
     public bool $in_menu = true;

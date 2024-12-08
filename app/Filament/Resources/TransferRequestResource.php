@@ -7,7 +7,6 @@ namespace App\Filament\Resources;
 use App\Enums\Transfer\RequestStatusEnum;
 use App\Enums\Transfer\RequestTypeEnum;
 use App\Filament\Resources\TransferRequestResource\Pages;
-use App\Filament\Resources\TransferRequestResource\RelationManagers;
 use App\Models\TransferRequest;
 use App\Models\User;
 use Filament\Forms;
@@ -18,8 +17,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
 class TransferRequestResource extends Resource
@@ -51,7 +48,7 @@ class TransferRequestResource extends Resource
                             RequestTypeEnum::TAXI->value => RequestTypeEnum::TAXI->value,
                             RequestTypeEnum::TRANSFER->value => RequestTypeEnum::TRANSFER->value,
                         ])->columnSpan(1),
-                   TextInput::make('passengers_count')->numeric()->columnSpan(1),
+                    TextInput::make('passengers_count')->numeric()->columnSpan(1),
                     Select::make('status')
                         ->options([
                             RequestStatusEnum::DRAFT->value => RequestStatusEnum::DRAFT->value,
@@ -60,8 +57,8 @@ class TransferRequestResource extends Resource
                             RequestStatusEnum::REJECTED->value => RequestStatusEnum::REJECTED->value,
                             RequestStatusEnum::CANCELLED->value => RequestStatusEnum::CANCELLED->value,
                         ]),
-                    Forms\Components\DateTimePicker::make('start_at')
-                ])
+                    Forms\Components\DateTimePicker::make('start_at'),
+                ]),
             ]);
     }
 
@@ -86,7 +83,7 @@ class TransferRequestResource extends Resource
                         return UserResource::getUrl('edit', ['record' => $record->user]);
                     })
                     ->toggleable()
-                ->searchable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('type')->badge(),
                 Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('start_at')->date('d.m.Y')->sortable(),
@@ -109,6 +106,7 @@ class TransferRequestResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

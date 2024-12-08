@@ -37,6 +37,7 @@ final class TelegramService
 
             return User::query()->create([
                 'telegram_username' => $username,
+                'telegram_chat_id' => $update->getMessage()?->getChat()?->getId() ?? null,
                 'name' => $name,
             ]);
         }
@@ -60,7 +61,7 @@ final class TelegramService
         $data = $update->getRelatedObject()?->data;
 
         if ($data) {
-            Log::info('ddata: ' . json_encode($data));
+            Log::info('ddata: '.json_encode($data));
             $this->processButtonClick($update, RequestTypeEnum::from($data));
 
             return;
@@ -211,9 +212,25 @@ final class TelegramService
 
                 return;
             }
-            $user->update([
-                'phone' => $phone,
-            ]);
+
+            if ($oldUser = User::query()
+            ->where('phone', $phone)->first()) {
+                $username = $user->telegram_username;
+                $chat_id = $user->telegram_chat_id;
+                $user->delete();
+                $oldUser->update([
+                    'telegram_username' => $username,
+                    'telegram_chat_id' => $chat_id,
+                ]);
+                $request->update([
+                    'user_id' => $oldUser->id,
+                ]);
+                $user = $oldUser;
+            } else {
+                $user->update([
+                    'phone' => $phone,
+                ]);
+            }
         }
 
         Telegram::bot('transferBot')->sendMessage([
