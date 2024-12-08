@@ -45,6 +45,8 @@ class UserResource extends Resource
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create'),
+                        TextInput::make('telegram_chat_id'),
+                        TextInput::make('telegram_username'),
                         Forms\Components\Select::make('roles')->multiple()
                             ->relationship('roles', 'name')->preload(),
                     ]),
@@ -73,6 +75,10 @@ class UserResource extends Resource
                     ->label('Телеграм бот')
                     ->state(fn (User $record) => $record->telegram_chat_id ? 'Подключен' : null)
                     ->icon('heroicon-o-check-circle'),
+                Tables\Columns\TextColumn::make('telegram_username')
+                    ->label('Телеграм')
+                    ->sortable()
+                    ->state(fn (User $record) => $record->telegram_username ? "@$record->telegram_username" : null),
                 Tables\Columns\TextColumn::make('avito_access_token')
                     ->badge()
                     ->color(Color::Blue)
