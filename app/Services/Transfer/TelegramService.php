@@ -6,6 +6,7 @@ namespace App\Services\Transfer;
 
 use App\Enums\Transfer\RequestStatusEnum;
 use App\Enums\Transfer\RequestTypeEnum;
+use App\Events\Transfer\NewBotUsageEvent;
 use App\Models\TransferRequest;
 use App\Models\User;
 use Arr;
@@ -133,6 +134,10 @@ final class TelegramService
             'chat_id' => $chatId,
             'text' => "Спасибо, {$request->user?->name}! \n В ближайшее время с вами свяжутся по телефону: {$request->user?->phone}",
         ]);
+        $request->update([
+            'status' => RequestStatusEnum::PENDING,
+        ]);
+        NewBotUsageEvent::dispatch($request);
     }
 
     /**
@@ -214,7 +219,7 @@ final class TelegramService
             }
 
             if ($oldUser = User::query()
-            ->where('phone', $phone)->first()) {
+                ->where('phone', $phone)->first()) {
                 $username = $user->telegram_username;
                 $chat_id = $user->telegram_chat_id;
                 $user->delete();
@@ -241,5 +246,6 @@ final class TelegramService
         $request->update([
             'status' => RequestStatusEnum::PENDING,
         ]);
+        NewBotUsageEvent::dispatch($request);
     }
 }

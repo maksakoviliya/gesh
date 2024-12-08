@@ -58,5 +58,6 @@ final class StartCommand extends Command
             'text' => "Привет, $user->name!\nВыберите необходимую услугу:",
             'reply_markup' => $keyboard,
         ]);
+
     }
 }

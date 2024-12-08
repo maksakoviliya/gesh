@@ -7,11 +7,13 @@ namespace App\Actions\TelegramNotifications;
 use App\Filament\Resources\ApartmentResource;
 use App\Filament\Resources\ReservationRequestResource;
 use App\Filament\Resources\ReservationResource;
+use App\Filament\Resources\TransferRequestResource;
 use App\Filament\Resources\UserResource;
 use App\Models\Instructor;
 use App\Models\Reservation;
 use App\Models\ReservationRequest;
 use App\Models\Transfer\DriveUser;
+use App\Models\TransferRequest;
 use App\Services\Transfer\RegularDriveService;
 use Exception;
 use Log;
@@ -25,21 +27,21 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на бронирование!* \n\n";
-            $text .= 'Объект: '.$reservationRequest->apartment->city.', '.$reservationRequest->apartment->street.', '.$reservationRequest->apartment->building."\n";
-            $text .= 'Гость: '.$reservationRequest->user->name;
+            $text .= 'Объект: '.$this->processText($reservationRequest->apartment->city.', '.$reservationRequest->apartment->street.', '.$reservationRequest->apartment->building)."\n";
+            $text .= 'Гость: '.$this->processText($reservationRequest->user->name);
             if ($reservationRequest->user->email) {
-                $text .= ', '.'('.$reservationRequest->user->email.')';
+                $text .= ', '.'('.$this->processText($reservationRequest->user->email).')';
             }
             if ($reservationRequest->user->phone) {
-                $text .= ', '.'('.$reservationRequest->user->phone.')';
+                $text .= ', '.'('.$this->processText($reservationRequest->user->phone->formatE164()).')';
             }
             $text .= "\n";
-            $text .= 'Владелец: '.$reservationRequest->apartment->user->name;
+            $text .= 'Владелец: '.$this->processText($reservationRequest->apartment->user->name);
             if ($reservationRequest->apartment->user->email) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->email.')';
+                $text .= ', '.'('.$this->processText($reservationRequest->apartment->user->email).')';
             }
             if ($reservationRequest->apartment->user->phone) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->phone.')';
+                $text .= ', '.'('.$this->processText($reservationRequest->apartment->user->phone->formatE164()).')';
             }
             $text .= "\n";
             $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
@@ -107,7 +109,7 @@ class SendMessageToAdminGroup
             );
             Telegram::sendMessage([
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
-                'text' => $this->processText($text),
+                'text' => $text,
                 'reply_markup' => $button,
                 'parse_mode' => 'Markdown',
             ]);
@@ -127,7 +129,7 @@ class SendMessageToAdminGroup
                 $text .= ', '.'('.$reservationRequest->user->email.')';
             }
             if ($reservationRequest->user->phone) {
-                $text .= ', '.'('.$reservationRequest->user->phone.')';
+                $text .= ', '.'('.$reservationRequest->user->phone->formatE164().')';
             }
             $text .= "\n";
             $text .= 'Владелец: '.$reservationRequest->apartment->user->name;
@@ -135,7 +137,7 @@ class SendMessageToAdminGroup
                 $text .= ', '.'('.$reservationRequest->apartment->user->email.')';
             }
             if ($reservationRequest->apartment->user->phone) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->phone.')';
+                $text .= ', '.'('.$reservationRequest->apartment->user->phone->formatE164().')';
             }
             $text .= "\n";
             $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
@@ -223,7 +225,7 @@ class SendMessageToAdminGroup
                 $text .= ', '.'('.$reservationRequest->user->email.')';
             }
             if ($reservationRequest->user->phone) {
-                $text .= ', '.'('.$reservationRequest->user->phone.')';
+                $text .= ', '.'('.$reservationRequest->user->phone->formatE164().')';
             }
             $text .= "\n";
             $text .= 'Владелец: '.$reservationRequest->apartment->user->name;
@@ -231,7 +233,7 @@ class SendMessageToAdminGroup
                 $text .= ', '.'('.$reservationRequest->apartment->user->email.')';
             }
             if ($reservationRequest->apartment->user->phone) {
-                $text .= ', '.'('.$reservationRequest->apartment->user->phone.')';
+                $text .= ', '.'('.$reservationRequest->apartment->user->phone->formatE164().')';
             }
             $text .= "\n";
             $text .= 'Даты: '.$reservationRequest->start->format('d\.m\.Y').' - '.$reservationRequest->end->format('d\.m\.Y')."\n";
@@ -391,7 +393,7 @@ class SendMessageToAdminGroup
                 $text .= ', '.'('.$reservation->user->email.')';
             }
             if ($reservation->user->phone) {
-                $text .= ', '.'('.$reservation->user->phone.')';
+                $text .= ', '.'('.$reservation->user->phone->formatE164().')';
             }
             $text .= "\n";
             $text .= 'Владелец: '.$reservation->apartment->user->name;
@@ -399,7 +401,7 @@ class SendMessageToAdminGroup
                 $text .= ', '.'('.$reservation->apartment->user->email.')';
             }
             if ($reservation->apartment->user->phone) {
-                $text .= ', '.'('.$reservation->apartment->user->phone.')';
+                $text .= ', '.'('.$reservation->apartment->user->phone->formatE164().')';
             }
             $text .= "\n";
             $text .= 'Даты: '.$reservation->start->format('d\.m\.Y').' - '.$reservation->end->format('d\.m\.Y')."\n";
@@ -497,5 +499,39 @@ class SendMessageToAdminGroup
         }
 
         return str_replace(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '-', '=', '|', '{', '}', '.', '!'], ['\_', '\*', '\[', '\]', '\(', '\)', '\~', '\`', '\>', '\#', '\+', '\-', '\=', '\|', '\{', '\}', '\.', '\!'], $text);
+    }
+
+    public function sendNewTelegramTransferRequest(TransferRequest $transferRequest): void
+    {
+        try {
+            $text = "*Новый запрос на трансфер через телеграм бота!* \n\n";
+            $text .= 'Тип: '.$this->processText($transferRequest->type->value)."\n";
+            $text .= 'Пассажиры: '.$transferRequest->passengers_count."\n";
+            $text .= 'Пользователь: '.$this->processText($transferRequest->user->name)."\n";
+            $text .= 'Телефон: '.$this->processText($transferRequest->user->phone->formatE164());
+
+            $request_url = TransferRequestResource::getUrl(
+                'edit',
+                [
+                    'record' => $transferRequest->id,
+                ]);
+            $keyboard = Keyboard::make()
+                ->inline()
+                ->row([
+                    Keyboard::inlineButton([
+                        'text' => 'К запросу',
+                        'url' => config('app.env') === 'production' ? $request_url : 'https://google.com',
+                    ]),
+                ]);
+
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => $text,
+                'reply_markup' => $keyboard,
+                'parse_mode' => 'Markdown',
+            ]);
+        } catch (Exception $exception) {
+            $this->processException($exception);
+        }
     }
 }

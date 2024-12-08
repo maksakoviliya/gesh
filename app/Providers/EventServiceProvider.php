@@ -7,10 +7,12 @@ namespace App\Providers;
 use App\Events\Reservation\CreatedEvent as ReservationCreatedEvent;
 use App\Events\Reservation\PaidEvent;
 use App\Events\ReservationRequest\CreatedEvent as ReservationRequestCreatedEvent;
+use App\Events\Transfer\NewBotUsageEvent;
 use App\Events\Transfer\RegularDriveBookedEvent;
 use App\Listeners\Reservation\CreatedListener as ReservationCreatedListener;
 use App\Listeners\Reservation\PaidListener;
 use App\Listeners\ReservationRequest\CreatedListener as ReservationRequestCreatedListener;
+use App\Listeners\Transfer\NewBotUsageListener;
 use App\Listeners\Transfer\RegularDriveBookedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -40,6 +42,9 @@ final class EventServiceProvider extends ServiceProvider
         ],
         RegularDriveBookedEvent::class => [
             RegularDriveBookedListener::class,
+        ],
+        NewBotUsageEvent::class => [
+            NewBotUsageListener::class,
         ],
     ];
 
