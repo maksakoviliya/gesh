@@ -109,7 +109,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $avito_synced_at
  * @property string|null $avito_link
  * @property string|null $manager_id
- * @property string|null $last_review_at
+ * @property \Illuminate\Support\Carbon|null $last_review_at
  * @property-read mixed $all_disabled_days
  * @property-read mixed $full_address
  * @property-read \App\Models\User|null $manager
@@ -376,11 +376,11 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $user_id
- * @property string $name
- * @property string|null $data_before
- * @property string|null $data_after
- * @property string $eventable_type
- * @property int $eventable_id
+ * @property \App\Enums\LogEvents\NamesEnum $name
+ * @property array|null $data_before
+ * @property array|null $data_after
+ * @property string|null $eventable_type
+ * @property string|null $eventable_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Database\Factories\LogEventFactory factory($count = null, $state = [])

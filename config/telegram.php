@@ -1,5 +1,6 @@
 <?php
 
+use App\Commands\Transfer\StartCommand as TransferStartCommand;
 use App\TelegramCommands\SetDisabledDatesCommand;
 use App\TelegramCommands\StartCommand;
 
@@ -43,9 +44,12 @@ return [
             ],
         ],
 
-        //        'mySecondBot' => [
-        //            'token' => '123456:abc',
-        //        ],
+        'transferBot' => [
+            'token' => env('TELEGRAM_TRANSFER_BOT_TOKEN'),
+            'commands' => [
+                TransferStartCommand::class,
+            ],
+        ],
     ],
 
     /*

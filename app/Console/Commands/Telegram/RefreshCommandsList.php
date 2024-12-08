@@ -16,29 +16,49 @@ final class RefreshCommandsList extends Command
 
     protected $description = 'Refresh telegram commands list';
 
+    /**
+     * @throws TelegramSDKException
+     */
     public function handle()
     {
-        //        try {
         $this->info('Started telegram commands sync');
-        $commands = Telegram::getCommands();
+        if (false) {
+            //        try {
+            $commands = Telegram::getCommands();
 
-        $telegram = new Api(config('services.telegram-bot-api.token'));
+            $telegram = new Api(config('services.telegram-bot-api.token'));
 
-        $data = [];
-        foreach ($commands as $command) {
-            //                                $this->info(json_encode($command));
-            if ($command->in_menu) {
-                $data[] = (object) [
-                    'command' => $command->getName(),
-                    'description' => strtolower($command->getDescription()),
-                ];
+            $data = [];
+            foreach ($commands as $command) {
+                //                                $this->info(json_encode($command));
+                if ($command->in_menu) {
+                    $data[] = (object)[
+                        'command' => $command->getName(),
+                        'description' => strtolower($command->getDescription()),
+                    ];
+                }
             }
+            //        dd($data);
+            $telegram->setMyCommands([
+                'commands' => $data,
+            ]);
+            $this->info('Finished telegram commands sync');
+        } else {
+            $commands = Telegram::bot('transferBot')->getCommands();
+            $data = [];
+            foreach ($commands as $command) {
+                if ($command->in_menu) {
+                    $data[] = (object)[
+                        'command' => $command->getName(),
+                        'description' => strtolower($command->getDescription()),
+                    ];
+                }
+            }
+
+            Telegram::bot('transferBot')->setMyCommands([
+                'commands' => $data,
+            ]);
         }
-        //        dd($data);
-        $telegram->setMyCommands([
-            'commands' => $data,
-        ]);
-        $this->info('Finished telegram commands sync');
 
         return ConsoleCommand::SUCCESS;
         //        } catch (TelegramSDKException $e) {

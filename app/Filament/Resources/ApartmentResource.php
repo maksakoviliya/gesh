@@ -297,7 +297,7 @@ class ApartmentResource extends Resource
                     ->searchable()->toggleable(),
                 TextColumn::make('last_review_at')
                     ->date('d.m.y H:i')
-                    ->sortable()
+                    ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

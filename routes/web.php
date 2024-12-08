@@ -46,6 +46,7 @@ use App\Http\Controllers\Social\SocialCallbackController;
 use App\Http\Controllers\Social\SocialRedirectController;
 use App\Http\Controllers\Telegram\TelegramWebhookController;
 use App\Http\Controllers\TestContreoller;
+use App\Http\Controllers\Transfer\TelegramBotController;
 use App\Http\Controllers\Transfer\TransferIndexController;
 use App\Http\Controllers\Transfer\TransferRegularDriveBookedController;
 use App\Http\Controllers\Transfer\TransferRegularDriveBookingController;
@@ -81,6 +82,11 @@ Route::prefix('transfer')
             ->middleware('auth:sanctum')
             ->name('regular-ride.booked');
         Route::post('/', TransferScheduleController::class)->name('schedule');
+
+        Route::post(
+            'telegram/{token}/webhook',
+            [TelegramBotController::class, 'processWebhook']
+        )->name('telegram.webhook');
     });
 
 Route::get('/policy', PolicyPageController::class)->name('policy');

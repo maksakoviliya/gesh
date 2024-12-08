@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Enums\Transfer;
+
+enum RequestTypeEnum: string
+{
+    case TAXI = 'taxi';
+
+    case TRANSFER = 'transfer';
+}

@@ -11,12 +11,12 @@ use App\Models\User;
 final class LogService
 {
     public function writeEvent(
-        User              $user,
+        User $user,
         LogEventNamesEnum $name,
         array|string|null $data_before = null,
         array|string|null $data_after = null,
-        ?string           $eventable_type = null,
-        ?string           $eventable_id = null): LogService
+        ?string $eventable_type = null,
+        ?string $eventable_id = null): LogService
     {
         LogEvent::query()
             ->create([

@@ -14,9 +14,7 @@ final class SetLastReviewAtAction
 {
     public function __construct(
         private LogService $logService
-    )
-    {
-    }
+    ) {}
 
     public function call(Apartment $apartment): void
     {

@@ -13,7 +13,6 @@ use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Support\Facades\Auth;
 
 class EditApartment extends EditRecord
 {
@@ -55,7 +54,7 @@ class EditApartment extends EditRecord
                         ->success()
                         ->title('Данные обновлены')
                         ->send();
-                })
+                }),
         ]);
     }
 

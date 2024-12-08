@@ -134,6 +134,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'avito_access_token',
         'avito_refresh_token',
         'avito_user_id',
+        'telegram_username',
     ];
 
     protected $casts = [
