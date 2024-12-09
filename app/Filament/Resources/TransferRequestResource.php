@@ -84,10 +84,11 @@ class TransferRequestResource extends Resource
                     })
                     ->toggleable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')->badge(),
-                Tables\Columns\TextColumn::make('status')->badge(),
+                Tables\Columns\TextColumn::make('type')->badge()->toggleable(),
+                Tables\Columns\TextColumn::make('status')->badge()->toggleable(),
                 Tables\Columns\TextColumn::make('start_at')->date('d.m.Y')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->date('d.m.Y')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->date('d.m.Y H:i:s')->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('updated_at')->date('d.m.Y H:i:s')->sortable()->toggleable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
