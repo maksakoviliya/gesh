@@ -506,7 +506,7 @@ class SendMessageToAdminGroup
         try {
             $text = "*Новый запрос на трансфер через телеграм бота!* \n\n";
             $text .= 'Тип: '.$this->processText(__('transfer.type.'.$transferRequest->type->value))."\n";
-            $text .= 'Дата: '.$this->processText($transferRequest->start_at->format('d.m.Y'))."\n";
+            $text .= 'Дата: '.$transferRequest->start_at->format('d.m.Y')."\n";
             $text .= 'Пассажиры: '.$transferRequest->passengers_count."\n";
             $text .= 'Пользователь: '.$this->processText($transferRequest->user->name)."\n";
             $text .= 'Телефон: '.$this->processText($transferRequest->user->phone->formatE164());
