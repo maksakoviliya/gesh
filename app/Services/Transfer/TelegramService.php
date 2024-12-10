@@ -15,6 +15,7 @@ use Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use RuntimeException;
 use Telegram\Bot\Exceptions\TelegramSDKException;
+use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\Update;
 use Throwable;
@@ -238,9 +239,18 @@ final class TelegramService
             }
         }
 
+        $keyboard = Keyboard::make()
+            ->inline()
+            ->row([
+                Keyboard::inlineButton([
+                    'text' => '/start',
+                ]),
+            ]);
+
         Telegram::bot('transferBot')->sendMessage([
             'chat_id' => $chatId,
             'text' => "Спасибо, $user->name! \n В ближайшее время с вами свяжутся по телефону: $user->phone",
+            'reply_markup' => $keyboard,
         ]);
 
         $request->update([
