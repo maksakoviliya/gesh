@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use Telegram\Bot\Keyboard\Keyboard;
+use Throwable;
 
 final class StartCommand extends Command
 {
@@ -54,10 +55,14 @@ final class StartCommand extends Command
                 ]),
             ]);
 
-        $this->replyWithMessage([
-            'text' => "Привет, $user->name!\nВыберите необходимую услугу:",
-            'reply_markup' => $keyboard,
-        ]);
+        try {
+            $this->replyWithMessage([
+                'text' => "Привет, $user->name!\nВыберите необходимую услугу:",
+                'reply_markup' => $keyboard,
+            ]);
+        } catch (Throwable $exception) {
+            Log::error('Error sending message: '.$exception->getMessage());
+        }
 
     }
 }

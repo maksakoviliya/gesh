@@ -9,4 +9,6 @@ enum RequestTypeEnum: string
     case TAXI = 'taxi';
 
     case TRANSFER = 'transfer';
+
+    case PUSH_START = 'push_start';
 }

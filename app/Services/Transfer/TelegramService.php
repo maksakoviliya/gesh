@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Transfer;
 
+use App\Commands\Transfer\StartCommand;
 use App\Enums\Transfer\RequestStatusEnum;
 use App\Enums\Transfer\RequestTypeEnum;
 use App\Events\Transfer\NewBotUsageEvent;
@@ -11,6 +12,7 @@ use App\Models\TransferRequest;
 use App\Models\User;
 use Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use RuntimeException;
@@ -28,7 +30,7 @@ final class TelegramService
         Log::info(json_encode($from));
         $username = $from->username;
         if (! $username) {
-            throw new RuntimeException('No username found');
+            $username = 'random_' . Str::random(8);
         }
         if (! $user = User::query()
             ->where('telegram_username', $username)->first()) {
@@ -63,7 +65,6 @@ final class TelegramService
         $data = $update->getRelatedObject()?->data;
 
         if ($data) {
-            Log::info('ddata: '.json_encode($data));
             $this->processButtonClick($update, RequestTypeEnum::from($data));
 
             return;
@@ -81,6 +82,41 @@ final class TelegramService
         if (! $user) {
             return;
         }
+
+        if ($type === RequestTypeEnum::PUSH_START) {
+
+            // TODO: Убрать дублирование кода
+            $chatId = $update->getMessage()->getChat()->getId();
+
+            $keyboard = Keyboard::make()
+                ->inline()
+                ->row([
+                    Keyboard::inlineButton([
+                        'text' => '🚖 Такси',
+                        'callback_data' => RequestTypeEnum::TAXI->value,
+                    ]),
+                ])
+                ->row([
+                    Keyboard::inlineButton([
+                        'text' => '🚐 Трансфер с попутчиками',
+                        'callback_data' => RequestTypeEnum::TRANSFER->value,
+                    ]),
+                ]);
+
+            try {
+                Telegram::bot('transferBot')->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => "Привет, $user->name!\nВыберите необходимую услугу:",
+                    'reply_markup' => $keyboard,
+                ]);
+               
+            } catch (Throwable $exception) {
+                \Illuminate\Support\Facades\Log::error('Error sending message: '.$exception->getMessage());
+            }
+
+            return;
+        }
+
         $request = TransferRequest::query()
             ->where('status', RequestStatusEnum::DRAFT)
             ->where('user_id', $user->id)
@@ -244,6 +280,7 @@ final class TelegramService
             ->row([
                 Keyboard::inlineButton([
                     'text' => '/start',
+                    'callback_data' => RequestTypeEnum::PUSH_START->value,
                 ]),
             ]);
 
