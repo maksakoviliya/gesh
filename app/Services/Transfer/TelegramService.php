@@ -109,7 +109,7 @@ final class TelegramService
                     'text' => "Привет, $user->name!\nВыберите необходимую услугу:",
                     'reply_markup' => $keyboard,
                 ]);
-               
+
             } catch (Throwable $exception) {
                 \Illuminate\Support\Facades\Log::error('Error sending message: '.$exception->getMessage());
             }
@@ -279,7 +279,7 @@ final class TelegramService
             ->inline()
             ->row([
                 Keyboard::inlineButton([
-                    'text' => '/start',
+                    'text' => 'Начать заново',
                     'callback_data' => RequestTypeEnum::PUSH_START->value,
                 ]),
             ]);
