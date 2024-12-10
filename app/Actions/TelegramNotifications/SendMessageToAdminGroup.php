@@ -509,7 +509,7 @@ class SendMessageToAdminGroup
             $text .= 'Дата: '.$transferRequest->start_at->format('d.m.Y')."\n";
             $text .= 'Пассажиры: '.$transferRequest->passengers_count."\n";
             $text .= 'Пользователь: '.$this->processText($transferRequest->user->name)."\n";
-            $text .= 'Телеграм: "'.$this->processText($transferRequest->user->telegram_username)."\n";
+            $text .= 'Телеграм: @'.$this->processText($transferRequest->user->telegram_username)."\n";
             $text .= 'Телефон: '.$this->processText($transferRequest->user->phone->formatE164());
 
             $request_url = TransferRequestResource::getUrl(
