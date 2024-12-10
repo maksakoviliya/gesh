@@ -106,7 +106,7 @@ final class TelegramService
         if (! $request->start_at) {
             Telegram::bot('transferBot')->sendMessage([
                 'chat_id' => $chatId,
-                'text' => 'Введите дату в формате ДД.ММ.ГГ',
+                'text' => 'Введите дату в формате ДД.ММ.ГГГГ',
             ]);
 
             return;
