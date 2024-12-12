@@ -29,7 +29,7 @@ final class TransferRequest extends Model
         'status' => RequestStatusEnum::class,
         'type' => ButtonDataEnum::class,
         'start_at' => 'datetime',
-        'destination' => DestinationEnum::class
+        'destination' => DestinationEnum::class,
     ];
 
     public function user(): BelongsTo

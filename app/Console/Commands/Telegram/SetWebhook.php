@@ -22,9 +22,14 @@ final class SetWebhook extends Command
         //        Log::info('Response: '.json_encode($response));
         //        $this->info(json_encode($response));
 
-        $url = env('TELEGRAM_TRANSFER_BOT_WEBHOOK_URL');
-        $this->info("Setting transfer tg bot webhook: $url");
-        $response = Telegram::bot('transferBot')->setWebhook(['url' => $url]);
+        //        $url = env('TELEGRAM_TRANSFER_BOT_WEBHOOK_URL');
+        //        $this->info("Setting transfer tg bot webhook: $url");
+        //        $response = Telegram::bot('transferBot')->setWebhook(['url' => $url]);
+        //        $this->info(json_encode($response));
+
+        $url = env('TELEGRAM_INVITE_BOT_WEBHOOK_URL');
+        $this->info("Setting invite tg bot webhook: $url");
+        $response = Telegram::bot('inviteBot')->setWebhook(['url' => $url]);
         $this->info(json_encode($response));
 
         return parent::SUCCESS;

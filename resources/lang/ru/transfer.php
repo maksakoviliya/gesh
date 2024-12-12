@@ -7,6 +7,6 @@ return [
     ],
     'destination' => [
         'airport' => 'В аэропорт',
-        'sheregesh' => 'В Шерегеш'
-    ]
+        'sheregesh' => 'В Шерегеш',
+    ],
 ];

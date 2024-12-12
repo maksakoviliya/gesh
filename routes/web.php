@@ -23,6 +23,7 @@ use App\Http\Controllers\Account\Profile\AccountProfileUpdateController;
 use App\Http\Controllers\Account\Reservations\ReservationsListController;
 use App\Http\Controllers\Apartments\ApartmentShowController;
 use App\Http\Controllers\Apartments\ChatController;
+use App\Http\Controllers\Bots\InviteBotController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
 use App\Http\Controllers\Content\PolicyPageController;
 use App\Http\Controllers\Content\RulesPageController;
@@ -55,6 +56,7 @@ use App\Http\Controllers\Transfer\TransferScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('{token}/webhook', TelegramWebhookController::class);
+Route::post('telegram_invite/{token}/webhook', InviteBotController::class);
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/map', HomeMapController::class)->name('home.map');

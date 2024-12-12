@@ -1,5 +1,6 @@
 <?php
 
+use App\Commands\Invite\StartCommand as InviteStartCommand;
 use App\Commands\Transfer\StartCommand as TransferStartCommand;
 use App\TelegramCommands\SetDisabledDatesCommand;
 use App\TelegramCommands\StartCommand;
@@ -48,6 +49,13 @@ return [
             'token' => env('TELEGRAM_TRANSFER_BOT_TOKEN'),
             'commands' => [
                 TransferStartCommand::class,
+            ],
+        ],
+
+        'inviteBot' => [
+            'token' => env('TELEGRAM_INVITE_BOT_TOKEN'),
+            'commands' => [
+                InviteStartCommand::class,
             ],
         ],
     ],
