@@ -4,14 +4,11 @@ namespace App\Filament\Resources\ApartmentResource\RelationManagers;
 
 use App\Enums\ReservationRequest\Status;
 use App\Models\ReservationRequest;
-use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ReservationRequestsRelationManager extends RelationManager
 {

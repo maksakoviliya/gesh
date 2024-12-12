@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums\Transfer;
 
-enum RequestTypeEnum: string
+enum ButtonDataEnum: string
 {
     case TAXI = 'taxi';
 

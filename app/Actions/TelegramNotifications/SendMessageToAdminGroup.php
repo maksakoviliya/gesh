@@ -505,8 +505,10 @@ class SendMessageToAdminGroup
     {
         try {
             $text = "*Новый запрос на трансфер через телеграм бота!* \n\n";
-            $text .= 'Тип: '.$this->processText(__('transfer.type.'.$transferRequest->type->value))."\n";
+            $text .= 'Тип: '.__('transfer.type.'.$transferRequest->type->value)."\n";
+            $text .= 'Направление: '.__('transfer.destination.'.$transferRequest->destination->value)."\n";
             $text .= 'Дата: '.$transferRequest->start_at->format('d.m.Y')."\n";
+            $text .= 'Время: '.$transferRequest->start_time."\n";
             $text .= 'Пассажиры: '.$transferRequest->passengers_count."\n";
             $text .= 'Пользователь: '.$this->processText($transferRequest->user->name)."\n";
             $text .= 'Телеграм: @'.$this->processText($transferRequest->user->telegram_username)."\n";

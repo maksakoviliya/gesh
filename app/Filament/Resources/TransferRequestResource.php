@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Enums\Transfer\ButtonDataEnum;
 use App\Enums\Transfer\RequestStatusEnum;
-use App\Enums\Transfer\RequestTypeEnum;
 use App\Filament\Resources\TransferRequestResource\Pages;
 use App\Models\TransferRequest;
 use App\Models\User;
@@ -45,8 +45,8 @@ class TransferRequestResource extends Resource
                         ->preload(),
                     Select::make('type')
                         ->options([
-                            RequestTypeEnum::TAXI->value => RequestTypeEnum::TAXI->value,
-                            RequestTypeEnum::TRANSFER->value => RequestTypeEnum::TRANSFER->value,
+                            ButtonDataEnum::TAXI->value => ButtonDataEnum::TAXI->value,
+                            ButtonDataEnum::TRANSFER->value => ButtonDataEnum::TRANSFER->value,
                         ])->columnSpan(1),
                     TextInput::make('passengers_count')->numeric()->columnSpan(1),
                     Select::make('status')
@@ -93,8 +93,8 @@ class TransferRequestResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
                     ->options([
-                        RequestTypeEnum::TAXI->value,
-                        RequestTypeEnum::TRANSFER->value,
+                        ButtonDataEnum::TAXI->value,
+                        ButtonDataEnum::TRANSFER->value,
                     ]),
                 Tables\Filters\SelectFilter::make('status')
                     ->options([

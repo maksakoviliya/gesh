@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace App\Commands\Transfer;
 
-use App\Enums\Transfer\RequestTypeEnum;
 use App\Services\Transfer\TelegramService;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
-use Telegram\Bot\Keyboard\Keyboard;
-use Throwable;
 
 final class StartCommand extends Command
 {
@@ -32,37 +29,20 @@ final class StartCommand extends Command
     {
         $update = $this->getUpdate();
 
-        Log::info(__METHOD__.' : '.$update->objectType());
-
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         $user = $this->telegramService->getUserFromUpdateData($update);
         if (! $user) {
+            Log::error('User not found: '.__METHOD__);
+
             return;
         }
-        $keyboard = Keyboard::make()
-            ->inline()
-            ->row([
-                Keyboard::inlineButton([
-                    'text' => '🚖 Такси',
-                    'callback_data' => RequestTypeEnum::TAXI->value,
-                ]),
-            ])
-            ->row([
-                Keyboard::inlineButton([
-                    'text' => '🚐 Трансфер с попутчиками',
-                    'callback_data' => RequestTypeEnum::TRANSFER->value,
-                ]),
-            ]);
+        $chatId = $update->getMessage()->getChat()->getId();
+        if (! $chatId) {
+            Log::error('Chat not found: '.__METHOD__);
 
-        try {
-            $this->replyWithMessage([
-                'text' => "Привет, $user->name!\nВыберите необходимую услугу:",
-                'reply_markup' => $keyboard,
-            ]);
-        } catch (Throwable $exception) {
-            Log::error('Error sending message: '.$exception->getMessage());
+            return;
         }
-
+        $this->telegramService->sendStartMessage($chatId, $user);
     }
 }

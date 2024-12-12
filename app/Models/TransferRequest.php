@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Transfer\ButtonDataEnum;
+use App\Enums\Transfer\DestinationEnum;
 use App\Enums\Transfer\RequestStatusEnum;
-use App\Enums\Transfer\RequestTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,12 +21,15 @@ final class TransferRequest extends Model
         'start_at',
         'passengers_count',
         'status',
+        'destination',
+        'start_time',
     ];
 
     protected $casts = [
         'status' => RequestStatusEnum::class,
-        'type' => RequestTypeEnum::class,
+        'type' => ButtonDataEnum::class,
         'start_at' => 'datetime',
+        'destination' => DestinationEnum::class
     ];
 
     public function user(): BelongsTo

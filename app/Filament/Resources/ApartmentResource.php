@@ -375,7 +375,7 @@ class ApartmentResource extends Resource
             SideReservationsRelationManager::class,
             DatePricesRelationManager::class,
             DisabledDatesRelationManager::class,
-            ReservationRequestsRelationManager::class
+            ReservationRequestsRelationManager::class,
         ];
     }
 
