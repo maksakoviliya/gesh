@@ -382,7 +382,7 @@ final class TelegramService
                 ]),
             ]);
 
-        $tg = $user->telegram_username ? "в телеграм: $user->telegram_username или" : '';
+        $tg = $user->telegram_username ? " в телеграм: $user->telegram_username или " : '';
 
         Telegram::bot('transferBot')->sendMessage([
             'chat_id' => $chatId,
