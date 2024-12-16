@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
@@ -96,7 +97,7 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+               BulkActionGroup::make([
                    DeleteBulkAction::make(),
                 ]),
             ]);
