@@ -61,8 +61,12 @@ final class TelegramService
             }
         }
 
-
-        $data = $update->getRelatedObject()->get('data');
+        Log::debug("Update in processUpdates: " . json_encode($update));
+        try {
+            $data = $update->getRelatedObject()->get('data');
+        } catch (Throwable $e) {
+            $data = null;
+        }
         Log::debug(__METHOD__ . ', Data: ' . json_encode($data));
         if (!$data) {
             $this->processText($update);
