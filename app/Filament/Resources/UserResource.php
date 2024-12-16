@@ -58,35 +58,35 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->description(fn (User $record): string => $record->roles->pluck('name')->join(', '))
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')->searchable(),
-                Tables\Columns\TextColumn::make('roles')
-                    ->badge()
-                    ->state(function (User $record) {
-                        return $record->roles()->first()?->name;
-                    })
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('telegram_chat_id')
-                    ->badge()
-                    ->color(Color::Blue)
-                    ->sortable()
-                    ->label('Телеграм бот')
-                    ->state(fn (User $record) => $record->telegram_chat_id ? 'Подключен' : null)
-                    ->icon('heroicon-o-check-circle'),
-                Tables\Columns\TextColumn::make('telegram_username')
-                    ->label('Телеграм')
-                    ->sortable()
-                    ->state(fn (User $record) => $record->telegram_username ? "@$record->telegram_username" : null),
-                Tables\Columns\TextColumn::make('avito_access_token')
-                    ->badge()
-                    ->color(Color::Blue)
-                    ->sortable()
-                    ->label('Авито')
-                    ->state(fn (User $record) => $record->avito_access_token ? 'Подключен' : null)
-                    ->icon('heroicon-o-check-circle'),
-                Tables\Columns\TextColumn::make('created_at')->date('d.m.Y'),
+//                Tables\Columns\TextColumn::make('email')
+//                    ->description(fn (User $record): string => $record->roles->pluck('name')->join(', '))
+//                    ->searchable(),
+//                Tables\Columns\TextColumn::make('phone')->searchable(),
+//                Tables\Columns\TextColumn::make('roles')
+//                    ->badge()
+//                    ->state(function (User $record) {
+//                        return $record->roles()->first()?->name;
+//                    })
+//                    ->sortable(),
+//                Tables\Columns\TextColumn::make('telegram_chat_id')
+//                    ->badge()
+//                    ->color(Color::Blue)
+//                    ->sortable()
+//                    ->label('Телеграм бот')
+//                    ->state(fn (User $record) => $record->telegram_chat_id ? 'Подключен' : null)
+//                    ->icon('heroicon-o-check-circle'),
+//                Tables\Columns\TextColumn::make('telegram_username')
+//                    ->label('Телеграм')
+//                    ->sortable()
+//                    ->state(fn (User $record) => $record->telegram_username ? "@$record->telegram_username" : null),
+//                Tables\Columns\TextColumn::make('avito_access_token')
+//                    ->badge()
+//                    ->color(Color::Blue)
+//                    ->sortable()
+//                    ->label('Авито')
+//                    ->state(fn (User $record) => $record->avito_access_token ? 'Подключен' : null)
+//                    ->icon('heroicon-o-check-circle'),
+//                Tables\Columns\TextColumn::make('created_at')->date('d.m.Y'),
             ])
             ->filters([
                 //
