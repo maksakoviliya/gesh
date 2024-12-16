@@ -602,6 +602,39 @@ namespace App\Models{
 	final class Transaction extends \Eloquent {}
 }
 
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $user_id
+ * @property \App\Enums\Transfer\ButtonDataEnum $type
+ * @property \Illuminate\Support\Carbon|null $start_at
+ * @property int|null $passengers_count
+ * @property \App\Enums\Transfer\RequestStatusEnum $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $start_time
+ * @property \App\Enums\Transfer\DestinationEnum|null $destination
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\TransferRequestFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest query()
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereDestination($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest wherePassengersCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereStartAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransferRequest whereUserId($value)
+ */
+	final class TransferRequest extends \Eloquent {}
+}
+
 namespace App\Models\Transfer{
 /**
  * 
@@ -744,11 +777,13 @@ namespace App\Models{
  * @property string|null $avito_access_token
  * @property string|null $avito_refresh_token
  * @property int|null $avito_user_id
+ * @property string|null $telegram_username
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Apartment> $apartmentsUnderManagement
  * @property-read int|null $apartments_under_management_count
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoAccessToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoRefreshToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvitoUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTelegramUsername($value)
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser, \Illuminate\Contracts\Auth\MustVerifyEmail {}
 }
