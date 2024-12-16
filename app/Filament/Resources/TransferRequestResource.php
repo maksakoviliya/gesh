@@ -11,6 +11,7 @@ use App\Filament\Resources\TransferRequestResource\Pages;
 use App\Models\TransferRequest;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -40,10 +41,12 @@ class TransferRequestResource extends Resource
                 Forms\Components\Section::make('Запрос на трансфер')->columns()->schema([
                     Select::make('user')->relationship('user', 'name')
                         ->searchable()
-                        ->columnSpan(2)
                         ->disabled(! Auth::user()->hasRole(['admin']))
                         ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->phone}")
                         ->preload(),
+                    Placeholder::make('telegram')
+                        ->label('Телеграм')
+                        ->content(fn (TransferRequest $record): ?string => $record->user?->telegram_username ? '@'.$record->user->telegram_username : '-'),
                     Select::make('type')
                         ->options([
                             ButtonDataEnum::TAXI->value => ButtonDataEnum::TAXI->value,
