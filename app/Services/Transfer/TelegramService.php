@@ -63,6 +63,7 @@ final class TelegramService
             }
         } catch (Throwable $exception) {
             Log::error($exception->getMessage());
+            Log::debug(__METHOD__ . 'Debug update: ' . json_encode($update));
         }
 
         $data = $update->getRelatedObject()?->data;
