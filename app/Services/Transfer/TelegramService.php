@@ -54,7 +54,7 @@ final class TelegramService
      */
     public function processUpdates(array|Update $update): void
     {
-        if ($entities = $update->getMessage()->entities) {
+        if ($entities = $update->getMessage()?->entities) {
             $type = Arr::get($entities, '0.type');
             if ($type === 'bot_command') {
                 return;
