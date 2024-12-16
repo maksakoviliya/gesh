@@ -79,6 +79,7 @@ class UserResource extends Resource
                     ->icon('heroicon-o-check-circle'),
                 Tables\Columns\TextColumn::make('telegram_username')
                     ->label('Телеграм')
+                    ->searchable()
                     ->sortable()
                     ->state(fn (User $record) => $record->telegram_username ? "@$record->telegram_username" : null),
                 Tables\Columns\TextColumn::make('avito_access_token')
