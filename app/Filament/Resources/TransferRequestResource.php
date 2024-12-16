@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Enums\Transfer\ButtonDataEnum;
+use App\Enums\Transfer\DestinationEnum;
 use App\Enums\Transfer\RequestStatusEnum;
 use App\Filament\Resources\TransferRequestResource\Pages;
 use App\Models\TransferRequest;
@@ -57,6 +58,11 @@ class TransferRequestResource extends Resource
                             RequestStatusEnum::REJECTED->value => RequestStatusEnum::REJECTED->value,
                             RequestStatusEnum::CANCELLED->value => RequestStatusEnum::CANCELLED->value,
                         ]),
+                    Select::make('destination')
+                        ->options([
+                            DestinationEnum::AIRPORT->value => DestinationEnum::AIRPORT->value,
+                            DestinationEnum::SHEREGESH->value => DestinationEnum::SHEREGESH->value,
+                        ]),
                     Forms\Components\DateTimePicker::make('start_at'),
                 ]),
             ]);
@@ -85,8 +91,10 @@ class TransferRequestResource extends Resource
                     ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')->badge()->toggleable(),
+                Tables\Columns\TextColumn::make('destination')->badge()->toggleable(),
                 Tables\Columns\TextColumn::make('status')->badge()->toggleable(),
                 Tables\Columns\TextColumn::make('start_at')->date('d.m.Y')->sortable(),
+                Tables\Columns\TextColumn::make('start_time')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->date('d.m.Y H:i:s')->sortable()->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')->date('d.m.Y H:i:s')->sortable()->toggleable(),
             ])
