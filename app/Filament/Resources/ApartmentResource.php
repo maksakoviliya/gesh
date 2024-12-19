@@ -301,8 +301,7 @@ class ApartmentResource extends Resource
                     ->sortable(),
                 TextColumn::make('street')
                     ->searchable()
-                    ->toggleable(false)
-                    ->hidden(),
+                    ->toggleable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
