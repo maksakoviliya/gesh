@@ -162,6 +162,10 @@ class ApartmentResource extends Resource
                                     ->disabled(! Auth::user()->hasRole(['admin']))
                                     ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->email}")
                                     ->preload(),
+                                Forms\Components\DateTimePicker::make('visible_until')
+                                    ->seconds(false)
+                                    ->closeOnDateSelection()
+                                    ->label('Показывать до'),
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
                                     ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),

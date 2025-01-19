@@ -29,13 +29,13 @@ final class TelegramService
         $from = $update->getChat();
         Log::info(json_encode($from));
         $username = $from->username;
-        if (!$username) {
-            $username = 'random_' . Str::random(8);
+        if (! $username) {
+            $username = 'random_'.Str::random(8);
         }
-        if (!$user = User::query()
+        if (! $user = User::query()
             ->where('telegram_username', $username)->first()) {
             $name = "$from->first_name $from->last_name";
-            if (!trim($name)) {
+            if (! trim($name)) {
                 throw new RuntimeException('No name found');
             }
 
@@ -61,14 +61,14 @@ final class TelegramService
             }
         }
 
-        Log::debug("Update in processUpdates: " . json_encode($update));
+        Log::debug('Update in processUpdates: '.json_encode($update));
         try {
             $data = $update->getRelatedObject()->get('data');
         } catch (Throwable $e) {
             $data = null;
         }
-        Log::debug(__METHOD__ . ', Data: ' . json_encode($data));
-        if (!$data) {
+        Log::debug(__METHOD__.', Data: '.json_encode($data));
+        if (! $data) {
             $this->processText($update);
 
             return;
@@ -82,15 +82,15 @@ final class TelegramService
     protected function processButtonClick(Update $update, string $button_data): void
     {
         $user = $this->getUserFromUpdateData($update);
-        if (!$user) {
-            Log::error('No user found: ' . __METHOD__);
+        if (! $user) {
+            Log::error('No user found: '.__METHOD__);
 
             return;
         }
 
         $chatId = $update->getMessage()->getChat()->getId();
-        if (!$chatId) {
-            Log::error('No chatId found: ' . __METHOD__);
+        if (! $chatId) {
+            Log::error('No chatId found: '.__METHOD__);
 
             return;
         }
@@ -108,7 +108,7 @@ final class TelegramService
             }
 
             $request = $request->where('type', $type)->first();
-            if (!$request) {
+            if (! $request) {
                 $request = TransferRequest::query()
                     ->create([
                         'user_id' => $user->id,
@@ -135,31 +135,31 @@ final class TelegramService
 
     protected function sendRequestMessage(string|int $chatId, TransferRequest $request): void
     {
-        if (!$request->destination) {
+        if (! $request->destination) {
             $this->sendDestinationMessage($chatId);
 
             return;
         }
 
-        if (!$request->start_at) {
+        if (! $request->start_at) {
             $this->sendSimpleMessage($chatId, 'Введите дату в формате ДД.ММ.ГГГГ');
 
             return;
         }
 
-        if (!$request->start_time) {
+        if (! $request->start_time) {
             $this->sendSimpleMessage($chatId, 'Введите время в формате ЧЧ:ММ');
 
             return;
         }
 
-        if (!$request->passengers_count) {
+        if (! $request->passengers_count) {
             $this->sendSimpleMessage($chatId, 'Введите количество пассажиров');
 
             return;
         }
 
-        if (!$request->user?->phone) {
+        if (! $request->user?->phone) {
             $this->sendSimpleMessage($chatId, 'Укажите ваш контактный телефон в формате +7XXXXXXXXXX');
 
             return;
@@ -180,14 +180,14 @@ final class TelegramService
     protected function processText(Update $update): void
     {
         $user = $this->getUserFromUpdateData($update);
-        if (!$user) {
-            Log::error('Can not find user: ' . __METHOD__);
+        if (! $user) {
+            Log::error('Can not find user: '.__METHOD__);
 
             return;
         }
         $chatId = $update->getMessage()->getChat()->getId();
-        if (!$chatId) {
-            Log::error('Can not find chatId: ' . __METHOD__);
+        if (! $chatId) {
+            Log::error('Can not find chatId: '.__METHOD__);
 
             return;
         }
@@ -198,8 +198,8 @@ final class TelegramService
             ->where('status', RequestStatusEnum::DRAFT->value)
             ->orderBy('created_at', 'desc')
             ->first();
-        if (!$request) {
-            Log::error('Cannot find request: ' . __METHOD__);
+        if (! $request) {
+            Log::error('Cannot find request: '.__METHOD__);
             $this->sendSimpleMessage($chatId, "Что-то пошло не так (( \n Попробуйте начать с начала, выполнив команду /start");
 
             return;
@@ -207,31 +207,31 @@ final class TelegramService
 
         $text = $update->getMessage()->text;
 
-        if (!$request->destination) {
+        if (! $request->destination) {
             $this->sendDestinationMessage($chatId);
 
             return;
         }
 
-        if (!$request->start_at) {
+        if (! $request->start_at) {
             $this->processStartAtText($chatId, $request, $text);
 
             return;
         }
 
-        if (!$request->start_time) {
+        if (! $request->start_time) {
             $this->processStartTimeText($chatId, $request, $text);
 
             return;
         }
 
-        if (!$request->passengers_count) {
-            if (!$this->processPassengersCountText($chatId, $request, $text)) {
+        if (! $request->passengers_count) {
+            if (! $this->processPassengersCountText($chatId, $request, $text)) {
                 return;
             }
         }
 
-        if (!$user->phone) {
+        if (! $user->phone) {
             $this->processPhoneText($chatId, $request, $user, $text);
         }
 
@@ -269,7 +269,7 @@ final class TelegramService
             ]);
 
         } catch (Throwable $exception) {
-            Log::error('Error sending message: ' . $exception->getMessage());
+            Log::error('Error sending message: '.$exception->getMessage());
         }
     }
 
@@ -281,8 +281,8 @@ final class TelegramService
                 'text' => $text,
             ]);
         } catch (Throwable $exception) {
-            Log::error('Error sending message: ' . $exception->getMessage());
-            Log::error('Error in: ' . __METHOD__);
+            Log::error('Error sending message: '.$exception->getMessage());
+            Log::error('Error in: '.__METHOD__);
         }
     }
 
@@ -310,8 +310,8 @@ final class TelegramService
                 'reply_markup' => $keyboard,
             ]);
         } catch (Throwable $exception) {
-            Log::error('Error sending message: ' . $exception->getMessage());
-            Log::error('Error in: ' . __METHOD__);
+            Log::error('Error sending message: '.$exception->getMessage());
+            Log::error('Error in: '.__METHOD__);
         }
     }
 
@@ -333,7 +333,7 @@ final class TelegramService
     protected function processPassengersCountText(string|int $chatId, TransferRequest $request, string $text): bool
     {
         $passengers_count = intval($text);
-        if (!$passengers_count) {
+        if (! $passengers_count) {
             $this->sendSimpleMessage($chatId, 'Неверный формат числа. Укажите целое число.');
 
             return false;
@@ -348,7 +348,7 @@ final class TelegramService
     {
         $phone = new PhoneNumber($text, 'ru');
 
-        if (!$phone->isValid()) {
+        if (! $phone->isValid()) {
             $this->sendSimpleMessage($chatId, 'Неверно указан телефон. Укажите ваш контактный телефон в формате +7XXXXXXXXXX');
 
             return;
@@ -391,7 +391,7 @@ final class TelegramService
 
         Telegram::bot('transferBot')->sendMessage([
             'chat_id' => $chatId,
-            'text' => "Спасибо, $user->name! \n В ближайшее время с вами свяжутся" . $tg . "по телефону: $user->phone",
+            'text' => "Спасибо, $user->name! \n В ближайшее время с вами свяжутся".$tg."по телефону: $user->phone",
             'reply_markup' => $keyboard,
         ]);
     }
@@ -405,7 +405,7 @@ final class TelegramService
 
     protected function processStartTimeText(string|int $chatId, TransferRequest $request, string $text): void
     {
-        if (!$this->isCorrectTime($text)) {
+        if (! $this->isCorrectTime($text)) {
             $this->sendSimpleMessage($chatId, 'Неверный формат времени. Нужно отправить в формате ЧЧ:ММ');
 
             return;
@@ -420,7 +420,7 @@ final class TelegramService
 
     private function isCorrectTime(string $text): bool
     {
-        if (!preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/', $text)) {
+        if (! preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/', $text)) {
             return false;
         }
 

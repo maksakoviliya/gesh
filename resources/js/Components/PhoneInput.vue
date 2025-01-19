@@ -47,7 +47,12 @@
 			class="absolute text-md duration-150 transform -translate-y-3 scale-75 top-5 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
 			:class="error ? 'text-rose-500' : 'text-zinc-400 dark:text-slate-400'"
 		>
-			{{ label }}
+			{{ label
+			}}<sup
+				v-if="required"
+				class="text-sm text-rose-400"
+				>*</sup
+			>
 		</label>
 		<div
 			v-if="!!error"

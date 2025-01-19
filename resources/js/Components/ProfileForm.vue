@@ -15,6 +15,7 @@
 		name: props.user.name,
 		email: props.user.email,
 		phone: props.user.phone,
+		telegram_username: props.user.telegram_username,
 		old_password: null,
 		password: null,
 		password_confirmation: null,
@@ -29,7 +30,6 @@
 			{
 				onSuccess() {
 					successToast('Данные профиля успешно обновлены')
-					form.reset()
 				},
 				preserveScroll: true,
 			}
@@ -56,6 +56,12 @@
 			:required="true"
 			:error="form.errors.phone"
 			v-model="form.phone"
+		/>
+		<Input
+			key="telegram_username"
+			label="Ваш ник в телеграме"
+			:error="form.errors.telegram_username"
+			v-model="form.telegram_username"
 		/>
 		<hr class="my-4 dark:border-slate-600" />
 		<Input

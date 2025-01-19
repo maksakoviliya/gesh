@@ -11,8 +11,9 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('sync-calendars')->everyFifteenMinutes();
-        $schedule->command('clear-unpayied-reservations')->everyFifteenMinutes();
+        $schedule->command('app:check-visible-until-command')->daily();
+//        $schedule->command('sync-calendars')->everyFifteenMinutes();
+//        $schedule->command('clear-unpayied-reservations')->everyFifteenMinutes();
         //        $schedule->command('app:clear-old-pending-drive-user-entities')->everyFiveMinutes();
     }
 

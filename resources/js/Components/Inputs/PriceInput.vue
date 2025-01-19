@@ -10,10 +10,6 @@
 		required: Boolean | null,
 		modelValue: String | null,
 	})
-
-	const priceWithCommission = computed(() => {
-		return Math.ceil(props.modelValue * 1.176)
-	})
 </script>
 
 <template>
@@ -52,9 +48,6 @@
 				></span
 			>
 		</label>
-		<span class="text-sm text-zinc-500 dark:text-zinc-300"
-			>Для гостя: <span class="text-lg font-medium">{{ priceWithCommission }}₽</span>
-		</span>
 		<div
 			v-if="!!error"
 			class="text-rose-500 text-sm font-light"

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Enums\ReservationRequest\Status;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,6 +16,7 @@ class ApartmentResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
+            'is_visible' => $this->resource->isVisible,
             'step' => $this->resource->step,
             'title' => $this->resource->title,
             'status' => $this->resource->status,
@@ -57,10 +57,6 @@ class ApartmentResource extends JsonResource
             'dates' => DatePriceResource::collection($this->whenLoaded('datePrices')),
             'owner' => new UserResource($this->whenLoaded('user')),
             'fast_reserve' => $this->resource->fast_reserve,
-            'reservation_requests_count' => $this->whenCounted(
-                'reservationRequests',
-                $this->reservationRequests()->where('status', Status::Pending)->count()
-            ),
             'all_disabled_dates' => $this->whenAppended('allDisabledDays'),
             'i_cal_links' => ICalLinkResource::collection($this->whenLoaded('ICalLinks')),
             'total_price' => $this->getTotalPriceForPeriod($request),

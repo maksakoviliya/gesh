@@ -25,6 +25,7 @@ use App\Http\Controllers\Apartments\ApartmentShowController;
 use App\Http\Controllers\Apartments\ChatController;
 use App\Http\Controllers\Bots\InviteBotController;
 use App\Http\Controllers\Chat\Messages\MessageStoreController;
+use App\Http\Controllers\ContactRequestController;
 use App\Http\Controllers\Content\PolicyPageController;
 use App\Http\Controllers\Content\RulesPageController;
 use App\Http\Controllers\DisabledDates\DeleteDisabledDateController;
@@ -69,6 +70,12 @@ Route::prefix('instructors')
         Route::get('/', InstructorsListController::class)->name('list');
         Route::get('{instructor}', InstructorsViewController::class)->name('view');
         Route::post('{instructor}/schedule', InstructorsScheduleController::class)->name('schedule');
+    });
+
+Route::prefix('contact-request')
+    ->as('contact-request.')
+    ->group(function () {
+        Route::post('/', [ContactRequestController::class, 'store'])->name('store');
     });
 
 // Transfer

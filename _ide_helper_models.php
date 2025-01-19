@@ -110,8 +110,10 @@ namespace App\Models{
  * @property string|null $avito_link
  * @property string|null $manager_id
  * @property \Illuminate\Support\Carbon|null $last_review_at
+ * @property \Illuminate\Support\Carbon|null $visible_until
  * @property-read mixed $all_disabled_days
  * @property-read mixed $full_address
+ * @property-read mixed $is_visible
  * @property-read \App\Models\User|null $manager
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationRequest> $reservationRequests
  * @property-read int|null $reservation_requests_count
@@ -123,6 +125,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereIsVerified($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereLastReviewAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereManagerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereVisibleUntil($value)
  */
 	final class Apartment extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }

@@ -174,22 +174,6 @@
 				@click="handleClick"
 				:label="'Редактировать'"
 			/>
-			<ButtonComponent
-				v-if="props.apartment.status === 'published'"
-				@click="goToCalendar(props.apartment.id)"
-				:small="true"
-				label="Календарь"
-			/>
-			<div class="relative">
-				<ButtonComponent
-					v-if="props.apartment.status === 'published'"
-					@click="goToChat(props.apartment.id)"
-					:small="true"
-					:outline="true"
-					label="Чат"
-				/>
-				<Indicator :count="props.apartment.reservation_requests_count" />
-			</div>
 		</div>
 
 		<ModalConfirmDeleting

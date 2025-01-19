@@ -19,24 +19,16 @@
 			icon: 'ri-profile-line',
 		},
 		{
-			id: 'reservations',
-			key: 'reservations.list',
-			title: 'Мои бронирования',
-			subtitle: 'Места куда вы поедете',
-			icon: 'md-mapshomework-outlined',
-		},
-		{
 			id: 'apartments',
 			key: 'apartments.list',
 			title: 'Мои объекты',
-			subtitle: 'Ваша недвижимость для проживания',
+			subtitle: 'Ваша недвижимость для аренды',
 			icon: 'md-mapshomework-outlined',
 		},
 	])
 
 	const props = defineProps({
 		user: Object,
-		reservation_requests_count: Number,
 	})
 
 	const subtitle = computed(() => {
@@ -77,12 +69,6 @@
 					<div class="text-lg font-semibold mt-6 dark:text-white">
 						<div class="relative inline-block w-auto">
 							{{ section.title }}
-							<div
-								v-if="reservation_requests_count > 0 && section.id === 'reservations'"
-								class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-blue-500 border-2 border-white rounded-full -top-2 -end-5 dark:border-gray-900"
-							>
-								{{ reservation_requests_count }}
-							</div>
 						</div>
 					</div>
 					<div class="text-neutral-500 font-light dark:text-slate-400">{{ section.subtitle }}</div>

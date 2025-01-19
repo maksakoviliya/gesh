@@ -221,6 +221,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         if (Arr::has($data, 'password')) {
             $updates['password'] = Hash::make(Arr::get($data, 'password'));
         }
+        if (Arr::has($data, 'telegram_username')) {
+            $updates['telegram_username'] = Arr::get($data, 'telegram_username');
+        }
 
         return $this->update($updates);
     }

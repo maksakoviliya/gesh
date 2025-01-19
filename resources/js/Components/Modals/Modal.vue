@@ -1,5 +1,5 @@
 <script setup>
-	import { computed, ref } from 'vue'
+	import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
 	import { HiX } from 'oh-vue-icons/icons'
@@ -48,6 +48,19 @@
 		}
 
 		emit('onSecondaryAction')
+	}
+
+	onMounted(() => {
+		window.addEventListener('keydown', handleKeydown)
+	})
+	onBeforeUnmount(() => {
+		window.removeEventListener('keydown', handleKeydown)
+	})
+
+	const handleKeydown = (event) => {
+		if (event.key === 'Escape') {
+			handleClose()
+		}
 	}
 </script>
 

@@ -18,7 +18,7 @@ final class AccountProfileController extends Controller
         $user = Auth::user();
 
         return Inertia::render('Account/Profile', [
-            'user' => new UserResource($user, true),
+            'user' => new UserResource($user),
         ]);
     }
 }

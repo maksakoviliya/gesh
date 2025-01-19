@@ -11,21 +11,10 @@
 </script>
 
 <template>
-	<form
+	<div
 		class="w-full relative"
 		autocomplete="off"
 	>
-		<!--        {formatPrice && (-->
-		<!--        <BiDollar-->
-		<!--            size={24}-->
-		<!--            class="-->
-		<!--            text-neutral-700-->
-		<!--            absolute-->
-		<!--            top-5-->
-		<!--            left-2-->
-		<!--          "-->
-		<!--        />-->
-		<!--        )}-->
 		<input
 			:id="id"
 			:disabled="disabled"
@@ -40,9 +29,6 @@
                 ${error ? 'focus:border-rose-500' : 'focus:border-black dark:focus:border-slate-300'}
             `"
 		/>
-
-		<!--        ${formatPrice ? 'pl-9' : 'pl-4'}-->
-		<!--        `}-->
 		<label
 			:for="id"
 			class="absolute text-md duration-150 cursor-text transform -translate-y-3 scale-75 top-5 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
@@ -61,7 +47,7 @@
 		>
 			{{ error }}
 		</div>
-	</form>
+	</div>
 </template>
 
 <style>

@@ -60,10 +60,7 @@ final class StepController extends Controller
             10 => Inertia::render('Account/Apartments/Steps/Step10', [
                 'apartment' => $apartment,
             ]),
-            11 => Inertia::render('Account/Apartments/Steps/Step11', [
-                'apartment' => $apartment,
-            ]),
-            12 => Inertia::render('Account/Apartments/Steps/Step12', [
+            11, 12 => Inertia::render('Account/Apartments/Steps/Step12', [
                 'apartment' => $apartment,
             ]),
             13 => Inertia::render('Account/Apartments/Steps/Step13', [

@@ -44,6 +44,13 @@ final class UpdateRequest extends FormRequest
                 'max:155',
                 Rule::unique('users')->ignore($this->user()->id),
             ],
+            'telegram_username' => [
+                'nullable',
+                'string',
+                'min:5',
+                'max:32',
+                'regex:/^[a-zA-Z0-9_]+$/',
+            ],
 
             'old_password' => 'sometimes|max:155|current_password:web',
             'password' => [
@@ -51,6 +58,13 @@ final class UpdateRequest extends FormRequest
                 new Password(6),
                 'confirmed',
             ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'telegram_username.regex' => 'Неправильный формат Telegram никнейма. Никнейм должен содержать только буквы, цифры или подчеркивания.',
         ];
     }
 }

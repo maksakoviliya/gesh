@@ -150,6 +150,11 @@ final class Apartment extends Model implements HasMedia
         'fast_reserve' => 'boolean',
         'avito_synced_at' => 'datetime',
         'last_review_at' => 'datetime',
+        'visible_until' => 'datetime',
+    ];
+
+    protected $appends = [
+        'is_visible',
     ];
 
     public function registerMediaConversions(?Media $media = null): void
@@ -374,12 +379,12 @@ final class Apartment extends Model implements HasMedia
 
         // Step 10
         if (Arr::has($data, 'base_weekdays_price')) {
-            $this['weekdays_price'] = ceil(Arr::get($data, 'base_weekdays_price') * 1.176);
-            $this['base_weekdays_price'] = intval(Arr::get($data, 'base_weekdays_price'));
+            $this['weekdays_price'] = Arr::get($data, 'base_weekdays_price');
+            $this['base_weekdays_price'] = Arr::get($data, 'base_weekdays_price');
         }
         if (Arr::has($data, 'base_weekends_price')) {
-            $this['weekends_price'] = ceil(Arr::get($data, 'base_weekends_price') * 1.176);
-            $this['base_weekends_price'] = intval(Arr::get($data, 'base_weekends_price'));
+            $this['weekends_price'] = Arr::get($data, 'base_weekends_price');
+            $this['base_weekends_price'] = Arr::get($data, 'base_weekends_price');
         }
 
         $this->step = Arr::get($data, 'step') + 1;
@@ -580,5 +585,20 @@ final class Apartment extends Model implements HasMedia
     public function manager(): BelongsTo
     {
         return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    public function isVisible(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                $visibleUntil = Arr::get($attributes, 'visible_until');
+
+                if (is_null($visibleUntil)) {
+                    return false;
+                }
+
+                return Carbon::parse($visibleUntil)->isFuture();
+            }
+        );
     }
 }

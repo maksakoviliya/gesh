@@ -1,0 +1,1 @@
+import i from"./NotificationItem-462996bd.js";import{l as e,w as a,a as n,f as c}from"./app-d2d96d6e.js";const _={__name:"ReservationCreatedNotification",props:{notification:{type:Object}},setup(t){const o=t;return(r,s)=>(n(),e(i,{notification:o.notification},{title:a(()=>[c(" Бронирование успешно создано ")]),_:1},8,["notification"]))}};export{_ as default};

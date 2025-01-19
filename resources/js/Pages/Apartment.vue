@@ -14,6 +14,7 @@
 	import Map from '@/Components/Map/Map.vue'
 	import Popover from '@/Components/Interactive/Popover.vue'
 	import SmallInfoBlock from '@/Components/Blocks/SmallInfoBlock.vue'
+	import ApartmentContacts from '@/Components/Apartments/ApartmentContacts.vue'
 
 	const props = defineProps({
 		apartment: Array | Object,
@@ -50,35 +51,6 @@
 		children: page.props.query['children'] ?? 0,
 	})
 
-	const detalizationText = computed(() => {
-		let nights = null
-		if (form.range <= 1 || form.range === 21) {
-			nights = `${form.range} ночь`
-		}
-		if ((form.range > 1 && form.range <= 5) || (form.range > 21 && form.range <= 24)) {
-			nights = `${form.range} ночи`
-		}
-		if ((form.range > 5 && form.range <= 20) || form.range > 24) {
-			nights = `${form.range} ночей`
-		}
-		return `${nights}`
-	})
-
-	const handleSetDates = (dates) => {
-		console.log('dates', dates)
-		if (!dates) {
-			form.start = null
-			form.end = null
-			return
-		}
-		const start = dayjs(dates.start)
-		const end = dayjs(dates.end)
-		form.range = end.diff(start, 'day')
-		form.start = start.set('hour', 15).set('minute', 0).toDate()
-		form.end = end.set('hour', 12).set('minute', 0).toDate()
-		console.log('form', form)
-	}
-
 	onMounted(() => {
 		const startDate = page.props.query['start'] ?? null
 		const endDate = page.props.query['end'] ?? null
@@ -95,52 +67,7 @@
 
 	const details = ref([])
 
-	const basePrice = computed(() => {
-		const start = dayjs(form.start)
-		const end = dayjs(form.end)
-		details.value = []
-		let sum = 0
-		for (let date = start; date.isBefore(end); date = date.add(1, 'day')) {
-			const price =
-				date.day() === 5 || date.day() === 6
-					? props.apartment.data.weekends_price
-					: props.apartment.data.weekdays_price
-			const customPrice = props.apartment.data.dates.find((item) => {
-				const customDate = dayjs(item.date)
-				return customDate.isSame(date, 'day')
-			})?.price
-			const totalPrice = customPrice ?? price
-			details.value.push({
-				date: date.format('DD.MM.YYYY'),
-				price: totalPrice,
-			})
-			sum += totalPrice
-		}
-		return sum
-	})
-
 	const { errorToast } = useToasts()
-
-	const createReservationRequest = () => {
-		return form.post(
-			route('reservation-requests.store', {
-				apartment: props.apartment.data.id,
-			}),
-			{
-				onSuccess: () => {
-					if (props.flash.error) {
-						errorToast(props.flash.error)
-					}
-				},
-				onError: (err) => {
-					console.log('err', err)
-					errorToast(Object.values(err)[0])
-				},
-				preserveState: true,
-				preserveScroll: true,
-			}
-		)
-	}
 
 	const markers = ref([
 		{
@@ -226,12 +153,6 @@
 					</div>
 				</div>
 				<div class="relative lg:sticky w-full lg:w-1/3 lg:top-28">
-					<SmallInfoBlock>
-						<template #title>Общение с арендодателем:</template>
-						<template #content
-							>Связаться с арендодателем можно будет только после создания бронирования</template
-						>
-					</SmallInfoBlock>
 					<div
 						class="rounded-lg shadow-lg mt-6 border border-neutral-100 dark:border-slate-700 dark:shadow-gray-900 p-6"
 					>
@@ -273,105 +194,11 @@
 								</div>
 							</div>
 						</div>
-						<div class="mt-4">
-							<div
-								v-if="$page.props.admin && hasICalLinks"
-								class="bg-sky-600 rounded-full w-fit lowercase py-0.5 mb-3 self-start px-4 text-white text-xs font-medium"
-							>
-								Календарь синхронизирован
-							</div>
-							<Datepicker
-								range
-								:start="form.start"
-								:end="form.end"
-								:disabled-dates="props.apartment.data.all_disabled_dates ?? []"
-								:error="form.errors.start ?? form.errors.end ?? null"
-								@setDates="handleSetDates"
-							/>
-							<Counter
-								v-model="form.guests"
-								class="mt-4"
-								title="Гости"
-								subtitle="Укажите количество гостей"
-							/>
-							<Counter
-								v-model="form.children"
-								class="mt-4"
-								title="Дети"
-								subtitle="0-12 лет"
-							/>
-						</div>
-						<div class="flex flex-col gap-3 mt-4">
-							<ButtonComponent
-								:disabled="!(form.start && form.end)"
-								v-if="props.apartment.data.fast_reserve && false"
-								label="Моментальное бронирование"
-							/>
-							<ButtonComponent
-								:disabled="!(form.start && form.end)"
-								@click="createReservationRequest"
-								label="Запрос на бронирование"
-							/>
-						</div>
-						<div class="font-light text-sm text-center mt-3 text-neutral-500 dark:text-slate-400">
-							Пока вы ни за что не платите, а просто свяжетесь с собственником жилья
-						</div>
-						<dl
-							class="divide-y divide-gray-100 border-t dark:border-slate-700 mt-4"
-							v-if="form.start && form.end"
-						>
-							<div class="py-4 flex flex-col gap-2">
-								<div class="flex w-full items-baseline justify-between">
-									<dt class="font-light leading-6 text-gray-600">
-										<Popover>
-											<template #toggle>
-												<div
-													class="font-light leading-none text-gray-600 dark:text-slate-400 outline-none border-b border-gray-400 dark:border-slate-600 hover:border-gray-600 dark:hover:border-slate-500 transition"
-												>
-													{{ detalizationText }}
-												</div>
-											</template>
-											<template #content>
-												<dl
-													class="divide-y divide-gray-100 dark:divide-slate-700 max-h-52 overflow-auto"
-												>
-													<div
-														class="py-1 px-4 flex w-full items-baseline justify-between"
-														v-for="item in details"
-														:key="item.date"
-													>
-														<dt
-															class="font-light text-sm leading-6 text-gray-600 dark:text-slate-400"
-														>
-															{{ item.date }}
-														</dt>
-														<dd
-															class="mt-1 text-sm font-medium leading-6 text-neutral-600 dark:text-slate-200"
-														>
-															{{ item.price?.toLocaleString() }}₽
-														</dd>
-													</div>
-												</dl>
-											</template>
-										</Popover>
-									</dt>
-									<dd class="mt-1 font-medium leading-6 text-neutral-600 dark:text-slate-100">
-										{{ basePrice?.toLocaleString() }}₽
-									</dd>
-								</div>
-							</div>
-						</dl>
-						<div
-							class="border-t pt-4 flex flex-col gap-2 dark:border-slate-700"
-							v-if="form.start && form.end"
-						>
-							<div class="flex w-full items-baseline justify-between">
-								<dt class="font-bold leading-6 text-neutral-800 dark:text-slate-100">Итого:</dt>
-								<dd class="mt-1 font-bold leading-6 text-lg text-neutral-800 dark:text-slate-100">
-									{{ basePrice?.toLocaleString() }}₽
-								</dd>
-							</div>
-						</div>
+
+						<ApartmentContacts
+							:apartment="props.apartment.data"
+							:owner="props.apartment.data.owner"
+						/>
 					</div>
 				</div>
 				<Map

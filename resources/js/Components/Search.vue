@@ -1,10 +1,9 @@
 <script setup>
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
 	import { BiSearch, IoCloseOutline } from 'oh-vue-icons/icons'
-	import { computed, onMounted, ref } from 'vue'
+	import { computed, ref } from 'vue'
 	import Popover from '@/Components/Interactive/Popover.vue'
 	import Counter from '@/Components/Counter.vue'
-	import VueDatePicker from '@vuepic/vue-datepicker'
 	import '@vuepic/vue-datepicker/dist/main.css'
 	import dayjs from 'dayjs'
 	import 'dayjs/locale/ru'
@@ -12,7 +11,6 @@
 	import qs from 'query-string'
 	import { router } from '@inertiajs/vue3'
 	import { usePage } from '@inertiajs/vue3'
-	import customParseFormat from 'dayjs/plugin/customParseFormat'
 	import Input from '@/Components/Input.vue'
 
 	addIcons(BiSearch, IoCloseOutline)
@@ -21,7 +19,6 @@
 
 	const page = usePage()
 	const locationLabel = ref(page.props.query['city'] ?? 'Поиск')
-	const durationLabel = ref('Неделя')
 
 	const city = ref('')
 
@@ -37,54 +34,13 @@
 	}
 
 	const date = ref([])
-	const isDateInitial = ref(true)
-	const handleSetDates = (dates) => {
-		isDateInitial.value = false
-		date.value = dates
-		let start = dayjs(dates[0])
-		let end = dayjs(dates[1])
-		if (start.date() === end.date()) {
-			durationLabel.value = `${start.format('DD MMM')}`
-			return
-		}
-		if (start.month() === end.month()) {
-			durationLabel.value = `${start.date()} - ${end.date()} ${end.format('MMM')}`
-			return
-		}
-		durationLabel.value = `${start.format('DD MMM')} - ${end.format('DD MMM')}`
-	}
 
 	const priceForPeriod = ref(page.props.query['priceForPeriod'])
 	const priceMin = ref(page.props.query['priceMin'])
 	const priceMax = ref(page.props.query['priceMax'])
 
-	onMounted(() => {
-		if (page.props.query['start'] && page.props.query['end']) {
-			dayjs.extend(customParseFormat)
-			let start = dayjs(page.props.query['start'], 'DD_MM_YYYY')
-			let end = dayjs(page.props.query['end'], 'DD_MM_YYYY')
-			if (start.date() === end.date()) {
-				durationLabel.value = `${start.format('DD MMM')}`
-				return
-			}
-			if (start.month() === end.month()) {
-				durationLabel.value = `${start.date()} - ${end.date()} ${end.format('MMM')}`
-			} else {
-				durationLabel.value = `${start.format('DD MMM')} - ${end.format('DD MMM')}`
-			}
-			date.value = [
-				dayjs(page.props.query['start'], 'DD_MM_YYYY').toDate(),
-				dayjs(page.props.query['end'], 'DD_MM_YYYY').toDate(),
-			]
-		} else {
-			date.value = [dayjs().toDate(), dayjs().add(1, 'week').toDate()]
-		}
-	})
-
 	const onSubmit = () => {
 		const params = page.props.query
-		params['start'] = !!isDateInitial.value ? null : dayjs(date.value[0]).format('DD_MM_YYYY')
-		params['end'] = !!isDateInitial.value ? null : dayjs(date.value[1]).format('DD_MM_YYYY')
 		params['guests'] = guests.value
 		params['children'] = children.value
 		params['priceForPeriod'] = priceForPeriod.value
@@ -119,11 +75,6 @@
 					<div class="text-sm font-semibold px-6 dark:text-slate-200">
 						{{ locationLabel }}
 					</div>
-					<div
-						class="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center dark:text-slate-200"
-					>
-						{{ durationLabel }}
-					</div>
 					<div class="text-sm pl-6 pr-2 text-gray-600 dark:text-slate-200 flex flex-row items-center gap-3">
 						<div class="hidden sm:block font-semibold">{{ guestLabel }}</div>
 						<div
@@ -146,31 +97,6 @@
 				</button>
 
 				<div class="flex items-stretch flex-col md:flex-row gap-2 md:gap-4 w-full justify-between">
-					<div class="h-full w-full">
-						<VueDatePicker
-							:model-value="date"
-							@update:model-value="handleSetDates"
-							no-disabled-range
-							range
-							:partial-range="false"
-							:inline="{ input: false }"
-							text-input
-							auto-apply
-							:key="isDark"
-							:dark="isDark"
-							:month-change-on-scroll="false"
-							min-range="1"
-							max-range="30"
-							month-name-format="long"
-							calendar-class-name="dark:bg-slate-800"
-							locale="ru"
-							format="dd.MM.yyyy"
-							placeholder="Выберите даты"
-							:min-date="new Date()"
-							:enable-time-picker="false"
-							:hide-navigation="['month', 'year', 'time']"
-						/>
-					</div>
 					<div class="h-full overflow-auto w-full">
 						<Counter
 							v-model="guests"

@@ -9,6 +9,7 @@ use App\Filament\Resources\ReservationRequestResource;
 use App\Filament\Resources\ReservationResource;
 use App\Filament\Resources\TransferRequestResource;
 use App\Filament\Resources\UserResource;
+use App\Models\ContactRequest;
 use App\Models\Instructor;
 use App\Models\Reservation;
 use App\Models\ReservationRequest;
@@ -532,6 +533,80 @@ class SendMessageToAdminGroup
                 'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
                 'text' => $text,
                 'reply_markup' => $keyboard,
+                'parse_mode' => 'Markdown',
+            ]);
+        } catch (Exception $exception) {
+            $this->processException($exception);
+        }
+    }
+
+    public function sendNewContactRequest(ContactRequest $contactRequest): void
+    {
+        try {
+            $text = "*Новый запрос на контакты собственника!* \n\n";
+            $text .= 'Объект: '.$this->processText($contactRequest->apartment->city.', '.$contactRequest->apartment->street.', '.$contactRequest->apartment->building)."\n";
+            $text .= 'Имя: '.$this->processText($contactRequest->name)."\n";
+            $text .= 'Телефон: '.$this->processText($contactRequest->phone->formatE164())."\n";
+            if ($contactRequest->telegram_username) {
+                $text .= 'Телеграм: @'.$this->processText($contactRequest->user->telegram_username)."\n";
+            }
+
+            $buttons = [
+                'inline_keyboard' => [
+                    [
+                        Keyboard::inlineButton(
+                            [
+                                'text' => 'Объект',
+                                'url' => config('app.env') === 'production' ? ApartmentResource::getUrl(
+                                    'edit',
+                                    [
+                                        'record' => $contactRequest->apartment->id,
+                                    ]) : 'https://google.com',
+                            ]
+                        ),
+                    ],
+                ],
+            ];
+            $owner_url = UserResource::getUrl(
+                'edit',
+                [
+                    'record' => $contactRequest->apartment->user->id,
+                ]);
+
+            $guest_url = $contactRequest->user_id ? UserResource::getUrl(
+                'edit',
+                [
+                    'record' => $contactRequest->user_id,
+                ]) : null;
+
+            $buttons['inline_keyboard'][] = $guest_url ? [
+                Keyboard::inlineButton(
+                    [
+                        'text' => 'Владелец',
+                        'url' => config('app.env') === 'production' ? $owner_url : 'https://google.com',
+                    ]
+                ),
+                Keyboard::inlineButton(
+                    [
+                        'text' => 'Гость',
+                        'url' => config('app.env') === 'production' ? $guest_url : 'https://google.com',
+                    ]
+                ),
+            ] : [
+                Keyboard::inlineButton(
+                    [
+                        'text' => 'Владелец',
+                        'url' => config('app.env') === 'production' ? $owner_url : 'https://google.com',
+                    ]
+                ),
+            ];
+
+            Telegram::sendMessage([
+                'chat_id' => config('telegram.bots.GeshResortBot.chat_id'),
+                'text' => $text,
+                'reply_markup' => Keyboard::make(
+                    $buttons
+                ),
                 'parse_mode' => 'Markdown',
             ]);
         } catch (Exception $exception) {

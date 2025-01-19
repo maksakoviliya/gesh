@@ -11,7 +11,6 @@
 		},
 	})
 
-	// const avatar = ref('/img/no-user.svg')
 	const avatar = ref(props.src ?? '/img/no-user.svg')
 </script>
 
