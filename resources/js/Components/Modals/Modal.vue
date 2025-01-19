@@ -4,6 +4,7 @@
 	import { OhVueIcon, addIcons } from 'oh-vue-icons'
 	import { HiX } from 'oh-vue-icons/icons'
 	import ButtonComponent from '@/Components/ButtonComponent.vue'
+	import Spinner from '@/Components/Loaders/Spinner.vue'
 
 	addIcons(HiX)
 
@@ -11,6 +12,9 @@
 
 	const props = defineProps({
 		isOpen: {
+			type: Boolean,
+		},
+		isLoading: {
 			type: Boolean,
 		},
 		title: String,
@@ -119,6 +123,13 @@
 								/>
 							</div>
 							<slot name="footer" />
+						</div>
+
+						<div
+							v-if="props.isLoading"
+							class="absolute inset-0 bg-white z-20 opacity-50 flex flex-col items-center justify-center"
+						>
+							<Spinner />
 						</div>
 					</div>
 				</div>

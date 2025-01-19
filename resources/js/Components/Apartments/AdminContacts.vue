@@ -32,6 +32,8 @@
 		}
 	}
 
+	const isLoading = ref(false)
+
 	const form = useForm({
 		user_id: user.value?.id ?? null,
 		apartment_id: props.apartmentId ?? null,
@@ -43,11 +45,18 @@
 	const { successToast } = useToasts()
 
 	const handleSubmit = () => {
+		if (isLoading.value) {
+			return
+		}
+		isLoading.value = true
 		form.post(route('contact-request.store'), {
 			preserveScroll: true,
 			onSuccess: () => {
 				handleClose()
 				successToast('С вами свяжутся в ближайшее время!')
+			},
+			onFinish: () => {
+				isLoading.value = false
 			},
 		})
 	}
@@ -63,10 +72,11 @@
 			@onSubmit="handleSubmit"
 			title="Связаться с обственником"
 			action-label="Отправить"
+			:is-loading="isLoading"
 			secondary-action-label="Отменить"
 		>
 			<template #body>
-				<div class="flex flex-col gap-3">
+				<div class="flex flex-col gap-3 relative">
 					<Input
 						id="name"
 						:required="true"
