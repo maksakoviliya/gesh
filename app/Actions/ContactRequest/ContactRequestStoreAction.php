@@ -17,7 +17,6 @@ final class ContactRequestStoreAction
 
     public function run(array $data): ContactRequest
     {
-        Log::info(__METHOD__ . ': ' . json_encode($data));
         /** @var ContactRequest $contactRequest */
         $contactRequest = ContactRequest::query()
             ->create([

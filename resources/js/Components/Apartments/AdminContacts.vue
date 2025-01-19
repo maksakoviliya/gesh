@@ -25,7 +25,7 @@
 	const user = computed(() => page.props.auth.user)
 
 	const handleContact = () => {
-		if (user.value?.id) {
+		if (user.value?.id && user.value?.name && user.value?.phone) {
 			handleSubmit()
 		} else {
 			isOpen.value = true

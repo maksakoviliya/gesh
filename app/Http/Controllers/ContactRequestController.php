@@ -15,7 +15,6 @@ final class ContactRequestController extends Controller
         StoreContactRequestRequest $request,
         ContactRequestStoreAction $action
     ): RedirectResponse {
-        Log::info(__METHOD__ . ": " . json_encode($request->validated()));
         $action->run($request->validated());
 
         return redirect()->back();
