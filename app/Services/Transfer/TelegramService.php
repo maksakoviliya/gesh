@@ -39,11 +39,16 @@ final class TelegramService
                 throw new RuntimeException('No name found');
             }
 
-            return User::query()->create([
-                'telegram_username' => $username,
-                'telegram_chat_id' => $update->getMessage()?->getChat()?->getId() ?? null,
-                'name' => $name,
-            ]);
+            try {
+                return User::query()->create([
+                    'telegram_username' => $username,
+                    'telegram_chat_id' => $update->getMessage()?->getChat()?->getId() ?? null,
+                    'name' => $name,
+                ]);
+            } catch (Throwable $e) {
+                Log::error($e->getMessage());
+                Log::error($e->getTraceAsString());
+            }
         }
 
         return $user;
