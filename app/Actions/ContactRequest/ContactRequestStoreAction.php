@@ -7,6 +7,7 @@ namespace App\Actions\ContactRequest;
 use App\Actions\TelegramNotifications\SendMessageToAdminGroup;
 use App\Models\ContactRequest;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 final class ContactRequestStoreAction
 {
@@ -16,6 +17,7 @@ final class ContactRequestStoreAction
 
     public function run(array $data): ContactRequest
     {
+        Log::info(__METHOD__ . ': ' . json_encode($data));
         /** @var ContactRequest $contactRequest */
         $contactRequest = ContactRequest::query()
             ->create([

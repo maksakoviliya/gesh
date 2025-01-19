@@ -494,7 +494,6 @@ class SendMessageToAdminGroup
 
     protected function processText(?string $text = null): string
     {
-        Log::info('Process text: '.$text);
         if (! $text) {
             return '';
         }

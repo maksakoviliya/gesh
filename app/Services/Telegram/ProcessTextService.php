@@ -49,8 +49,6 @@ final class ProcessTextService
 
     public function processText(string $text, string $chat_id): void
     {
-        Log::info('Process text: '.$text);
-
         $user = User::query()
             ->where('telegram_chat_id', $chat_id)
             ->first();

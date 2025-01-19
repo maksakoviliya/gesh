@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\ContactRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -42,6 +43,7 @@ final class StoreContactRequestRequest extends FormRequest
 
     public function rules(): array
     {
+        Log::info(__METHOD__ . 'Validation: ' . json_encode($this->all()));
         return [
             'user_id' => 'nullable|exists:users,id',
             'apartment_id' => 'required|exists:apartments,id',
