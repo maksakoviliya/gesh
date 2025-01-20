@@ -547,7 +547,7 @@ class SendMessageToAdminGroup
             $text .= 'Имя: '.$this->processText($contactRequest->name)."\n";
             $text .= 'Телефон: '.$this->processText($contactRequest->phone->formatE164())."\n";
             if ($contactRequest->telegram_username) {
-                $text .= 'Телеграм: @'.$this->processText($contactRequest->user->telegram_username)."\n";
+                $text .= 'Телеграм: @'.$this->processText($contactRequest->telegram_username)."\n";
             }
 
             $buttons = [
