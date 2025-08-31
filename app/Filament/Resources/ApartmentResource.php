@@ -157,6 +157,7 @@ class ApartmentResource extends Resource
                                     ])->required()
                                     ->disabled(!Auth::user()->hasRole(['admin', 'moderator']))
                                     ->nullable(false),
+                                TextInput::make('views')->readOnly(),
                                 Forms\Components\Toggle::make('is_verified')->label('Подтвержден')->disabled(
                                     !Auth::user()->hasRole(['admin', 'moderator'])
                                 ),
