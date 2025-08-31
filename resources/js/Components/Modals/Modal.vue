@@ -14,7 +14,7 @@
 		isOpen: {
 			type: Boolean,
 		},
-		isLoading: {
+		isLoading   : {
 			type: Boolean,
 		},
 		title: String,

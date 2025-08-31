@@ -60,6 +60,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @property int|null $guests
  * @property int|null $bedrooms
  * @property int|null $beds
+ * @property int|null $views
  * @property int|null $bathrooms
  * @property string|null $title
  * @property string|null $description
