@@ -24,37 +24,49 @@ use Throwable;
 
 final class TelegramService
 {
-    public function getUserFromUpdateData(Update $update): ?User
-    {
-        $from = $update->getChat();
-        Log::info(json_encode($from));
-        $username = $from->username;
-        if (! $username) {
-            $username = 'random_'.Str::random(8);
-        }
-        if (! $user = User::query()
-            ->where('telegram_username', $username)->first()) {
-            $name = "$from->first_name $from->last_name";
-            if (! trim($name)) {
-                throw new RuntimeException('No name found');
-            }
+	public function getUserFromUpdateData(Update $update): ?User
+	{
+		$message = $update->getMessage();
 
-            try {
-                return User::query()->create([
-                    'telegram_username' => $username,
-                    'telegram_chat_id' => $update->getMessage()?->getChat()?->getId() ?? null,
-                    'name' => $name,
-                ]);
-            } catch (Throwable $e) {
-                Log::error($e->getMessage());
-                Log::error($e->getTraceAsString());
-            }
-        }
+		if (!$message) {
+			Log::error('No message in update');
+			return null;
+		}
 
-        return $user;
-    }
+		$from = $message->getFrom();  // <-- здесь данные о пользователе
+		if (!$from) {
+			Log::error('No from in update');
+			return null;
+		}
 
-    /**
+		$username = $from->getUsername() ?? 'random_' . Str::random(8);
+
+		$user = User::query()
+			->where('telegram_username', $username)
+			->first();
+
+		if (!$user) {
+			$name = trim(($from->getFirstName() ?? '') . ' ' . ($from->getLastName() ?? ''));
+			if (!$name) {
+				throw new RuntimeException('No name found');
+			}
+
+			try {
+				return User::query()->create([
+					'telegram_username' => $username,
+					'telegram_chat_id' => $message->getChat()->getId(),
+					'name' => $name,
+				]);
+			} catch (Throwable $e) {
+				Log::error($e->getMessage());
+				Log::error($e->getTraceAsString());
+			}
+		}
+
+		return $user;
+	}
+
+	/**
      * @throws TelegramSDKException
      */
     public function processUpdates(array|Update $update): void
