@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Actions\ContactRequest\ContactRequestStoreAction;
 use App\Http\Requests\ContactRequest\StoreContactRequestRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
 
 final class ContactRequestController extends Controller
 {

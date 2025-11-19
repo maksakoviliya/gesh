@@ -32,6 +32,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Spatie\Permission\Models\Role;
 
 class ApartmentResource extends Resource
 {
@@ -64,7 +65,7 @@ class ApartmentResource extends Resource
                                 Select::make('category')
                                     ->relationship('category', 'title')
                                     ->preload()
-                                    ->disabled(! Auth::user()->hasRole(['admin']))
+                                    ->disabled(!Auth::user()->hasRole(['admin']))
                                     ->columnSpan('full'),
                             ])
                             ->columns(3),
@@ -76,7 +77,7 @@ class ApartmentResource extends Resource
                                         Type::ROOM->value => 'Комната',
                                         Type::HOSTEL->value => 'Общая комната',
                                     ])
-                                    ->disabled(! Auth::user()->hasRole(['admin']))
+                                    ->disabled(!Auth::user()->hasRole(['admin']))
                                     ->columnSpan('full'),
                             ])
                             ->columns(3),
@@ -92,20 +93,20 @@ class ApartmentResource extends Resource
                                 Forms\Components\TextInput::make('floor'),
                                 Forms\Components\TextInput::make('entrance'),
                                 //                                Forms\Components\TextInput::make('index'),
-                            ])->collapsible()->disabled(! Auth::user()->hasRole(['admin']))->columns()->collapsed(),
+                            ])->collapsible()->disabled(!Auth::user()->hasRole(['admin']))->columns()->collapsed(),
                         Forms\Components\Section::make('Шаг 4')
                             ->schema([
                                 //                                        Map::make('location')->label('Гугл карта не рабоатет. Нужен ключ.')->columnSpan('full'),
                                 Forms\Components\TextInput::make('lat'),
                                 Forms\Components\TextInput::make('lon'),
-                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible()->collapsed()->columns(),
+                            ])->disabled(!Auth::user()->hasRole(['admin']))->collapsible()->collapsed()->columns(),
                         Forms\Components\Section::make('Шаг 5')
                             ->schema([
                                 Forms\Components\TextInput::make('guests'),
                                 Forms\Components\TextInput::make('bedrooms'),
                                 Forms\Components\TextInput::make('beds'),
                                 Forms\Components\TextInput::make('bathrooms'),
-                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible()->columns(4),
+                            ])->disabled(!Auth::user()->hasRole(['admin']))->collapsible()->columns(4),
                         Forms\Components\Section::make('Шаг 6')
                             ->schema([
                                 Select::make('features')
@@ -113,7 +114,7 @@ class ApartmentResource extends Resource
                                     ->multiple()
                                     ->preload()
                                     ->columnSpan('full'),
-                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible(),
+                            ])->disabled(!Auth::user()->hasRole(['admin']))->collapsible(),
                         Forms\Components\Section::make('Шаг 7')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('media')
@@ -123,27 +124,27 @@ class ApartmentResource extends Resource
                                     ->imageEditorMode(2)
                                     ->appendFiles(),
                             ])
-                            ->disabled(! Auth::user()->hasRole(['admin']))
+                            ->disabled(!Auth::user()->hasRole(['admin']))
                             ->collapsible()->collapsed(),
                         Forms\Components\Section::make('Шаг 8')
                             ->schema([
                                 Forms\Components\TextInput::make('title'),
-                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible(),
+                            ])->disabled(!Auth::user()->hasRole(['admin']))->collapsible(),
                         Forms\Components\Section::make('Шаг 9')
                             ->schema([
                                 Forms\Components\Textarea::make('description'),
-                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible(),
+                            ])->disabled(!Auth::user()->hasRole(['admin']))->collapsible(),
                         Forms\Components\Section::make('Шаг 10')
                             ->schema([
                                 Forms\Components\TextInput::make('weekdays_price')->label('Цена в будни'),
                                 Forms\Components\TextInput::make('weekends_price')->label('Цена в выходные'),
-                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible()->columns(),
+                            ])->disabled(!Auth::user()->hasRole(['admin']))->collapsible()->columns(),
                         Forms\Components\Section::make('Шаг 11')
                             ->schema([
                                 Forms\Components\Toggle::make('fast_reserve')->label('Моментальное бронирование'),
-                            ])->disabled(! Auth::user()->hasRole(['admin']))->collapsible()->columns(),
+                            ])->disabled(!Auth::user()->hasRole(['admin']))->collapsible()->columns(),
 
-                    ])->columnSpan(['lg' => fn (?Apartment $record) => $record === null ? 3 : 2]),
+                    ])->columnSpan(['lg' => fn(?Apartment $record) => $record === null ? 3 : 2]),
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make()
@@ -154,13 +155,18 @@ class ApartmentResource extends Resource
                                         Status::Pending->value => 'На модерации',
                                         Status::Published->value => 'Опубликован',
                                     ])->required()
-                                    ->disabled(! Auth::user()->hasRole(['admin', 'moderator']))
+                                    ->disabled(!Auth::user()->hasRole(['admin', 'moderator']))
                                     ->nullable(false),
-                                Forms\Components\Toggle::make('is_verified')->label('Подтвержден')->disabled(! Auth::user()->hasRole(['admin', 'moderator'])),
+                                TextInput::make('views')->readOnly(),
+                                Forms\Components\Toggle::make('is_verified')->label('Подтвержден')->disabled(
+                                    !Auth::user()->hasRole(['admin', 'moderator'])
+                                ),
                                 Select::make('user')->relationship('user', 'name')
                                     ->searchable()
-                                    ->disabled(! Auth::user()->hasRole(['admin']))
-                                    ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} | {$record->email}")
+                                    ->disabled(!Auth::user()->hasRole(['admin']))
+                                    ->getOptionLabelFromRecordUsing(
+                                        fn(User $record) => "{$record->name} | {$record->email}"
+                                    )
                                     ->preload(),
                                 Forms\Components\DateTimePicker::make('visible_until')
                                     ->seconds(false)
@@ -168,21 +174,23 @@ class ApartmentResource extends Resource
                                     ->label('Показывать до'),
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Добавлен')
-                                    ->content(fn (Apartment $record): ?string => $record->created_at?->diffForHumans()),
+                                    ->content(fn(Apartment $record): ?string => $record->created_at?->diffForHumans()),
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Изменен')
-                                    ->content(fn (Apartment $record): ?string => $record->updated_at?->diffForHumans()),
+                                    ->content(fn(Apartment $record): ?string => $record->updated_at?->diffForHumans()),
                                 Forms\Components\Placeholder::make('last_review_at')
                                     ->label('Последний review')
-                                    ->content(fn (Apartment $record): ?string => $record->last_review_at?->format('d.m.Y H:i')),
+                                    ->content(
+                                        fn(Apartment $record): ?string => $record->last_review_at?->format('d.m.Y H:i')
+                                    ),
                             ])
                             ->columnSpan(['lg' => 1])
-                            ->hidden(fn (?Apartment $record) => $record === null),
+                            ->hidden(fn(?Apartment $record) => $record === null),
 
                         // Hidden for now
                         Forms\Components\Section::make('Авито')
-                            ->disabled(! config('services.avito.enabled'))
-                            ->hidden(! config('services.avito.enabled'))
+                            ->disabled(!config('services.avito.enabled'))
+                            ->hidden(!config('services.avito.enabled'))
                             ->schema([
                                 TextInput::make('avito_id')
                                     ->label('ID объявления')
@@ -203,7 +211,7 @@ class ApartmentResource extends Resource
                         Forms\Components\Section::make('Avito')
                             ->schema([
                                 TextInput::make('avito_id')->nullable()
-                                    ->suffixAction(fn (?string $state): Action => Action::make('visit')
+                                    ->suffixAction(fn(?string $state): Action => Action::make('visit')
                                         ->icon('heroicon-o-link')
                                         ->url(
                                             filled($state) ? "https://avito.ru/$state" : null,
@@ -211,7 +219,7 @@ class ApartmentResource extends Resource
                                         ),
                                     ),
                                 TextInput::make('avito_link')->nullable()
-                                    ->suffixAction(fn (?string $state): Action => Action::make('visit')
+                                    ->suffixAction(fn(?string $state): Action => Action::make('visit')
                                         ->icon('heroicon-o-link')
                                         ->url(
                                             $state ?? null,
@@ -244,18 +252,18 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('category.title_single')
                     ->label('Название')
                     ->color('primary')
-                    ->url(fn (Apartment $record) => route('apartment', $record->id), true)
-                    ->description(fn (Apartment $record): string => "$record->city, $record->street, $record->building")
+                    ->url(fn(Apartment $record) => route('apartment', $record->id), true)
+                    ->description(fn(Apartment $record): string => "$record->city, $record->street, $record->building")
                     ->toggleable(),
                 TextColumn::make('user.name')
                     ->label('Владелец')
-                    ->description(fn (Apartment $record): string => $record->user?->email ?? '')
+                    ->description(fn(Apartment $record): string => $record->user?->email ?? '')
                     ->url(function ($record) {
-                        if (! Auth::user()->hasRole(['admin'])) {
+                        if (!Auth::user()->hasRole(['admin'])) {
                             return false;
                         }
 
-                        if (! $record->user) {
+                        if (!$record->user) {
                             return false;
                         }
 
@@ -265,7 +273,7 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->sortable()
                     ->badge()
-                    ->formatStateUsing(fn (Status $state): string => __("statuses.{$state->value}"))
+                    ->formatStateUsing(fn(Status $state): string => __("statuses.{$state->value}"))
                     ->color(function (Status $state) {
                         return match ($state) {
                             Status::Draft => 'gray',
@@ -288,7 +296,7 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('weekdays_price')->sortable()->money('RUB')->toggleable(),
                 Tables\Columns\TextColumn::make('weekends_price')->sortable()->money('RUB')->toggleable(),
                 Tables\Columns\TextColumn::make('title')->searchable()
-                    ->url(fn (Apartment $record) => route('apartment', $record->id), true)
+                    ->url(fn(Apartment $record) => route('apartment', $record->id), true)
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('bedrooms')
                     ->toggleable(),
@@ -298,7 +306,7 @@ class ApartmentResource extends Resource
                 TextColumn::make('updated_at')->date('d.m.Y H:i')->sortable()->toggleable(),
                 TextColumn::make('id')
                     ->color('primary')
-                    ->url(fn (Apartment $record) => route('apartment', $record->id), true)
+                    ->url(fn(Apartment $record) => route('apartment', $record->id), true)
                     ->searchable()->toggleable(),
                 TextColumn::make('last_review_at')
                     ->date('d.m.y H:i')
@@ -321,11 +329,15 @@ class ApartmentResource extends Resource
                     ->visible(Auth::user()->hasRole('admin'))
                     ->options(function () {
                         // Получаем пользователей с ролью 'manager'
-                        return User::role('manager')->pluck('name', 'id');
+                        if (Role::query()->where('name', 'manager')->where('guard_name', 'web')->exists()) {
+                            return User::role('manager')->pluck('name', 'id');
+                        }
+
+                        return [];
                     }),
                 Filter::make('under_management')
                     ->visible(Auth::user()->hasRole('manager'))
-                    ->query(fn (Builder $query): Builder => $query->where('manager_id', Auth::id())),
+                    ->query(fn(Builder $query): Builder => $query->where('manager_id', Auth::id())),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -334,7 +346,7 @@ class ApartmentResource extends Resource
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\Action::make('approve')
                     ->label('Одобрить')
-                    ->visible(fn (Apartment $record) => $record->status === Status::Pending)
+                    ->visible(fn(Apartment $record) => $record->status === Status::Pending)
                     ->icon('heroicon-o-check-circle')
                     ->action(function (Apartment $record) {
                         $record->approve();

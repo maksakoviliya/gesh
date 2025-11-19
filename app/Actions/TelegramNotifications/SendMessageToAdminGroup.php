@@ -550,12 +550,21 @@ class SendMessageToAdminGroup
                 $text .= 'Телеграм: @'.$this->processText($contactRequest->telegram_username)."\n";
             }
 
+            $text .= "\n\n";
+
+            $text .= "Объект: " . route('apartment', [
+                'apartment' => $contactRequest->apartment->id
+                ]) . "\n";
+            if($contactRequest->apartment->user->telegram_username) {
+                $text .= "Собственник: @" . $contactRequest->apartment->user->telegram_username . "\n";
+            }
+
             $buttons = [
                 'inline_keyboard' => [
                     [
                         Keyboard::inlineButton(
                             [
-                                'text' => 'Объект',
+                                'text' => 'Объект в админке',
                                 'url' => config('app.env') === 'production' ? ApartmentResource::getUrl(
                                     'edit',
                                     [

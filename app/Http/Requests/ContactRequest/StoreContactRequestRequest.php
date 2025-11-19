@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Requests\ContactRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Propaganistas\LaravelPhone\PhoneNumber;
 

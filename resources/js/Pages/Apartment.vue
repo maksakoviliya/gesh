@@ -90,6 +90,7 @@
 						<Heading
 							:title="getTitle()"
 							:subtitle="getSubtitle()"
+							:views="apartment.data.views"
 						/>
 					</div>
 					<hr class="my-4 dark:border-slate-600" />

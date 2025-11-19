@@ -8,8 +8,10 @@ use App\Enums\Apartments\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApartmentResource;
 use App\Models\Apartment;
+use App\Services\ViewsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,6 +32,8 @@ final class ApartmentShowController extends Controller
         ]);
 
         $apartment = $apartment->append('allDisabledDays');
+
+        App(ViewsService::class)->incrementViews($apartment);
 
         return Inertia::render('Apartment', [
             'apartment' => new ApartmentResource($apartment),

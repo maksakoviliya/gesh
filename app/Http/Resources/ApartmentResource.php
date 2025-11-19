@@ -62,6 +62,7 @@ class ApartmentResource extends JsonResource
             'total_price' => $this->getTotalPriceForPeriod($request),
             'avito_id' => $this->resource->avito_id,
             'avito_synced_at' => $this->resource?->avito_synced_at?->format('d.m.Y H:i'),
+            'views' => $this->resource->views,
         ];
     }
 
