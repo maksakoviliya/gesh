@@ -28,25 +28,20 @@ final class TelegramService
 	{
 		$message = $update->getMessage();
 
-		if (!$message) {
-			Log::error('No message in update');
-			return null;
-		}
-
-		$from = $message->getFrom();  // <-- здесь данные о пользователе
+		$from = $update->message?->from;
 		if (!$from) {
 			Log::error('No from in update');
 			return null;
 		}
 
-		$username = $from->getUsername() ?? 'random_' . Str::random(8);
+		$username = $from->username ?? 'random_' . Str::random(8);
 
 		$user = User::query()
 			->where('telegram_username', $username)
 			->first();
 
 		if (!$user) {
-			$name = trim(($from->getFirstName() ?? '') . ' ' . ($from->getLastName() ?? ''));
+			$name = trim(($from->firstName ?? '') . ' ' . ($from->lastName ?? ''));
 			if (!$name) {
 				throw new RuntimeException('No name found');
 			}
