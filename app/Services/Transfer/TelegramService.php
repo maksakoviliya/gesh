@@ -327,7 +327,7 @@ final class TelegramService
         }
     }
 
-    protected function processStartAtText(string|int $chatId, TransferRequest $request, string $text): void
+    protected function processStartAtText(string|int $chatId, TransferRequest $request, string $text = ''): void
     {
         try {
             $date = Carbon::createFromFormat('d.m.Y', $text);
