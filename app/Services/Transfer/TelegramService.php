@@ -30,7 +30,13 @@ final class TelegramService
 
 		$from = $update->message?->from;
 		if (!$from) {
-			Log::error('No from in update');
+			$from = $update->callbackQuery?->from;
+        }
+        
+        if (!$from) {
+            Log::error('No from data found in update: ',[
+                'update' => $update,
+            ]);
 			return null;
 		}
 
