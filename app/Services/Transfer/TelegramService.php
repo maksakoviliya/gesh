@@ -79,7 +79,9 @@ final class TelegramService
             }
         }
 
-        Log::debug('Update in processUpdates: '.json_encode($update));
+        Log::debug('Update in processUpdates', [
+			'update' => $update,
+        ]);
         try {
             $data = $update->getRelatedObject()->get('data');
         } catch (Throwable $e) {
@@ -421,7 +423,7 @@ final class TelegramService
         ]);
     }
 
-    protected function processStartTimeText(string|int $chatId, TransferRequest $request, string $text): void
+    protected function processStartTimeText(string|int $chatId, TransferRequest $request, ?string $text = null): void
     {
         if (! $this->isCorrectTime($text)) {
             $this->sendSimpleMessage($chatId, 'Неверный формат времени. Нужно отправить в формате ЧЧ:ММ');
@@ -436,8 +438,12 @@ final class TelegramService
         $this->sendSimpleMessage($chatId, 'Введите количество пассажиров');
     }
 
-    private function isCorrectTime(string $text): bool
+    private function isCorrectTime(?string $text = null): bool
     {
+		if (! $text) {
+			return false;
+		}
+		
         if (! preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/', $text)) {
             return false;
         }
