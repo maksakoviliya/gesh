@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Telegram;
 
+use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Objects\Update;
 
 class UpdateExtractor {
@@ -15,8 +16,10 @@ class UpdateExtractor {
 
 	public function getUserId(Update $update): ?int
 	{
-		return $update->message?->from?->id
-			?? $update->callbackQuery?->from?->id;
+        Log::debug('Extracting user ID from update: ' . __METHOD__, ['update' => $update]);
+        return $update->message?->from?->id
+            ?? $update->callbackQuery?->from?->id
+            ?? $update->myChatMember?->from?->id;
 	}
 
 	public function getText(Update $update): ?string
