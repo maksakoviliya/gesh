@@ -47,6 +47,7 @@ return [
 
         'transferBot' => [
             'token' => env('TELEGRAM_TRANSFER_BOT_TOKEN'),
+            'webhook_url' => env('TELEGRAM_TRANSFER_BOT_WEBHOOK_URL'),
             'commands' => [
                 TransferStartCommand::class,
             ],

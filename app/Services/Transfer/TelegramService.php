@@ -114,6 +114,7 @@ final class TelegramService
 
             return;
         }
+
         $request = TransferRequest::query()
             ->where('user_id', $user->id)
             ->where('status', RequestStatusEnum::DRAFT);
@@ -137,7 +138,9 @@ final class TelegramService
                     ]);
             }
         } catch (Throwable $exception) {
-            Log::debug($exception->getMessage());
+            Log::debug(__METHOD__, [
+                'exception' => $exception,
+            ]);
             $request = $request->orderBy('updated_at', 'desc')->first();
         }
 
@@ -147,7 +150,9 @@ final class TelegramService
             $request = $request->fresh();
 
         } catch (Throwable $exception) {
-            Log::debug($exception->getMessage());
+            Log::debug(__METHOD__, [
+                'exception' => $exception,
+            ]);
         }
 
         $this->sendRequestMessage($chatId, $request);

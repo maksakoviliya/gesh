@@ -89,6 +89,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User withoutPermission($permissions)
  * @method static Builder|User withoutRole($roles, $guard = null)
  *
+ * @property string|null $telegram_username
  * @property string|null $telegram_chat_id
  * @property-read Collection<int, \App\Models\TelegramAuthCode> $telegramAuthCodes
  * @property-read int|null $telegram_auth_codes_count

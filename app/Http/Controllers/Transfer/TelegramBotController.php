@@ -6,20 +6,24 @@ namespace App\Http\Controllers\Transfer;
 
 use App\Http\Controllers\Controller;
 use App\Services\Transfer\TelegramService;
-use Telegram\Bot\Exceptions\TelegramSDKException;
+use App\Services\Transfer\TelegramWebhookHandler;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Response;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 final class TelegramBotController extends Controller
 {
     /**
-     * @throws TelegramSDKException
+     * @throws Exception
      */
-    public function processWebhook(TelegramService $telegramService): string
+    public function processWebhook(TelegramService $telegramService): \Illuminate\Foundation\Application|Response|Application|ResponseFactory
     {
-        $updates = Telegram::bot('transferBot')->commandsHandler(true);
+        $update = Telegram::bot('transferBot')->getWebhookUpdate();
 
-        $telegramService->processUpdates($updates);
+        app(TelegramWebhookHandler::class)->handle($update);
 
-        return 'ok';
+        return response('ok');
     }
 }
