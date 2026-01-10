@@ -12,11 +12,7 @@ final class DateValidator
     public function parse(string $date): ?Carbon
     {
         try {
-            $date = Carbon::createFromFormat('d.m.Y', $date);
-            if ($date < Carbon::now()) {
-                return null;
-            }
-            return $date;
+            return Carbon::createFromFormat('d.m.Y', $date);
         } catch (Throwable) {
             return null;
         }
