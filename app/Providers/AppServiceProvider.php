@@ -24,5 +24,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(TelegramMessageBuilder::class);
     }
 
-    public function boot(): void {}
+    public function boot(): void {
+        setlocale(LC_NUMERIC, 'C');
+    }
 }
