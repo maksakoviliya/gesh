@@ -13,12 +13,12 @@ use App\Services\Transfer\Validators\PassengersValidator;
 final readonly class EnterPassengersStep implements StepInterface
 {
     public function __construct(
-        private PassengersValidator $validator = new PassengersValidator(),
+        private PassengersValidator $validator = new PassengersValidator,
     ) {}
 
     public function prompt(int $chatId, TelegramMessageBuilder $builder): void
     {
-        $builder->sendSimple($chatId, 'Введите количество пассажиров');
+        $builder->sendPassengersPicker($chatId);
     }
 
     public function isComplete(TransferRequest $request, User $user): bool
@@ -44,6 +44,6 @@ final readonly class EnterPassengersStep implements StepInterface
 
     public function next(): ?StepInterface
     {
-        return new EnterPhoneStep();
+        return new EnterPhoneStep;
     }
 }

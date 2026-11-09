@@ -14,7 +14,7 @@ final class UserRepository
     {
         $from = $update->message?->from ?? $update->callbackQuery?->from;
 
-        if (!$from) {
+        if (! $from) {
             return null;
         }
 
@@ -27,7 +27,7 @@ final class UserRepository
             ->orderByRaw('phone IS NULL')
             ->first();
 
-        if (!$user && $username) {
+        if (! $user && $username) {
             $user = User::query()->where('telegram_username', $username)->first();
             $user?->update(['telegram_chat_id' => $telegramId]);
         }
@@ -41,9 +41,9 @@ final class UserRepository
 
     private function extractName(object $from): string
     {
-        $name = trim(($from->firstName ?? '') . ' ' . ($from->lastName ?? ''));
+        $name = trim(($from->firstName ?? '').' '.($from->lastName ?? ''));
 
-        if (!$name) {
+        if (! $name) {
             throw new RuntimeException('Cannot extract user name from Telegram data');
         }
 

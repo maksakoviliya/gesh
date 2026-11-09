@@ -28,9 +28,10 @@ final readonly class MessageHandler
             ->latest('created_at')
             ->first();
 
-        if (!$request) {
+        if (! $request) {
             Log::error('No draft request found for message handling', ['user_id' => $user->id]);
             $this->conversationManager->sendError($chatId);
+
             return;
         }
 

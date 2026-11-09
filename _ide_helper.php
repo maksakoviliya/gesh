@@ -4428,93 +4428,6 @@ namespace Illuminate\Support\Facades {
             /**
      * 
      *
-     * @see \Illuminate\Encryption\Encrypter
-     */        class Crypt {
-                    /**
-         * Determine if the given key and cipher combination is valid.
-         *
-         * @param string $key
-         * @param string $cipher
-         * @return bool 
-         * @static 
-         */        public static function supported($key, $cipher)
-        {
-                        return \Illuminate\Encryption\Encrypter::supported($key, $cipher);
-        }
-                    /**
-         * Create a new encryption key for the given cipher.
-         *
-         * @param string $cipher
-         * @return string 
-         * @static 
-         */        public static function generateKey($cipher)
-        {
-                        return \Illuminate\Encryption\Encrypter::generateKey($cipher);
-        }
-                    /**
-         * Encrypt the given value.
-         *
-         * @param mixed $value
-         * @param bool $serialize
-         * @return string 
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static 
-         */        public static function encrypt($value, $serialize = true)
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->encrypt($value, $serialize);
-        }
-                    /**
-         * Encrypt a string without serialization.
-         *
-         * @param string $value
-         * @return string 
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static 
-         */        public static function encryptString($value)
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->encryptString($value);
-        }
-                    /**
-         * Decrypt the given value.
-         *
-         * @param string $payload
-         * @param bool $unserialize
-         * @return mixed 
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static 
-         */        public static function decrypt($payload, $unserialize = true)
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->decrypt($payload, $unserialize);
-        }
-                    /**
-         * Decrypt the given string without unserialization.
-         *
-         * @param string $payload
-         * @return string 
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static 
-         */        public static function decryptString($payload)
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->decryptString($payload);
-        }
-                    /**
-         * Get the encryption key that the encrypter is currently using.
-         *
-         * @return string 
-         * @static 
-         */        public static function getKey()
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->getKey();
-        }
-            }
-            /**
-     * 
-     *
      * @see https://carbon.nesbot.com/docs/
      * @see https://github.com/briannesbitt/Carbon/blob/master/src/Carbon/Factory.php
      * @method static \Illuminate\Support\Carbon create($year = 0, $month = 1, $day = 1, $hour = 0, $minute = 0, $second = 0, $tz = null)
@@ -18540,10 +18453,10 @@ namespace Livewire {
          * 
          *
          * @static 
-         */        public static function snapshot($component)
+         */        public static function snapshot($component, $context = null)
         {
                         /** @var \Livewire\LivewireManager $instance */
-                        return $instance->snapshot($component);
+                        return $instance->snapshot($component, $context);
         }
                     /**
          * 
@@ -18571,6 +18484,15 @@ namespace Livewire {
         {
                         /** @var \Livewire\LivewireManager $instance */
                         return $instance->current();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */        public static function findSynth($keyOrTarget, $component)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->findSynth($keyOrTarget, $component);
         }
                     /**
          * 
@@ -21618,12 +21540,12 @@ namespace Livewire\Features\SupportTesting {
          * 
          *
          * @see \Filament\Tables\Testing\TestsActions::assertTableActionDataSet()
-         * @param array $data
+         * @param \Closure|array $state
          * @return static 
          * @static 
-         */        public static function assertTableActionDataSet($data)
+         */        public static function assertTableActionDataSet($state)
         {
-                        return \Livewire\Features\SupportTesting\Testable::assertTableActionDataSet($data);
+                        return \Livewire\Features\SupportTesting\Testable::assertTableActionDataSet($state);
         }
                     /**
          * 
@@ -21978,12 +21900,12 @@ namespace Livewire\Features\SupportTesting {
          * 
          *
          * @see \Filament\Tables\Testing\TestsBulkActions::assertTableBulkActionDataSet()
-         * @param array $data
+         * @param \Closure|array $state
          * @return static 
          * @static 
-         */        public static function assertTableBulkActionDataSet($data)
+         */        public static function assertTableBulkActionDataSet($state)
         {
-                        return \Livewire\Features\SupportTesting\Testable::assertTableBulkActionDataSet($data);
+                        return \Livewire\Features\SupportTesting\Testable::assertTableBulkActionDataSet($state);
         }
                     /**
          * 
@@ -22522,11 +22444,34 @@ namespace Livewire\Features\SupportTesting {
          *
          * @see \Filament\Tables\Testing\TestsFilters::assertTableFilterExists()
          * @param string $name
+         * @param \Closure|null $checkFilterUsing
          * @return static 
          * @static 
-         */        public static function assertTableFilterExists($name)
+         */        public static function assertTableFilterExists($name, $checkFilterUsing = null)
         {
-                        return \Livewire\Features\SupportTesting\Testable::assertTableFilterExists($name);
+                        return \Livewire\Features\SupportTesting\Testable::assertTableFilterExists($name, $checkFilterUsing);
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Tables\Testing\TestsFilters::assertTableFilterVisible()
+         * @param string $name
+         * @return static 
+         * @static 
+         */        public static function assertTableFilterVisible($name)
+        {
+                        return \Livewire\Features\SupportTesting\Testable::assertTableFilterVisible($name);
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Tables\Testing\TestsFilters::assertTableFilterHidden()
+         * @param string $name
+         * @return static 
+         * @static 
+         */        public static function assertTableFilterHidden($name)
+        {
+                        return \Livewire\Features\SupportTesting\Testable::assertTableFilterHidden($name);
         }
                     /**
          * 
@@ -22722,7 +22667,6 @@ namespace  {
             class Cache extends \Illuminate\Support\Facades\Cache {}
             class Config extends \Illuminate\Support\Facades\Config {}
             class Cookie extends \Illuminate\Support\Facades\Cookie {}
-            class Crypt extends \Illuminate\Support\Facades\Crypt {}
             class Date extends \Illuminate\Support\Facades\Date {}
             class DB extends \Illuminate\Support\Facades\DB {}
             class Eloquent extends \Illuminate\Database\Eloquent\Model {                            /**

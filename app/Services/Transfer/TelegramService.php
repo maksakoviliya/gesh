@@ -24,50 +24,51 @@ use Throwable;
 
 final class TelegramService
 {
-	public function getUserFromUpdateData(Update $update): ?User
-	{
-		$message = $update->getMessage();
+    public function getUserFromUpdateData(Update $update): ?User
+    {
+        $message = $update->getMessage();
 
-		$from = $update->message?->from;
-		if (!$from) {
-			$from = $update->callbackQuery?->from;
+        $from = $update->message?->from;
+        if (! $from) {
+            $from = $update->callbackQuery?->from;
         }
-        
-        if (!$from) {
-            Log::error('No from data found in update: ',[
+
+        if (! $from) {
+            Log::error('No from data found in update: ', [
                 'update' => $update,
             ]);
-			return null;
-		}
 
-		$username = $from->username ?? 'random_' . Str::random(8);
+            return null;
+        }
 
-		$user = User::query()
-			->where('telegram_username', $username)
-			->first();
+        $username = $from->username ?? 'random_'.Str::random(8);
 
-		if (!$user) {
-			$name = trim(($from->firstName ?? '') . ' ' . ($from->lastName ?? ''));
-			if (!$name) {
-				throw new RuntimeException('No name found');
-			}
+        $user = User::query()
+            ->where('telegram_username', $username)
+            ->first();
 
-			try {
-				return User::query()->create([
-					'telegram_username' => $username,
-					'telegram_chat_id' => $message->getChat()->getId(),
-					'name' => $name,
-				]);
-			} catch (Throwable $e) {
-				Log::error($e->getMessage());
-				Log::error($e->getTraceAsString());
-			}
-		}
+        if (! $user) {
+            $name = trim(($from->firstName ?? '').' '.($from->lastName ?? ''));
+            if (! $name) {
+                throw new RuntimeException('No name found');
+            }
 
-		return $user;
-	}
+            try {
+                return User::query()->create([
+                    'telegram_username' => $username,
+                    'telegram_chat_id' => $message->getChat()->getId(),
+                    'name' => $name,
+                ]);
+            } catch (Throwable $e) {
+                Log::error($e->getMessage());
+                Log::error($e->getTraceAsString());
+            }
+        }
 
-	/**
+        return $user;
+    }
+
+    /**
      * @throws TelegramSDKException
      */
     public function processUpdates(array|Update $update): void
@@ -80,7 +81,7 @@ final class TelegramService
         }
 
         Log::debug('Update in processUpdates', [
-			'update' => $update,
+            'update' => $update,
         ]);
         try {
             $data = $update->getRelatedObject()->get('data');
@@ -445,10 +446,10 @@ final class TelegramService
 
     private function isCorrectTime(?string $text = null): bool
     {
-		if (! $text) {
-			return false;
-		}
-		
+        if (! $text) {
+            return false;
+        }
+
         if (! preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/', $text)) {
             return false;
         }

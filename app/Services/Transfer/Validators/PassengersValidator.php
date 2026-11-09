@@ -7,6 +7,7 @@ namespace App\Services\Transfer\Validators;
 final class PassengersValidator
 {
     private const MIN_PASSENGERS = 1;
+
     private const MAX_PASSENGERS = 20;
 
     public function parse(string $input): ?int

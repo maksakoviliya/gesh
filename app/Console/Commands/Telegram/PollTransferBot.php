@@ -36,6 +36,7 @@ final class PollTransferBot extends Command
             } catch (Throwable $e) {
                 Log::warning('Transfer bot polling failed', ['error' => $e->getMessage()]);
                 sleep(5);
+
                 continue;
             }
 

@@ -13,12 +13,12 @@ use App\Services\Transfer\Validators\DateValidator;
 final readonly class EnterDateStep implements StepInterface
 {
     public function __construct(
-        private DateValidator $validator = new DateValidator(),
+        private DateValidator $validator = new DateValidator,
     ) {}
 
     public function prompt(int $chatId, TelegramMessageBuilder $builder): void
     {
-        $builder->sendSimple($chatId, 'Введите дату в формате ДД.ММ.ГГГГ');
+        $builder->sendDatePicker($chatId);
     }
 
     public function isComplete(TransferRequest $request, User $user): bool
@@ -30,7 +30,7 @@ final readonly class EnterDateStep implements StepInterface
     {
         $date = $this->validator->parse($input);
 
-        if (!$date) {
+        if (! $date) {
             return false;
         }
 
@@ -44,6 +44,6 @@ final readonly class EnterDateStep implements StepInterface
 
     public function next(): ?StepInterface
     {
-        return new EnterTimeStep();
+        return new EnterTimeStep;
     }
 }

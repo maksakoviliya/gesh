@@ -552,11 +552,11 @@ class SendMessageToAdminGroup
 
             $text .= "\n\n";
 
-            $text .= "Объект: " . route('apartment', [
-                'apartment' => $contactRequest->apartment->id
-                ]) . "\n";
-            if($contactRequest->apartment->user->telegram_username) {
-                $text .= "Собственник: @" . $contactRequest->apartment->user->telegram_username . "\n";
+            $text .= 'Объект: '.route('apartment', [
+                'apartment' => $contactRequest->apartment->id,
+            ])."\n";
+            if ($contactRequest->apartment->user->telegram_username) {
+                $text .= 'Собственник: @'.$contactRequest->apartment->user->telegram_username."\n";
             }
 
             $buttons = [

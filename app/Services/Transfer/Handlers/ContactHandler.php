@@ -9,9 +9,8 @@ use App\Models\TransferRequest;
 use App\Models\User;
 use App\Services\Transfer\Conversation\ConversationManager;
 use Illuminate\Support\Facades\Log;
-use Telegram\Bot\Objects\Update;
 use Propaganistas\LaravelPhone\PhoneNumber;
-use Throwable;
+use Telegram\Bot\Objects\Update;
 
 final readonly class ContactHandler
 {
@@ -28,8 +27,9 @@ final readonly class ContactHandler
         try {
             $phone = new PhoneNumber($phoneNumber, 'RU');
 
-            if (!$phone->isValid()) {
+            if (! $phone->isValid()) {
                 $this->conversationManager->sendPhoneError($chatId);
+
                 return;
             }
 
@@ -40,9 +40,10 @@ final readonly class ContactHandler
                 ->latest('created_at')
                 ->first();
 
-            if (!$request) {
+            if (! $request) {
                 Log::error('No draft request found before phone update', ['user_id' => $user->id]);
                 $this->conversationManager->sendError($chatId);
+
                 return;
             }
 

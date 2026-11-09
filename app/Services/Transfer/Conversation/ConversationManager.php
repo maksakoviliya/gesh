@@ -28,6 +28,7 @@ final readonly class ConversationManager
         // Проверка: если заявка уже завершена, не обрабатываем
         if ($this->isRequestComplete($request, $user)) {
             $this->completeRequest($request, $user, $chatId);
+
             return;
         }
 
@@ -67,6 +68,7 @@ final readonly class ConversationManager
                 $chatId,
                 "Ваша заявка уже принята!\nДля новой заявки используйте: /start"
             );
+
             return;
         }
 
@@ -76,14 +78,16 @@ final readonly class ConversationManager
             if ($step->isComplete($request, $user)) {
                 // Шаг уже завершён, переходим к следующему
                 $this->processStep($request, $user, $chatId);
+
                 return;
             }
 
             $result = $step->process($request, $user, $input);
 
-            if (!$result) {
+            if (! $result) {
                 // Валидация не прошла, показываем ошибку
                 $this->messageBuilder->sendSimple($chatId, $step->getErrorMessage());
+
                 return;
             }
 
@@ -120,12 +124,12 @@ final readonly class ConversationManager
 
     private function getCurrentStep(TransferRequest $request, User $user): StepInterface
     {
-        return match(true) {
-            !$request->destination => new SelectDestinationStep(),
-            !$request->start_at => new EnterDateStep(),
-            !$request->start_time => new EnterTimeStep(),
-            !$request->passengers_count => new EnterPassengersStep(),
-            !$user->phone => new EnterPhoneStep(),
+        return match (true) {
+            ! $request->destination => new SelectDestinationStep,
+            ! $request->start_at => new EnterDateStep,
+            ! $request->start_time => new EnterTimeStep,
+            ! $request->passengers_count => new EnterPassengersStep,
+            ! $user->phone => new EnterPhoneStep,
             default => throw new RuntimeException('Cannot determine current step: all fields are filled'),
         };
     }
@@ -165,7 +169,7 @@ final readonly class ConversationManager
     {
         $this->messageBuilder->sendSimple(
             $chatId,
-            "Не удалось обработать номер телефона. Пожалуйста, отправьте свой контакт ещё раз."
+            'Не удалось обработать номер телефона. Пожалуйста, отправьте свой контакт ещё раз.'
         );
     }
 }

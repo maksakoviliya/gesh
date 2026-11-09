@@ -34,6 +34,6 @@ final class SelectDestinationStep implements StepInterface
 
     public function next(): ?StepInterface
     {
-        return new EnterDateStep();
+        return new EnterDateStep;
     }
 }

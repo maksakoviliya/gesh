@@ -11,7 +11,7 @@ class ViewsService
     public function incrementViews(Apartment $apartment): void
     {
         $apartment->update([
-            'views' => $apartment->views + 1
+            'views' => $apartment->views + 1,
         ]);
     }
 }

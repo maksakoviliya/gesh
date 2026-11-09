@@ -7,8 +7,8 @@ namespace App\Services\Transfer;
 use App\Services\Transfer\Conversation\ConversationManager;
 use App\Services\Transfer\Handlers\CallbackHandler;
 use App\Services\Transfer\Handlers\CommandHandler;
-use App\Services\Transfer\Handlers\MessageHandler;
 use App\Services\Transfer\Handlers\ContactHandler;
+use App\Services\Transfer\Handlers\MessageHandler;
 use App\Services\Transfer\Repositories\UserRepository;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Objects\Update;
@@ -32,15 +32,17 @@ final readonly class TelegramWebhookHandler
         // Never let an exception escape: a 500 makes Telegram resend the same update forever and the bot stalls.
         try {
             $user = $this->userRepository->findOrCreateFromUpdate($update);
-            if (!$user) {
+            if (! $user) {
                 // edited_message, my_chat_member etc. — nothing to do
                 Log::info('Skipping unsupported update', ['update_id' => $update->updateId]);
+
                 return;
             }
 
             $chatId = $this->extractChatId($update);
-            if (!$chatId) {
+            if (! $chatId) {
                 Log::error('Cannot extract chat_id from update', ['update_id' => $update->updateId]);
+
                 return;
             }
 
@@ -76,6 +78,7 @@ final readonly class TelegramWebhookHandler
     private function isCommand(Update $update): bool
     {
         $entities = $update->getMessage()?->get('entities');
+
         return $entities && ($entities[0]['type'] ?? null) === 'bot_command';
     }
 

@@ -11,7 +11,6 @@ use App\Models\Apartment;
 use App\Services\ViewsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Inertia\Inertia;
 use Inertia\Response;
 

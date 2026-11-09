@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Transfer\Handlers;
 
-use App\Enums\Transfer\ButtonDataEnum;
 use App\Models\User;
 use App\Services\Transfer\TelegramMessageBuilder;
 use Telegram\Bot\Objects\Update;
@@ -18,7 +17,7 @@ final readonly class CommandHandler
     public function handle(Update $update, User $user, int $chatId): void
     {
         // "/start payload" (deep link) and "/start@BotName" must also work
-        $command = strtok((string) $update->getMessage()->text, " @");
+        $command = strtok((string) $update->getMessage()->text, ' @');
 
         match ($command) {
             '/start', '/new' => $this->handleStart($user, $chatId),

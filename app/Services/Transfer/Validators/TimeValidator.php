@@ -8,7 +8,7 @@ final class TimeValidator
 {
     public function validate(?string $time): bool
     {
-        if (!$time) {
+        if (! $time) {
             return false;
         }
 
