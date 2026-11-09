@@ -106,6 +106,16 @@ final class TelegramMessageBuilder
         );
     }
 
+    /** Stops the loading spinner on the pressed inline button. */
+    public function answerCallback(string $callbackQueryId): void
+    {
+        try {
+            Telegram::bot(self::BOT_NAME)->answerCallbackQuery(['callback_query_id' => $callbackQueryId]);
+        } catch (Throwable $e) {
+            Log::warning('Failed to answer callback query', ['error' => $e->getMessage()]);
+        }
+    }
+
     private function send(int $chatId, string $text, ?Keyboard $keyboard = null): void
     {
         try {

@@ -109,7 +109,7 @@ return [
     | Default: https://api.telegram.org/bot
     |
     */
-    'base_bot_url' => null,
+    'base_bot_url' => env('TELEGRAM_BASE_BOT_URL'), // proxy if api.telegram.org is unreachable from the server
 
     /*
     |--------------------------------------------------------------------------

@@ -17,10 +17,11 @@ final readonly class CommandHandler
 
     public function handle(Update $update, User $user, int $chatId): void
     {
-        $command = $update->getMessage()->text;
+        // "/start payload" (deep link) and "/start@BotName" must also work
+        $command = strtok((string) $update->getMessage()->text, " @");
 
         match ($command) {
-            '/start' => $this->handleStart($user, $chatId),
+            '/start', '/new' => $this->handleStart($user, $chatId),
             default => null,
         };
     }

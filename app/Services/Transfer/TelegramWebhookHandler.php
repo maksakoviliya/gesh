@@ -27,23 +27,28 @@ final readonly class TelegramWebhookHandler
 
     public function handle(Update $update): void
     {
-        $user = $this->userRepository->findOrCreateFromUpdate($update);
-        if (!$user) {
-            Log::error('Cannot identify user from update', ['update_id' => $update->updateId]);
-            return;
-        }
+        $chatId = null;
 
-        $chatId = $this->extractChatId($update);
-        if (!$chatId) {
-            Log::error('Cannot extract chat_id from update', ['update_id' => $update->updateId]);
-            return;
-        }
-
+        // Never let an exception escape: a 500 makes Telegram resend the same update forever and the bot stalls.
         try {
-            if ($this->isCommand($update)) {
-                $this->commandHandler->handle($update, $user, $chatId);
-            } elseif ($this->isCallback($update)) {
+            $user = $this->userRepository->findOrCreateFromUpdate($update);
+            if (!$user) {
+                // edited_message, my_chat_member etc. — nothing to do
+                Log::info('Skipping unsupported update', ['update_id' => $update->updateId]);
+                return;
+            }
+
+            $chatId = $this->extractChatId($update);
+            if (!$chatId) {
+                Log::error('Cannot extract chat_id from update', ['update_id' => $update->updateId]);
+                return;
+            }
+
+            // Callback first: getMessage() of a callback is the bot's own message, which may contain "/start".
+            if ($this->isCallback($update)) {
                 $this->callbackHandler->handle($update, $user, $chatId);
+            } elseif ($this->isCommand($update)) {
+                $this->commandHandler->handle($update, $user, $chatId);
             } elseif ($this->isContact($update)) {
                 $this->contactHandler->handle($update, $user, $chatId);
             } elseif ($this->isMessage($update)) {
@@ -56,7 +61,9 @@ final readonly class TelegramWebhookHandler
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            $this->conversationManager->sendError($chatId);
+            if ($chatId) {
+                $this->conversationManager->sendError($chatId);
+            }
         }
     }
 

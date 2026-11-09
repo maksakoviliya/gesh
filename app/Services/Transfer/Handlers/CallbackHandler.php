@@ -25,6 +25,7 @@ final readonly class CallbackHandler
     public function handle(Update $update, User $user, int $chatId): void
     {
         $callbackData = $update->callbackQuery->data;
+        $this->messageBuilder->answerCallback((string) $update->callbackQuery->id);
 
         // Обработка кнопки "Начать заново"
         if ($callbackData === ButtonDataEnum::PUSH_START->value) {
